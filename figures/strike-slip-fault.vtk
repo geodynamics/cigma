@@ -1,0 +1,11 @@
+# vtk DataFile Version 1.0
+This line is a comment
+ASCII
+DATASET POLYDATA
+POINTS 4 float
+12000.0      0.0       0.0
+12000.0  16000.0       0.0
+12000.0  16000.0  -16000.0
+12000.0      0.0  -16000.0
+POLYGONS 1 5
+4  0 1 2 3
