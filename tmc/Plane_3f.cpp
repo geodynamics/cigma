@@ -1,0 +1,8 @@
+#ifndef GTB_PLANE_3F_INCLUDED
+#include "Plane_3f.hpp"
+#endif
+
+GTB_BEGIN_NAMESPACE
+
+
+GTB_END_NAMESPACE

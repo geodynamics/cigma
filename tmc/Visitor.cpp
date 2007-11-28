@@ -1,0 +1,8 @@
+#ifndef GTB_VISITOR_INCLUDED
+#include "Visitor.hpp"
+#endif
+
+GTB_BEGIN_NAMESPACE
+
+
+GTB_END_NAMESPACE

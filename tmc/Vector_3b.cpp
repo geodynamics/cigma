@@ -1,0 +1,8 @@
+#ifndef GTB_VECTOR_3B_INCLUDED
+#include "Vector_3b.hpp"
+#endif
+
+GTB_BEGIN_NAMESPACE
+
+
+GTB_END_NAMESPACE
