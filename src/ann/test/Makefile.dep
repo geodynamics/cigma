@@ -1,0 +1,5 @@
+ann2fig.o: ann2fig.cpp ../include/ANN/ANNx.h ../include/ANN/ANN.h
+ann_sample.o: ann_sample.cpp ../include/ANN/ANN.h
+ann_test.o: ann_test.cpp ../include/ANN/ANN.h ../include/ANN/ANNx.h \
+  ../include/ANN/ANNperf.h rand.h
+rand.o: rand.cpp rand.h ../include/ANN/ANN.h
