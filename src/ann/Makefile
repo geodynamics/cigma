@@ -1,4 +1,4 @@
-include ../../variables
+include ../../build/variables
 
 LIB = ../../lib/libann.a
 INCLUDE = -I./include

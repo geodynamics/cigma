@@ -1,0 +1,42 @@
+# OS
+UNAME=@UNAME@
+
+# The names of the C and C++ compilers
+CC=@CC@
+CXX=@CXX@
+
+# If you need to link to dynamic libraries installed in non-standard
+# locations and are using the GNU linker, you may want to add
+# '-Wl,--rpath,/path/to/dynamic/library' to the 'LINKER' variable
+# below. Alternatively, you could edit the 'LD_LIBRARY_PATH'
+# environment variable or use the 'ldconfig' program.
+LINKER=@LINKER@
+
+# All compiler flags except optimization flags
+FLAGS=@FLAGS@
+
+# Compiler optimization flags
+OPTIM=@OPTIM@
+
+# Cigma subdirectories and libraries
+CIGMA_DIRS=@CIGMA_DIRS@
+CIGMA_LIBS=@CIGMA_LIBS@
+
+# How you create a static library on this machine
+AR=@AR@
+RANLIB=@RANLIB@
+
+# The extension to use for executables...
+EXEEXT=@EXEEXT@
+
+# Installation directories
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+datadir=@datadir@
+includedir=@includedir@
+libdir=@libdir@
+mandir=@mandir@
+infodir=@infodir@
+
+# vim:syntax=make
