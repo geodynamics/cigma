@@ -85,45 +85,63 @@ int cigma::sys3x3(double mat[3][3], double b[3], double res[3], double *det)
     return 1;
 }
 
-void cigma::minmax(int n, double *X, double *Y, double *Z, double min[3], double max[3])
+void cigma::minmax(double *points, int npts, int nsd, double *min, double *max)
 {
-    min[0] = X[0];
-    min[1] = Y[0];
-    min[2] = Z[0];
+    // 
+    // X[i] = points[nsd*i + 0]
+    // Y[i] = points[nsd*i + 1]
+    // Z[i] = points[nsd*i + 2]
+    //
+    // PT_n = (X[n],Y[n],Z[n])  (n-th point)
+    //
+    
+    int i,j;
 
-    max[0] = X[0];
-    max[1] = Y[0];
-    max[2] = Z[0];
+    #define PT(i,j) points[nsd*(i) + (j)]
 
-    for (int i = 1; i < n; i++)
+    for (j = 0; j < nsd; j++)
     {
-        min[0] = MIN(X[i], min[0]);
-        min[1] = MIN(Y[i], min[1]);
-        min[2] = MIN(Z[i], min[2]);
-
-        max[0] = MAX(X[i], max[0]);
-        max[1] = MAX(Y[i], max[1]);
-        max[2] = MAX(Z[i], max[2]);
+        min[j] = PT(0,j);
+        max[j] = PT(0,j);
     }
+
+    for (i = 1; i < npts; i++)
+    {
+        for (j = 0; j < nsd; j++)
+        {
+            min[j] = MIN(PT(i,j), min[j]);
+            max[j] = MAX(PT(i,j), max[j]);
+        }
+    }
+
+    #undef PT
 }
 
-void cigma::centroid(int n, double *X, double *Y, double *Z, double c[3])
+void cigma::centroid(double *points, int npts, int nsd, double c[3])
 {
-    const double oc = 1.0 / (double)n;
+    int i, j;
+    const double oc = 1.0 / (double)npts;
 
-    c[0] = X[0];
-    c[1] = Y[0];
-    c[2] = Z[0];
+    #define PT(i,j)  points[nsd*(i) + (j)]
 
-    for (int i = 1; i < n; i++)
+    c[0] = c[1] = c[2] = 0.0;
+    for (j = 0; j < nsd; j++)
     {
-        c[0] += X[i];
-        c[1] += Y[i];
-        c[2] += Z[i];
+        c[j] = PT(0,j);
     }
 
-    c[0] *= oc;
-    c[1] *= oc;
-    c[2] *= oc;
+    for (i = 1; i < npts; i++)
+    {
+        for (j = 0; j < nsd; j++)
+            c[j] += PT(i,j);
+    }
+
+    for (j = 0; j < nsd; j++)
+    {
+        c[j] *= oc;
+    }
+
+    #undef PT
+
 }
 

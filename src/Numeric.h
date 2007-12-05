@@ -1,6 +1,8 @@
 #ifndef __NUMERIC_H__
 #define __NUMERIC_H__
 
+#include <cmath>
+
 #define MIN(a,b)    (((a) < (b)) ? (a) : (b))
 #define MAX(a,b)    (((a) > (b)) ? (a) : (b))
 #define SQR(x)      ((x)*(x))
@@ -15,8 +17,8 @@ namespace cigma
 
     int sys3x3(double mat[3][3], double b[3], double res[3], double *det);
 
-    void minmax(int n, double *X, double *Y, double *Z, double min[3], double max[3]);
-    void centroid(int n, double *X, double *Y, double *Z, double c[3]);
+    void minmax(double *points, int npts, int nsd, double *min, double *max);
+    void centroid(double *points, int npts, int nsd, double c[3]);
 }
 
 #endif
