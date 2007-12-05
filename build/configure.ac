@@ -1,5 +1,5 @@
 dnl Check that this is the cigma source tree
-AC_INIT(h5io/h5io.h)
+AC_INIT(../src/h5io/h5io.h)
 
 dnl Parse '--with' command-line options
 AC_ARG_WITH(hdf5-prefix,
@@ -55,7 +55,7 @@ dnl Check for standard math library
 AC_CHECK_LIB(m,main)
 
 CIGMA_LIBS=""
-CIGMA_DIRS="h5io sandbox contrib/ANN"
+CIGMA_DIRS="h5io ann"
 
 dnl Check for zlib
 ZLIB=""
