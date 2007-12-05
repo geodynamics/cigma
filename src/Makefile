@@ -1,6 +1,11 @@
-CXX = g++
+include ../build/variables
 CXXFLAGS = -Wall -g
+INCLUDES = -I/usr/include/python2.5 -I/usr/lib/python2.5/site-packages/numpy/core/include/numpy
 LDFLAGS =
+LIBS = -lpython2.5
+
+FLAGS += $(INCLUDES)
+CIGMA_LIBS += $(LIBS)
 
 OBJS = \
 	Numeric.o \
