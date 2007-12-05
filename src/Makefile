@@ -1,9 +1,19 @@
 CXX = g++
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -g
 LDFLAGS =
 
 OBJS = \
-	Numeric.o
+	Numeric.o \
+	DataIO.o \
+	TextIO.o \
+	VtkIO.o \
+	Cell.o \
+	Tet.o \
+	Hex.o \
+	Field.o \
+	MeshPart.o \
+	DofHandler.o \
+
 
 default: $(OBJS)
 
