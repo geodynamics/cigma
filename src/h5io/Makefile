@@ -1,6 +1,6 @@
 include ../../build/variables
 
-LIB = ../lib/libh5io.a
+LIB = ../../lib/libh5io.a
 
 CFLAGS = $(OPTIM) $(FLAGS)
 
