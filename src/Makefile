@@ -18,12 +18,13 @@ OBJS = \
 	Field.o \
 	MeshPart.o \
 	DofHandler.o \
+	FiatProxy.o \
 
 
 default: $(OBJS)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $^
+	$(CXX) $(FLAGS) -c $^
 
 clean:
 	rm -f $(OBJS)
