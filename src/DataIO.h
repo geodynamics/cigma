@@ -26,7 +26,6 @@ public:
     virtual bool read_points(double **points, int *npts, int *ndim);
 
 public:
-    virtual void write_header();
     virtual void write_points(double *points, int npts, int ndim);
     virtual void write_cells(int *cells, int nel, int ndofs);
 };
