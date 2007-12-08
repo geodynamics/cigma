@@ -128,15 +128,15 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
     jac[1][0] = jac[1][1] = jac[1][2] = 0.0;
     jac[2][0] = jac[2][1] = jac[2][2] = 0.0;
 
-    #define X(i)  globverts[3*(i) + 0]
-    #define Y(i)  globverts[3*(i) + 1]
-    #define Z(i)  globverts[3*(i) + 2]
-
     double uvw[3] = {u,v,w};
     double *grad = new double[ndofs*3];
     double *s;
 
-    switch (nsd)
+    #define X(i)  globverts[3*(i) + 0]
+    #define Y(i)  globverts[3*(i) + 1]
+    #define Z(i)  globverts[3*(i) + 2]
+
+    switch (celldim)
     {
         case 3 :
 
@@ -198,10 +198,10 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][0] = c[0];
                 jac[2][1] = c[1];
                 jac[2][2] = c[2];
-          }
-          return sqrt(SQR(jac[0][0] * jac[1][1] - jac[0][1] * jac[1][0]) +
-                      SQR(jac[0][2] * jac[1][0] - jac[0][0] * jac[1][2]) +
-                      SQR(jac[0][1] * jac[1][2] - jac[0][2] * jac[1][1]));
+            }
+            return sqrt(SQR(jac[0][0] * jac[1][1] - jac[0][1] * jac[1][0]) +
+                        SQR(jac[0][2] * jac[1][0] - jac[0][0] * jac[1][2]) +
+                        SQR(jac[0][1] * jac[1][2] - jac[0][2] * jac[1][1]));
 
         case 1:
 
@@ -217,9 +217,9 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
             }
             {
                 double a[3], b[3], c[3];
-                a[0]= X[1] - X(0);
-                a[1]= Y[1] - Y(0);
-                a[2]= Z[1] - Z(0);
+                a[0]= X(1) - X(0);
+                a[1]= Y(1) - Y(0);
+                a[2]= Z(1) - Z(0);
 
                 if((fabs(a[0]) >= fabs(a[1]) && fabs(a[0]) >= fabs(a[2])) ||
                    (fabs(a[1]) >= fabs(a[0]) && fabs(a[1]) >= fabs(a[2])))
@@ -247,11 +247,10 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
           }
           return sqrt(SQR(jac[0][0])+SQR(jac[0][1])+SQR(jac[0][2]));
     }
-
     #undef X
     #undef Y
     #undef Z
-    
+
     return 0.0;
 }
 
@@ -287,7 +286,7 @@ void cigma::Cell::interpolate(double *dofs, double *point, double *value, int va
  * @param point is a rank-1 array of dimension [celldim]
  * @param value is a rank-1 array of dimension [valdim]
  */
-void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, int stride=1, double invjac[3][3]=NULL)
+void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, int stride, double invjac[3][3])
 {
     assert(celldim > 0);
     assert(nno > 0);
@@ -302,19 +301,19 @@ void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, i
     grad_shape(1, point, grad);
 
     k = 0;
-    for (int i = 0; i < ndofs; i++)
+    for (i = 0; i < ndofs; i++)
     {
         s = &grad[3*i];
         for (j = 0; j < celldim; j++)
         {
-            dfdu[j] += dofs[k] * s[j]
+            dfdu[j] += dofs[k] * s[j];
         }
         k += stride;
     }
 
     if (invjac)
     {
-        matvec(invjac, dNdu, value);
+        matvec(invjac, dfdu, value);
     }
     else
     {
