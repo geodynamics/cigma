@@ -7,6 +7,9 @@ namespace cigma
 }
 
 
+/*
+ * Base Field object
+ */
 class cigma::Field
 {
 public:

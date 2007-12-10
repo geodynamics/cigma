@@ -1,24 +1,28 @@
 include ../build/variables
-CXXFLAGS = -Wall -g
-INCLUDES = -I/usr/include/python2.5 -I/usr/lib/python2.5/site-packages/numpy/core/include/numpy
-LDFLAGS =
-LIBS = -lpython2.5
+
+FLAGS = -Wall -Wno-deprecated
+FLAGS += -g
+
+INCLUDES += $(PYTHON_INCLUDES)
+INCLUDES += $(VTK_INCLUDES)
 
 FLAGS += $(INCLUDES)
-CIGMA_LIBS += $(LIBS)
+
+TARGETLIB = ../lib/libcigma.a
 
 OBJS = \
 	Numeric.o \
-	DataIO.o \
-	TextIO.o \
-	VtkIO.o \
 	Cell.o \
 	Tet.o \
 	Hex.o \
 	Field.o \
-	MeshPart.o \
 	DofHandler.o \
 	FiatProxy.o \
+	TextReader.o \
+	TextWriter.o \
+	VtkUgReader.o \
+	VtkUgSimpleWriter.o \
+	Command.o \
 
 
 default: $(OBJS)
@@ -26,7 +30,22 @@ default: $(OBJS)
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
 
+
+
+TESTLIB = ./tests/libcigma_d.a
+
+testlib: $(TESTLIB)
+
+$(TESTLIB): $(OBJS)
+	rm -f $@
+	$(AR) $@ $(OBJS)
+	$(RANLIB) $@
+
+
 clean:
 	rm -f $(OBJS)
 
-.PHONY: clean
+purge: clean
+	rm -f $(TARGETLIB)
+
+.PHONY: clean purge

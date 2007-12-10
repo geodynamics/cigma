@@ -1,28 +1,23 @@
-#ifndef __VTKIO_H__
-#define __VTKIO_H__
+#ifndef __VTK_UG_SIMPLE_WRITER_H__
+#define __VTK_UG_SIMPLE_WRITER_H__
 
-#include "DataIO.h"
 #include <cstdio>
+#include <string>
 
 namespace cigma
 {
-    class VtkIO;
+    class VtkUgSimpleWriter;
 }
 
-
-class cigma::VtkIO : public cigma::DataIO
+class cigma::VtkUgSimpleWriter
 {
 public:
-    VtkIO();
-    ~VtkIO();
+    VtkUgSimpleWriter();
+    ~VtkUgSimpleWriter();
 
 public:
-
-public:
-    bool read_connectivity(int **connect, int *nel, int *ndofs);
-    bool read_coordinates(double **coords, int *nno, int *nsd);
-    bool read_dofs(double **dofs, int *nno, int *ndim);
-    bool read_points(double **points, int *npts, int *ndim);
+    void open(std::string filename);
+    void close();
 
 public:
     void write_header();
@@ -32,7 +27,7 @@ public:
     void write_point_data(const char *name, double *data, int nno, int ndim);
     void write_cell_data(const char *name, double *data, int nel, int ndim);
 
-private:
+public:
     FILE *fp;
 };
 

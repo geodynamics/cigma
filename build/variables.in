@@ -22,6 +22,15 @@ OPTIM=@OPTIM@
 CIGMA_DIRS=@CIGMA_DIRS@
 CIGMA_LIBS=@CIGMA_LIBS@
 
+# Python (XXX move python auto-detection to python.m4)
+PYTHON_INCLUDES = -I/usr/include/python2.5 -I/usr/lib/python2.5/site-packages/numpy/core/include/numpy
+PYTHON_LIBS = -lpython2.5
+
+# VTK (XXX use auto-detection from vtk.m4)
+VTK_INCLUDES = -I/usr/include/vtk-5.0
+VTK_LIBS = -lvtkCommon -lvtkIO -lvtkFiltering
+VTK_LDFLAGS = -L/usr/lib/vtk-5.0
+
 # How you create a static library on this machine
 AR=@AR@
 RANLIB=@RANLIB@
