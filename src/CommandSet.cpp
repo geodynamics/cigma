@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cassert>
 #include "CommandSet.h"
+#include "SkelCmd.h"
 #include "HelpCmd.h"
 #include "ExtractCmd.h"
 #include "EvalCmd.h"
@@ -31,6 +32,7 @@ void cigma::CommandSet::initialize()
     addCommand(new ExtractCmd());
     addCommand(new EvalCmd());
     addCommand(new CompareCmd());
+    addCommand(new SkelCmd());
 
     /* once assembled, pass set of commands to help command */
     help->setCmdMap(&commands);
