@@ -9,5 +9,3 @@ def tabulate(shape, degree, x):
     tab = numpy.zeros((10,8))
     return tab
 
-def test(a,b):
-    return 42
