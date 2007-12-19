@@ -12,6 +12,15 @@ namespace cigma
 class cigma::FiatProxy
 {
 public:
+    typedef enum {
+        LINE=11,
+        TRIANGLE=23,
+        QUADRANGLE=24,
+        TETRAHDRON=34,
+        HEXAHEDRON=38
+    } FiatShape;
+
+public:
     FiatProxy();
     ~FiatProxy();
 
