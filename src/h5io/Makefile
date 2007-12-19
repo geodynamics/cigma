@@ -2,7 +2,7 @@ include ../../build/variables
 
 LIB = ../../lib/libh5io.a
 
-CFLAGS = $(OPTIM) $(FLAGS)
+CFLAGS = $(OPTIM) $(FLAGS) $(HDF5_INCLUDES)
 
 SRC = \
 	h5array.c \
