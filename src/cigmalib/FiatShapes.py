@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-LINE = 1
-TRI = 2
-TETRA = 3
-QUAD = 4
-HEX = 5
+LINE = 12
+TRIANGLE = 23
+QUADRANGLE = 24
+TETRAHEDRON = 34
+HEXAHEDRON = 38
 

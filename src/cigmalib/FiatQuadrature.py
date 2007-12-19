@@ -108,10 +108,10 @@ def hex_qr(order):
 def quadrature(shape, order):
     qr = {
         LINE: line_qr,
-        TRI: tri_qr,
-        TETRA: tet_qr,
-        QUAD: quad_qr,
-        HEX: hex_qr,
+        TRIANGLE: tri_qr,
+        QUADRANGLE: quad_qr,
+        TETRAHEDRON: tet_qr,
+        HEXAHEDRON: hex_qr,
     }.get(shape)
     return qr(order)
 
