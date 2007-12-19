@@ -21,33 +21,31 @@ public:
 
 
 public:
-    int n_dims() const;
-    int n_celldims() const;
-    int n_nodes() const;
-
+    virtual int n_nodes() = 0;
+    virtual int n_celldim() = 0;
+    virtual int n_dim() = 0;
 
 public:
 
-    void set(int nsd, int celldim, int ndofs);
+    //void set_dims(int ndofs, int celldim, int nsd);
 
-    void set_reference_vertices(const double *vertices, int num_vertices);
+    void set_reference_vertices(double *vertices, int num_vertices);
+
     void update_vertices(double *vertices, int num_vertices, int nsd);
 
-    void set_quadrature(const double *quadpts, const double *quadwts, int num_points);
-    void update_quadrature(void);
+    //void set_quadrature(const double *quadpts, const double *quadwts, int num_points);
+    //void update_quadrature(void);
 
-    void set_tabulation(const double *basis_tab, const double *basis_jet);
-    void update_tabulation(void);
+    //void set_tabulation(const double *basis_tab, const double *basis_jet);
+    //void update_tabulation(void);
 
-    void clear();
+    //void clear();
 
 
 public:
 
     virtual void shape(int num, double *points, double *values) = 0;
     virtual void grad_shape(int num, double *points, double *values) = 0;
-
-    void tabulate(void);
 
     double jacobian(double *point, double jac[3][3]);
     double jacobian(double u, double v, double w, double jac[3][3]);
@@ -68,45 +66,31 @@ public:
 
 public:
 
-    int nsd;
+    /*int nno;
     int celldim;
+    int nsd;*/
 
-    int nno;
     double *refverts;   // [nno x celldim]
     double *globverts;  // [nno x nsd]
 
-    int nq;
-    double *jxw;        // [nq x 1]
-    double *qwts;       // [nq x 1]
-    double *qpts;       // [nq x celldim]
-    double *gqpts;      // [nq x nsd]
+    //int nq;
+    //double *jxw;        // [nq x 1]
+    //double *qwts;       // [nq x 1]
+    //double *qpts;       // [nq x celldim]
+    //double *gqpts;      // [nq x nsd]
 
-    int ndofs;
-    double *basis_tab;  // [nq x ndofs]
-    double *basis_jet;  // [nq x ndofs x celldim]
+    //int ndofs;
+    //double *basis_tab;  // [nq x ndofs]
+    //double *basis_jet;  // [nq x ndofs x celldim]
 
-    bool _tabulate;
+    //bool _tabulate;
 };
 
 
 
-/*
- * Inline methods
- */
-inline int cigma::Cell::n_dims() const
-{
-    return nsd;
-}
+// ---------------------------------------------------------------------------
 
-inline int cigma::Cell::n_celldims() const
-{
-    return celldim;
-}
 
-inline int cigma::Cell::n_nodes() const
-{
-    return nno;
-}
-
+// ---------------------------------------------------------------------------
 
 #endif

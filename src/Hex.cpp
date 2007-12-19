@@ -1,6 +1,8 @@
 #include "Hex.h"
 #include <cassert>
 
+// ---------------------------------------------------------------------------
+
 static void hex_shape(double u, double v, double w, double s[8])
 {
     s[0] = (1.0 - u) * (1.0 - v) * (1.0 - w) * 0.125;
@@ -52,12 +54,15 @@ static void hex_grad_shape(double u, double v, double w, double s[8*3])
     #undef S
 }
 
+
+// ---------------------------------------------------------------------------
+
 cigma::Hex::Hex()
 {
-    const int nno = 8;
-    const int nsd = 3;
-    const int celldim = 3;
-    double verts[nno * celldim] = {
+    const int hex_nno = 8;
+    const int hex_celldim = 3;
+    //const int hex_nsd = 3;
+    double verts[hex_nno * hex_celldim] = {
         -1.0, -1.0, -1.0,
         +1.0, -1.0, -1.0,
         +1.0, +1.0, -1.0,
@@ -67,9 +72,8 @@ cigma::Hex::Hex()
         +1.0, +1.0, +1.0,
         -1.0, +1.0, +1.0
     };
-
-    set(nsd, celldim, nno);
-    set_reference_vertices(verts, nno);
+    //set_dims(hex_nno, hex_celldim, hex_nsd);
+    set_reference_vertices(verts, hex_nno);
 }
 
 cigma::Hex::~Hex()
@@ -84,13 +88,13 @@ cigma::Hex::~Hex()
  */
 void cigma::Hex::shape(int num, double *points, double *values)
 {
-    assert(ndofs > 0);
+    const int nno = n_nodes();
     for (int i = 0; i < num; i++)
     {
         double u = points[3*i + 0];
         double v = points[3*i + 1];
         double w = points[3*i + 2];
-        hex_shape(u, v, w, &values[ndofs*i]);
+        hex_shape(u, v, w, &values[nno*i]);
     }
 }
 
@@ -101,13 +105,15 @@ void cigma::Hex::shape(int num, double *points, double *values)
  */
 void cigma::Hex::grad_shape(int num, double *points, double *values)
 {
-    assert(ndofs > 0);
+    const int nno = n_nodes();
+    const int celldim = n_celldim();
+    const int stride = nno * celldim;
     for (int i = 0; i < num; i++)
     {
         double u = points[3*i + 0];
         double v = points[3*i + 1];
         double w = points[3*i + 2];
-        hex_grad_shape(u, v, w, &values[ndofs*celldim*i]);
+        hex_grad_shape(u, v, w, &values[stride*i]);
     }
 }
 

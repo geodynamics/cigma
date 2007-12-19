@@ -15,6 +15,11 @@ public:
     ~Tet();
 
 public:
+    int n_nodes() { return 4; }
+    int n_celldim() { return 3; }
+    int n_dim() { return 3; }
+
+public:
     void shape(int num, double *points, double *values);
     void grad_shape(int num, double *points, double *values);
     void xyz2uvw(double xyz[3], double uvw[3]);

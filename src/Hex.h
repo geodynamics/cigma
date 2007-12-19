@@ -15,6 +15,11 @@ public:
     ~Hex();
 
 public:
+    int n_nodes() { return 8; }
+    int n_celldim() { return 3; }
+    int n_dim() { return 3; }
+
+public:
     void shape(int num, double *points, double *values);
     void grad_shape(int num, double *points, double *values);
     bool interior(double u, double v, double w);

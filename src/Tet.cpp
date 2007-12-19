@@ -1,5 +1,8 @@
-#include "Tet.h"
+//#include <iostream>
 #include <cassert>
+#include "Tet.h"
+
+// ---------------------------------------------------------------------------
 
 static void tet_shape(double u, double v, double w, double s[4])
 {
@@ -28,46 +31,53 @@ static void tet_grad_shape(double u, double v, double w, double s[4*3])
     s[3*3+2] = +1.0;
 }
 
+
+// ---------------------------------------------------------------------------
+
 cigma::Tet::Tet()
 {
-    const int nno = 4;
-    const int nsd = 3;
-    const int celldim = 3;
-    double verts[nno * celldim] = {
+    //std::cout << "Calling cigma::Tet::Tet()\n";
+    const int tet_nno = 4;
+    const int tet_celldim = 3;
+    //const int tet_nsd = 3;
+    double verts[tet_nno * tet_celldim] = {
         0.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
         0.0, 1.0, 0.0,
         0.0, 0.0, 1.0
     };
-    set(nsd, celldim, nno);
-    set_reference_vertices(verts, nno);
+    //set_dims(tet_nno, tet_celldim, tet_nsd);
+    set_reference_vertices(verts, tet_nno);
 }
 
 cigma::Tet::~Tet()
 {
+    //std::cout << "Calling cigma::Tet::~Tet()\n";
 }
 
 void cigma::Tet::shape(int num, double *points, double *values)
 {
-    assert(ndofs > 0);
+    const int nno = n_nodes();
     for (int i = 0; i < num; i++)
     {
         double u = points[3*i + 0];
         double v = points[3*i + 1];
         double w = points[3*i + 2];
-        tet_shape(u, v, w, &values[ndofs*i]);
+        tet_shape(u, v, w, &values[nno*i]);
     }
 }
 
 void cigma::Tet::grad_shape(int num, double *points, double *values)
 {
-    assert(ndofs > 0);
+    const int nno = n_nodes();
+    const int celldim = n_celldim();
+    const int stride = nno * celldim;
     for (int i = 0; i < num; i++)
     {
         double u = points[3*i + 0];
         double v = points[3*i + 1];
         double w = points[3*i + 2];
-        tet_grad_shape(u, v, w, &values[ndofs*celldim*i]);
+        tet_grad_shape(u, v, w, &values[stride*i]);
     }
 }
 

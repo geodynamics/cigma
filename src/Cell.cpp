@@ -1,80 +1,132 @@
-#include "Cell.h"
+//#include <iostream>
 #include <cstdlib>
 #include <cassert>
+#include "Cell.h"
 
 
 cigma::Cell::Cell()
 {
-    nsd = -1;
-    celldim = -1;
+    //std::cout << "Calling cigma::Cell::Cell()\n";
 
-    nno = 0;
+    /*nno = 0;
+    nsd = 0;
+    celldim = 0;*/
+
     globverts = NULL;
     refverts = NULL;
 
-    ndofs = 0;
+    /*ndofs = 0;
     basis_tab = NULL;
-    basis_jet = NULL;
+    basis_jet = NULL;*/
 
-    nq = 0;
-    jxw = NULL;
+    /*nq = 0;
     qpts = NULL;
     qwts = NULL;
     gqpts = NULL;
+    jxw = NULL;*/
 
-    _tabulate = false;
+    //_tabulate = false;
 }
 
 
 cigma::Cell::~Cell()
 {
-
+    //std::cout << "Calling cigma::Cell::~Cell()\n";
 }
+
+
+/*
+int cigma::Cell::n_nodes() const
+{
+    return nno;
+}
+
+int cigma::Cell::n_dim() const
+{
+    return nsd;
+}
+
+int cigma::Cell::n_celldim() const
+{
+    return celldim;
+}*/
 
 //----------------------------------------------------------------------------
 
 
-void cigma::Cell::clear(void)
+/*
+void cigma::Cell::set_dims(int ndofs, int celldim, int nsd)
 {
-    globverts = NULL;
-}
-
-
-void cigma::Cell::set(int nsd, int celldim, int ndofs)
-{
-    this->nsd = nsd;
+    this->nno = ndofs;
     this->celldim = celldim;
-    this->ndofs = ndofs;
-}
+    this->nsd = nsd;
+}*/
 
 
-void cigma::Cell::set_reference_vertices(const double *vertices, int num_vertices)
+void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
 {
-    assert(nsd > 0);
-    assert(celldim > 0);
+    int i,j;
 
-    nno = num_vertices;
+    const int nno = n_nodes();
+    const int celldim = n_celldim();
+    //const int nsd = n_dim();
+
+    assert(nno == num_vertices);
+
+    if (refverts != 0) delete [] refverts;
+    //if (globverts != 0) delete [] globverts;
+
     refverts = new double[nno*celldim];
-    for (int i = 0; i < nno; i++)
+    //globverts = new double[nno*nsd];
+
+    for (i = 0; i < nno; i++)
     {
-        for(int j = 0; j < celldim; j++)
+        /*
+        for (j = 0; j < nsd; j++)
+        {
+            globverts[nsd*i + j] = 0.0;
+        } // */
+        for (j = 0; j < celldim; j++)
         {
             int n = celldim*i + j;
             refverts[n] = vertices[n];
+            //globverts[nsd*i+j] = vertices[n];
         }
     }
     globverts = refverts;
 }
 
 
-void cigma::Cell::update_vertices(double *vertices, int num_vertices, int nsd)
+void cigma::Cell::update_vertices(double *vertices, int num, int dim)
 {
-    assert((this->nsd) == nsd);
-    assert(nno == num_vertices);
-    this->globverts = vertices;
+    assert(num == n_nodes());
+    assert(dim == n_dim());
+
+    //* // Copy reference
+    globverts = vertices;
+    // */
+
+    /* // Copy data
+    int i,j;
+    for (i = 0; i < nno; i++)
+    {
+        // zero out globverts
+        for (j = 0; j < nsd; j++)
+        {
+            globverts[nsd*i+j] = 0.0;
+        }
+        // copy globverts
+        for (j = 0; j < dim; j++)
+        {
+            globverts[nsd*i + j] = vertices[dim*i + j];
+        }
+    } // */
+
+    return;
 }
 
 
+/*
 void cigma::Cell::set_quadrature(const double *quadpts, const double *quadwts, int num_points)
 {
     assert(nsd > 0);
@@ -96,8 +148,6 @@ void cigma::Cell::set_quadrature(const double *quadpts, const double *quadwts, i
         update_quadrature();
     }
 }
-
-
 void cigma::Cell::update_quadrature(void)
 {
     assert(nsd > 0);
@@ -105,6 +155,7 @@ void cigma::Cell::update_quadrature(void)
     for (int q = 0; q < nq; q++)
         uvw2xyz(&qpts[celldim*q], &gqpts[nsd*q]);
 }
+*/
 
 
 //----------------------------------------------------------------------------
@@ -112,7 +163,7 @@ void cigma::Cell::update_quadrature(void)
 
 double cigma::Cell::jacobian(double *point, double jac[3][3])
 {
-    assert(celldim > 0);
+    const int celldim = n_celldim();
     switch (celldim)
     {
     case 3: return jacobian(point[0], point[1], point[2], jac);
@@ -129,8 +180,11 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
     jac[1][0] = jac[1][1] = jac[1][2] = 0.0;
     jac[2][0] = jac[2][1] = jac[2][2] = 0.0;
 
+    const int nno = n_nodes();
+    const int celldim = n_celldim();
+
     double uvw[3] = {u,v,w};
-    double *grad = new double[ndofs*3];
+    double *grad = new double[nno*3];
     double *s;
 
     #define X(i)  globverts[3*(i) + 0]
@@ -265,7 +319,8 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
  */
 void cigma::Cell::interpolate(double *dofs, double *point, double *value, int valdim)
 {
-    double N[ndofs];
+    const int nno = n_nodes();
+    double N[nno];
 
     shape(1, point, N);
 
@@ -275,7 +330,7 @@ void cigma::Cell::interpolate(double *dofs, double *point, double *value, int va
     for (int i = 0; i < valdim; i++)
     {
         double sum = 0.0;
-        for (int j = 0; j < ndofs; j++)
+        for (int j = 0; j < nno; j++)
             sum += dofs[i + valdim*j] * N[j];
         value[i] = sum;
     }
@@ -289,20 +344,23 @@ void cigma::Cell::interpolate(double *dofs, double *point, double *value, int va
  */
 void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, int stride, double invjac[3][3])
 {
-    assert(celldim > 0);
-    assert(nno > 0);
-    assert(ndofs > 0);
+    const int nno = n_nodes();
+    const int celldim = n_celldim();
+
+    //assert(nno > 0);
+    //assert(celldim > 0);
+    //assert(ndofs > 0); <-- ndofs is (cell->nno)
     
     int i, j, k;
 
     double dfdu[3] = {0.0, 0.0, 0.0};
-    double grad[ndofs*3];
+    double grad[nno*3];
     double *s;
 
     grad_shape(1, point, grad);
 
     k = 0;
-    for (i = 0; i < ndofs; i++)
+    for (i = 0; i < nno; i++)
     {
         s = &grad[3*i];
         for (j = 0; j < celldim; j++)
@@ -334,6 +392,7 @@ void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
     // general newton routine for the nonlinear case
     uvw[0] = uvw[1] = uvw[2] = 0.0;
 
+    const int nno = n_nodes();
     int iter = 1, maxiter = 20;
     double error = 1.0, tol = 1.0e-6;
 
@@ -346,7 +405,7 @@ void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
         double xn = 0.0, yn = 0.0, zn = 0.0;
 
 
-        double s[ndofs];
+        double s[nno];
 
         shape(1, uvw, s);
 
@@ -396,18 +455,23 @@ void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
 /* isoparametric reference map */
 void cigma::Cell::uvw2xyz(double uvw[3], double xyz[3])
 {
+    assert(globverts != 0);
     interpolate(globverts, uvw, xyz, 3);
 }
 
 
 void cigma::Cell::bbox(double *min, double *max)
 {
+    const int nno = n_nodes();
+    const int nsd = n_dim();
     minmax(globverts, nno, nsd, min, max);
 }
 
 
 void cigma::Cell::centroid(double c[3])
 {
+    const int nno = n_nodes();
+    const int nsd = n_dim();
     cigma::centroid(globverts, nno, nsd, c);
 }
 
