@@ -5,37 +5,32 @@
 
 namespace cigma
 {
-    class Environment;
     class Command;
 }
 
 
-
-/*
- * Base class for runtime enviroment
- */
-class cigma::Environment
-{
-public:
-    typedef std::map<std::string, std::string> StringMap;
-public:
-    Environment();
-    virtual ~Environment();
-    virtual void configure(const StringMap &cmdline) = 0;
-public:
-    bool configured;
-};
-
-
-/*
- * Base class for commands
+/**
+ * @brief Base class for commands
+ *
  */
 class cigma::Command
 {
 public:
-    virtual void setEnvironment(Environment *env) = 0;
-    virtual void run() = 0;
+    typedef std::map<std::string, std::string> StringMap;
+    typedef std::vector<std::string> StringVector;
+
+public:
     virtual ~Command();
+
+public:
+    //virtual void parse(int argc, char *argv[], StringMap &params) = 0;
+    //virtual void configure(const StringMap &params) = 0;
+    virtual void configure(int argc, char *argv[]) = 0;
+    virtual void help() = 0;
+    virtual void run() = 0;
+
+public:
+    std::string name;
 };
 
 
