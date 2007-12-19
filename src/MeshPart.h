@@ -13,6 +13,12 @@ public:
     virtual ~MeshPart();
 
 public:
+    virtual int n_nodes() = 0;
+    virtual int n_nsd() = 0;
+    virtual int n_nel() = 0;
+    virtual int n_ndofs() = 0;
+
+public:
     void set_coordinates(double *coordinates, int nno, int nsd);
     void set_connectivity(int *connectivity, int nel, int ndofs);
 
@@ -21,13 +27,14 @@ public:
     virtual bool find_cell(double globalPoint[3], int *cellIndex) = 0;
 
 public:
-
-    int nno, nsd;
+    //int nno, nsd;
+    //int nel, ndofs;
     double *coords;
-
-    int nel, ndofs;
     int *connect;
 
 };
+
+
+// ---------------------------------------------------------------------------
 
 #endif
