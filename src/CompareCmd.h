@@ -19,15 +19,9 @@ public:
     ~CompareCmd();
 
 public:
-    void configure(const StringMap &cmdlineParams);
-    void run();
-
-public:
-    // internal state
-    //MeshPart *meshPart;
-    //FEField *field_a;
-    //FEField *field_b;
-    //QuadratureRule *quadrature;
+    void setupOptions(AnyOption *opt);
+    void configure(AnyOption *opt);
+    int run();
 };
 
 
