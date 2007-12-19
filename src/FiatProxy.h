@@ -20,12 +20,14 @@ public:
     void finalize();
 
 public:
+    void test(const char *msg, int n);
     void quadrature(int shape, int order, double **x, double **w, int *npts, int *dim);
     void tabulate(int npts, double *pts, double *basis, double *basisDeriv);
 
 public:
     PyObject *module;
     PyObject *module_dict;
+    PyObject *test_fn;
     PyObject *quad_fn;
     PyObject *tab_fn;
     PyArrayObject *x;
