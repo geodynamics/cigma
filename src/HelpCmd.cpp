@@ -33,6 +33,7 @@ void cigma::HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
     }
 }
 
+
 // ---------------------------------------------------------------------------
 
 void cigma::HelpCmd::setupOptions(AnyOption *opt)

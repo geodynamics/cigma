@@ -11,6 +11,7 @@ def test(msg, n):
         print msg
     return 42
 
+
 def quadrature(shape, order):
     return Q(shape, order)
 

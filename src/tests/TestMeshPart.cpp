@@ -30,10 +30,6 @@ void bbox_random_point(double minpt[3], double maxpt[3], double x[3])
 
 // ---------------------------------------------------------------------------
 
-
-// ---------------------------------------------------------------------------
-
-
 int main(void)
 {
     TextWriter *writer = new TextWriter();
