@@ -1,9 +1,13 @@
+#include <iostream>
+#include <cstdlib>
+#include <cassert>
+
 #include "VtkUgReader.h"
+
 #include "vtkCellArray.h"
 #include "vtkPointData.h"
 #include "vtkDoubleArray.h"
 #include "vtkFloatArray.h"
-#include <cassert>
 
 
 // ---------------------------------------------------------------------------
@@ -37,17 +41,57 @@ void cigma::VtkUgReader::open(std::string filename)
 // ---------------------------------------------------------------------------
 
 void cigma::VtkUgReader::
+get_coordinates(double **coordinates, int *nno, int *nsd)
+{
+    assert(grid != 0);
+
+    vtkPoints *points = grid->GetPoints();
+    //points->PrintSelf(std::cout, 0);
+
+    int dims[2];
+    dims[0] = points->GetNumberOfPoints();
+    dims[1] = 3;
+
+    int size = dims[0] * dims[1];
+    int dataType = points->GetDataType();
+    double *coords = new double[size];
+
+    if (dataType == VTK_DOUBLE)
+    {
+        double *ptr = static_cast<double*>(points->GetVoidPointer(0));
+        for (int i = 0; i < size; i++)
+        {
+            coords[i] = ptr[i];
+        }
+    }
+    else if (dataType == VTK_FLOAT)
+    {
+        float *ptr = static_cast<float*>(points->GetVoidPointer(0));
+        for (int i = 0; i < size; i++)
+        {
+            coords[i] = ptr[i];
+        }
+    }
+    else
+    {
+        assert(false);
+    }
+
+    *coordinates = coords;
+    *nno = dims[0];
+    *nsd = dims[1];
+}
+
+void cigma::VtkUgReader::
 get_connectivity(int **connectivity, int *nel, int *ndofs)
 {
-    assert(reader != 0);
+    assert(grid != 0);
 
-    vtkCellArray *cellArray;
-    vtkIdType numCells;
-    vtkIdType *cellArrayPtr;
+    vtkCellArray *cellArray = grid->GetCells();
+    //cellArray->PrintSelf(std::cout, 0);
 
-    cellArray = grid->GetCells();
-    numCells = grid->GetNumberOfCells();
-    cellArrayPtr = cellArray->GetPointer();
+    vtkIdType numCells = grid->GetNumberOfCells();
+    vtkIdType *cellArrayPtr = cellArray->GetPointer();
 
     int dofs_per_elt = cellArrayPtr[0];
     int offset = dofs_per_elt + 1;
@@ -66,102 +110,66 @@ get_connectivity(int **connectivity, int *nel, int *ndofs)
     *ndofs = dofs_per_elt;
 }
 
-void cigma::VtkUgReader::
-get_coordinates(double **coordinates, int *nno, int *nsd)
-{
-    assert(reader != 0);
-
-    vtkPoints *points;
-    vtkPointData *pointData;
-    int pointDataDims[2];
-    vtkDoubleArray *vectors;
-    int vectorDims[2];
-
-    points = grid->GetPoints();
-    pointData = grid->GetPointData();
-    pointDataDims[0] = pointData->GetNumberOfTuples();
-    pointDataDims[1] = pointData->GetNumberOfComponents();
-
-    vectors = static_cast<vtkDoubleArray*>(pointData->GetVectors());
-    vectorDims[0] = vectors->GetNumberOfTuples();
-    vectorDims[1] = vectors->GetNumberOfComponents();
-
-    double *v = vectors->GetPointer(0);
-    double *coords = new double[vectorDims[0] * vectorDims[1]];
-
-    for (int n = 0; n < vectorDims[0]; ++n)
-    {
-        int offset = vectorDims[1] * n;
-        for (int i = 0; i < vectorDims[1]; ++i)
-        {
-            coords[offset + i] = v[offset + i];
-        }
-    }
-
-    *coordinates = coords;
-    *nno = vectorDims[0];
-    *nsd = vectorDims[1];
-}
 
 void cigma::VtkUgReader::
 get_vector_point_data(const char *name, double **vectors, int *num, int *dim)
 {
-    assert(reader != 0);
+    assert(grid != 0);
 
-    vtkPointData *pointData;
+    vtkPointData *pointData = grid->GetPointData();
+    //pointData->PrintSelf(std::cout, 0);
+
     vtkDataArray *dataArray;
-    vtkDoubleArray *vectorsArray;
-    double *v;
-
-    pointData = grid->GetPointData();
-
-    dataArray = 0;
-    if (name != 0)
+    if (name != 0) {
+        assert(pointData->HasArray(name) == 1);
         dataArray = pointData->GetVectors(name);
-    else
-        dataArray = pointData->GetVectors();
-    assert(dataArray != 0);
+    } else {
+        dataArray = pointData->GetScalars();
+    }
+    //dataArray->PrintSelf(std::cout, 0);
 
-    // XXX: how to tell type of array?
-    vectorsArray = static_cast<vtkDoubleArray*>(dataArray);
-    //vectorsArray->PrintSelf(std::cout, 0);
+    int dataType = dataArray->GetDataType();
+    assert(dataType == VTK_DOUBLE);
+    double *ptr = static_cast<double*>(dataArray->GetVoidPointer(0));
 
-    v = vectorsArray->GetPointer(0);
-    // XXX: copy?
+    // XXX: copy the data, or keep the reference?
+    // if dataType from the file is float, then we'd need to copy anyway
+    // perhaps we need a void pointer and a type
+    // new function signature would be
+    //  void get_vector_point_data(const char *name, void **vectors, int *num, int *dim, int *type)
 
-    *vectors = v;
-    *num = vectorsArray->GetNumberOfTuples();
-    *dim = vectorsArray->GetNumberOfComponents();
+    *vectors = ptr;
+    *num = dataArray->GetNumberOfTuples();
+    *dim = dataArray->GetNumberOfComponents();
 }
 
 void cigma::VtkUgReader::
 get_scalar_point_data(const char *name, double **scalars, int *num, int *dim)
 {
-    assert(reader != 0);
+    assert(grid != 0);
 
-    vtkPointData *pointData;
+    vtkPointData *pointData = grid->GetPointData();
+    //pointData->PrintSelf(std::cout, 0);
+
     vtkDataArray *dataArray;
-    vtkDoubleArray *scalarsArray;
-    double *s;
-
-    pointData = grid->GetPointData();
-
-    dataArray = 0;
-    if (name != 0)
+    if (name != 0) {
+        assert(pointData->HasArray(name) == 1);
         dataArray = pointData->GetScalars(name);
-    else
+    } else {
         dataArray = pointData->GetScalars();
-    assert(dataArray != 0);
+    }
+    //dataArray->PrintSelf(std::cout, 0);
 
-    // XXX: how to tell type of array?
-    scalarsArray = static_cast<vtkDoubleArray*>(dataArray);
-    //scalarsArray->PrintSelf(std::cout, 0);
 
-    s = scalarsArray->GetPointer(0);
+    int dataType = dataArray->GetDataType();
+    assert(dataType == VTK_DOUBLE);
+    double *ptr = static_cast<double*>(dataArray->GetVoidPointer(0));
 
-    *scalars = s;
-    *num = scalarsArray->GetNumberOfTuples();
-    *dim = scalarsArray->GetNumberOfComponents();
+    // XXX: see comment in get_vector_point_data()
+
+    *scalars = ptr;
+    *num = dataArray->GetNumberOfTuples();
+    *dim = dataArray->GetNumberOfComponents();
 }
 
 // ---------------------------------------------------------------------------
