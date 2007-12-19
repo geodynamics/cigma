@@ -17,7 +17,7 @@ cigma::DofHandler::~DofHandler()
 
 //----------------------------------------------------------------------------
 
-void cigma::DofHandler::set(double *dofs, int nno, int ndim)
+void cigma::DofHandler::set_data(double *dofs, int nno, int ndim)
 {
     assert(dofs != NULL);
     assert(nno > 0);
@@ -28,7 +28,7 @@ void cigma::DofHandler::set(double *dofs, int nno, int ndim)
     this->ndim = ndim;
 }
 
-void cigma::DofHandler::get(int num, int *nodes, double *d)
+void cigma::DofHandler::get_data(int num, int *nodes, double *d)
 {
     for (int i = 0; i < num; i++)
     {

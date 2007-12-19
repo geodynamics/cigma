@@ -25,8 +25,8 @@ public:
     int rank() const;
 
 public:
-    void set(double *dofs, int nno, int ndim);
-    void get(int num, int *nodes, double *d);
+    void set_data(double *dofs, int nno, int ndim);
+    void get_data(int num, int *nodes, double *d);
 };
 
 
