@@ -20,7 +20,8 @@ cigma::VtkUgReader::VtkUgReader()
 
 cigma::VtkUgReader::~VtkUgReader()
 {
-    reader->Delete();
+    if (reader != 0)
+        reader->Delete();
 }
 
 
@@ -28,6 +29,7 @@ cigma::VtkUgReader::~VtkUgReader()
 
 void cigma::VtkUgReader::open(std::string filename)
 {
+    /* XXX: throw exception if file doesn't exist */
     reader = vtkUnstructuredGridReader::New();
     reader->SetFileName(filename.c_str());
     reader->Update();
