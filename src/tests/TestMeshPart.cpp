@@ -7,12 +7,14 @@
 #include "../Numeric.h"
 #include "../TextWriter.h"
 #include "../VtkUgReader.h"
-#include "../VtkMeshPart.h"
+#include "../VtkUgMeshPart.h"
+#include "../Misc.h"
 
 using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
+/*
 inline double pick_from_interval(double a, double b)
 {
     return a + (b-a) * rand()/(RAND_MAX + 1.0);
@@ -26,7 +28,7 @@ void bbox_random_point(double minpt[3], double maxpt[3], double x[3])
         assert(minpt[i] <= maxpt[i]);
         x[i] = pick_from_interval(minpt[i], maxpt[i]);
     }
-}
+}*/
 
 // ---------------------------------------------------------------------------
 
@@ -47,7 +49,7 @@ int main(void)
     int nel, ndofs;
     reader->get_connectivity(&connect, &nel, &ndofs);
 
-    VtkMeshPart *meshPart = new VtkMeshPart();
+    VtkUgMeshPart *meshPart = new VtkUgMeshPart();
 
     meshPart->set_coordinates(coords, nno, nsd);
     meshPart->set_connectivity(connect, nel, ndofs);
@@ -60,7 +62,7 @@ int main(void)
     std::cout << "maxpt = " << maxpt[0] << " " << maxpt[1] << " " << maxpt[2] << std::endl;
     
     int i;
-    int npts = 100;
+    int npts = 20;;
     double *points = new double[npts * nsd];
     for (i = 0; i < npts; i++)
     {
