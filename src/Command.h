@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include "AnyOption.h"
+
 namespace cigma
 {
     class Command;
@@ -16,18 +18,15 @@ namespace cigma
 class cigma::Command
 {
 public:
-    typedef std::map<std::string, std::string> StringMap;
-    typedef std::vector<std::string> StringVector;
-
-public:
     virtual ~Command();
 
 public:
-    //virtual void parse(int argc, char *argv[], StringMap &params) = 0;
-    //virtual void configure(const StringMap &params) = 0;
-    virtual void configure(int argc, char *argv[]) = 0;
-    virtual void help() = 0;
-    virtual void run() = 0;
+    virtual void setupOptions(AnyOption *opt) = 0;
+
+public:
+    virtual bool helpFlag(AnyOption *opt);
+    virtual void configure(AnyOption *opt) = 0;
+    virtual int run() = 0;
 
 public:
     std::string name;
