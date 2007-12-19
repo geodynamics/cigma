@@ -63,6 +63,7 @@ void cigma::Cell::set_reference_vertices(const double *vertices, int num_vertice
             refverts[n] = vertices[n];
         }
     }
+    globverts = refverts;
 }
 
 
@@ -324,6 +325,72 @@ void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, i
     }
 }
 
+
+/*
+ * Inverse reference map
+ */
+void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
+{
+    // general newton routine for the nonlinear case
+    uvw[0] = uvw[1] = uvw[2] = 0.0;
+
+    int iter = 1, maxiter = 20;
+    double error = 1.0, tol = 1.0e-6;
+
+    while ((error > tol) && (iter < maxiter))
+    {
+        double jac[3][3];
+        if (!jacobian(uvw[0], uvw[1], uvw[2], jac))
+            break;
+
+        double xn = 0.0, yn = 0.0, zn = 0.0;
+
+
+        double s[ndofs];
+
+        shape(1, uvw, s);
+
+        #define X(i)  globverts[3*(i) + 0]
+        #define Y(i)  globverts[3*(i) + 1]
+        #define Z(i)  globverts[3*(i) + 2]
+
+        for (int i = 0; i < nno; i++)
+        {
+            xn += X(i) * s[i];
+            yn += Y(i) * s[i];
+            zn += Z(i) * s[i];
+        }
+
+        #undef X
+        #undef Y
+        #undef Z
+
+        double inv[3][3];
+        inv3x3(jac, inv);
+
+        double un = uvw[0] + inv[0][0] * (xyz[0] - xn)
+                           + inv[1][0] * (xyz[1] - yn)
+                           + inv[2][0] * (xyz[2] - zn);
+
+        double vn = uvw[1] + inv[0][1] * (xyz[0] - xn)
+                           + inv[1][1] * (xyz[1] - yn)
+                           + inv[2][1] * (xyz[2] - zn);
+
+        double wn = uvw[2] + inv[0][2] * (xyz[0] - xn)
+                           + inv[1][2] * (xyz[1] - yn)
+                           + inv[2][2] * (xyz[2] - zn);
+
+        error = sqrt(SQR(un - uvw[0]) +
+                     SQR(vn - uvw[1]) +
+                     SQR(wn - uvw[2]));
+
+        uvw[0] = un;
+        uvw[1] = vn;
+        uvw[2] = wn;
+
+        iter++;
+    }
+}
 
 
 /* isoparametric reference map */

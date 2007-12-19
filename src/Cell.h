@@ -55,7 +55,7 @@ public:
     void interpolate(double *dofs, double *point, double *value, int valdim);
     void interpolate_grad(double *dofs, double *point, double *value, int stride=1, double invjac[3][3]=0);
 
-    virtual void xyz2uvw(double xyz[3], double uvw[3]) = 0;
+    virtual void xyz2uvw(double xyz[3], double uvw[3]);
     void uvw2xyz(double uvw[3], double xyz[3]);
 
 
