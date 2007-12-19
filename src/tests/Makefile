@@ -1,28 +1,22 @@
 include ../../build/variables
 FLAGS = -Wall -Wno-deprecated
 FLAGS += -g
-#FLAGS += -I..
+FLAGS += -I..
 FLAGS += $(VTK_INCLUDES)
 FLAGS += $(PYTHON_INCLUDES)
-LDFLAGS += -L.
+LDFLAGS += -L..
 LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
 LDFLAGS += $(PYTHON_LIBS)
 
-TESTLIB = libcigma_d.a
+TESTLIB = ../../lib/libcigma_d.a
 
 TESTOBJS = \
-	TestFiatProxy.o \
-	TestDofHandler.o \
-	TestMeshPart.o \
-	TestVtkReader1.o \
-	TestVtkReader2.o \
-	TestVtkMeshPart1.o \
-
+	TestVtkUgReader.o \
 
 
 TESTS = $(TESTOBJS:.o=)
 
-all: $(TESTS)
+default: clean $(TESTOBJS) $(TESTS)
 
 Test%.o: Test%.cpp
 	$(CXX) $(FLAGS) -c $^

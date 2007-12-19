@@ -25,16 +25,16 @@ OBJS = \
 	Command.o \
 
 
-default: $(OBJS)
+default: testlib
 
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
 
 
 
-TESTLIB = ./tests/libcigma_d.a
+TESTLIB = ../lib/libcigma_d.a
 
-testlib: $(TESTLIB)
+testlib: clean $(TESTLIB)
 
 $(TESTLIB): $(OBJS)
 	rm -f $@
