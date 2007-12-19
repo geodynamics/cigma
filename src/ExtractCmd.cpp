@@ -25,6 +25,9 @@ void cigma::ExtractCmd::setupOptions(AnyOption *opt)
     opt->addUsage("Usage:");
     opt->addUsage("");
     opt->addUsage("   cigma extract [args ...]");
+    opt->addUsage("");
+    opt->addUsage("");
+    opt->addUsage("");
 
     /* setup flags and options */
     opt->setFlag("help", 'h');

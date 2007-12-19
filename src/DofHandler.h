@@ -1,6 +1,8 @@
 #ifndef __DOF_HANDLER_H__
 #define __DOF_HANDLER_H__
 
+#include "MeshPart.h"
+
 namespace cigma
 {
     class DofHandler;
@@ -13,11 +15,6 @@ namespace cigma
 class cigma::DofHandler
 {
 public:
-    int nno;
-    int ndim;
-    double *dofs;
-
-public:
     DofHandler();
     ~DofHandler();
 
@@ -27,6 +24,12 @@ public:
 public:
     void set_data(double *dofs, int nno, int ndim);
     void get_data(int num, int *nodes, double *d);
+
+public:
+    int nno;
+    int ndim;
+    double *dofs;
+    MeshPart *meshPart;
 };
 
 

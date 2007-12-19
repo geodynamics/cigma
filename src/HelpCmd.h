@@ -1,9 +1,11 @@
 #ifndef __HELP_CMD_H__
 #define __HELP_CMD_H__
 
+#include <vector>
+
 #include "Command.h"
 #include "CommandSet.h"
-#include <vector>
+
 
 namespace cigma
 {

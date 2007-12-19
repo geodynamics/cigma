@@ -2,7 +2,7 @@
 #define __EXTRACT_CMD_H__
 
 #include "Command.h"
-#include "QuadratureRule.h"
+#include "Quadrature.h"
 #include "MeshPart.h"
 
 
@@ -29,7 +29,7 @@ public:
 
 public:
     MeshPart *meshPart;
-    QuadratureRule *quadrature;
+    Quadrature *quadrature;
 };
 
 #endif

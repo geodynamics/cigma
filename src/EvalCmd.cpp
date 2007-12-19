@@ -24,6 +24,10 @@ void cigma::EvalCmd::setupOptions(AnyOption *opt)
     opt->addUsage("Usage:");
     opt->addUsage("");
     opt->addUsage("   cigma eval [args ...]");
+    opt->addUsage("");
+    opt->addUsage("");
+    opt->addUsage("");
+    opt->addUsage("");
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
