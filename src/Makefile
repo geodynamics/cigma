@@ -9,6 +9,8 @@ INCLUDES += $(HDF5_INCLUDES)
 
 FLAGS += $(INCLUDES)
 
+LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
+
 TARGETLIB = ../lib/libcigma.a
 
 OBJS = \
@@ -21,14 +23,17 @@ OBJS = \
 	FiatProxy.o \
 	MeshPart.o \
 	VtkUgMeshPart.o \
+	CubeMeshPart.o \
 	DofHandler.o \
-	FEValues.o \
+	FE.o \
 	Field.o \
-	FEField.o \
+	FE_Field.o \
 	ExternalField.o \
 	TextReader.o \
-	TextWriter.o \
+	HdfReader.o \
 	VtkUgReader.o \
+	Writer.o \
+	TextWriter.o \
 	VtkUgSimpleWriter.o \
 	AnyOption.o \
 	StringUtils.o \
@@ -39,6 +44,7 @@ OBJS = \
 	ExtractCmd.o \
 	EvalCmd.o \
 	CompareCmd.o \
+	CubeCmd.o \
 	Misc.o \
 
 
@@ -58,13 +64,13 @@ $(TESTLIB): $(OBJS)
 
 
 cigma: cigma.o $(TESTLIB)
-	$(CXX) $(FLAGS) $^ -o $@
+	$(CXX) $(LDFLAGS) $^ -o $@
 
 tests: $(TESTLIB)
 	cd tests/ && make
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) cigma.o
 
 purge: clean
 	rm -f $(TESTLIB)
