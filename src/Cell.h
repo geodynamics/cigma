@@ -30,11 +30,7 @@ public:
     //void set_dims(int ndofs, int celldim, int nsd);
 
     void set_reference_vertices(double *vertices, int num_vertices);
-
-    void update_vertices(double *vertices, int num_vertices, int nsd);
-
-    //void set_quadrature(const double *quadpts, const double *quadwts, int num_points);
-    //void update_quadrature(void);
+    void set_global_vertices(double *vertices, int num_vertices, int nsd);
 
     //void set_tabulation(const double *basis_tab, const double *basis_jet);
     //void update_tabulation(void);
@@ -72,12 +68,6 @@ public:
 
     double *refverts;   // [nno x celldim]
     double *globverts;  // [nno x nsd]
-
-    //int nq;
-    //double *jxw;        // [nq x 1]
-    //double *qwts;       // [nq x 1]
-    //double *qpts;       // [nq x celldim]
-    //double *gqpts;      // [nq x nsd]
 
     //int ndofs;
     //double *basis_tab;  // [nq x ndofs]

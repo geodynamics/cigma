@@ -97,7 +97,7 @@ void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
 }
 
 
-void cigma::Cell::update_vertices(double *vertices, int num, int dim)
+void cigma::Cell::set_global_vertices(double *vertices, int num, int dim)
 {
     assert(num == n_nodes());
     assert(dim == n_dim());
@@ -124,38 +124,6 @@ void cigma::Cell::update_vertices(double *vertices, int num, int dim)
 
     return;
 }
-
-
-/*
-void cigma::Cell::set_quadrature(const double *quadpts, const double *quadwts, int num_points)
-{
-    assert(nsd > 0);
-    nq = num_points;
-    qwts = new double[nq];
-    qpts = new double[nq*celldim];
-    gqpts = new double[nq*nsd];
-    for (int q = 0; q < nq; q++)
-    {
-        qwts[q] = quadwts[q];
-        for (int i = 0; i < celldim; i++)
-        {
-            int n = celldim*q + i;
-            qpts[n] = quadpts[n];
-        }
-    }
-    if (basis_tab != NULL)
-    {
-        update_quadrature();
-    }
-}
-void cigma::Cell::update_quadrature(void)
-{
-    assert(nsd > 0);
-    assert(nq > 0);
-    for (int q = 0; q < nq; q++)
-        uvw2xyz(&qpts[celldim*q], &gqpts[nsd*q]);
-}
-*/
 
 
 //----------------------------------------------------------------------------
