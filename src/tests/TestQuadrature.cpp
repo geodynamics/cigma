@@ -29,25 +29,26 @@ int main()
         -0.74470688, -0.4120024 ,  0.08830369
     };
 
-    Tet tet;
     Quadrature Q;
-    Q.set_data(&tet, qpts, qwts, npts);
+    Q.set_quadrature(qpts, qwts, npts, 3);
 
-    /* change default numeric format */
-
+    /*
+     * change default numeric format
+     */
     cout << std::showpos
          << std::fixed
          << std::setprecision(8);
 
 
-    /* print reference points on tet */
-
+    /*
+     * print reference points on tet
+     */
     cout << "Reference points" << endl;
     for (i = 0; i < Q.n_points(); i++)
     {
         for (j = 0; j < Q.n_refdim(); j++)
         {
-            cout << " " << Q(i,j);
+            cout << " " << Q.point(i,j);
         }
         cout << endl;
     }
@@ -60,30 +61,27 @@ int main()
     
     cout << "Global coordinates" << endl;
     
-    /*
-    double verts1[4*3] = {
-        0.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 0.0, 1.0
-    }; // */
-    double verts2[4*3] = {
-        -1, -1, -1,
-        +1, -1, -1,
-        -1, +1, -1,
-        -1, -1, +1
+    double verts[2][4*3] = {
+        {0.0, 0.0, 0.0,
+         1.0, 0.0, 0.0,
+         0.0, 1.0, 0.0,
+         0.0, 0.0, 1.0},
+        {-1, -1, -1,
+         +1, -1, -1,
+         -1, +1, -1,
+         -1, -1, +1}
     };
 
-    //tet.update_vertices(verts1, 4, 3);
-    tet.update_vertices(verts2, 4, 3);
-
-    Q.apply_refmap();
+    Tet tet;
+    tet.set_global_vertices(verts[1], 4, 3);
+    Q.set_globaldim(3);
+    Q.apply_refmap(&tet);
 
     for (i = 0; i < Q.n_points(); i++)
     {
         for (j = 0; j < Q.n_globaldim(); j++)
         {
-            cout << " " << Q.global_value(i,j);
+            cout << " " << Q(i,j);
         }
         cout << endl;
     }
