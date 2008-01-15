@@ -15,6 +15,7 @@ TESTLIB = ../../lib/libcigma_d.a
 TESTOBJS = \
 	TestAnyOption.o \
 	TestStringUtils.o \
+	TestNumeric.o \
 	TestTet.o \
 	TestHex.o \
 	TestPoints.o \
@@ -24,14 +25,14 @@ TESTOBJS = \
 	TestFiatProxy.o \
 
 
-TESTS = $(TESTOBJS:.o=)
+TESTS = $(TESTOBJS:.o=.out)
 
 default: clean $(TESTOBJS) $(TESTS)
 
 Test%.o: Test%.cpp
 	$(CXX) $(FLAGS) -c $^
 
-Test%: Test%.o
+Test%.out: Test%.o
 	$(CXX) $(LDFLAGS) $^ $(TESTLIB) -o $@
 
 clean:
