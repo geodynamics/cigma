@@ -1,0 +1,63 @@
+bm5_analytic_README_2.txt
+=========================
+
+FEM working group Bench Mark # 5 Analytic Okada solutions info:
+
+To FEMers:	I don't mind calculating your disp, strain energy etc
+if you send me files with xyz coord triples ( no headers).  It will take me
+only a few seconds if they are in the correct format.
+If you want to do these calcs yourself, read on...
+
+
+Here you should find three things:
+	1.  bm5.m - matlab function, call on matlab command line, with no inputs:
+		>> bm5;
+
+		The only output is some files, see the function description at 
+		the beginning of bm5.m for file and other info.
+	
+	2.  disloc3d_mod2.f - fortran (mex) source code to make mex function.
+		At matlab prompt:
+			>> mex disloc3d_mod2.f
+		This should produce a mex file which you then can call from
+		the command line (bm5.m calls it for you, all you have to do
+		is create the proper mex function for your platform, e.g., for
+		a Sun Solaris, disloc3d_mod2.f --> disloc3d_mod2.mexsol
+
+		Note:  mex functions are system and matlab version dependent.
+			That is, a mex function (*.mex*) created on a Sun
+			will not work on an SGI etc, and a mex function created
+			with Matlab6 will not work with matlab5, etc.
+
+		See online matlab mex documentation:
+			http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_external/matlab_external.shtml
+
+
+	3.  dc3d.f - fortran source code (written by Okada) for his 1992 paper.
+		disloced_mod2.f serves as a wrapper around dc3d.f looping over
+		many fault patches and many stations and an interface for matlab
+		mex stuff.
+
+	I got all the fortran and mex stuff downloaded from Peter Cervelli's
+	website (then at Stanford, now at HVO i think).  I loooked very quickly
+	and this Stanford site is no longer.  I tell you this because i modified
+	Cervelli's original disloc3d.f (into disloc3d_mod2.f) because there was
+	a mistake:  it looped before it added instead of adding before looping 
+	(an okada geometry detail i can explain in more detail if you want).
+	Moral of the story:  discloc3d_mod2.f works correctly.
+
+	matlab function fault_params_to_okada_form.m is from Brendan Meade, MIT
+
+
+
+
+FYI:  the fault tapers (in y and z) every 125 meters,
+which makes for 33 fault patches, each having 1/33 m slip.
+This is hardcoded in bm5.m and can be changed by changing variable "taperd".
+
+Contact:	Noah Fay
+		nfay@newberry.uoregon.edu
+		(541) 346-4653
+
+
+
