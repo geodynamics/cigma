@@ -120,10 +120,11 @@ void cigma::Hex::grad_shape(int num, double *points, double *values)
 /*
  *
  */
+#define ZERO    (-1.0e-6)
+#define ONE     (1-ZERO)
+
 bool cigma::Hex::interior(double u, double v, double w)
 {
-    #define ZERO    (-1.0e-6)
-    #define ONE     (1-ZERO)
 
     if ((u < -ONE) || (v < -ONE) || (w < -ONE) ||
         (u > +ONE) || (v > +ONE) || (w > +ONE))
@@ -132,6 +133,12 @@ bool cigma::Hex::interior(double u, double v, double w)
     }
     return true;
 
-    #undef ONE
-    #undef ZERO
 }
+
+bool cigma::Hex::interior2(double x, double y, double z)
+{
+    return false;
+}
+
+#undef ONE
+#undef ZERO
