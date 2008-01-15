@@ -29,6 +29,7 @@ OBJS = \
 	Field.o \
 	FE_Field.o \
 	ExternalField.o \
+	Reader.o \
 	TextReader.o \
 	HdfReader.o \
 	VtkUgReader.o \
@@ -48,7 +49,7 @@ OBJS = \
 	Misc.o \
 
 
-default: testlib cigma tests
+default: testlib cigma vtkls tests
 
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
@@ -66,11 +67,14 @@ $(TESTLIB): $(OBJS)
 cigma: cigma.o $(TESTLIB)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
+vtkls: vtkls.o $(TESTLIB)
+	$(CXX) $(LDFLAGS) $^ -o $@
+
 tests: $(TESTLIB)
 	cd tests/ && make
 
 clean:
-	rm -f $(OBJS) cigma.o
+	rm -f $(OBJS) cigma.o vtkls.o
 
 purge: clean
 	rm -f $(TESTLIB)
