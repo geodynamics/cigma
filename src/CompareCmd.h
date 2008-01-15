@@ -2,6 +2,11 @@
 #define __COMPARE_CMD_H__
 
 #include "Command.h"
+#include "MeshPart.h"
+#include "Field.h"
+#include "FE_Field.h"
+#include "Writer.h"
+#include "VtkUgReader.h"
 
 namespace cigma
 {
@@ -22,6 +27,16 @@ public:
     void setupOptions(AnyOption *opt);
     void configure(AnyOption *opt);
     int run();
+
+public:
+    Quadrature *quadrature;
+    MeshPart *mesh;
+    FE_Field *field_a;
+    FE_Field *field_b;
+    Field *residuals;
+    std::string output_filename, output_name;
+    std::string locationA, locationB;
+    VtkUgReader readerA, readerB;
 };
 
 
