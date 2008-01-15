@@ -27,16 +27,8 @@ public:
 
 public:
 
-    //void set_dims(int ndofs, int celldim, int nsd);
-
     void set_reference_vertices(double *vertices, int num_vertices);
     void set_global_vertices(double *vertices, int num_vertices, int nsd);
-
-    //void set_tabulation(const double *basis_tab, const double *basis_jet);
-    //void update_tabulation(void);
-
-    //void clear();
-
 
 public:
 
@@ -52,12 +44,14 @@ public:
     virtual void xyz2uvw(double xyz[3], double uvw[3]);
     void uvw2xyz(double uvw[3], double xyz[3]);
 
+    //virtual double volume() = 0;
 
 public:
 
     void bbox(double *min, double *max);
     void centroid(double c[3]);
     virtual bool interior(double u, double v, double w) = 0;
+    virtual bool interior2(double x, double y, double z);
 
 
 public:
@@ -69,11 +63,6 @@ public:
     double *refverts;   // [nno x celldim]
     double *globverts;  // [nno x nsd]
 
-    //int ndofs;
-    //double *basis_tab;  // [nq x ndofs]
-    //double *basis_jet;  // [nq x ndofs x celldim]
-
-    //bool _tabulate;
 };
 
 

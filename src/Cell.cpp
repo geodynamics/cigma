@@ -14,18 +14,6 @@ cigma::Cell::Cell()
 
     globverts = NULL;
     refverts = NULL;
-
-    /*ndofs = 0;
-    basis_tab = NULL;
-    basis_jet = NULL;*/
-
-    /*nq = 0;
-    qpts = NULL;
-    qwts = NULL;
-    gqpts = NULL;
-    jxw = NULL;*/
-
-    //_tabulate = false;
 }
 
 
@@ -69,15 +57,15 @@ void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
 
     const int nno = n_nodes();
     const int celldim = n_celldim();
-    //const int nsd = n_dim();
+    const int nsd = n_dim();
 
     assert(nno == num_vertices);
 
     if (refverts != 0) delete [] refverts;
-    //if (globverts != 0) delete [] globverts;
+    if (globverts != 0) delete [] globverts;
 
     refverts = new double[nno*celldim];
-    //globverts = new double[nno*nsd];
+    globverts = new double[nno*nsd];
 
     for (i = 0; i < nno; i++)
     {
@@ -90,10 +78,14 @@ void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
         {
             int n = celldim*i + j;
             refverts[n] = vertices[n];
-            //globverts[nsd*i+j] = vertices[n];
+            globverts[nsd*i+j] = vertices[n];
         }
     }
+
+    /*
     globverts = refverts;
+    // */
+
 }
 
 
@@ -181,6 +173,7 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][1] += Y(i) * s[2];
                 jac[2][2] += Z(i) * s[2];
             }
+            delete [] grad;
             return fabs(
                     + jac[0][0] * jac[1][1] * jac[2][2]
                     + jac[0][2] * jac[1][0] * jac[2][1]
@@ -222,6 +215,7 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][1] = c[1];
                 jac[2][2] = c[2];
             }
+            delete [] grad;
             return sqrt(SQR(jac[0][0] * jac[1][1] - jac[0][1] * jac[1][0]) +
                         SQR(jac[0][2] * jac[1][0] - jac[0][0] * jac[1][2]) +
                         SQR(jac[0][1] * jac[1][2] - jac[0][2] * jac[1][1]));
@@ -267,13 +261,15 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][0] = c[0];
                 jac[2][1] = c[1];
                 jac[2][2] = c[2];
-          }
-          return sqrt(SQR(jac[0][0])+SQR(jac[0][1])+SQR(jac[0][2]));
+            }
+            delete [] grad;
+            return sqrt(SQR(jac[0][0])+SQR(jac[0][1])+SQR(jac[0][2]));
     }
     #undef X
     #undef Y
     #undef Z
 
+    delete [] grad;
     return 0.0;
 }
 
@@ -357,6 +353,10 @@ void cigma::Cell::interpolate_grad(double *dofs, double *point, double *value, i
  */
 void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
 {
+    #define X(i)  globverts[3*(i) + 0]
+    #define Y(i)  globverts[3*(i) + 1]
+    #define Z(i)  globverts[3*(i) + 2]
+
     // general newton routine for the nonlinear case
     uvw[0] = uvw[1] = uvw[2] = 0.0;
 
@@ -370,27 +370,16 @@ void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
         if (!jacobian(uvw[0], uvw[1], uvw[2], jac))
             break;
 
-        double xn = 0.0, yn = 0.0, zn = 0.0;
-
-
         double s[nno];
-
         shape(1, uvw, s);
 
-        #define X(i)  globverts[3*(i) + 0]
-        #define Y(i)  globverts[3*(i) + 1]
-        #define Z(i)  globverts[3*(i) + 2]
-
+        double xn = 0.0, yn = 0.0, zn = 0.0;
         for (int i = 0; i < nno; i++)
         {
             xn += X(i) * s[i];
             yn += Y(i) * s[i];
             zn += Z(i) * s[i];
         }
-
-        #undef X
-        #undef Y
-        #undef Z
 
         double inv[3][3];
         inv3x3(jac, inv);
@@ -417,6 +406,16 @@ void cigma::Cell::xyz2uvw(double xyz[3], double uvw[3])
 
         iter++;
     }
+
+    /*
+    if (error > tol)
+    {
+        std::cerr << "Warning: Newton did not converge in xyz2uvw" << std::endl;
+    } // */
+
+    #undef X
+    #undef Y
+    #undef Z
 }
 
 
@@ -443,3 +442,13 @@ void cigma::Cell::centroid(double c[3])
     cigma::centroid(globverts, nno, nsd, c);
 }
 
+
+bool cigma::Cell::interior2(double x, double y, double z)
+{
+    double uvw[3],xyz[3];
+    xyz[0] = x;
+    xyz[1] = y;
+    xyz[2] = z;
+    xyz2uvw(xyz,uvw);
+    return interior(uvw[0], uvw[1], uvw[2]);
+}
