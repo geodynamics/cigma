@@ -1,16 +1,14 @@
 /* disloc3d_mod2.f -- translated by f2c (version 20050501).
-   You must link the resulting object file with libf2c:
-        on Microsoft Windows system, link with libf2c.lib;
-        on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-        or, if you install libf2c.a in a standard place, with -lf2c -lm
-        -- in that order, at the end of the command line, as in
-                cc *.o -lf2c -lm
-        Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+ * Link this file with libm (add linker flag -lm)
+ */
 
-                http://www.netlib.org/f2c/libf2c.zip
-*/
+// #include "f2c.h"
+typedef double doublereal;
+typedef long int integer;
+#define abs(x) ((x) >= 0 ? (x) : -(x))
 
-#include "f2c.h"
+#include <stdio.h>
+
 
 /* Common Block Declarations */
 
@@ -53,7 +51,7 @@ union {
     static doublereal f0 = 0.;
 
     /* Builtin functions */
-    integer s_wsfe(cilist *), e_wsfe(void);
+    //integer s_wsfe(cilist *), e_wsfe(void);
 
     /* Local variables */
     static doublereal d__;
@@ -76,8 +74,8 @@ union {
     static doublereal aalpha;
 
     /* Fortran I/O blocks */
-    static cilist io___2 = { 0, 6, 0, "(' ** POSITIVE Z WAS GIVEN IN SUB-DC3"
-            "D')", 0 };
+    //static cilist io___2 = { 0, 6, 0, "(' ** POSITIVE Z WAS GIVEN IN SUB-DC3"
+    //        "D')", 0 };
 
 
 /*                                                                       04670000 */
@@ -108,8 +106,9 @@ union {
 /*                                                                       04920000 */
 /* -----                                                                  04970000 */
     if (*z__ > 0.f) {
-        s_wsfe(&io___2);
-        e_wsfe();
+        fprintf(stderr, "(' ** POSITIVE Z WAS GIVEN IN SUB-DC3D')");
+        //s_wsfe(&io___2);
+        //e_wsfe();
     }
     for (i__ = 1; i__ <= 12; ++i__) {
         u[i__ - 1] = f0;
