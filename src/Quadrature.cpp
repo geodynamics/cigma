@@ -7,6 +7,7 @@ cigma::Quadrature::Quadrature()
     qdim = 0;
     qpts = 0;
     qwts = 0;
+    cell = 0;
 }
 
 
@@ -32,6 +33,9 @@ void cigma::Quadrature::set_data(Cell *cell, double *quadpts, double *quadwts, i
     if (data != 0) delete [] data;
     if (qpts != 0) delete [] qpts;
     if (qwts != 0) delete [] qwts;
+
+    /* assign cell pointer! */
+    this->cell = cell;
 
     /* set dimensions */
     this->num = npts;
