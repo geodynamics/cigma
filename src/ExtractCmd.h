@@ -2,8 +2,7 @@
 #define __EXTRACT_CMD_H__
 
 #include "Command.h"
-#include "Quadrature.h"
-#include "MeshPart.h"
+#include "FE_Field.h"
 
 
 namespace cigma
@@ -28,8 +27,8 @@ public:
     int run();
 
 public:
-    MeshPart *meshPart;
-    Quadrature *quadrature;
+    FE_Field *coords;
+    std::string output_filename;
 };
 
 #endif
