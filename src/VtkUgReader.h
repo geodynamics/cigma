@@ -1,7 +1,10 @@
 #ifndef __VTK_UG_READER_H__
 #define __VTK_UG_READER_H__
 
-#include <string>
+#include <string> 
+
+#include "Reader.h"
+
 #include "vtkUnstructuredGridReader.h"
 #include "vtkUnstructuredGrid.h"
 
@@ -10,7 +13,7 @@ namespace cigma
     class VtkUgReader;
 }
 
-class cigma::VtkUgReader
+class cigma::VtkUgReader : cigma::Reader
 {
 public:
     VtkUgReader();
