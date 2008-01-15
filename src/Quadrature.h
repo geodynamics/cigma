@@ -21,21 +21,19 @@ public:
     ~Quadrature();
 
 public:
-    void set_data(Cell *cell, double *quadpts, double *quadwts, int npts);
-
-public:
-    void apply_refmap();
+    void set_quadrature(double *quadpts, double *quadwts, int npts, int qdim);
+    void set_globaldim(int dim);
+    void apply_refmap(Cell *cell);
 
 public:
     int n_refdim() const;
     int n_globaldim() const;
 
 public:
-    int global_index(int i, int j) const;
-    double global_value(int i, int j) const;
+    double point(int i, int j) const;
+    double weight(int i) const;
 
 public:
-    Cell *cell;
     int qdim;
     double *qpts;
     double *qwts;
@@ -46,22 +44,22 @@ public:
 
 inline int cigma::Quadrature::n_refdim() const
 {
-    return dim;
+    return qdim;
 }
 
 inline int cigma::Quadrature::n_globaldim() const
 {
-    return qdim;
+    return dim;
 }
 
-inline int cigma::Quadrature::global_index(int i, int j) const
+inline double cigma::Quadrature::point(int i, int j) const
 {
-    return qdim*i + j;
+    return qpts[qdim*i + j];
 }
 
-inline double cigma::Quadrature::global_value(int i, int j) const
+inline double cigma::Quadrature::weight(int i) const
 {
-    return qpts[global_index(i,j)];
+    return qwts[i];
 }
 
 // ---------------------------------------------------------------------------

@@ -7,111 +7,78 @@ cigma::Quadrature::Quadrature()
     qdim = 0;
     qpts = 0;
     qwts = 0;
-    cell = 0;
 }
 
 
 cigma::Quadrature::~Quadrature()
 {
-    if (data != 0) delete [] data;
     if (qpts != 0) delete [] qpts;
     if (qwts != 0) delete [] qwts;
+    if (data != 0) delete [] data;
 }
 
 
 // ---------------------------------------------------------------------------
 
-void cigma::Quadrature::set_data(Cell *cell, double *quadpts, double *quadwts, int npts)
+void cigma::Quadrature::set_quadrature(double *quadpts, double *quadwts, int npts, int qdim)
 {
     /* some basic assertions */
-    assert(cell != 0);
     assert(quadpts != 0);
     assert(quadwts != 0);
     assert(npts > 0);
+    assert(qdim > 0);
 
     /* clear existing data */
-    if (data != 0) delete [] data;
     if (qpts != 0) delete [] qpts;
     if (qwts != 0) delete [] qwts;
 
-    /* assign cell pointer! */
-    this->cell = cell;
-
     /* set dimensions */
     this->num = npts;
-    this->dim = cell->n_celldim();
-    this->qdim = cell->n_dim();
+    this->qdim = qdim;
 
     /* allocate new data arrays */
-    data = new double[npts * dim];
-    qpts = new double[npts * qdim];
-    qwts = new double[npts];
+    qpts = new double[num * qdim];
+    qwts = new double[num];
 
     /* copy from quadpts & quadwts */
     int i,j;
-    for (i = 0; i < npts; i++)
+    for (i = 0; i < num; i++)
     {
         qwts[i] = quadwts[i];
-        for (j = 0; j < dim; j++)
-        {
-            int n = dim*i + j;
-            data[n] = quadpts[n];
-        }
         for (j = 0; j < qdim; j++)
         {
-            qpts[qdim*i + j] = 0.0;
+            int n = qdim*i + j;
+            qpts[n] = quadpts[n];
         }
     }
 }
 
-void cigma::Quadrature::apply_refmap()
+void cigma::Quadrature::set_globaldim(int dim)
 {
-    assert(cell != 0);
+    assert(num > 0);
+    this->dim = dim;
+    this->data = new double[num * dim];
     for (int i = 0; i < num; i++)
     {
-        cell->uvw2xyz(&data[dim*i], &qpts[qdim*i]);
-    }
-}
-
-
-/*
-void cigma::Quadrature::set_quadrature(double *points, double *weights, int npts, int nsd)
-{
-    nq = npts;
-    dim = nsd;
-
-    for (int i = 0; i < nq; i++)
-    {
-        qwts[i] = weights[i];
-
         for (int j = 0; j < dim; j++)
         {
-            qpts[dim*i + j] = points[dim*i + j];
+            data[dim*i+j] = 0.0;
         }
     }
 }
 
 
-void cigma::Quadrature::get_quadrature(double **points, double **weights, int *npts, int *nsd)
+void cigma::Quadrature::apply_refmap(Cell *cell)
 {
-    double *pts = new double[nq*dim];
-    double *wts = new double[nq];
+    assert(cell != 0);
+    assert(data != 0);
 
-    for (int i = 0; i < nq; i++)
+    for (int i = 0; i < num; i++)
     {
-        wts[i] = qwts[i];
-
-        for (int j = 0; j < dim; j++)
-        {
-            pts[dim*i+j] = qpts[dim*i+j];
-        }
+        double *uvw = &qpts[qdim*i];
+        double *xyz = &data[dim*i];
+        cell->uvw2xyz(uvw, xyz);
     }
-
-    *points = pts;
-    *weights = wts;
-    *npts = nq;
-    *nsd = dim;
 }
-*/
 
 // ---------------------------------------------------------------------------
