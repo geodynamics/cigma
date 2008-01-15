@@ -93,7 +93,8 @@ void path_splitext(const std::string &filepath,
     std::string::size_type lastDot = filepath.find_last_of(".");
     std::string::size_type lastSep = filepath.find_last_of("/");
 
-    if ((lastDot != std::string::npos) && (lastSep < lastDot))
+    if ((lastDot != std::string::npos) &&
+        ((lastSep == std::string::npos) || (lastSep < lastDot)))
     {
         root = filepath.substr(0, lastDot);
         ext = filepath.substr(lastDot);
