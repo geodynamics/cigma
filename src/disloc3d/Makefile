@@ -20,7 +20,7 @@ all: $(TARGETS) $(OBJS)
 #	gfortran -c $< -o $@
 
 dc3d.o: disloc3d_mod2.c
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
