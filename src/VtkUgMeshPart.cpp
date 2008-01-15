@@ -12,12 +12,12 @@ VtkUgMeshPart()
 
     points = 0;
 
-    nno = 0;
-    nsd = 0;
+    //nno = 0;
+    //nsd = 0;
     coordsArray = 0;
 
-    nel = 0;
-    ndofs = 0;
+    //nel = 0;
+    //ndofs = 0;
     cellArray = 0;
 }
 
@@ -84,6 +84,7 @@ void cigma::VtkUgMeshPart::set_connectivity(int *connectivity, int nel, int ndof
 bool cigma::VtkUgMeshPart::
 find_cell(double globalPoint[3], int *cellIndex)
 {
+    /*
     vtkTetra *cell = vtkTetra::New();
 
     double tol2 = 1e-6;
@@ -91,10 +92,56 @@ find_cell(double globalPoint[3], int *cellIndex)
     double pcoords[3];
     int subId;
 
-    grid->FindCell(globalPoint, cell, 0, tol2, subId, pcoords, weights);
+    //grid->FindCell(globalPoint, cell, 0, tol2, subId, pcoords, weights);
 
     std::cout << "ID = " << subId << std::endl;
     std::cout << "REFCOORDS = " << pcoords[0] << " " << pcoords[0] << " " << pcoords[0] << std::endl;
 
+    // */
+
+    //*
+    const bool verbose = false;
+    if (verbose)
+    {
+        std::cout << "Searching for cell containing (" << globalPoint[0] << ", " << globalPoint[1] << ", " << globalPoint[2] << ") ";
+    }
+
+
+    static int last_e = -1;
+    *cellIndex = -1;
+
+    //*
+    if ((0 <= last_e) && (last_e < nel))
+    {
+        double uvw[3];
+        get_cell_coords(last_e, cell->globverts);
+        cell->xyz2uvw(globalPoint, uvw);
+        if (cell->interior(uvw[0], uvw[1], uvw[2]))
+        {
+            if (verbose) { std::cout << last_e << std::endl; }
+            *cellIndex = last_e;
+            return true;
+        }
+    } // */
+
+    for (int e = 0; e < nel; e++)
+    {
+        double uvw[3];
+        get_cell_coords(e, cell->globverts);
+        cell->xyz2uvw(globalPoint, uvw);
+        if (cell->interior(uvw[0], uvw[1], uvw[2]))
+        {
+            if (verbose) { std::cout << e << std::endl; }
+            *cellIndex = e;
+            last_e = e;
+            return true;
+        }
+    } // */
+    if (verbose) { std::cout << " -> not found!\n"; }
     return false;
+
+    /*
+    *cellIndex = 0;
+    return true;
+    // */
 }
