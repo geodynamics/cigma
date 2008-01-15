@@ -16,8 +16,11 @@ TARGETS = \
 
 all: $(TARGETS) $(OBJS)
 
-dc3d.o: disloc3d_mod2.f
-	gfortran -c $< -o $@
+#dc3d.o: disloc3d_mod2.f
+#	gfortran -c $< -o $@
+
+dc3d.o: disloc3d_mod2.c
+	$(CC) $(CFLAGS) -c $<
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
