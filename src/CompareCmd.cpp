@@ -50,10 +50,10 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->setFlag("help", 'h');
 
     // options for first field, in the form /path/to/file:/path/to/dset
-    opt->setOption("fieldA",'a');
+    opt->setOption("first",'a');
 
     // option for second field, in the form /path/to/file:/path/to/dset
-    opt->setOption("fieldB",'b');
+    opt->setOption("second",'b');
 
     // options for quadrature
     opt->setOption("order");
