@@ -2,18 +2,18 @@
 #include <cstdlib>
 #include <cassert>
 
-#include "../TextWriter.h"
-#include "../VtkUgReader.h"
+//#include "../TextWriter.h"
+//#include "../VtkUgReader.h"
 #include "../Hex.h"
 
 using namespace cigma;
 
 int main(void)
 {
-    TextWriter *writer = new TextWriter();
-    writer->fp = stdout;
+    //TextWriter writer;
+    //writer.fp = stdout;
 
-    VtkUgReader *reader = new VtkUgReader();
+    //VtkUgReader *reader = new VtkUgReader();
     //reader->open("strikeslip_tet4_0500m_t0.vtk");
     
     // -----------------------------------------------------------------------
@@ -61,7 +61,7 @@ int main(void)
 
 
         double *phi = &tab[ndofs*i];
-        std::cout << "phi_k = ("
+        std::cout << "phi = ("
                   << phi[0] << " "
                   << phi[1] << " "
                   << phi[2] << " "
@@ -120,10 +120,10 @@ int main(void)
 
     // -----------------------------------------------------------------------
     
-    delete reader;
+    //delete reader;
     
-    writer->fp = NULL;
-    delete writer;
+    //writer->fp = NULL;
+    //delete writer;
 
     return 0;
 }
