@@ -41,13 +41,20 @@ void cigma::CubeCmd::setupOptions(AnyOption *opt)
     opt->setOption('L');
     opt->setOption('M');
     opt->setOption('N');
-    opt->setOption("output");
+    opt->setOption("output", 'o');
 }
 
 void cigma::CubeCmd::configure(AnyOption *opt)
 {
     std::cout << "Calling cigma::CubeCmd::configure()" << std::endl;
     assert(opt != 0);
+
+    if (!opt->hasOptions())
+    {
+        //std::cerr << "No options?" << std::endl;
+        opt->printUsage();
+        exit(1);
+    }
 
     char *in;
     std::string inputstr;
