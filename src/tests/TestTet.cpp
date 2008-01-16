@@ -2,18 +2,18 @@
 #include <cstdlib>
 #include <cassert>
 
-#include "../TextWriter.h"
-#include "../VtkUgReader.h"
+//#include "../TextWriter.h"
+//#include "../VtkUgReader.h"
 #include "../Tet.h"
 
 using namespace cigma;
 
 int main(void)
 {
-    TextWriter *writer = new TextWriter();
-    writer->fp = stdout;
+    //TextWriter writer;
+    //writer.fp = stdout;
 
-    VtkUgReader *reader = new VtkUgReader();
+    //VtkUgReader *reader = new VtkUgReader();
     //reader->open("strikeslip_tet4_0500m_t0.vtk");
     
     // -----------------------------------------------------------------------
@@ -55,7 +55,7 @@ int main(void)
         std::cout << "in = " << inside << "  ";
 
         double *phi = &tab[ndofs*i];
-        std::cout << "phi_k = ("
+        std::cout << "phi = ("
                   << phi[0] << " "
                   << phi[1] << " "
                   << phi[2] << " "
@@ -66,12 +66,15 @@ int main(void)
                   << "(" << grad_phi[3*0 + 0] << " "
                          << grad_phi[3*0 + 1] << " "
                          << grad_phi[3*0 + 2] << "),"
+
                   << "(" << grad_phi[3*1 + 0] << " "
                          << grad_phi[3*1 + 1] << " "
                          << grad_phi[3*1 + 2] << "),"
+
                   << "(" << grad_phi[3*2 + 0] << " "
                          << grad_phi[3*2 + 1] << " "
                          << grad_phi[3*2 + 2] << "),"
+
                   << "(" << grad_phi[3*3 + 0] << " "
                          << grad_phi[3*3 + 1] << " "
                          << grad_phi[3*3 + 2] << ")"
@@ -90,10 +93,7 @@ int main(void)
 
     // -----------------------------------------------------------------------
     
-    delete reader;
-    
-    writer->fp = NULL;
-    delete writer;
+    //delete reader;
 
     return 0;
 }
