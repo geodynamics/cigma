@@ -16,6 +16,8 @@ TESTOBJS = \
 	TestAnyOption.o \
 	TestStringUtils.o \
 	TestNumeric.o \
+	TestTri.o \
+	TestQuad.o \
 	TestTet.o \
 	TestHex.o \
 	TestPoints.o \
