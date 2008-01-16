@@ -1,11 +1,18 @@
-include ../../variables
+include ../../../build/variables
 
-LFLAGS = -L../../lib
-LIBS = $(CIGMA_LIBS) -lh5io
+H5IO_LIB = ../../../lib/libh5io.a
+
+INCLUDES += $(HDF5_INCLUDES)
+LIBS += $(CIGMA_LIBS)
+LIBS += -lh5io
+LIBS += -lhdf5
+LDFLAGS += -L../../../lib
+LDFLAGS += $(HDF5_LDFLAGS)
 
 OPTIM += -fno-strict-aliasing
+FLAGS += $(INCLUDES)
 
-CFLAGS = $(OPTIM) $(FLAGS) $(LFLAGS)
+CFLAGS = $(OPTIM) $(FLAGS) $(LDFLAGS)
 
 TESTS = \
 	test_h5file \
@@ -14,7 +21,7 @@ TESTS = \
 
 tests: $(TESTS)
 
-test_%: test_%.c
+test_%: test_%.c $(H5IO_LIB)
 	$(CC) $(CFLAGS) $< -o $@ $(LIBS)
 
 clean:
