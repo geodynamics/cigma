@@ -41,3 +41,4 @@ void cigma::DofHandler::get_data(int num, int *nodes, double *d)
     }
 }
 
+//----------------------------------------------------------------------------
