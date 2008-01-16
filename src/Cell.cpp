@@ -173,7 +173,7 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][1] += Y(i) * s[2];
                 jac[2][2] += Z(i) * s[2];
             }
-            delete [] grad;
+            delete [] grad; // XXX
             return fabs(
                     + jac[0][0] * jac[1][1] * jac[2][2]
                     + jac[0][2] * jac[1][0] * jac[2][1]
@@ -215,7 +215,7 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][1] = c[1];
                 jac[2][2] = c[2];
             }
-            delete [] grad;
+            delete [] grad; // XXX
             return sqrt(SQR(jac[0][0] * jac[1][1] - jac[0][1] * jac[1][0]) +
                         SQR(jac[0][2] * jac[1][0] - jac[0][0] * jac[1][2]) +
                         SQR(jac[0][1] * jac[1][2] - jac[0][2] * jac[1][1]));
@@ -262,7 +262,7 @@ double cigma::Cell::jacobian(double u, double v, double w, double jac[3][3])
                 jac[2][1] = c[1];
                 jac[2][2] = c[2];
             }
-            delete [] grad;
+            delete [] grad; // XXX
             return sqrt(SQR(jac[0][0])+SQR(jac[0][1])+SQR(jac[0][2]));
     }
     #undef X
