@@ -14,21 +14,25 @@ static void tet_shape(double u, double v, double w, double s[4])
 
 static void tet_grad_shape(double u, double v, double w, double s[4*3])
 {
-    s[3*0+0] = -1.0;
-    s[3*0+1] = -1.0;
-    s[3*0+2] = -1.0;
+    #define S(i,j) s[3*(i) + (j)]
+
+    S(0,0) = -1.0;
+    S(0,1) = -1.0;
+    S(0,2) = -1.0;
     
-    s[3*1+0] = +1.0;
-    s[3*1+1] =  0.0;
-    s[3*1+2] =  0.0;
+    S(1,0) = +1.0;
+    S(1,1) =  0.0;
+    S(1,2) =  0.0;
 
-    s[3*2+0] =  0.0;
-    s[3*2+1] = +1.0;
-    s[3*2+2] =  0.0;
+    S(2,0) =  0.0;
+    S(2,1) = +1.0;
+    S(2,2) =  0.0;
 
-    s[3*3+0] =  0.0;
-    s[3*3+1] =  0.0;
-    s[3*3+2] = +1.0;
+    S(3,0) =  0.0;
+    S(3,1) =  0.0;
+    S(3,2) = +1.0;
+
+    #undef S
 }
 
 
@@ -87,17 +91,20 @@ void cigma::Tet::xyz2uvw(double xyz[3], double uvw[3])
     double mat[3][3], b[3];
 
     /*
-        vertices = {(x_0,y_0,z_0), ..., (x_3,y_3,z_3)}
-
-              [ (x[1]-x[0])  (x[2]-x[0])  (x[3]-x[0]) ]
-        mat = [ (y[1]-y[0])  (y[2]-y[0])  (y[3]-y[0]) ]
-              [ (z[1]-z[0])  (z[2]-z[0])  (z[3]-z[0]) ]
-
-        x[i] = globverts[3*i+0]
-        y[i] = globverts[3*i+1]
-        z[i] = globverts[3*i+2]
-
-    */
+     *  vertices = {(x_0,y_0,z_0),
+     *              (x_1,y_1,z_1),
+     *              (x_2,y_2,z_2),
+     *              (x_3,y_3,z_3)}
+     *
+     *        [ (x[1]-x[0])  (x[2]-x[0])  (x[3]-x[0]) ]
+     *  mat = [ (y[1]-y[0])  (y[2]-y[0])  (y[3]-y[0]) ]
+     *        [ (z[1]-z[0])  (z[2]-z[0])  (z[3]-z[0]) ]
+     *
+     *  x[i] = globverts[3*i+0]
+     *  y[i] = globverts[3*i+1]
+     *  z[i] = globverts[3*i+2]
+     *
+     */
 
     #define X(i)  globverts[3*(i)+0]
     #define Y(i)  globverts[3*(i)+1]
