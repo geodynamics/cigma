@@ -7,6 +7,7 @@
 #include "FE_Field.h"
 #include "Writer.h"
 #include "VtkUgReader.h"
+//#include "HdfReader.h"
 
 namespace cigma
 {
@@ -37,6 +38,7 @@ public:
     std::string output_filename, output_name;
     std::string locationA, locationB;
     VtkUgReader readerA, readerB;
+    //HdfReader h5_readerA, h5_readerB;
 };
 
 
