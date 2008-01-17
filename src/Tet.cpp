@@ -43,14 +43,12 @@ cigma::Tet::Tet()
     //std::cout << "Calling cigma::Tet::Tet()\n";
     const int tet_nno = 4;
     const int tet_celldim = 3;
-    //const int tet_nsd = 3;
     double verts[tet_nno * tet_celldim] = {
         0.0, 0.0, 0.0,
         1.0, 0.0, 0.0,
         0.0, 1.0, 0.0,
         0.0, 0.0, 1.0
     };
-    //set_dims(tet_nno, tet_celldim, tet_nsd);
     set_reference_vertices(verts, tet_nno);
 }
 

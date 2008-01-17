@@ -61,7 +61,6 @@ cigma::Hex::Hex()
 {
     const int hex_nno = 8;
     const int hex_celldim = 3;
-    //const int hex_nsd = 3;
     double verts[hex_nno * hex_celldim] = {
         -1.0, -1.0, -1.0,
         +1.0, -1.0, -1.0,
@@ -72,7 +71,6 @@ cigma::Hex::Hex()
         +1.0, +1.0, +1.0,
         -1.0, +1.0, +1.0
     };
-    //set_dims(hex_nno, hex_celldim, hex_nsd);
     set_reference_vertices(verts, hex_nno);
 }
 
@@ -82,7 +80,7 @@ cigma::Hex::~Hex()
 
 
 /*
- * @param points points is an [num x nsd] array (in)
+ * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs] array (out)
  *
  */

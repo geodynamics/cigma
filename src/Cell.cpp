@@ -7,11 +7,6 @@
 cigma::Cell::Cell()
 {
     //std::cout << "Calling cigma::Cell::Cell()\n";
-
-    /*nno = 0;
-    nsd = 0;
-    celldim = 0;*/
-
     globverts = NULL;
     refverts = NULL;
 }
@@ -22,33 +17,8 @@ cigma::Cell::~Cell()
     //std::cout << "Calling cigma::Cell::~Cell()\n";
 }
 
-
-/*
-int cigma::Cell::n_nodes() const
-{
-    return nno;
-}
-
-int cigma::Cell::n_dim() const
-{
-    return nsd;
-}
-
-int cigma::Cell::n_celldim() const
-{
-    return celldim;
-}*/
-
 //----------------------------------------------------------------------------
 
-
-/*
-void cigma::Cell::set_dims(int ndofs, int celldim, int nsd)
-{
-    this->nno = ndofs;
-    this->celldim = celldim;
-    this->nsd = nsd;
-}*/
 
 
 void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
@@ -67,9 +37,10 @@ void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
     refverts = new double[nno*celldim];
     globverts = new double[nno*nsd];
 
+    // copy data from vertices
     for (i = 0; i < nno; i++)
     {
-        /*
+        //*
         for (j = 0; j < nsd; j++)
         {
             globverts[nsd*i + j] = 0.0;

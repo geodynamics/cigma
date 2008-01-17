@@ -19,19 +19,16 @@ public:
     Cell();
     virtual ~Cell();
 
-
 public:
     virtual int n_nodes() = 0;
     virtual int n_celldim() = 0;
     virtual int n_dim() = 0;
 
 public:
-
     void set_reference_vertices(double *vertices, int num_vertices);
     void set_global_vertices(double *vertices, int num_vertices, int nsd);
 
 public:
-
     virtual void shape(int num, double *points, double *values) = 0;
     virtual void grad_shape(int num, double *points, double *values) = 0;
 
@@ -47,7 +44,6 @@ public:
     //virtual double volume() = 0;
 
 public:
-
     void bbox(double *min, double *max);
     void centroid(double c[3]);
     virtual bool interior(double u, double v, double w) = 0;
@@ -55,21 +51,11 @@ public:
 
 
 public:
-
-    /*int nno;
-    int celldim;
-    int nsd;*/
-
     double *refverts;   // [nno x celldim]
     double *globverts;  // [nno x nsd]
 
 };
 
 
-
 // ---------------------------------------------------------------------------
-
-
-// ---------------------------------------------------------------------------
-
 #endif
