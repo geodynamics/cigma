@@ -12,6 +12,13 @@ namespace cigma
 class cigma::Writer
 {
 public:
+    typedef enum {
+        NULL_WRITER,
+        HDF_WRITER,
+        VTK_WRITER,
+        TXT_WRITER
+    } WriterType;
+public:
     Writer();
     ~Writer();
 };
