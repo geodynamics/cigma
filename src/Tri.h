@@ -16,7 +16,7 @@ public:
 
 public:
     int n_nodes() { return 3; }
-    int n_celldim() { return 3; } // XXX: change to 2
+    int n_celldim() { return 2; }
     int n_dim() { return 3; }
 
 public:

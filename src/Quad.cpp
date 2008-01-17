@@ -3,7 +3,7 @@
 
 // ---------------------------------------------------------------------------
 
-static void quad_shape(double u, double v, double w, double s[4])
+static void quad_shape(double u, double v, double s[4])
 {
     s[0] = 0.25 * (1.0 - u) * (1.0 - v);
     s[1] = 0.25 * (1.0 + u) * (1.0 - v);
@@ -11,25 +11,21 @@ static void quad_shape(double u, double v, double w, double s[4])
     s[3] = 0.25 * (1.0 - u) * (1.0 + v);
 }
 
-static void quad_grad_shape(double u, double v, double w, double s[4*3])
+static void quad_grad_shape(double u, double v, double s[4*2])
 {
-    #define S(i,j) s[3*(i) + (j)]
+    #define S(i,j) s[2*(i) + (j)]
 
     S(0,0) = -0.25 * (1.0 - v);
     S(0,1) = -0.25 * (1.0 - u);
-    S(0,2) =  0.0;
 
     S(1,0) = +0.25 * (1.0 - v);
     S(1,1) = -0.25 * (1.0 + u);
-    S(1,2) =  0.0;
 
     S(2,0) = +0.25 * (1.0 + v);
     S(2,1) = +0.25 * (1.0 + u);
-    S(2,2) =  0.0;
 
     S(3,0) = -0.25 * (1.0 + v);
     S(3,1) = +0.25 * (1.0 - u);
-    S(3,2) =  0.0;
 
     #undef S
 }
@@ -39,12 +35,12 @@ static void quad_grad_shape(double u, double v, double w, double s[4*3])
 cigma::Quad::Quad()
 {
     const int quad_nno = 4;
-    const int quad_celldim = 3; //XXX
+    const int quad_celldim = 2;
     double verts[quad_nno * quad_celldim] = {
-        -1.0, -1.0, 0.0,
-        +1.0, -1.0, 0.0,
-        +1.0, +1.0, 0.0,
-        -1.0, +1.0, 0.0
+        -1.0, -1.0,
+        +1.0, -1.0,
+        +1.0, +1.0,
+        -1.0, +1.0
     };
     set_reference_vertices(verts, quad_nno);
 }
@@ -58,7 +54,7 @@ cigma::Quad::~Quad()
 
 /*
  *
- * @param points points is an [num x nsd] array (in)
+ * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs] array (out)
  */
 void cigma::Quad::shape(int num, double *points, double *values)
@@ -66,16 +62,15 @@ void cigma::Quad::shape(int num, double *points, double *values)
     const int nno = n_nodes();
     for (int i = 0; i < num; i++)
     {
-        double u = points[3*i + 0];
-        double v = points[3*i + 1];
-        double w = points[3*i + 2];
-        quad_shape(u, v, w, &values[nno*i]);
+        double u = points[2*i + 0];
+        double v = points[2*i + 1];
+        quad_shape(u, v, &values[nno*i]);
     }
 }
 
 /*
  *
- * @param points points is an [num x nsd] array (in)
+ * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs x celldim] array (out)
  */
 void cigma::Quad::grad_shape(int num, double *points, double *values)
@@ -85,10 +80,9 @@ void cigma::Quad::grad_shape(int num, double *points, double *values)
     const int stride = nno * celldim;
     for (int i = 0; i < num; i++)
     {
-        double u = points[3*i + 0];
-        double v = points[3*i + 1];
-        double w = points[3*i + 2];
-        quad_grad_shape(u, v, w, &values[stride*i]);
+        double u = points[2*i + 0];
+        double v = points[2*i + 1];
+        quad_grad_shape(u, v, &values[stride*i]);
     }
 }
 
