@@ -304,7 +304,7 @@ cig-cs
 \end_layout
 
 \begin_layout Section
-Installation from Source
+Installating from Source
 \end_layout
 
 \begin_layout Standard
@@ -370,13 +370,34 @@ $ sudo make install
 \end_layout
 
 \begin_layout Subsection
+VTK
+\end_layout
+
+\begin_layout Standard
+VTK is available from Kitware Inc (http://www.vtk.org/get-software.php).
+ If you obtain the binaries from a package manager, make sure to install
+ the associated development headers along with the library.
+ To enable VTK support in Cigma, use the following flags in the configure
+ step:
+\end_layout
+
+\begin_layout Standard
+TODO: (tt font)
+\end_layout
+
+\begin_layout Standard
+./configure --with-vtk=/path/to/vtk
+\end_layout
+
+\begin_layout Subsection
 PyTables
 \end_layout
 
 \begin_layout Standard
 PyTables is a Python extension module that builds on top of the HDF5 library.
- It provides a convenient scripting interface to manipulate HDF5 files.
- It is available from 
+ It provides a convenient scripting interface to manipulate HDF5 files,
+ which can be used to manipulate the input/output files created by Cigma.
+ PyTables is available for download from 
 \begin_inset LatexCommand \htmlurl[PyTables]{www.pytables.org}
 
 \end_inset
@@ -390,11 +411,11 @@ To install this extension from source, download the latest stable version
 \end_layout
 
 \begin_layout LyX-Code
-$ tar xvfz pytables-2.0
+$ tar xvfz pytables-2.x
 \end_layout
 
 \begin_layout LyX-Code
-$ cd pytables-2.0
+$ cd pytables-2.x
 \end_layout
 
 \begin_layout LyX-Code
@@ -447,10 +468,6 @@ With HFDFView, you can view the internal file hierarchy in a tree structure,
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
@@ -751,7 +768,7 @@ tet4
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Caption
 Reference tetrahedral element
@@ -803,7 +820,7 @@ hex8
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Caption
 Reference hexahedral element
@@ -840,111 +857,22 @@ HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqn
 
 \end_layout
 
-\begin_layout Chapter
-Running Cigma
-\end_layout
-
 \begin_layout Section
-Comparing Two Fields
+Input Formats
 \end_layout
 
 \begin_layout Standard
-Comparing two arbitrary finite element fields can be accomplished with the
- 
-\family typewriter
-cigma-compare
-\family default
- command line utility, which takes a number of arguments in order to facilitate
- writing shell scripts.
- The comparisons always take place using the mesh of the first field.
- Note that the first and second arguments take the special form 
-\family typewriter
-\series bold
-filename:dataset
-\family default
-\series default
-.
- Finally, the square of each of the local residual values are written to
- the specified VTK output file as cell-based scalars.
+The underlying data storage format for Cigma is HDF5, although VTK files
+ can also be specified as input if the VTK development libraries are installed
+ when you configure and compile Cigma.
+ As described in Chapter 5 (TODO: insert ref), you can easily examine the
+ structure of an input file by using the (TODO: tt)`cigma list' command,
+ which will simply reveal the names and dimensions of all datasets inside
+ the specified file.
 \end_layout
 
-\begin_layout Standard
-To use a quadrature rule for the field comparisons, you can specify arguments
- similar to the following
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-cigma-compare --output=squared-residuals.vtk   
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --first=field1.h5:/field1/stepN  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --second=field2.h5:/field2/stepN 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --rule=qr.h5:/path/to/rule
-\end_layout
-
-\begin_layout Standard
-Alternatively, to perform a pointwise comparison at random sample points
- inside each element in the first mesh, you can use arguments similar to
- the following
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-cigma-compare --output=squared-residuals.vtk   
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --first=field1.h5:/field1/stepN  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --second=field2.h5:/field2/stepN 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
-              --samples-per-element=1
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Section
-Input Format
+\begin_layout Subsection
+HDF5
 \end_layout
 
 \begin_layout Standard
@@ -969,7 +897,8 @@ HDF5 files are organized in a hierarchical structure, similar to a UNIX
  Two types of primary objects, groups and datasets, are stored in this structure.
  A group contains instances of zero or more groups or datasets, while a
  dataset stores a multi-dimensional array of data elements.
- Both kinds of objects are accompanied by supporting metadata.
+ Both kinds of objects are accompanied by supporting metadata known as attribute
+s.
 \end_layout
 
 \begin_layout Standard
@@ -1036,13 +965,14 @@ __ step00010  [nno x ndim]
 
 \begin_layout Standard
 You have a certain amount of flexibility in grouping your own data.
- Cigma will only require you to provide a small amount of metadata on your
- field and mesh datasets, described below:
+ Generally, Cigma will only require you to specify the path to a specific
+ field dataset, along with a small amount of metadata on your field and
+ mesh datasets, described below:
 \end_layout
 
 \begin_layout Description
-MeshID a universally unique identifier (uuid) assigned to the mesh for easily
- distinguishing identical meshes.
+MeshID an identifier assigned for use in linking child datasets to their
+ parent mesh.
 \end_layout
 
 \begin_layout Description
@@ -1052,19 +982,36 @@ MeshLocation points to the HDF5 group which contains the appropriate coordinates
 
 \begin_layout Description
 FunctionSpace string identifier to determine which shape functions to use
- for interpolating values inside the element.
+ for interpolating values inside the element (e.g., tet4, hex8, quad4, tri3,
+ ...).
+\end_layout
+
+\begin_layout Description
+DatasetType string identifier for classifying the type of data contained
+ in the dataset (e.g., points, connectivity, degrees of freedom, quadrature
+ rules, global quadrature points, global field values).
 \end_layout
 
 \begin_layout Subsection
-Importing Data
+VTK Files
 \end_layout
 
 \begin_layout Standard
-In its source distribution, Cigma provides two examples for importing data
- from two different codes into its standard HDF5 format.
+The Visualization Toolkit (VTK) is a popular open source graphics library
+ for scientific visualizations.
+\end_layout
+
+\begin_layout Subsection
+Text Files
 \end_layout
 
 \begin_layout Standard
+Importing and exporting data into simple text can be accomplished with the
+ (TODO:tt)`cigma copy' command.
+ The format is always in table form, with the dimensions specified in the
+ first line.
+ For example:
+\newline
 Mesh coordinates can be specified in the following format
 \end_layout
 
@@ -1093,7 +1040,7 @@ Mesh connectivity with
 \end_layout
 
 \begin_layout LyX-Code
-nel ndof
+nel ndofs
 \end_layout
 
 \begin_layout LyX-Code
@@ -1117,11 +1064,11 @@ A generic field with
 \family typewriter
 ndim
 \family default
- components is specified by
+ components (i.e., scalar, vector, or tensor) is specified by
 \end_layout
 
 \begin_layout LyX-Code
-nno ndim
+num ndim
 \end_layout
 
 \begin_layout LyX-Code
@@ -1134,6 +1081,602 @@ nno ndim
 
 \begin_layout LyX-Code
 ...
+\end_layout
+
+\begin_layout Standard
+In this last case, the number of rows could refer to either (TODO:tt)nno
+ or (TODO:tt)nel, depending on whether the field is node-based or cell-based.
+\end_layout
+
+\begin_layout Chapter
+Running Cigma
+\end_layout
+
+\begin_layout Standard
+Cigma is designed to be scriptable, and thus all operations can be specified
+ as command line arguments given to a single executable called (TODO: tt
+ font)`cigma'.
+ The available commands can be listed with (TODO: tt)`cigma --help', and
+ help on a specific command can be obtained with (TODO: tt-font)`cigma help
+ <command>'.
+\end_layout
+
+\begin_layout Standard
+Since Cigma is used for obtaining error estimates between arbitrary fields,
+ its primary operation involves the (TODO: tt)compare command.
+ You will need to provide two datasets describing each of the two fields,
+ along with an integration rule and a mesh over which to integrate, although
+ these last two will have reasonable defaults if they are not specified.
+\end_layout
+
+\begin_layout Standard
+Specifying the complete path to a dataset consists of the special form 
+\family typewriter
+\series bold
+filepath:dataset
+\family default
+\series default
+, a colon-delimited pair of file path and dataset path.
+\end_layout
+
+\begin_layout Section
+Listing Data
+\end_layout
+
+\begin_layout Standard
+Since Cigma relies so much on being able to specify dataset paths, we have
+ provided a command called (TODO:tt)list for viewing the structure of input
+ file.
+ Its usage is very simple:
+\newline
+
+\end_layout
+
+\begin_layout Standard
+To view the structure of an HDF5 file:
+\end_layout
+
+\begin_layout LyX-Code
+$ 
+\series bold
+cigma list file.h5
+\end_layout
+
+\begin_layout LyX-Code
+/mesh/coordinates           Dataset {119827, 3}
+\end_layout
+
+\begin_layout LyX-Code
+/mesh/connectivity          Dataset {661929, 4}
+\end_layout
+
+\begin_layout LyX-Code
+/vars/displacement/step0    Dataset {119827, 3}
+\end_layout
+
+\begin_layout LyX-Code
+/residuals/comparison0      Dataset {661929, 1}
+\end_layout
+
+\begin_layout Standard
+If VTK support is enabled, you can view the structure of a VTK file with:
+\end_layout
+
+\begin_layout LyX-Code
+$ 
+\series bold
+cigma list file.vtk
+\end_layout
+
+\begin_layout LyX-Code
+Reading file.vtk
+\end_layout
+
+\begin_layout LyX-Code
+Points = 119827
+\end_layout
+
+\begin_layout LyX-Code
+Cells = 661929
+\end_layout
+
+\begin_layout LyX-Code
+PointDataArray[0] = displacements_t0 (119827 x 3)
+\end_layout
+
+\begin_layout Section
+Converting Data
+\end_layout
+
+\begin_layout Standard
+In order to easily move data into and out of the HDF5 format, you can use
+ the (TODO:tt)`cigma copy' command.
+ By default, it relies on the file extension to detect what format to use
+ when reading or writing data.
+ Various examples are given below.
+ (TODO: tt-font for commands below)
+\newline
+
+\end_layout
+
+\begin_layout Standard
+Usage is typically
+\end_layout
+
+\begin_layout Standard
+cigma copy <source-path> <destination-path>
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=<path> --destination=<path>
+\end_layout
+
+\begin_layout Standard
+cigma copy -s <path> -d <path>
+\newline
+
+\end_layout
+
+\begin_layout Standard
+To dump the mesh information into a text file:
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=file.h5:/model/mesh/coords --destination=model-coords.txt
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=file.h5:/model/mesh/connect --destination=model-connect.txt
+\newline
+
+\end_layout
+
+\begin_layout Standard
+To import a scalar field pressure0 from a VTK file into an HDF5 file:
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=file.vtk:pressure0 --destination=file.h5:/model/variables/pres
+sure/t0
+\newline
+
+\end_layout
+
+\begin_layout Standard
+To import a vector field called displacement15 from a VTK file into an HDF5
+ file
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=file.vtk:displacement15 --destination=file.h5:/model/variables
+/displacement/t15
+\newline
+
+\end_layout
+
+\begin_layout Standard
+To convert residual data into VTK file, and then into ASCII.
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=file.h5:/model/residuals/pressure0 --destination=pressure0-re
+siduals.vtk
+\end_layout
+
+\begin_layout Standard
+cigma copy --source=pressure0-residuals.vtk --destination=residuals.txt
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Section
+Metadata
+\end_layout
+
+\begin_layout Standard
+As described in a previous chapter on the HDF5 input files, you can attach
+ arbitrary metadata to any number of your datasets or groups.
+ Cigma will make use of a few reserved attributes to determine which mesh
+ and shape functions to use on a particular dataset, but in general you
+ are free to assign your own
+\newline
+
+\end_layout
+
+\begin_layout Standard
+Usage is typically: (TODO:format)
+\end_layout
+
+\begin_layout Standard
+cigma set <target-object-path> <attribute-name>[:<type>] <value>
+\end_layout
+
+\begin_layout Standard
+cigma get <target-object-path> [<attribute>]
+\newline
+
+\end_layout
+
+\begin_layout Standard
+For example, (TODO: format)
+\end_layout
+
+\begin_layout Standard
+cigma set --target=file.h5:/model/ --attribute=AUTHOR --value='John Doe'
+\end_layout
+
+\begin_layout Standard
+cigma set --target=file.h5:/model/vars/pressure --attribute=Units --value=MPa
+\end_layout
+
+\begin_layout Standard
+cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=Step:int32
+ --value=10 
+\end_layout
+
+\begin_layout Standard
+cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=MeshID:int32
+ --value=1234
+\end_layout
+
+\begin_layout Standard
+cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=FunctionSpace
+ --value=tet4
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Section
+Comparing Two Fields
+\end_layout
+
+\begin_layout Standard
+Comparing two arbitrary finite element fields can be accomplished with the
+ 
+\family typewriter
+`cigma compare'
+\family default
+ command line utility.
+ By default, the comparison will take place over the elements in the mesh
+ of the first field.
+ Finally, the square of each of the local residual values are written to
+ the specified VTK output file as cell-based scalars.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+A basic comparison can be as simple as specifying the following arguments:
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --output=squared-residuals.vtk   
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --first=field1.h5:/field1/stepN  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --second=field2.h5:/field2/stepN
+\end_layout
+
+\begin_layout Subsection
+Specifying a Mesh
+\end_layout
+
+\begin_layout Standard
+To override the mesh used in the integration, you can specify an extra argument
+ providing the location of the mesh:
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --mesh=mesh.h5:/model/mesh/   
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              [...]
+\end_layout
+
+\begin_layout Standard
+You can also specify the coordinates and connectivity arrays separately,
+ in case they reside in separate files.
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --mesh-coordinates=file1.h5:/model/mesh/coordinates    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --mesh-connectivity=file2.h5:/model/mesh/connectivity  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              [...]
+\end_layout
+
+\begin_layout Subsection
+Specifying a Quadrature Rule
+\end_layout
+
+\begin_layout Standard
+If you wish to specify your own quadrature rule, you will have to provide
+ the quadrature weights and points in the appropriate reference element.
+ This can be done with the following additional argument:
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --rule=quadrature-rules.h5:/path/to/rule  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              [...]
+\end_layout
+
+\begin_layout Standard
+You may also specify the location of the points and weights separately:
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --rule-points=file.h5:/path/to/rule/points    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --rule-weights=file.h5:/path/to/rule/weights  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              [...]
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+Alternatively, to perform a pointwise comparison at random sample points
+ inside each element in the first mesh,
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --samples-per-element=1    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              [...]
+\end_layout
+
+\begin_layout Subsection
+Against Known Values
+\end_layout
+
+\begin_layout Standard
+A finite element description might not always be available for one of the
+ fields.
+ However, you can break the comparison into several steps if you have a
+ means to compute that field on any of the required points.
+\end_layout
+
+\begin_layout Standard
+First, extract the global coordinates of the integration points.
+ This will result in an explicit list of points over which to evaluate your
+ field.
+\end_layout
+
+\begin_layout LyX-Code
+cigma extract --mesh=field1.h5:/model/mesh/  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --output=points.h5:/points
+\end_layout
+
+\begin_layout Standard
+At this point, one possibility would be to dump explicit the list of points
+ to a text file, generate the corresponding list of values on your own and
+ import that lsit of values back into an HDF5 file that Cigma can understand.
+\end_layout
+
+\begin_layout LyX-Code
+cigma copy --source=points.h5:/points  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           --destination=points.txt
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+# create values.txt
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+cigma copy --source=values.txt  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           --destination=values.h5:/stepN_values
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+Lastly, you can provide the path to the explicit set of values with
+\end_layout
+
+\begin_layout LyX-Code
+cigma compare --output=squared-residuals.vtk
+\end_layout
+
+\begin_layout LyX-Code
+              --first=field1.h5:/field1/stepN
+\end_layout
+
+\begin_layout LyX-Code
+              --second=values.h5:/stepN_values
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Subsection
+Against a Known Function
+\end_layout
+
+\begin_layout Standard
+If one of your fields is easily described by an analytic expression, then
+ you also have the option to compile your analytic function into cigma,
+ which will enable the (TODO:tt)compare command to reference your function
+ by name:
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+cigma compare --output=squared-residuals.vtk 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --first=field1.h5:/vars/displacement/step0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+              --second=
+\bar under
+disloc3d
+\bar default
+  
+\end_layout
+
+\begin_layout Standard
+You may also interact with your analytic function by using the (TODO:tt)`cigma
+ eval' command, and obtain a set of values which may then be passed back
+ to the compare command.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+cigma eval --function=disloc3d 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           --points=points.h5:/points 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+           --values=values.h5:/disloc3d_values
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+cigma compare --output=squared-residuals.vtk 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --first=field1.h5:/vars/displacement/step0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --second=values.h5:/disloc3d_values
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -1168,7 +1711,7 @@ ed both spatially and temporally.
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \align center
@@ -1238,7 +1781,7 @@ Here we compare the output from two codes, PyLith-0.8 and GeoFEST-4.5, on
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1281,7 +1824,7 @@ The first benchmark problem (left) consists of a vertical right-lateral
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1352,7 +1895,7 @@ In this section, we show ten equally spaced isosurfaces of the displacement
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1405,7 +1948,7 @@ Slightly different behavior can be observed in the velocity field residuals.
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1449,7 +1992,7 @@ n mesh (left: t=0 years, right: t=1 year).
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1503,7 +2046,7 @@ Finally, here is a higher resolution comparison of the displacement residuals
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1553,7 +2096,7 @@ You can also visualize the distribution of errors by plotting the residual
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1597,7 +2140,7 @@ Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1648,7 +2191,7 @@ tic layer.
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
@@ -1692,7 +2235,7 @@ Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \noindent
