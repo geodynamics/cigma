@@ -1,5 +1,5 @@
-#LyX 1.4.3 created this file. For more info see http://www.lyx.org/
-\lyxformat 245
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
 \begin_document
 \begin_header
 \textclass book
@@ -11,13 +11,21 @@
 \end_preamble
 \language english
 \inputencoding auto
-\fontscheme default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
 \graphics default
 \paperfontsize default
 \spacing single
 \papersize default
 \use_geometry true
 \use_amsmath 1
+\use_esint 0
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
@@ -34,7 +42,9 @@
 \papersides 2
 \paperpagestyle headings
 \tracking_changes false
-\output_changes true
+\output_changes false
+\author "" 
+\author "" 
 \end_header
 
 \begin_body
@@ -104,9 +114,9 @@ Cigma
 \end_layout
 
 \begin_layout Author
-© California Institute of Technology
+Â© California Institute of Technology
 \newline
-Version 0.9
+Version 0.9.5
 \end_layout
 
 \begin_layout Date
@@ -126,7 +136,7 @@ today
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \tableofcontents{}
+\begin_inset LatexCommand tableofcontents
 
 \end_inset
 
@@ -210,12 +220,16 @@ Lastly, as an automated tool, Cigma can help developers in creating regression
 
 \begin_layout Standard
 At its core, Cigma draws from a variety of libraries, particularly the 
-\begin_inset LatexCommand \htmlurl[Tetrahedral Mesh Comparator (TMC)]{www.sci.utah.edu/~bavoil/research/tetsimp/tmc/}
+\begin_inset LatexCommand htmlurl
+name "Tetrahedral Mesh Comparator (TMC)"
+target "www.sci.utah.edu/~bavoil/research/tetsimp/tmc/"
 
 \end_inset
 
  from the University of Utah, which itself draws from the 
-\begin_inset LatexCommand \htmlurl[GTB Graphics Toolbox library]{sf.net/projects/gtb}
+\begin_inset LatexCommand htmlurl
+name "GTB Graphics Toolbox library"
+target "sf.net/projects/gtb"
 
 \end_inset
 
@@ -236,7 +250,7 @@ Computational Infrastructure for Geodynamics (CIG) is making this source
  for use as citations other than this manual, which is cited as follows:
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 Armendariz, L., and S.
  Kientz.
  
@@ -252,7 +266,9 @@ Cigma User Manual.
 CIG requests that in your oral presentations and in your papers that you
  indicate your use of this code and acknowledge the author of the code and
  
-\begin_inset LatexCommand \htmlurl[CIG]{geodynamics.org}
+\begin_inset LatexCommand htmlurl
+name "CIG"
+target "geodynamics.org"
 
 \end_inset
 
@@ -279,7 +295,9 @@ Getting Help
 
 \begin_layout Standard
 For help, send an e-mail to the 
-\begin_inset LatexCommand \url[CIG Computational Science Mailing List]{cig-cs@geodynamics.org}
+\begin_inset LatexCommand url
+name "CIG Computational Science Mailing List"
+target "cig-cs@geodynamics.org"
 
 \end_inset
 
@@ -289,14 +307,18 @@ For help, send an e-mail to the
 cig-cs
 \family default
  mailing list and view archived discussions at the 
-\begin_inset LatexCommand \htmlurl[CIG Mail Lists web page]{geodynamics.org/cig/lists}
+\begin_inset LatexCommand htmlurl
+name "CIG Mail Lists web page"
+target "geodynamics.org/cig/lists"
 
 \end_inset
 
 .
  If you encounter any bugs or have problems installing Cigma, please submit
  a report to the 
-\begin_inset LatexCommand \htmlurl[CIG Bug Tracker]{geodynamics.org/bugs}
+\begin_inset LatexCommand htmlurl
+name "CIG Bug Tracker"
+target "geodynamics.org/bugs"
 
 \end_inset
 
@@ -310,7 +332,9 @@ Installating from Source
 \begin_layout Standard
 To use Cigma, download the source package (in the form of a compressed tar
  file) from the 
-\begin_inset LatexCommand \htmlurl[CIG Cigma web page]{geodynamics.org/cig/software/packages/cs/cigma}
+\begin_inset LatexCommand htmlurl
+name "CIG Cigma web page"
+target "geodynamics.org/cig/software/packages/cs/cigma"
 
 \end_inset
 
@@ -320,11 +344,11 @@ To use Cigma, download the source package (in the form of a compressed tar
  commands
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ make
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ sudo make install
 \end_layout
 
@@ -334,13 +358,17 @@ HDF5
 
 \begin_layout Standard
 HDF5 is available for download from 
-\begin_inset LatexCommand \htmlurl[The HDF Group]{hdfgroup.org/HDF5}
+\begin_inset LatexCommand htmlurl
+name "The HDF Group"
+target "hdfgroup.org/HDF5"
 
 \end_inset
 
 .
  Binaries can be obtained at 
-\begin_inset LatexCommand \htmlurl[hdfgroup.org/HDF5/release/obtain5.html]{hdfgroup.org/HDF5/release/obtain5.html}
+\begin_inset LatexCommand htmlurl
+name "hdfgroup.org/HDF5/release/obtain5.html"
+target "hdfgroup.org/HDF5/release/obtain5.html"
 
 \end_inset
 
@@ -349,23 +377,23 @@ HDF5 is available for download from
  (currently 1.6.5) and issue the following commands
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ tar xvfz hdf5-1.6.5
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ cd hdf5-1.6.5
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ ./configure
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ make
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ sudo make install
 \end_layout
 
@@ -374,15 +402,18 @@ VTK
 \end_layout
 
 \begin_layout Standard
-VTK is available from Kitware Inc (http://www.vtk.org/get-software.php).
+VTK is available from 
+\begin_inset LatexCommand htmlurl
+name "Kitware, Inc."
+target "www.vtk.org/get-software.php"
+
+\end_inset
+
+.
  If you obtain the binaries from a package manager, make sure to install
  the associated development headers along with the library.
  To enable VTK support in Cigma, use the following flags in the configure
  step:
-\end_layout
-
-\begin_layout Standard
-TODO: (tt font)
 \end_layout
 
 \begin_layout Standard
@@ -398,7 +429,9 @@ PyTables is a Python extension module that builds on top of the HDF5 library.
  It provides a convenient scripting interface to manipulate HDF5 files,
  which can be used to manipulate the input/output files created by Cigma.
  PyTables is available for download from 
-\begin_inset LatexCommand \htmlurl[PyTables]{www.pytables.org}
+\begin_inset LatexCommand htmlurl
+name "PyTables"
+target "www.pytables.org"
 
 \end_inset
 
@@ -410,15 +443,15 @@ To install this extension from source, download the latest stable version
  (currently 2.0) and issue the following commands
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ tar xvfz pytables-2.x
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ cd pytables-2.x
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ sudo python setup.py install
 \end_layout
 
@@ -432,7 +465,9 @@ NCSA HDFView is a graphical user interface tool for accessing data in your
  You can use it for viewing the internal file hierarchy in a tree structure,
  adding new datasets, and modifying or deleting existing datasets.
  You can download it from the 
-\begin_inset LatexCommand \htmlurl[HDFView home page]{hdf.ncsa.uiuc.edu/hdf-java-html/hdfview}
+\begin_inset LatexCommand htmlurl
+name "HDFView home page"
+target "hdf.ncsa.uiuc.edu/hdf-java-html/hdfview"
 
 \end_inset
 
@@ -448,9 +483,17 @@ wide false
 sideways false
 status collapsed
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 With HFDFView, you can view the internal file hierarchy in a tree structure,
  add new datasets, and modify or delete existing datasets.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -600,7 +643,8 @@ In general, we won't be able to integrate each local contribution exactly
 
  by applying an appropriate quadrature rule with a tolerable truncation
  error 
-\begin_inset LatexCommand \cite{Encyclopaedia of Cubature Formulas 2005}
+\begin_inset LatexCommand cite
+key "Encyclopaedia of Cubature Formulas 2005"
 
 \end_inset
 
@@ -659,7 +703,7 @@ In calculating the norm of the residual field
 .
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Standard
 Cigma Components
 \end_layout
 
@@ -673,7 +717,7 @@ In Cigma, we define a finite element mesh simply by the coordinates,
 \end_inset
 
  of its degrees of freedom, and the connectivity relations 
-\begin_inset Formula $\Omega_{e}=\{ n_{1},n_{2},\ldots\}$
+\begin_inset Formula $\Omega_{e}=\{n_{1},n_{2},\ldots\}$
 \end_inset
 
  among them which define each individual element in the corresponding discretiza
@@ -755,7 +799,7 @@ This release of Cigma provides you with two built-in finite element spaces
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Standard
 Function Space 
 \bar under
 tet4
@@ -770,8 +814,16 @@ wide false
 sideways false
 status collapsed
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reference tetrahedral element
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -807,7 +859,7 @@ TN_{d} & = & \frac{1}{2}(1+z)\end{eqnarray*}
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Standard
 Function Space 
 \bar under
 hex8
@@ -822,8 +874,16 @@ wide false
 sideways false
 status collapsed
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reference hexahedral element
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -865,10 +925,18 @@ Input Formats
 The underlying data storage format for Cigma is HDF5, although VTK files
  can also be specified as input if the VTK development libraries are installed
  when you configure and compile Cigma.
- As described in Chapter 5 (TODO: insert ref), you can easily examine the
- structure of an input file by using the (TODO: tt)`cigma list' command,
- which will simply reveal the names and dimensions of all datasets inside
- the specified file.
+ As described in Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Running-Cigma"
+
+\end_inset
+
+, you can easily examine the structure of an input file by using the 
+\family typewriter
+cigma list
+\family default
+ command, which will simply reveal the names and dimensions of all datasets
+ inside the specified file.
 \end_layout
 
 \begin_layout Subsection
@@ -878,7 +946,9 @@ HDF5
 \begin_layout Standard
 The Hierarchical Data Format (HDF) is a portable file format developed at
  the 
-\begin_inset LatexCommand \htmlurl[National Center for Supercomputing Applications (NCSA)]{hdf.ncsa.uiuc.edu/HDF5}
+\begin_inset LatexCommand htmlurl
+name "National Center for Supercomputing Applications (NCSA)"
+target "hdf.ncsa.uiuc.edu/HDF5"
 
 \end_inset
 
@@ -1007,12 +1077,18 @@ Text Files
 
 \begin_layout Standard
 Importing and exporting data into simple text can be accomplished with the
- (TODO:tt)`cigma copy' command.
+ 
+\family typewriter
+cigma
+\family default
+ 
+\family typewriter
+copy
+\family default
+ command.
  The format is always in table form, with the dimensions specified in the
  first line.
- For example:
-\newline
-Mesh coordinates can be specified in the following format
+ For example, mesh coordinates can be specified in the following format
 \end_layout
 
 \begin_layout LyX-Code
@@ -1084,26 +1160,51 @@ num ndim
 \end_layout
 
 \begin_layout Standard
-In this last case, the number of rows could refer to either (TODO:tt)nno
- or (TODO:tt)nel, depending on whether the field is node-based or cell-based.
+In this last case, the number of rows could refer to either 
+\family typewriter
+nno
+\family default
+ or 
+\family typewriter
+nel
+\family default
+, depending on whether the field is node-based or cell-based.
 \end_layout
 
 \begin_layout Chapter
+\begin_inset LatexCommand label
+name "cha:Running-Cigma"
+
+\end_inset
+
 Running Cigma
 \end_layout
 
 \begin_layout Standard
 Cigma is designed to be scriptable, and thus all operations can be specified
- as command line arguments given to a single executable called (TODO: tt
- font)`cigma'.
- The available commands can be listed with (TODO: tt)`cigma --help', and
- help on a specific command can be obtained with (TODO: tt-font)`cigma help
- <command>'.
+ as command line arguments given to a single executable called 
+\family typewriter
+cigma
+\family default
+.
+ The available commands can be listed with 
+\family typewriter
+cigma --help
+\family default
+, and help on a specific command can be obtained with 
+\family typewriter
+cigma help <command>
+\family default
+.
 \end_layout
 
 \begin_layout Standard
 Since Cigma is used for obtaining error estimates between arbitrary fields,
- its primary operation involves the (TODO: tt)compare command.
+ its primary operation involves the 
+\family typewriter
+compare
+\family default
+ command.
  You will need to provide two datasets describing each of the two fields,
  along with an integration rule and a mesh over which to integrate, although
  these last two will have reasonable defaults if they are not specified.
@@ -1125,8 +1226,11 @@ Listing Data
 
 \begin_layout Standard
 Since Cigma relies so much on being able to specify dataset paths, we have
- provided a command called (TODO:tt)list for viewing the structure of input
- file.
+ provided a command called 
+\family typewriter
+list
+\family default
+ for viewing the structure of input file.
  Its usage is very simple:
 \newline
 
@@ -1136,25 +1240,25 @@ Since Cigma relies so much on being able to specify dataset paths, we have
 To view the structure of an HDF5 file:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ 
 \series bold
 cigma list file.h5
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 /mesh/coordinates           Dataset {119827, 3}
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 /mesh/connectivity          Dataset {661929, 4}
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 /vars/displacement/step0    Dataset {119827, 3}
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 /residuals/comparison0      Dataset {661929, 1}
 \end_layout
 
@@ -1162,25 +1266,25 @@ cigma list file.h5
 If VTK support is enabled, you can view the structure of a VTK file with:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 $ 
 \series bold
 cigma list file.vtk
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 Reading file.vtk
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 Points = 119827
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 Cells = 661929
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 PointDataArray[0] = displacements_t0 (119827 x 3)
 \end_layout
 
@@ -1190,11 +1294,14 @@ Converting Data
 
 \begin_layout Standard
 In order to easily move data into and out of the HDF5 format, you can use
- the (TODO:tt)`cigma copy' command.
+ the 
+\family typewriter
+cigma copy
+\family default
+ command.
  By default, it relies on the file extension to detect what format to use
  when reading or writing data.
  Various examples are given below.
- (TODO: tt-font for commands below)
 \newline
 
 \end_layout
@@ -1204,17 +1311,21 @@ Usage is typically
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy <source-path> <destination-path>
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=<path> --destination=<path>
 \end_layout
 
 \begin_layout Standard
-cigma copy -s <path> -d <path>
-\newline
 
+\size small
+cigma copy -s <path> -d <path>
 \end_layout
 
 \begin_layout Standard
@@ -1222,52 +1333,65 @@ To dump the mesh information into a text file:
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=file.h5:/model/mesh/coords --destination=model-coords.txt
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=file.h5:/model/mesh/connect --destination=model-connect.txt
-\newline
-
 \end_layout
 
 \begin_layout Standard
-To import a scalar field pressure0 from a VTK file into an HDF5 file:
+To import a scalar field 
+\family typewriter
+pressure0
+\family default
+ from a VTK file into an HDF5 file:
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=file.vtk:pressure0 --destination=file.h5:/model/variables/pres
 sure/t0
-\newline
-
 \end_layout
 
 \begin_layout Standard
-To import a vector field called displacement15 from a VTK file into an HDF5
- file
+To import a vector field called 
+\family typewriter
+displacement15
+\family default
+ from a VTK file into an HDF5 file:
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=file.vtk:displacement15 --destination=file.h5:/model/variables
 /displacement/t15
-\newline
-
 \end_layout
 
 \begin_layout Standard
-To convert residual data into VTK file, and then into ASCII.
+To convert residual data into a VTK file, and then into ASCII:
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=file.h5:/model/residuals/pressure0 --destination=pressure0-re
 siduals.vtk
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma copy --source=pressure0-residuals.vtk --destination=residuals.txt
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1280,53 +1404,65 @@ As described in a previous chapter on the HDF5 input files, you can attach
  arbitrary metadata to any number of your datasets or groups.
  Cigma will make use of a few reserved attributes to determine which mesh
  and shape functions to use on a particular dataset, but in general you
- are free to assign your own
-\newline
-
+ are free to assign your own.
 \end_layout
 
 \begin_layout Standard
-Usage is typically: (TODO:format)
+Usage is typically: 
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set <target-object-path> <attribute-name>[:<type>] <value>
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma get <target-object-path> [<attribute>]
 \newline
 
 \end_layout
 
 \begin_layout Standard
-For example, (TODO: format)
+For example, 
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set --target=file.h5:/model/ --attribute=AUTHOR --value='John Doe'
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set --target=file.h5:/model/vars/pressure --attribute=Units --value=MPa
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=Step:int32
  --value=10 
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=MeshID:int32
  --value=1234
 \end_layout
 
 \begin_layout Standard
+
+\size small
 cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=FunctionSpace
  --value=tet4
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1353,7 +1489,7 @@ Comparing two arbitrary finite element fields can be accomplished with the
 A basic comparison can be as simple as specifying the following arguments:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --output=squared-residuals.vtk   
@@ -1361,18 +1497,18 @@ cigma compare --output=squared-residuals.vtk
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --first=field1.h5:/field1/stepN  
+             --first=field1.h5:/field1/stepN  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --second=field2.h5:/field2/stepN
+             --second=field2.h5:/field2/stepN
 \end_layout
 
 \begin_layout Subsection
@@ -1384,7 +1520,7 @@ To override the mesh used in the integration, you can specify an extra argument
  providing the location of the mesh:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --mesh=mesh.h5:/model/mesh/   
@@ -1392,10 +1528,10 @@ cigma compare --mesh=mesh.h5:/model/mesh/
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              [...]
+             [...]
 \end_layout
 
 \begin_layout Standard
@@ -1403,7 +1539,7 @@ You can also specify the coordinates and connectivity arrays separately,
  in case they reside in separate files.
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --mesh-coordinates=file1.h5:/model/mesh/coordinates    
@@ -1411,18 +1547,18 @@ cigma compare --mesh-coordinates=file1.h5:/model/mesh/coordinates
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --mesh-connectivity=file2.h5:/model/mesh/connectivity  
+             --mesh-connectivity=file2.h5:/model/mesh/connectivity  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              [...]
+             [...]
 \end_layout
 
 \begin_layout Subsection
@@ -1435,7 +1571,7 @@ If you wish to specify your own quadrature rule, you will have to provide
  This can be done with the following additional argument:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --rule=quadrature-rules.h5:/path/to/rule  
@@ -1443,17 +1579,17 @@ cigma compare --rule=quadrature-rules.h5:/path/to/rule
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              [...]
+             [...]
 \end_layout
 
 \begin_layout Standard
 You may also specify the location of the points and weights separately:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --rule-points=file.h5:/path/to/rule/points    
@@ -1461,21 +1597,21 @@ cigma compare --rule-points=file.h5:/path/to/rule/points
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --rule-weights=file.h5:/path/to/rule/weights  
+             --rule-weights=file.h5:/path/to/rule/weights  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              [...]
+             [...]
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1484,7 +1620,7 @@ Alternatively, to perform a pointwise comparison at random sample points
  inside each element in the first mesh,
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --samples-per-element=1    
@@ -1492,10 +1628,10 @@ cigma compare --samples-per-element=1
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              [...]
+             [...]
 \end_layout
 
 \begin_layout Subsection
@@ -1515,13 +1651,13 @@ First, extract the global coordinates of the integration points.
  field.
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 cigma extract --mesh=field1.h5:/model/mesh/  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
               --output=points.h5:/points
 \end_layout
 
@@ -1531,39 +1667,39 @@ At this point, one possibility would be to dump explicit the list of points
  import that lsit of values back into an HDF5 file that Cigma can understand.
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 cigma copy --source=points.h5:/points  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
            --destination=points.txt
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 # create values.txt
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 cigma copy --source=values.txt  
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
            --destination=values.h5:/stepN_values
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1571,19 +1707,19 @@ cigma copy --source=values.txt
 Lastly, you can provide the path to the explicit set of values with
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 cigma compare --output=squared-residuals.vtk
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
               --first=field1.h5:/field1/stepN
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
               --second=values.h5:/stepN_values
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1594,11 +1730,14 @@ Against a Known Function
 \begin_layout Standard
 If one of your fields is easily described by an analytic expression, then
  you also have the option to compile your analytic function into cigma,
- which will enable the (TODO:tt)compare command to reference your function
- by name:
+ which will enable the 
+\family typewriter
+compare
+\family default
+ command to reference your function by name:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 cigma compare --output=squared-residuals.vtk 
@@ -1606,84 +1745,90 @@ cigma compare --output=squared-residuals.vtk
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --first=field1.h5:/vars/displacement/step0 
+             --first=field1.h5:/vars/displacement/step0 
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+ 
 \series bold
-              --second=
+             --second=
 \bar under
 disloc3d
+\series default
 \bar default
-  
-\end_layout
-
-\begin_layout Standard
-You may also interact with your analytic function by using the (TODO:tt)`cigma
- eval' command, and obtain a set of values which may then be passed back
- to the compare command.
+ 
+\series bold
  
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
+You may also interact with your analytic function by using the 
+\family typewriter
+cigma eval
+\family default
+ command, and obtain a set of values which may then be passed back to the
+ compare command.
+ 
+\end_layout
+
+\begin_layout Standard
 cigma eval --function=disloc3d 
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
            --points=points.h5:/points 
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
            --values=values.h5:/disloc3d_values
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 cigma compare --output=squared-residuals.vtk 
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
               --first=field1.h5:/vars/displacement/step0 
 \backslash
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
               --second=values.h5:/disloc3d_values
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -1693,7 +1838,8 @@ Visualization
 
 \begin_layout Standard
 As can be seen from the two images in Figure 
-\begin_inset LatexCommand \ref{fig:PyLith-solution}
+\begin_inset LatexCommand ref
+reference "fig:PyLith-solution"
 
 \end_inset
 
@@ -1734,14 +1880,23 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 \noindent
-\begin_inset LatexCommand \label{fig:PyLith-solution}
+\begin_inset LatexCommand label
+name "fig:PyLith-solution"
 
 \end_inset
 
 Solution of a viscoelastic problem with a fault using two finite element
  codes: PyLith solution (left) and GeoFEST solution (right).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1756,13 +1911,16 @@ Benchmark Cases
 \begin_layout Standard
 Here we compare the output from two codes, PyLith-0.8 and GeoFEST-4.5, on
  two 
-\begin_inset LatexCommand \htmlurl[benchmark cases]{geodynamics.org/cig/workinggroups/short/workarea/benchmarks}
+\begin_inset LatexCommand htmlurl
+name "benchmark cases"
+target "geodynamics.org/cig/workinggroups/short/workarea/benchmarks"
 
 \end_inset
 
  defined by the CIG Short-Term Tectonics working group.
  They are both defined on cube domain (Figure 
-\begin_inset LatexCommand \ref{fig:Cube-domain-of}
+\begin_inset LatexCommand ref
+reference "fig:Cube-domain-of"
 
 \end_inset
 
@@ -1796,14 +1954,23 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 \noindent
-\begin_inset LatexCommand \label{fig:Cube-domain-of}
+\begin_inset LatexCommand label
+name "fig:Cube-domain-of"
 
 \end_inset
 
 Cube domain of 24 km length consisting of two layers of different material
  types.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1851,10 +2018,18 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Two benchmark problems: (left) Benchmark problem consisting of a vertical
  right-lateral strike-slip fault; (right) Benchmark problem consisting of
  a 45-degree dipping reverse fault.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1877,7 +2052,8 @@ Strike-Slip with No Gravity
 In this section, we show ten equally spaced isosurfaces of the displacement
  field residuals for the strike-slip benchmark (0 and 10 years shown).
  In Figure 
-\begin_inset LatexCommand \ref{fig:PyLith-solution}
+\begin_inset LatexCommand ref
+reference "fig:PyLith-solution"
 
 \end_inset
 
@@ -1922,9 +2098,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Strike-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
  resolution mesh (left: t=0 years, right: t=10 years).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1975,9 +2159,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Strike-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m resolutio
 n mesh (left: t=0 years, right: t=1 year).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2019,10 +2211,18 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Strike-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m resolutio
 n mesh (left: t=5 years, right: t=10 years).
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2061,10 +2261,18 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Strike-slip: PyLith-GeoFEST comparison of displacement residuals on a 250m
  resolution mesh (t=0 years).
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2123,9 +2331,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
  resolution mesh (left: t=0 years, right: t=1 year).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2167,9 +2383,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
  resolution mesh (left: t=5 years, right: t=10 years).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2218,9 +2442,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
  resolution mesh (left: t=0 years, right: t=1 year).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2262,9 +2494,17 @@ status collapsed
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
  resolution mesh (left: t=5 years, right: t=10 years).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -2281,7 +2521,7 @@ Shape Functions
 Linear Tetrahedral Element (tet4)
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="1" columns="2">
 <features>
@@ -2329,7 +2569,7 @@ Linear Tetrahedral Element (tet4)
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2356,14 +2596,15 @@ A field
 
 , has the following functional form inside the reference tetrahedral element
  shown in Figure 
-\begin_inset LatexCommand \ref{fig:Cube-domain-of}
+\begin_inset LatexCommand ref
+reference "fig:Cube-domain-of"
 
 \end_inset
 
 .
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \begin{array}{c}
 \varphi_{x}(\vec{\xi})=\alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
@@ -2384,7 +2625,7 @@ es vector
  looks like
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \begin{array}{c}
 x(\vec{\xi})=\alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
@@ -2412,7 +2653,7 @@ The following natural mappings uniquely determine the coefficients
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
 \vec{x}(-1,-1,-1) & \mapsto & (x_{0},y_{0},z_{0})\\
 \vec{x}(+1,-1,-1) & \mapsto & (x_{1},y_{1},z_{1})\\
@@ -2432,7 +2673,7 @@ Considering only the first component
 , we can obtain the matrix equation 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \begin{array}{c}
 a\\
@@ -2463,7 +2704,7 @@ Applying our desired map to the other two functions yields two other identical
  Thus we may augment the system as follows,
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \left[\begin{array}{cccc}
 1 & -1 & -1 & -1\\
@@ -2489,7 +2730,7 @@ Now we can easily invert the square matrix on the left, yielding the values
  of the unknown coefficients,
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \left[\begin{array}{ccc}
 \alpha_{0} & \beta_{0} & \gamma_{0}\\
@@ -2522,7 +2763,7 @@ Using the values for
  becomes
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
 x(\vec{\xi}) & = & \alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
  & = & \,\,\,\left[\frac{1}{2}\left(-x_{0}+x_{1}+x_{2}+x_{3}\right)\right]\\
@@ -2550,11 +2791,11 @@ x(\vec{\xi}) & = & \,\,\,\left[\frac{1}{2}\left(-1-\xi-\eta-\zeta\right)\right]x
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
 x(\vec{\xi}) & = & N_{0}(\vec{\xi})x_{0}+N_{1}(\vec{\xi})x_{1}+N_{2}(\vec{\xi})x_{2}+N_{3}(\vec{\xi})x_{3}\\
 y(\vec{\xi}) & = & N_{0}(\vec{\xi})y_{0}+N_{1}(\vec{\xi})y_{1}+N_{2}(\vec{\xi})y_{2}+N_{3}(\vec{\xi})y_{3}\\
@@ -2565,7 +2806,7 @@ z(\vec{\xi}) & = & N_{0}(\vec{\xi})z_{0}+N_{1}(\vec{\xi})z_{1}+N_{2}(\vec{\xi})z
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2585,7 +2826,7 @@ N_{3}(\vec{\xi}) & = & \frac{1}{2}\left(1+\zeta\right)\end{eqnarray*}
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \noindent
 \align center
 
@@ -2600,7 +2841,7 @@ As a final note, observe that we can streamline the evaluation process over
 , inside the same element via the following matrix multiplication
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 \begin_inset Formula \[
 \left[\begin{array}{ccc}
 x(\vec{\xi}_{0}) & y(\vec{\xi}_{0}) & z(\vec{\xi}_{0})\\
@@ -2621,11 +2862,11 @@ x_{3} & y_{3} & z_{3}\end{array}\right]\]
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2637,7 +2878,7 @@ Jacobian Matrix
 Recall the definition of the Jacobian matrix:
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2688,7 +2929,7 @@ z\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)z_{i}\end{array}$
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2719,7 +2960,7 @@ z\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)z_{i}\end{array}$
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -2727,7 +2968,7 @@ z\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)z_{i}\end{array}$
 Applying these to our shape functions on a tetrahedron, we obtain
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -3027,7 +3268,7 @@ Applying these to our shape functions on a tetrahedron, we obtain
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \end_layout
 
@@ -3504,7 +3745,7 @@ If you wish to incorporate parts of the Program into other free programs
  
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 NO WARRANTY 
 \end_layout
 
@@ -3590,11 +3831,11 @@ end{itemize}
 
 \end_layout
 
-\begin_layout Section*
+\begin_layout Standard
 END OF TERMS AND CONDITIONS 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Standard
 How to Apply These Terms to Your New Programs
 \end_layout
 
@@ -3613,16 +3854,16 @@ y convey the exclusion of warranty; and each file should have at least the
  For example:
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 One line to give the program's name and a brief idea of what it does.
  Copyright 
 \size footnotesize
-© (
+Â© (
 \size default
 year) (name of author) 
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the Free
  Software Foundation; either version 2 of the License, or (at your option)
@@ -3630,7 +3871,7 @@ This program is free software; you can redistribute it and/or modify it
  
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.
@@ -3638,7 +3879,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT
  
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 You should have received a copy of the GNU General Public License along
  with this program; if not, write to the Free Software Foundation, Inc.,
  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
@@ -3654,8 +3895,8 @@ If the program is interactive, make it output a short notice like this when
  it starts in an interactive mode: 
 \end_layout
 
-\begin_layout Quote
-Gnomovision version 69, Copyright © year name of author Gnomovision comes
+\begin_layout Standard
+Gnomovision version 69, Copyright Â© year name of author Gnomovision comes
  with ABSOLUTELY NO WARRANTY; for details type `show w'.
  This is free software, and you are welcome to redistribute it under certain
  conditions; type `show c' for details.
@@ -3677,13 +3918,13 @@ You should also get your employer (if you work as a programmer) or your
  Here is a sample; alter the names: 
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 Yoyodyne, Inc., hereby disclaims all copyright interest in the program `Gnomovisi
 on' (which makes passes at compilers) written by James Hacker.
  
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
 (signature of Ty Coon)
 \newline
 1 April 1989 
@@ -3701,8 +3942,12 @@ This General Public License does not permit incorporating your program into
 \end_layout
 
 \begin_layout Bibliography
+\begin_inset LatexCommand bibitem
+label "1"
+key "Akin 2005"
 
-\bibitem [1]{Akin 2005}
+\end_inset
+
 Akin, J.E.
  (2005), 
 \emph on
@@ -3713,16 +3958,24 @@ Finite Element Analysis with Error Estimators,
 \end_layout
 
 \begin_layout Bibliography
+\begin_inset LatexCommand bibitem
+label "2"
+key "Encyclopaedia of Cubature Formulas 2005"
 
-\bibitem [2]{Encyclopaedia of Cubature Formulas 2005}
+\end_inset
+
 Encyclopaedia of Cubature Formulas (1998-2005), Katholieke Universiteit
  Leuven, Dept.
  Computerwetenschappen, www.cs.kuleuven.be/~nines/research/ecf/
 \end_layout
 
 \begin_layout Bibliography
+\begin_inset LatexCommand bibitem
+label "3"
+key "Hughes 2000"
 
-\bibitem [3]{Hughes 2000}
+\end_inset
+
 Hughes, Thomas J.R.
  (2000), 
 \emph on
@@ -3732,24 +3985,32 @@ The Finite Element Method: Linear Static and Dynamic Finite Element Analysis
 \end_layout
 
 \begin_layout Bibliography
+\begin_inset LatexCommand bibitem
+label "4"
+key "KarniadakisSherwin2005"
 
-\bibitem [4]{KarniadakisSherwin2005}
+\end_inset
+
 Karniadakis, George E.
  and Spencer J.
  Sherwin (2005), 
 \emph on
 Spectral/
 \emph default
-hp
+hp 
 \emph on
- Element Methods for Computational Fluid Dynamics, Second Edition
+Element Methods for Computational Fluid Dynamics, Second Edition
 \emph default
 , Numerical Mathematics and Scientific Computation, Oxford, 657 pp.
 \end_layout
 
 \begin_layout Bibliography
+\begin_inset LatexCommand bibitem
+label "5"
+key "Uesu-etal2005"
 
-\bibitem [5]{Uesu-etal2005}
+\end_inset
+
 Uesu, D., L.
  Bavoil, S.
  Fleishman, J.
@@ -3757,9 +4018,9 @@ Uesu, D., L.
  Silva (2005), Simplification of Unstructured Tetrahedral Meshes by Point-Sampli
 ng, 
 \emph on
-Proceedings of the 2005 International Workshop on Volume Graphics, 
+Proceedings of the 2005 International Workshop on Volume Graphics,
 \emph default
-157-165, doi: 10.2312/VG/VG05/157-165.
+ 157-165, doi: 10.2312/VG/VG05/157-165.
 \end_layout
 
 \end_body
