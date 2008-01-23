@@ -1,6 +1,9 @@
 #include <iostream>
 #include <iomanip>
+#include <vector>
 #include "../StringUtils.h"
+
+using namespace std;
 
 int main()
 {
@@ -11,32 +14,46 @@ int main()
         string_to_int("123456", i);
         string_to_double("2.718281828459045", e);
 
-        std::cout << std::setprecision(16);
-        std::cout << "i = " << i << std::endl;
-        std::cout << "e = " << e << std::endl;
+        cout << setprecision(16);
+        cout << "i = " << i << endl;
+        cout << "e = " << e << endl;
+        cout << endl;
     }
 
     // path functions
     {
-        using namespace std;
-        std::string vtkpath = "/path/to/file.vtk:temperature";
-        std::string hdfpath = "/path/to/file.h5:/path/to/dataset";
-        std::string testpath = "/path/to/some/file.ext:foo:bar:baz";
+        string vtkpath = "/path/to/file.vtk:temperature";
+        string hdfpath = "/path/to/file.h5:/path/to/dataset";
+        string testpath1 = "/path/to/some/file.ext:foo:bar";
+        string testpath2 = "/path/to/file.ext:";
 
-        std::string path, location, filename, ext;
+        vector<string> paths;
+        paths.push_back(vtkpath);
+        paths.push_back(hdfpath);
+        paths.push_back(testpath1);
+        paths.push_back(testpath2);
 
-        path = testpath;
-        parse_dataset_path(path, location, filename, ext);
-        std::cout << "path      = '" << path << "'\n";
-        std::cout << "filename  = '" << filename << "'\n";
-        std::cout << "extension = '" << ext << "'\n";
-        std::cout << "location  = '" << location << "'\n";
-
+        string path;
+        string location, filename, ext;
         string locdir, locbase;
-        path_dirname(location, locdir);
-        path_basename(location, locbase);
-        cout << "location dirname  = '" << locdir << "'\n";
-        cout << "location basename = '" << locbase << "'\n";
+
+        vector<string>::iterator i;
+        for (i = paths.begin(); i != paths.end(); ++i)
+        {
+            path = *i;
+
+            parse_dataset_path(path, location, filename, ext);
+            cout << "path      = '" << path << "'\n";
+            cout << "filename  = '" << filename << "'\n";
+            cout << "extension = '" << ext << "'\n";
+            cout << "location  = '" << location << "'\n";
+
+            path_dirname(location, locdir);
+            path_basename(location, locbase);
+            cout << "location dirname  = '" << locdir << "'\n";
+            cout << "location basename = '" << locbase << "'\n";
+            cout << endl;
+        }
     }
 
     return 0;
