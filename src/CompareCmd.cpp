@@ -24,6 +24,9 @@ cigma::CompareCmd::CompareCmd()
     field_a = 0;
     field_b = 0;
     residuals = 0; //XXX: create ResidualField class?
+
+    verbose = false;
+    output_frequency = 0;
 }
 
 cigma::CompareCmd::~CompareCmd()
@@ -61,6 +64,10 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
 
     // options for output
     opt->setOption("output");
+
+    // other options
+    opt->setFlag("verbose");
+    opt->setOption("output-frequency",'f');
 }
 
 static void load_field(std::string inputfile,
@@ -242,6 +249,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     std::string inputA, inputB;
     std::string inputfileA, inputfileB;
     std::string extA, extB;
+    std::string inputstr;
     char *in;
 
     bool debug = true;
@@ -286,6 +294,17 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     output_name = "epsilon";
 
 
+    verbose = opt->getFlag("verbose");
+
+    in = opt->getValue("output-frequency");
+    if (in == 0)
+    {
+        in = "1000";
+    }
+    inputstr = in;
+    string_to_int(inputstr, output_frequency);
+
+
     field_a = new FE_Field();
     load_field(inputfileA, locationA, readerA, field_a);
     std::cout << "first field location = " << locationA << std::endl;
@@ -299,6 +318,8 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     std::cout << "second field inputfile = " << inputfileB << std::endl;
     std::cout << "second field extension = " << extB << std::endl;
     std::cout << "second field dimensions = " << field_b->meshPart->nel << " cells, " << field_b->meshPart->nno << " nodes, "  << field_b->fe->cell->n_nodes() << " dofs/cell, rank " << field_b->n_rank() << std::endl;
+
+    std::cout << "outputfile = " << output_filename << std::endl;
 
 
     /* if no mesh specified, get it from fieldA
@@ -354,38 +375,17 @@ int cigma::CompareCmd::run()
     time(&t_0);
     t_e = t_0;
 
-    const int eltPeriod = 1000;
+    const int eltPeriod = output_frequency;
     const int eltMax = 1000;
-    std::cout << std::setprecision(4);
-    std::cout << "elts rate mins eta total progress\n";
+
+    if (verbose)
+    {
+        std::cout << std::setprecision(4);
+        std::cout << "elts rate mins eta total progress\n";
+    }
+
     for (e = 0; e < nel; e++)
     {
-        //* XXX: debug
-        if (e % eltPeriod == 0)
-        {
-            double elapsed_mins;
-            double rate_per_min;
-            double cells_per_sec;
-            double remaining_mins;
-            double total_mins;
-            double progress;
-
-            time(&t_e);
-            elapsed_mins = (t_e - t_0) / 60.0;
-            rate_per_min = elapsed_mins / (e + 1.0);
-            cells_per_sec = (1.0/60.0) / rate_per_min;
-            remaining_mins = (nel - e) * rate_per_min;
-            total_mins = nel * rate_per_min;
-            progress = 100 * elapsed_mins / total_mins;
-
-            //std::cout << e << " " << std::flush;
-            //std::cout << remaining_mins << "          " << std::flush;
-            std::cout << e << " " << cells_per_sec << " " << elapsed_mins << " " << remaining_mins << " " << total_mins << " " << progress << "%";
-            std::cout << "                                                                            \r" << std::flush;
-
-            //if (e == eltMax) { break; }
-        } // */
-
         // update cell data
         mesh->get_cell_coords(e, cell->globverts);
         //cell->set_global_vertices(...);
@@ -420,10 +420,41 @@ int cigma::CompareCmd::run()
 
         epsilon[e] = err;
         L2 += err;
+
+        //* XXX: debug info
+        if (verbose && (e % output_frequency == 0))
+        {
+            double elapsed_mins;
+            double rate_per_min;
+            double cells_per_sec;
+            double remaining_mins;
+            double total_mins;
+            double progress;
+
+            time(&t_e);
+            elapsed_mins = (t_e - t_0) / 60.0;
+            rate_per_min = elapsed_mins / (e + 1.0);
+            cells_per_sec = (1.0/60.0) / rate_per_min;
+            remaining_mins = (nel - e) * rate_per_min;
+            total_mins = nel * rate_per_min;
+            progress = 100 * elapsed_mins / total_mins;
+
+            //std::cout << e << " " << std::flush;
+            //std::cout << remaining_mins << "          " << std::flush;
+            std::cout << e << " " << cells_per_sec << " " << elapsed_mins << " " << remaining_mins << " " << total_mins << " " << progress << "%";
+            std::cout << "                                                                            \r" << std::flush;
+
+            //if (e == eltMax) { break; }
+        } // */
+
+    }
+
+    if (verbose)
+    {
+        std::cout << std::endl;
     }
 
     L2 = sqrt(L2);
-    std::cout << std::endl;
     std::cout << std::setprecision(12);
     std::cout << "L2 = " << L2 << std::endl;
 
@@ -436,7 +467,7 @@ int cigma::CompareCmd::run()
         int *connect = mesh->connect;
 
         /* XXX: create a cell-based ResidualField class */
-        std::cout << "Creating file " << output_filename << std::endl;
+        //std::cout << "Creating file " << output_filename << std::endl;
         VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
         writer->open(output_filename);
         writer->write_header();

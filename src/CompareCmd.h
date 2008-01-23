@@ -35,10 +35,15 @@ public:
     FE_Field *field_a;
     FE_Field *field_b;
     Field *residuals;
-    std::string output_filename, output_name;
-    std::string locationA, locationB;
-    VtkUgReader readerA, readerB;
+    //Reader readerA, readerB;
     //HdfReader h5_readerA, h5_readerB;
+    VtkUgReader readerA, readerB;
+
+public:
+    std::string locationA, locationB;
+    std::string output_filename, output_name;
+    bool verbose;
+    int output_frequency;
 };
 
 
