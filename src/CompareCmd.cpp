@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <ctime>
 #include "CompareCmd.h"
 #include "StringUtils.h"
 #include "VtkUgSimpleWriter.h"
@@ -257,9 +258,6 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputA = in;
     parse_dataset_path(inputA, locationA, inputfileA, extA);
-    std::cout << "first field location = " << locationA << std::endl;
-    std::cout << "first field inputfile = " << inputfileA << std::endl;
-    std::cout << "first field extension = " << extA << std::endl;
 
     in = opt->getValue("second");
     if (in == 0)
@@ -273,9 +271,6 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputB = in;
     parse_dataset_path(inputB, locationB, inputfileB, extB);
-    std::cout << "second field location = " << locationB << std::endl;
-    std::cout << "second field inputfile = " << inputfileB << std::endl;
-    std::cout << "second field extension = " << extB << std::endl;
 
     in = opt->getValue("output");
     if (in == 0)
@@ -293,9 +288,17 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     field_a = new FE_Field();
     load_field(inputfileA, locationA, readerA, field_a);
+    std::cout << "first field location = " << locationA << std::endl;
+    std::cout << "first field inputfile = " << inputfileA << std::endl;
+    std::cout << "first field extension = " << extA << std::endl;
+    std::cout << "first field dimensions = " << field_a->meshPart->nel << " cells, " << field_a->meshPart->nno << " nodes, "  << field_a->fe->cell->n_nodes() << " dofs/cell, rank " << field_a->n_rank() << std::endl;
 
     field_b = new FE_Field();
     load_field(inputfileB, locationB, readerB, field_b);
+    std::cout << "second field location = " << locationB << std::endl;
+    std::cout << "second field inputfile = " << inputfileB << std::endl;
+    std::cout << "second field extension = " << extB << std::endl;
+    std::cout << "second field dimensions = " << field_b->meshPart->nel << " cells, " << field_b->meshPart->nno << " nodes, "  << field_b->fe->cell->n_nodes() << " dofs/cell, rank " << field_b->n_rank() << std::endl;
 
 
     /* if no mesh specified, get it from fieldA
@@ -347,15 +350,40 @@ int cigma::CompareCmd::run()
     //FE *fe;
     Cell *cell = cell_a;
 
+    time_t t_0, t_e;
+    time(&t_0);
+    t_e = t_0;
+
     const int eltPeriod = 1000;
     const int eltMax = 1000;
+    std::cout << std::setprecision(4);
+    std::cout << "elts rate mins eta total progress\n";
     for (e = 0; e < nel; e++)
     {
-        /* XXX: debug
+        //* XXX: debug
         if (e % eltPeriod == 0)
         {
-            std::cout << e << " " << std::flush;
-            if (e == eltMax) { break; }
+            double elapsed_mins;
+            double rate_per_min;
+            double cells_per_sec;
+            double remaining_mins;
+            double total_mins;
+            double progress;
+
+            time(&t_e);
+            elapsed_mins = (t_e - t_0) / 60.0;
+            rate_per_min = elapsed_mins / (e + 1.0);
+            cells_per_sec = (1.0/60.0) / rate_per_min;
+            remaining_mins = (nel - e) * rate_per_min;
+            total_mins = nel * rate_per_min;
+            progress = 100 * elapsed_mins / total_mins;
+
+            //std::cout << e << " " << std::flush;
+            //std::cout << remaining_mins << "          " << std::flush;
+            std::cout << e << " " << cells_per_sec << " " << elapsed_mins << " " << remaining_mins << " " << total_mins << " " << progress << "%";
+            std::cout << "                                                                            \r" << std::flush;
+
+            //if (e == eltMax) { break; }
         } // */
 
         // update cell data
@@ -393,7 +421,11 @@ int cigma::CompareCmd::run()
         epsilon[e] = err;
         L2 += err;
     }
+
     L2 = sqrt(L2);
+    std::cout << std::endl;
+    std::cout << std::setprecision(12);
+    std::cout << "L2 = " << L2 << std::endl;
 
     /* write out data */
     {
