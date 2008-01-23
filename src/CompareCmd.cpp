@@ -41,8 +41,8 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     /* setup usage */
     opt->addUsage("Usage:");
     opt->addUsage("   cigma compare [options]");
-    opt->addUsage("     -a  --fieldA     First field location");
-    opt->addUsage("     -b  --fieldB     Second field location");
+    opt->addUsage("     -a  --first      First field location");
+    opt->addUsage("     -b  --second     Second field location");
     opt->addUsage("         --order      Quadrature order");
     opt->addUsage("         --output     Output file");
 
@@ -245,7 +245,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     bool debug = true;
 
-    in = opt->getValue("fieldA");
+    in = opt->getValue("first");
     if (in == 0)
     {
         in = "./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0";
@@ -257,11 +257,11 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputA = in;
     parse_dataset_path(inputA, locationA, inputfileA, extA);
-    std::cout << "fieldA location = " << locationA << std::endl;
-    std::cout << "fieldA inputfile = " << inputfileA << std::endl;
-    std::cout << "fieldA extension = " << extA << std::endl;
+    std::cout << "first field location = " << locationA << std::endl;
+    std::cout << "first field inputfile = " << inputfileA << std::endl;
+    std::cout << "first field extension = " << extA << std::endl;
 
-    in = opt->getValue("fieldB");
+    in = opt->getValue("second");
     if (in == 0)
     {
         in = "./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
@@ -273,9 +273,9 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputB = in;
     parse_dataset_path(inputB, locationB, inputfileB, extB);
-    std::cout << "fieldB location = " << locationB << std::endl;
-    std::cout << "fieldB inputfile = " << inputfileB << std::endl;
-    std::cout << "fieldB extension = " << extB << std::endl;
+    std::cout << "second field location = " << locationB << std::endl;
+    std::cout << "second field inputfile = " << inputfileB << std::endl;
+    std::cout << "second field extension = " << extB << std::endl;
 
     in = opt->getValue("output");
     if (in == 0)
