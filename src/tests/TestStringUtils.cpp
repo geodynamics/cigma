@@ -21,10 +21,13 @@ int main()
         using namespace std;
         std::string vtkpath = "/path/to/file.vtk:temperature";
         std::string hdfpath = "/path/to/file.h5:/path/to/dataset";
-        std::string location, filename, ext;
+        std::string testpath = "/path/to/some/file.ext:foo:bar:baz";
 
-        parse_dataset_path(hdfpath, location, filename, ext);
-        std::cout << "path      = '" << hdfpath << "'\n";
+        std::string path, location, filename, ext;
+
+        path = testpath;
+        parse_dataset_path(path, location, filename, ext);
+        std::cout << "path      = '" << path << "'\n";
         std::cout << "filename  = '" << filename << "'\n";
         std::cout << "extension = '" << ext << "'\n";
         std::cout << "location  = '" << location << "'\n";
