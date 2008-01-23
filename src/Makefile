@@ -35,7 +35,6 @@ OBJS = \
 	ExternalField.o \
 	Reader.o \
 	TextReader.o \
-	HdfReader.o \
 	VtkUgReader.o \
 	Writer.o \
 	TextWriter.o \
