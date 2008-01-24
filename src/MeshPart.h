@@ -15,12 +15,6 @@ public:
     virtual ~MeshPart();
 
 public:
-    //virtual int n_nodes() = 0;
-    //virtual int n_nsd() = 0;
-    //virtual int n_nel() = 0;
-    //virtual int n_ndofs() = 0;
-
-public:
     void set_coordinates(double *coordinates, int nno, int nsd);
     void set_connectivity(int *connectivity, int nel, int ndofs);
 
