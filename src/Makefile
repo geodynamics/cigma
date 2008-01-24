@@ -7,11 +7,13 @@ INCLUDES += $(PYTHON_INCLUDES)
 INCLUDES += $(VTK_INCLUDES)
 INCLUDES += $(HDF5_INCLUDES)
 INCLUDES += -I./h5io
+INCLUDES += -I./ann/include
 
 FLAGS += $(INCLUDES)
 
 LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
 
+ANNLIB = ../lib/libann.a
 H5IOLIB = ../lib/libh5io.a
 TARGETLIB = ../lib/libcigma.a
 
@@ -52,7 +54,7 @@ OBJS = \
 	Misc.o \
 
 
-default: libh5io testlib cigma vtkls tests
+default: libann libh5io testlib cigma vtkls tests
 
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
@@ -63,6 +65,9 @@ testlib: purge $(TESTLIB)
 
 libh5io:
 	cd h5io && make
+
+libann:
+	cd ann && make
 
 $(TESTLIB): $(OBJS)
 	rm -f $@
