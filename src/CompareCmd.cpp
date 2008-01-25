@@ -4,10 +4,12 @@
 #include "CompareCmd.h"
 #include "StringUtils.h"
 #include "VtkUgSimpleWriter.h"
-#include "VtkUgMeshPart.h"
+//#include "VtkUgMeshPart.h"
+#include "MeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
 #include "Numeric.h"
+#include "AnnLocator.h"
 
 
 
@@ -171,70 +173,91 @@ static void load_field(std::string inputfile,
     //* HdfReader case...
     // */
 
+
     field->dim = nsd;
     field->rank = dofs_valdim;
-    field->meshPart = new cigma::VtkUgMeshPart();
+    //field->meshPart = new cigma::VtkUgMeshPart();
+    field->meshPart = new cigma::MeshPart();
     field->meshPart->set_coordinates(coords, nno, nsd);
     field->meshPart->set_connectivity(connect, nel, ndofs);
 
-    /* 2D case
-    switch (ndofs)
-    {
-    case 3:
-        field->fe = new cigma::FE();
-        field->fe->cell = new cigma::Tri();
-        field->fe->quadrature = new cigma::Quadrature();
-        field->fe->quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
-        field->fe->quadrature->set_globaldim(tri_nsd);
-        field->fe->jxw = new double[tri_nno];
-        field->fe->basis_tab = new double[tri_nno * ndofs];
-        field->fe->basis_jet = new double[tri_nno * ndofs * tri_nsd];
-        field->meshPart->cell = field->fe->cell;
-        break;
-    case 4:
-        field->fe = new cigma::FE();
-        field->fe->cell = new cigma::Quad();
-        field->fe->quadrature = new cigma::Quadrature();
-        field->fe->quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
-        field->fe->quadrature->set_globaldim(quad_nsd);
-        field->fe->jxw = new double[quad_nno];
-        field->fe->basis_tab = new double[quad_nno * ndofs];
-        field->fe->basis_jet = new double[quad_nno * ndofs * quad_nsd];
-        field->meshPart->cell = field->fe->cell;
-        break;
-        break;
-    }
+
+    field->meshPart->set_cell();
+    assert(field->meshPart->cell != 0);
+
+
+    //* // XXX: Create locator only when necessary
+    cigma::AnnLocator *locator = new cigma::AnnLocator();
+    field->meshPart->set_locator(locator);
     // */
 
-    //* 3D case
-    switch (ndofs)
+
+    switch (field->dim)
     {
-    case 4:
-        field->fe = new cigma::FE();
-        field->fe->cell = new cigma::Tet();
-        field->fe->quadrature = new cigma::Quadrature();
-        field->fe->quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
-        field->fe->quadrature->set_globaldim(3);
-        field->fe->jxw = new double[tet_nno];
-        field->fe->basis_tab = new double[tet_nno * ndofs];
-        field->fe->basis_jet = new double[tet_nno * ndofs * tet_nsd];
-        field->meshPart->cell = field->fe->cell;
+    case 2:
+        //* 2D case
+        switch (ndofs)
+        {
+        case 3:
+            field->fe = new cigma::FE();
+            //field->fe->cell = new cigma::Tri();
+            field->fe->quadrature = new cigma::Quadrature();
+            field->fe->quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
+            field->fe->quadrature->set_globaldim(tri_nsd);
+            field->fe->jxw = new double[tri_nno];
+            field->fe->basis_tab = new double[tri_nno * ndofs];
+            field->fe->basis_jet = new double[tri_nno * ndofs * tri_nsd];
+            //field->meshPart->cell = field->fe->cell;
+            break;
+        case 4:
+            field->fe = new cigma::FE();
+            //field->fe->cell = new cigma::Quad();
+            field->fe->quadrature = new cigma::Quadrature();
+            field->fe->quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
+            field->fe->quadrature->set_globaldim(quad_nsd);
+            field->fe->jxw = new double[quad_nno];
+            field->fe->basis_tab = new double[quad_nno * ndofs];
+            field->fe->basis_jet = new double[quad_nno * ndofs * quad_nsd];
+            //field->meshPart->cell = field->fe->cell;
+            break;
+        }
+        // */
         break;
-    case 8:
-        field->fe = new cigma::FE();
-        field->fe->cell = new cigma::Hex();
-        field->fe->quadrature = new cigma::Quadrature();
-        field->fe->quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
-        field->fe->quadrature->set_globaldim(hex_nsd);
-        field->fe->jxw = new double[hex_nno];
-        field->fe->basis_tab = new double[hex_nno * ndofs];
-        field->fe->basis_jet = new double[hex_nno * ndofs * hex_nsd];
-        field->meshPart->cell = field->fe->cell;
+
+    case 3:
+        //* 3D case
+        switch (ndofs)
+        {
+        case 4:
+            field->fe = new cigma::FE();
+            //field->fe->cell = new cigma::Tet();
+            field->fe->quadrature = new cigma::Quadrature();
+            field->fe->quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
+            field->fe->quadrature->set_globaldim(3);
+            field->fe->jxw = new double[tet_nno];
+            field->fe->basis_tab = new double[tet_nno * ndofs];
+            field->fe->basis_jet = new double[tet_nno * ndofs * tet_nsd];
+            //field->meshPart->cell = field->fe->cell;
+            break;
+        case 8:
+            field->fe = new cigma::FE();
+            //field->fe->cell = new cigma::Hex();
+            field->fe->quadrature = new cigma::Quadrature();
+            field->fe->quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
+            field->fe->quadrature->set_globaldim(hex_nsd);
+            field->fe->jxw = new double[hex_nno];
+            field->fe->basis_tab = new double[hex_nno * ndofs];
+            field->fe->basis_jet = new double[hex_nno * ndofs * hex_nsd];
+            //field->meshPart->cell = field->fe->cell;
+            break;
+        } // */
         break;
-    } // */
+    }
+    field->fe->cell = field->meshPart->cell;
 
     assert(field->fe != 0);
     assert(field->fe->cell != 0);
+
 
     field->dofHandler = new cigma::DofHandler();
     field->dofHandler->meshPart = field->meshPart;
