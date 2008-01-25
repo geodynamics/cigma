@@ -27,12 +27,6 @@ public:
     ~VtkUgMeshPart();
 
 public:
-    //int n_nodes() { return nno; }
-    //int n_nsd()   { return nsd; }
-    //int n_nel()   { return nel; }
-    //int n_ndofs() { return ndofs; }
-
-public:
     void initialize();
     void set_coordinates(double *coordinates, int nno, int nsd);
     void set_connectivity(int *connectivity, int nel, int ndofs);
@@ -41,8 +35,6 @@ public:
     bool find_cell(double globalPoint[3], int *cellIndex);
 
 public:
-    //int nno, nsd;
-    //int nel, ndofs;
     vtkUnstructuredGrid *grid;
     vtkPoints *points;
     vtkDoubleArray *coordsArray;
