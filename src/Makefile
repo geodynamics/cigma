@@ -16,6 +16,7 @@ LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
 ANNLIB = ../lib/libann.a
 H5IOLIB = ../lib/libh5io.a
 TARGETLIB = ../lib/libcigma.a
+TESTLIB = ../lib/libcigma_d.a
 
 OBJS = \
 	Numeric.o \
@@ -52,14 +53,14 @@ OBJS = \
 	CompareCmd.o \
 	CubeCmd.o \
 	Misc.o \
+	Locator.o \
+	AnnLocator.o \
 
 
 default: libann libh5io testlib cigma vtkls tests
 
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
-
-TESTLIB = ../lib/libcigma_d.a
 
 testlib: purge $(TESTLIB)
 
@@ -74,7 +75,7 @@ $(TESTLIB): $(OBJS)
 	$(AR) $@ $(OBJS)
 	$(RANLIB) $@
 
-cigma: cigma.o $(TESTLIB)
+cigma: cigma.o $(TESTLIB) $(H5IOLIB) $(ANNLIB)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 vtkls: vtkls.o $(TESTLIB)

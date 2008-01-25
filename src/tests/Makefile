@@ -32,6 +32,7 @@ TESTOBJS = \
 	TestDofHandler.o \
 	TestFiatProxy.o \
 	TestAnn.o \
+	TestAnnLocator.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)
