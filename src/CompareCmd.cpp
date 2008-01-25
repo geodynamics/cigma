@@ -7,6 +7,7 @@
 #include "VtkUgMeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
+#include "Numeric.h"
 
 
 
