@@ -1,5 +1,12 @@
-#include "MeshPart.h"
 #include <cassert>
+#include "MeshPart.h"
+#include "Numeric.h"
+
+#include "Tet.h"
+#include "Hex.h"
+#include "Tri.h"
+#include "Quad.h"
+
 
 // ---------------------------------------------------------------------------
 
@@ -15,6 +22,7 @@ MeshPart()
     connect = 0;
     
     cell = 0;
+    locator = 0;
 }
 
 
@@ -33,14 +41,11 @@ cigma::MeshPart::
 void cigma::MeshPart::
 set_coordinates(double *coordinates, int nno, int nsd)
 {
-    //assert(nno > 0);
-    //assert(nsd > 0);
+    assert(nno > 0);
+    assert(nsd > 0);
 
     this->nno = nno;
     this->nsd = nsd;
-
-    //assert(nno == n_nodes());
-    //assert(nsd == n_nsd());
 
     /* // XXX: copy pointer
     coords = coordinates;
@@ -62,14 +67,11 @@ set_coordinates(double *coordinates, int nno, int nsd)
 void cigma::MeshPart::
 set_connectivity(int *connectivity, int nel, int ndofs)
 {
-    //assert(nel > 0);
-    //assert(ndofs > 0);
+    assert(nel > 0);
+    assert(ndofs > 0);
 
     this->nel = nel;
     this->ndofs = ndofs;
-
-    //assert(nel == n_nel());
-    //assert(ndofs == n_ndofs());
 
     /* // XXX: copy pointer
     connect = connectivity;
@@ -88,17 +90,64 @@ set_connectivity(int *connectivity, int nel, int ndofs)
 }
 
 
+void cigma::MeshPart::
+set_locator(Locator *locator)
+{
+    this->locator = locator;
+    locator->initialize(this);
+}
+
+
+void cigma::MeshPart::
+set_cell()
+{
+    assert(nsd > 0);
+    assert(ndofs > 0);
+
+    cell = 0;
+    switch (nsd)
+    {
+    case 3:
+        switch (ndofs)
+        {
+        case 4:
+            cell = new Tet();
+            break;
+        case 8:
+            cell = new Hex();
+            break;
+        }
+        break;
+    case 2:
+        switch (ndofs)
+        {
+        case 3:
+            cell = new Tri();
+            break;
+        case 4:
+            cell = new Quad();
+            break;
+        }
+        break;
+    }
+    assert(cell != 0);
+}
+
+
 // ---------------------------------------------------------------------------
+
+void cigma::MeshPart::
+get_bbox(double *minpt, double *maxpt)
+{
+    cigma::minmax(coords, nno, nsd, minpt, maxpt);
+}
+
 
 void cigma::MeshPart::
 get_cell_coords(int cellIndex, double *globalCellCoords)
 {
     //assert(nsd > 0);
     //assert(ndofs > 0);
-
-    //const int nel = n_nel();
-    //const int ndofs = n_ndofs();
-    //const int nsd = n_nsd();
 
     assert(0 <= cellIndex);
     assert(cellIndex < nel);
@@ -113,6 +162,76 @@ get_cell_coords(int cellIndex, double *globalCellCoords)
             globalCellCoords[nsd*i + j] = pt[j];
         }
     }
+}
+
+
+void cigma::MeshPart::
+select_cell(int e)
+{
+    get_cell_coords(e, cell->globverts);
+}
+
+
+bool cigma::MeshPart::
+find_cell(double *globalPoint, int *cellIndex)
+{
+    int i;
+    int e;
+    
+    *cellIndex = -1;
+
+    if (locator != 0)
+    {
+        locator->search(globalPoint);
+
+        for (i = 0; i < locator->n_idx(); i++)
+        {
+            e = locator->idx(i);
+
+            select_cell(e);
+
+            if (cell->global_interior(globalPoint))
+            {
+                *cellIndex = e;
+                return true;
+            }
+        }
+        return false;   // XXX: give up here? 
+    }
+
+
+    /* Check every cell for given point. Since
+     * quadrature points are clustered together in
+     * the same cell, remember the last cell
+     * that was checked and look there first.
+     */
+    static int last_cell = -1;
+
+    //*
+    if ((0 <= last_cell) && (last_cell < nel))
+    {
+        select_cell(last_cell);
+
+        if (cell->global_interior(globalPoint))
+        {
+            *cellIndex = last_cell;
+            return true;
+        }
+    } // */
+
+    for (e = 0; e < nel; e++)
+    {
+        select_cell(e);
+
+        if (cell->global_interior(globalPoint))
+        {
+            *cellIndex = e;
+            last_cell = e;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // ---------------------------------------------------------------------------
