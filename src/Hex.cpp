@@ -133,10 +133,5 @@ bool cigma::Hex::interior(double u, double v, double w)
 
 }
 
-bool cigma::Hex::interior2(double x, double y, double z)
-{
-    return false;
-}
-
 #undef ONE
 #undef ZERO

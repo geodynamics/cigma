@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include <cassert>
 #include "Cell.h"
+#include "Numeric.h"
+
+
+//----------------------------------------------------------------------------
 
 
 cigma::Cell::Cell()
@@ -17,8 +21,8 @@ cigma::Cell::~Cell()
     //std::cout << "Calling cigma::Cell::~Cell()\n";
 }
 
-//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
 
 
 void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
@@ -414,12 +418,12 @@ void cigma::Cell::centroid(double c[3])
 }
 
 
-bool cigma::Cell::interior2(double x, double y, double z)
+bool cigma::Cell::global_interior(double xyz[3])
 {
-    double uvw[3],xyz[3];
-    xyz[0] = x;
-    xyz[1] = y;
-    xyz[2] = z;
+    double uvw[3];
     xyz2uvw(xyz,uvw);
     return interior(uvw[0], uvw[1], uvw[2]);
 }
+
+
+//----------------------------------------------------------------------------

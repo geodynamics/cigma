@@ -104,11 +104,6 @@ bool cigma::Quad::interior(double u, double v, double w)
     return true;
 }
 
-bool cigma::Quad::interior2(double x, double y, double z)
-{
-    return false;
-}
-
 #undef ONE
 #undef ZERO
 

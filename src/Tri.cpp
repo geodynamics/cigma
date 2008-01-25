@@ -75,19 +75,21 @@ void cigma::Tri::grad_shape(int num, double *points, double *values)
 //void cigma::Tri::xyz2uvw(double xyz[3], double uvw[3]) {}
 
 
+#define ZERO    (-1.0e-6)
+#define ONE     (1 - ZERO)
+
 bool cigma::Tri::interior(double u, double v, double w)
 {
-    #define ZERO    (-1.0e-6)
-    #define ONE     (1 - ZERO)
 
     if ((u < ZERO) || (v < ZERO) || (u > (ONE - v)))
     {
         return false;
     }
     return true;
-
-    #undef ZERO
-    #undef ONE
 }
+
+#undef ZERO
+#undef ONE
+
 
 // ---------------------------------------------------------------------------

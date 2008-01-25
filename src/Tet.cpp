@@ -1,6 +1,7 @@
 //#include <iostream>
 #include <cassert>
 #include "Tet.h"
+#include "Numeric.h"
 
 // ---------------------------------------------------------------------------
 

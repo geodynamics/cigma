@@ -1,7 +1,6 @@
 #ifndef __CELL_H__
 #define __CELL_H__
 
-#include "Numeric.h"
 
 namespace cigma
 {
@@ -47,7 +46,7 @@ public:
     void bbox(double *min, double *max);
     void centroid(double c[3]);
     virtual bool interior(double u, double v, double w) = 0;
-    virtual bool interior2(double x, double y, double z);
+    virtual bool global_interior(double xyz[3]);
 
 
 public:
