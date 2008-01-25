@@ -52,32 +52,17 @@ int main(int argc, char *argv[])
 
 
     MeshPart *meshPart;
-    meshPart = new VtkUgMeshPart();
+    //meshPart = new VtkUgMeshPart();
+    meshPart = new MeshPart();
     meshPart->set_coordinates(coords, nno, nsd);
     meshPart->set_connectivity(connect, nel, ndofs);
-    meshPart->cell = 0;
-    switch (ndofs)
-    {
-        case 4:
-            meshPart->cell = new Tet();
-            break;
-        case 8:
-            meshPart->cell = new Hex();
-            break;
-    }
-    assert(meshPart->cell != 0);
-
-
+    meshPart->set_cell();
 
     AnnLocator *locator = new AnnLocator();
-    locator->initialize(meshPart);
-
-
-
+    meshPart->set_locator(locator);
 
     double minpt[nsd], maxpt[nsd];
     meshPart->get_bbox(minpt, maxpt);
-
 
 
     double *points = new double[npts * nsd];
@@ -92,8 +77,9 @@ int main(int argc, char *argv[])
 
 
 
-    int k = locator->nnk;
-    int *candidateCells= new int[k];
+    //int k = locator->nnk;
+    //int *candidateCells= new int[k];
+
     int *parentCells = new int[npts];
 
     for (i = 0; i < npts; i++)
@@ -108,13 +94,18 @@ int main(int argc, char *argv[])
     time(&t0);
     for (i = 0; i < npts; i++)
     {
+        bool found = false;
         double *pt = &points[nsd*i];
+
+
+
+        /*
         locator->search(pt, candidateCells, k);
 
-        bool found = false;
         for (j = 0; j < k; j++)
         {
             int e = candidateCells[j];
+
             meshPart->set_cell(e);
 
             double uvw[3];
@@ -125,7 +116,10 @@ int main(int argc, char *argv[])
                 parentCells[i] = e;
                 break;
             }
-        }
+        } // */
+
+        found = meshPart->find_cell(pt, &parentCells[i]);
+
         assert(found);
     }
     time(&t1);
@@ -165,7 +159,7 @@ int main(int argc, char *argv[])
 
     delete [] points;
     delete [] parentCells;
-    delete [] candidateCells;
+    //delete [] candidateCells;
 
 
     return 0;

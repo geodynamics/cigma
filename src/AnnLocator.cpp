@@ -1,5 +1,6 @@
 #include <cassert>
 #include "AnnLocator.h"
+#include "MeshPart.h"
 
 
 // ---------------------------------------------------------------------------
@@ -23,6 +24,7 @@ cigma::AnnLocator::~AnnLocator()
 {
     if (kdtree != 0) delete kdtree;
     if (dataPoints != 0) annDeallocPts(dataPoints);
+
     if (nnIdx != 0) delete [] nnIdx;
     if (nnDists != 0) delete [] nnDists;
 }
@@ -32,6 +34,8 @@ cigma::AnnLocator::~AnnLocator()
 
 void cigma::AnnLocator::initialize(MeshPart *meshPart)
 {
+    assert(nnk > 0);
+
     npts = meshPart->nel;
     nsd = meshPart->nsd;
     dim = 2 * nsd;
@@ -51,10 +55,9 @@ void cigma::AnnLocator::initialize(MeshPart *meshPart)
 
     for (i = 0; i < npts; i++)
     {
-        meshPart->set_cell(i);
-        meshPart->cell->bbox(minpt, maxpt);
-
         ANNpoint pt = dataPoints[i];
+        meshPart->select_cell(i);
+        meshPart->cell->bbox(minpt, maxpt);
         for (j = 0; j < nsd; j++)
         {
             pt[nsd*0 + j] = minpt[j];
@@ -68,22 +71,15 @@ void cigma::AnnLocator::initialize(MeshPart *meshPart)
 
 // ---------------------------------------------------------------------------
 
-void cigma::AnnLocator::search(double *globalPoint, int *cellIndices, int k)
+void cigma::AnnLocator::search(double *globalPoint)
 {
-    int i;
-
-    for (i = 0; i < nsd; i++)
+    for (int i = 0; i < nsd; i++)
     {
         queryPoint[nsd*0 + i] = globalPoint[i];
         queryPoint[nsd*1 + i] = globalPoint[i];
     }
 
-    kdtree->annkSearch(queryPoint, k, nnIdx, nnDists, epsilon);
-
-    for (i = 0; i < k; i++)
-    {
-        cellIndices[i] = nnIdx[i];
-    }
+    kdtree->annkSearch(queryPoint, nnk, nnIdx, nnDists, epsilon);
 }
 
 
