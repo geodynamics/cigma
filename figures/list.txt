@@ -1,0 +1,26 @@
+
+p0500 -> /pylith/tet4_0500m
+g0500 -> /pylith/tet4_0250m
+
+
+ssng-p0500-g0500-isosurf-disp-000.png
+ssng-p0500-g0500-isosurf-disp-100.png
+
+ssng-p0500-g0500-point-isosurf-velo-000.png
+ssng-p0500-g0500-point-isosurf-velo-010.png
+
+ssng-p0500-g0500-point-isosurf-velo-010.png
+ssng-p0500-g0500-point-isosurf-velo-100.png
+
+ssng-p0250-g0500-point-isosurf-disp-000.png
+
+rsng-p0500-g0500-cell-threshold-velo-010.png
+rsng-p0500-g0500-cell-threshold-velo-000.png
+
+rsng-p0500-g0500-cell-threshold-velo-050.png
+rsng-p0500-g0500-cell-threshold-velo-100.png
+
+rsng-p0500-g0500-point-isosurf-res-disp-000.png
+rsng-p0500-g0500-point-isosurf-res-disp-010.png
+rsng-p0500-g0500-point-isosurf-res-disp-050.png
+rsng-p0500-g0500-point-isosurf-res-disp-100.png

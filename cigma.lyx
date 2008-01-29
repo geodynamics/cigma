@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -219,23 +219,10 @@ Lastly, as an automated tool, Cigma can help developers in creating regression
 \end_layout
 
 \begin_layout Standard
-At its core, Cigma draws from a variety of libraries, particularly the 
-\begin_inset LatexCommand htmlurl
-name "Tetrahedral Mesh Comparator (TMC)"
-target "www.sci.utah.edu/~bavoil/research/tetsimp/tmc/"
-
-\end_inset
-
- from the University of Utah, which itself draws from the 
-\begin_inset LatexCommand htmlurl
-name "GTB Graphics Toolbox library"
-target "sf.net/projects/gtb"
-
-\end_inset
-
-.
- Cigma extends and generalizes the functionality therein to handle other
- types of elements as well as adding the ability to compare vector fields.
+At its core, Cigma draws from a variety of libraries, particularly the FIAT
+ Python Library from Cigma extends and generalizes the functionality therein
+ to handle other types of elements as well as adding the ability to compare
+ vector fields.
 \end_layout
 
 \begin_layout Section
@@ -345,6 +332,18 @@ target "geodynamics.org/cig/software/packages/cs/cigma"
 \end_layout
 
 \begin_layout LyX-Code
+$ tar xvfz cigma-0.9.1
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma-0.9.1
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --with-hdf5=$HDF5_PREFIX
+\end_layout
+
+\begin_layout LyX-Code
 $ make
 \end_layout
 
@@ -412,12 +411,48 @@ target "www.vtk.org/get-software.php"
 .
  If you obtain the binaries from a package manager, make sure to install
  the associated development headers along with the library.
- To enable VTK support in Cigma, use the following flags in the configure
- step:
+ To enable VTK support in Cigma, use the following additional flag in the
+ configure step for Cigma.
 \end_layout
 
 \begin_layout LyX-Code
 ./configure --with-vtk=/path/to/vtk
+\end_layout
+
+\begin_layout Subsection
+NumPy
+\end_layout
+
+\begin_layout Standard
+NumPy is a Python module which adds support for large multi-dimensional
+ arrays and matrices, and is available for download from [TODO]numpy.scipy.org.
+ To install this extension module from source, download it and issue the
+ following command in the NumPy source directory
+\end_layout
+
+\begin_layout Standard
+$ sudo python setup.py install[TODO:lyxcode]
+\end_layout
+
+\begin_layout Subsection
+FIAT
+\end_layout
+
+\begin_layout Standard
+The Finite Element Automatic Tabulator (FIAT) Python module supports generation
+ of arbitrary order instances of the Lagrange elements, as well as arbitrary
+ order instances of the Jacobi-type quadrature rules on the same element
+ shapes.
+ It is available from [TODO]http://www.fenics.org/wiki/FIAT
+\end_layout
+
+\begin_layout Standard
+To install this module, download it and issue the following command inside
+ the FIAT source directory:
+\end_layout
+
+\begin_layout Standard
+$ sudo python setup.py install[TODO:lyxcode]
 \end_layout
 
 \begin_layout Subsection
@@ -791,6 +826,8 @@ This release of Cigma provides you with two built-in finite element spaces
  shown below.
  The location of each element is indexed into a spatial database in order
  to speed up the evaluation process.
+ [TODO: drop the tet4, hex8 images but keep the formulas --adding more element
+ types, so will use single image]
 \end_layout
 
 \begin_layout Standard
@@ -1465,10 +1502,6 @@ cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=FunctionSpace
  --value=tet4
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
 \begin_layout Section
 Comparing Two Fields
 \end_layout
@@ -1667,18 +1700,9 @@ cigma extract --mesh=field1.h5:/model/mesh/
 \end_layout
 
 \begin_layout Standard
-[TODO: Luis, word 
-\begin_inset Quotes sld
-\end_inset
-
-explicit
-\begin_inset Quotes srd
-\end_inset
-
- here seems misplaced.] At this point, one possibility would be to dump explicit
- the list of points to a text file, generate the corresponding list of values
- on your own and import that list of values back into an HDF5 file that
- Cigma can understand.
+At this point, one possibility would be to copy the list of points to a
+ text file, generate the corresponding list of values on your own and import
+ that list of values back into an HDF5 file that Cigma can understand.
 \end_layout
 
 \begin_layout LyX-Code
@@ -1714,10 +1738,6 @@ cigma copy --source=values.txt
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 Lastly, you can provide the path to the explicit set of values with
 \end_layout
 
@@ -1731,10 +1751,6 @@ cigma compare --output=squared-residuals.vtk
 
 \begin_layout LyX-Code
               --second=values.h5:/stepN_values
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Subsection
@@ -1837,22 +1853,6 @@ cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 
 \end_layout
 
@@ -1963,7 +1963,7 @@ reference "fig:Cube-domain-of"
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2015,7 +2015,7 @@ The first benchmark problem (left) consists of a vertical right-lateral
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2095,7 +2095,7 @@ reference "fig:PyLith-solution"
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2156,7 +2156,7 @@ Slightly different behavior can be observed in the velocity field residuals.
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2208,7 +2208,7 @@ n mesh (left: t=0 years, right: t=1 year).
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2270,7 +2270,7 @@ Finally, here is a higher resolution comparison of the displacement residuals
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2328,7 +2328,7 @@ You can also visualize the distribution of errors by plotting the residual
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2380,7 +2380,7 @@ Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2439,7 +2439,7 @@ tic layer.
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -2491,7 +2491,7 @@ Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
