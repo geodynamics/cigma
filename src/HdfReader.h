@@ -5,10 +5,17 @@
 #include "hdf5.h"
 #include "Reader.h"
 
+#include "Quadrature.h"
+#include "MeshPart.h"
+#include "DofHandler.h"
+#include "FE_Field.h"
+
+
 namespace cigma
 {
     class HdfReader;
 }
+
 
 class cigma::HdfReader : public Reader
 {
@@ -17,32 +24,29 @@ public:
     ~HdfReader();
 
 public:
+    ReaderType getType() { return HDF_READER; }
+
+public:
     void open(std::string filename);
     void close();
 
 public:
-    void set_coordinates_path(const char *loc);
-    void set_connectivity_path(const char *loc);
-    void set_dataset_path(const char *loc);
+    void get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd);
+    void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs);
+    void get_dataset(const char *loc, double **data, int *num, int *dim);
 
 public:
-    void get_coordinates(double **coordinates, int *nno, int *nsd);
-    void get_connectivity(int **connectivity, int *nel, int *ndofs);
-    void get_dataset(double **data, int *num, int *dim);
+    void get_quadrature(Quadrature *quadrature, const char *loc);
+    void get_quadrature(Quadrature *quadrature, const char *points_loc, const char *weights_loc);
 
 public:
-    std::string coords_path;
-    std::string connect_path;
-    std::string dataset_path;
+    void get_field(FE_Field *field, const char *loc);
+    void get_mesh(MeshPart *meshPart, const char *coords_loc, const char *connect_loc);
+    void get_mesh(MeshPart *meshPart, const char *loc);
+    void get_dofs(DofHandler *dofHandler, const char *loc);
 
+public:
     hid_t file_id;
-    hid_t coords_id;
-    hid_t connect_id;
-    hid_t dataset_id;
-
-    hid_t coords_type;
-    hid_t connect_type;
-    hid_t dataset_type;
 };
 
 
