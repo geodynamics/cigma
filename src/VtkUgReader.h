@@ -20,7 +20,11 @@ public:
     ~VtkUgReader();
 
 public:
+    ReaderType getType() { return VTK_READER; }
+
+public:
     void open(std::string filename);
+    void close();
 
 public:
     void get_coordinates(double **coordinates, int *nno, int *nsd);
