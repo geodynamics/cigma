@@ -40,6 +40,17 @@ public:
     virtual void xyz2uvw(double xyz[3], double uvw[3]);
     void uvw2xyz(double uvw[3], double xyz[3]);
 
+public:
+    typedef enum {
+        POINT = 0,
+        TRIANGLE,
+        QUADRANGLE,
+        TETRAHEDRON,
+        HEXAHEDRON
+    } Geometry;
+
+    virtual Geometry geometry() = 0;
+
     //virtual double volume() = 0;
 
 public:

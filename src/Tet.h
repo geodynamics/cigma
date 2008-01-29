@@ -18,6 +18,7 @@ public:
     int n_nodes() { return 4; }
     int n_celldim() { return 3; }
     int n_dim() { return 3; }
+    Geometry geometry() { return TETRAHEDRON; }
 
 public:
     void shape(int num, double *points, double *values);
