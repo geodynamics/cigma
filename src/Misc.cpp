@@ -5,7 +5,15 @@
 
 #include "Misc.h"
 #include "AnnLocator.h"
+#include "StringUtils.h"
 
+#include "HdfReader.h"
+#include "TextReader.h"
+#include "VtkReader.h"
+
+#include "HdfWriter.h"
+#include "TextWriter.h"
+#include "VtkWriter.h"
 
 using namespace std;
 using namespace cigma;
@@ -32,8 +40,59 @@ void bbox_random_point(double minpt[3], double maxpt[3], double x[3])
 
 // ---------------------------------------------------------------------------
 
-void load_quadrature(Cell *cell, Quadrature *quadrature)
+void load_reader(Reader **reader, string ext)
 {
+    if (ext == ".h5")
+    {
+        *reader = new HdfReader();
+        return;
+    }
+
+    if (ext == ".txt")
+    {
+        *reader == new TextReader();
+        return;
+    }
+
+    if (ext == ".vtk")
+    {
+        *reader == new VtkReader();
+        return;
+    }
+
+}
+
+void load_writer(Writer **writer, string ext)
+{
+    if (ext == ".h5")
+    {
+        writer = new HdfWriter();
+        return;
+    }
+
+    if (ext == ".txt")
+    {
+        writer = new TextWriter();
+        return;
+    }
+
+    if (ext == ".vtk")
+    {
+        writer = new VtkWriter();
+        return;
+    }
+
+}
+
+void load_quadrature(Quadrature *quadrature,
+                     Cell *cell,
+                     Reader *reader,
+                     string arg_quadrature_path,
+                     string arg_points_loc,
+                     string arg_weights_loc,
+                     string arg_order)
+{
+    assert(quadrature != 0);
     assert(cell != 0);
 
     // XXX: change *_nsd to *_celldim since we are
@@ -96,40 +155,96 @@ void load_quadrature(Cell *cell, Quadrature *quadrature)
     double hex_qwts[8*3] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
 
 
-    switch (cell->geometry())
+    if (reader == 0)
     {
-    case Cell::TRIANGLE:
-        quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
-        quadrature->set_globaldim(tri_nsd);
-        break;
-    case Cell::QUADRANGLE:
-        quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
-        quadrature->set_globaldim(quad_nsd);
-        break;
-    case Cell::TETRAHEDRON:
-        quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
-        quadrature->set_globaldim(tet_nsd);
-        break;
-    case Cell::HEXAHEDRON:
-        quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
-        quadrature->set_globaldim(hex_nsd);
-        break;
+        assert(cell != 0);
+
+        if (order < 0)
+        {
+            // assign defaults
+            switch (cell->geometry())
+            {
+            case Cell::TRIANGLE:
+                quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
+                quadrature->set_globaldim(tri_nsd);
+                break;
+            case Cell::QUADRANGLE:
+                quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
+                quadrature->set_globaldim(quad_nsd);
+                break;
+            case Cell::TETRAHEDRON:
+                quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
+                quadrature->set_globaldim(tet_nsd);
+                break;
+            case Cell::HEXAHEDRON:
+                quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
+                quadrature->set_globaldim(hex_nsd);
+                break;
+            }
+        }
+        else
+        {
+            /* call FiatProxy
+            //fiat->set(quadrature);
+                int npts,dim;
+                double *qx,*qw;
+                fiat->quadrature(geometry, order, &qx, &qw, &npts, &dim);
+                quadrature->set_quadrature(qx, qw, nno, nsd);
+                delete [] qx;
+                delete [] qw;
+            // */
+        }
+    }
+    else
+    {
+        switch (reader->getType())
+        {
+        case Reader::HDF_READER:
+            assert(quadrature_path != "");
+            break;
+
+        case Reader::TXT_READER:
+            assert(points_loc != "");
+            assert(weights_loc != "");
+            break;
+        }
     }
 
+    assert(quadrature->n_points() > 0);
+    assert(quadrature->n_refdim() > 0);
+    assert(quadrature->n_globaldim() > 0);
 }
 
-void load_mesh()
+void load_mesh(MeshPart *meshPart,
+               Reader *reader,
+               string mesh_path,
+               string coords_loc,
+               string connect_loc)
 {
+    assert(meshPart != 0);
+
+    switch (reader->getType())
+    {
+    case Reader::HDF_READER:
+        break;
+
+    case Reader::TXT_READER:
+        break;
+
+    case Reader::VTK_READER:
+        break;
+    }
 }
 
-void load_field()
-{
-}
 
-void load_field(std::string inputfile,
-                std::string location,
-                cigma::VtkUgReader &reader,
-                cigma::FE_Field *field)
+void load_field(FE_Field *field,
+                MeshPart *meshPart,
+                Reader *fieldReader,
+                Reader *meshReader,
+                string field_path,
+                string mesh_path,
+                string coords_path,
+                string connect_path)
 {
 
     int nno, nsd;
@@ -139,6 +254,11 @@ void load_field(std::string inputfile,
 
     int dofs_nno, dofs_valdim;
     double *dofs;
+
+
+    // XXX: parse field_path here
+
+
 
     /* XXX: For the following two cases, I need a static initializer on
      * Reader class that instantiates the right subclass based on the
@@ -155,18 +275,27 @@ void load_field(std::string inputfile,
      * For detecting the filetype, one could rely only on the extension,
      * or possibly check for a magic number at the beginning of the file.
      */
-    //* VtkUgReader case...
-    reader.open(inputfile);
-    reader.get_coordinates(&coords, &nno, &nsd);
-    reader.get_connectivity(&connect, &nel, &ndofs);
-    //reader.get_dofs(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-    //reader.get_vector_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-    reader.get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-    //reader.get_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-    // */
+    switch (reader->getType())
+    {
+    case Reader::HDF_READER:
+        //XXX: cast to HdfReader
+        break;
 
-    //* HdfReader case...
-    // */
+    case Reader::TXT_READER:
+        break;
+
+    case Reader::VTK_READER:
+        //XXX: cast to VtkReader
+        //reader.open(inputfile);
+        reader->get_coordinates(&coords, &nno, &nsd);
+        reader->get_connectivity(&connect, &nel, &ndofs);
+        //reader->get_dofs(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        //reader->get_vector_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        reader->get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        //reader->get_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        break;
+    }
+
 
 
     field->dim = nsd;
@@ -177,10 +306,9 @@ void load_field(std::string inputfile,
     field->meshPart->set_connectivity(connect, nel, ndofs);
 
 
+    // move to set_mesh()
     field->meshPart->set_cell();
     assert(field->meshPart->cell != 0);
-
-
     //* // XXX: Create locator only when necessary
     cigma::AnnLocator *locator = new cigma::AnnLocator();
     field->meshPart->set_locator(locator);
@@ -251,6 +379,7 @@ void load_field(std::string inputfile,
     field->fe->cell = field->meshPart->cell;
     // */
 
+    //XXX: move to field->set_quadrature(...)
     Quadrature *Q = new cigma::Quadrature();
     load_quadrature(field->meshPart->cell, Q);
 

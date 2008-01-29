@@ -12,8 +12,10 @@
 
 #include "Cell.h"
 #include "Quadrature.h"
+#include "MeshPart.h"
 #include "FE_Field.h"
-#include "VtkUgReader.h"
+#include "Reader.h"
+#include "Writer.h"
 
 
 double pick_from_interval(double a, double b);
@@ -24,11 +26,14 @@ void load_mesh();
 void load_quadrature();
 void load_field();
 
+void load_reader(cigma::Reader **reader, std::string ext);
+void load_writer(cigma::Writer **writer, std::string ext);
+
 void load_quadrature(cigma::Cell *cell,
                      cigma::Quadrature *quadrature);
 
-void load_field(std::string inputfile,
-                std::string location,
-                cigma::VtkUgReader &reader,
-                cigma::FE_Field *field);
+void load_field(cigma::Reader *reader,
+                cigma::FE_Field *field,
+                std::string field_location);
+
 #endif
