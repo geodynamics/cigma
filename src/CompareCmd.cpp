@@ -3,13 +3,18 @@
 #include <ctime>
 #include "CompareCmd.h"
 #include "StringUtils.h"
-#include "VtkUgSimpleWriter.h"
+
 //#include "VtkUgMeshPart.h"
 #include "MeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
 #include "Numeric.h"
 #include "AnnLocator.h"
+
+//#include "VtkUgSimpleWriter.h"
+#include "HdfReader.h"
+#include "VtkReader.h"
+
 #include "Misc.h"
 
 
@@ -29,6 +34,14 @@ cigma::CompareCmd::CompareCmd()
     field_b = 0;
     residuals = 0; //XXX: create ResidualField class?
 
+    // readers & writers
+    readerA = 0;
+    readerB = 0;
+    readerM = 0;
+    readerQ = 0;
+    writer = 0;
+
+    // parameters
     verbose = false;
     output_frequency = 0;
 }
@@ -65,6 +78,9 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
 
     // options for quadrature
     opt->setOption("order");
+    opt->setOption("rule");
+    opt->setOption("rule-points");
+    opt->setOption("rule-weights");
 
     // options for output
     opt->setOption("output");
@@ -98,6 +114,9 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputA = in;
     parse_dataset_path(inputA, locationA, inputfileA, extA);
+    load_reader(&readerA, extA);
+    readerA->open(inputfileA);
+
 
     in = opt->getValue("second");
     if (in == 0)
@@ -111,6 +130,8 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputB = in;
     parse_dataset_path(inputB, locationB, inputfileB, extB);
+    load_reader(&readerB, extB);
+    readerB->open(inputfileB);
 
     in = opt->getValue("output");
     if (in == 0)
@@ -122,7 +143,11 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
+    string output_ext;
+    string output_fileroot;
     output_filename = in;
+    path_splitext(output_filename, output_fileroot, output_ext);
+    load_writer(&writer, output_ext);
     output_name = "epsilon";
 
 

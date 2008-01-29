@@ -6,8 +6,7 @@
 #include "Field.h"
 #include "FE_Field.h"
 #include "Writer.h"
-#include "VtkUgReader.h"
-//#include "HdfReader.h"
+#include "Reader.h"
 
 namespace cigma
 {
@@ -35,9 +34,11 @@ public:
     FE_Field *field_a;
     FE_Field *field_b;
     Field *residuals;
-    //Reader readerA, readerB;
-    //HdfReader h5_readerA, h5_readerB;
-    VtkUgReader readerA, readerB;
+    Reader *readerA;
+    Reader *readerB;
+    Reader *readerQ;
+    Reader *readerM;
+    Writer *writer;
 
 public:
     std::string locationA, locationB;
