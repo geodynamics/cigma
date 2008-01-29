@@ -27,6 +27,28 @@ open(std::string filename)
 void cigma::HdfReader::
 close()
 {
+    herr_t status = H5Fclose(file_id);
+}
+
+// ---------------------------------------------------------------------------
+
+
+void cigma::HdfReader::
+set_coordinates_path(const char *loc)
+{
+    coords_path = loc;
+}
+
+void cigma::HdfReader::
+set_connectivity_path(const char *loc)
+{
+    connect_path = loc;
+}
+
+void cigma::HdfReader::
+set_dataset_path(const char *loc)
+{
+    dataset_path = loc;
 }
 
 // ---------------------------------------------------------------------------
@@ -41,7 +63,7 @@ get_coordinates(double **coordinates, int *nno, int *nsd)
     assert(rank == 2);
 
     int ierr;
-    ierr = h5io_dset_read2(file_id, path, coords_type,
+    ierr = h5io_dset_read2(file_id, path, H5T_NATIVE_DOUBLE,
                            (void **)coordinates, nno, nsd);
     assert(ierr >= 0);
 }
@@ -56,12 +78,12 @@ get_connectivity(int **connectivity, int *nel, int *ndofs)
     assert(rank == 2);
 
     int ierr;
-    ierr = h5io_dset_read2(file_id, path, connect_type,
+    ierr = h5io_dset_read2(file_id, path, H5T_NATIVE_INT,
                            (void **)connectivity, nel, ndofs);
 }
 
 void cigma::HdfReader::
-get_point_data(const char *name, double **data, int *num, int *dim)
+get_dataset(double **data, int *num, int *dim)
 {
     int rank;
     const char *path = dataset_path.c_str();
@@ -70,7 +92,7 @@ get_point_data(const char *name, double **data, int *num, int *dim)
     assert(rank == 2);
 
     int ierr;
-    ierr = h5io_dset_read2(file_id, path, dataset_type,
+    ierr = h5io_dset_read2(file_id, path, H5T_NATIVE_DOUBLE,
                            (void **)data, num, dim);
 }
 

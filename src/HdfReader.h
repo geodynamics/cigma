@@ -28,7 +28,7 @@ public:
 public:
     void get_coordinates(double **coordinates, int *nno, int *nsd);
     void get_connectivity(int **connectivity, int *nel, int *ndofs);
-    void get_point_data(const char *name, double **data, int *num, int *dim);
+    void get_dataset(double **data, int *num, int *dim);
 
 public:
     std::string coords_path;
@@ -43,10 +43,6 @@ public:
     hid_t coords_type;
     hid_t connect_type;
     hid_t dataset_type;
-
-    //int *coords_shape;
-    //int *connect_shape;
-    //int *dataset_shape;
 };
 
 
