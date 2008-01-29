@@ -1,0 +1,112 @@
+dnl Check that this is the cigma source tree
+AC_INIT([../src/h5io/h5io.h], [0.9.1], [cig-cs@geodynamics.org], [Cigma])
+AC_CONFIG_MACRO_DIR([m4])
+
+dnl Parse '--with' command-line options
+AC_ARG_WITH(hdf5-prefix,
+            AC_HELP_STRING([--with-hdf5-prefix=PFX],
+                           [prefix where the HDF5 library and include files are installed]),
+            [HDF5_PREFIX=$withval])
+AC_ARG_WITH(zlib-prefix,
+            AC_HELP_STRING([--with-zlib-prefix=PFX],
+                           [prefix where the ZLIB library and include files are installed]),
+            ZLIB_PREFIX=$withval)
+
+dnl Get the operating system name
+UNAME=`uname`
+
+dnl Check for default compilers
+AC_PROG_CC
+AC_PROG_CXX
+if test "x${CC}" = "x" -o "x${CXX}" = "x"; then
+    AC_MSG_ERROR([Could not find required compilers, aborting.])
+fi
+LINKER="${CXX}"
+
+dnl Use C++ for all compilation tests
+AC_LANG(C++)
+
+dnl Set default flags
+FLAGS="-Wall"
+OPTIM="-g -O2"
+
+dnl Check for various programs
+AC_PROG_CPP
+
+dnl How to build static libraries?
+case "$UNAME" in
+  Darwin*)
+    AR="libtool -o"
+    RANLIB=true
+    ;;
+  *)
+    AC_PROG_RANLIB
+    AC_PATH_PROG(AR, ar)
+    if test "x${AR}" = "x"; then
+        AC_MSG_ERROR([Could not find the library archiver, aborting.])
+    fi
+    AR="${AR} ruvs"
+    ;;
+esac
+
+dnl See if we need a .exe extension on executables
+AC_EXEEXT
+
+dnl Check for standard math library
+AC_CHECK_LIB(m,main)
+
+CIGMA_LIBS=""
+CIGMA_DIRS="h5io ann"
+
+dnl Check for zlib
+ZLIB=""
+if test "x${ZLIB_PREFIX}" != "x"; then
+  LDFLAGS="-L${ZLIB_PREFIX} -L${ZLIB_PREFIX}/lib ${LDFLAGS}"
+fi
+AC_CHECK_LIB(z,main,ZLIB="yes",ZLIB="no")
+
+dnl Check for HDF5 (needs ZLIB)
+if test "x${ZLIB}" = "xyes"; then
+  if test "x${HDF5_PREFIX}" != "x"; then
+    LDFLAGS="-L${HDF5_PREFIX}/lib ${LDFLAGS}"
+  fi
+  AC_CHECK_LIB(hdf5,main,HDF5="yes",HDF5="no")
+  if test "x${HDF5}" = "xyes"; then
+    if test "x${HDF5_PREFIX}" = "x"; then
+      CIGMA_LIBS="${CIGMA_LIBS} -lhdf5"
+    else
+      CIGMA_LIBS="${CIGMA_LIBS} -L${HDF5_PREFIX}/lib -lhdf5"
+      FLAGS="${FLAGS} -I${HDF5_PREFIX}/include"
+    fi
+  fi
+fi
+
+dnl Complete zlib link line (zlib must be linked after HDF5)
+if test "x${ZLIB}" = "xyes"; then
+  if test "x${ZLIB_PREFIX}" = "x"; then
+    CIGMA_LIBS="${CIGMA_LIBS} -lz"
+  else
+    CIGMA_LIBS="${CIGMA_LIBS} -L${ZLIB_PREFIX} -L${ZLIB_PREFIX}/lib -lz"
+    FLAGS="${FLAGS} -I${ZLIB_PREFIX} -I${ZLIB_PREFIX}/include"
+  fi
+fi
+
+dnl Write output
+AC_SUBST(UNAME)
+AC_SUBST(FLAGS)
+AC_SUBST(OPTIM)
+AC_SUBST(LINKER)
+AC_SUBST(CIGMA_DIRS)
+AC_SUBST(CIGMA_LIBS)
+AC_SUBST(AR)
+AC_OUTPUT(variables)
+
+dnl Print some information
+echo "********************************************************************"
+echo "Cigma is configured for"
+echo "- OS           : $UNAME"
+echo "- C compiler   : $CC"
+echo "- C++ compiler : $CXX"
+echo "- Linker       : $LINKER"
+echo "- Optimization : $OPTIM"
+echo "- Options      : $FLAGS"

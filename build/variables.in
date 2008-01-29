@@ -22,20 +22,21 @@ OPTIM=@OPTIM@
 CIGMA_DIRS=@CIGMA_DIRS@
 CIGMA_LIBS=@CIGMA_LIBS@
 
-# Python (XXX need python auto-detection in python.m4)
-PYTHON_INCLUDES = -I/usr/include/python2.5 -I/usr/lib/python2.5/site-packages/numpy/core/include/numpy
-PYTHON_LIBS = -lpython2.5
-PYTHON_LDFLAGS = -L/usr/lib/python2.5/config
+# Python
+PYTHON_INCLUDES = @PYTHON_INCLUDES@
+PYTHON_LIBS     = @PYTHON_LIBS@
+PYTHON_LDFLAGS  = @PYTHON_LDFLAGS@
 
-# VTK (XXX use auto-detection from vtk.m4)
-VTK_INCLUDES = -I/usr/include/vtk-5.0
-VTK_LIBS = -lvtkCommon -lvtkIO -lvtkFiltering
-VTK_LDFLAGS = -L/usr/lib/vtk-5.0
+# VTK
+VTK_INCLUDES = @VTK_INCLUDES@
+VTK_LIBS     = @VTK_LIBS@
+VTK_LDFLAGS  = @VTK_LDFLAGS@
 
-# HDF5 (XXX need auto-detection in hdf.m4)
-HDF5_INCLUDES = -I/home/luis/opt/hdf5/1.6.5/include
-HDF5_LIBS = -lhdf5
-HDF5_LDFLAGS = -L/home/luis/opt/hdf5/1.6.5/lib
+# HDF5
+HDF5_INCLUDES = @HDF5_INCLUDES@
+HDF5_LIBS     = @HDF5_LIBS@
+HDF5_LDFLAGS  = @HDF5_LDFLAGS@
+
 
 # How you create a static library on this machine
 AR=@AR@
@@ -48,6 +49,7 @@ EXEEXT=@EXEEXT@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
+datarootdir=@datarootdir@
 datadir=@datadir@
 includedir=@includedir@
 libdir=@libdir@

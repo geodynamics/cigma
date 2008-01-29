@@ -1,15 +1,17 @@
-dnl Check that this is the cigma source tree
-AC_INIT(../src/h5io/h5io.h)
+AC_PREREQ(2.59)
+AC_INIT([Cigma], [0.9.1], [cig-cs@geodynamics.org], [cigma])
+AC_CONFIG_AUX_DIR([./aux-config])
+AC_CONFIG_HEADER([config.h])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([foreign])
 
-dnl Parse '--with' command-line options
-AC_ARG_WITH(hdf5-prefix,
-            AC_HELP_STRING([--with-hdf5-prefix=PFX],
-                           [prefix where the HDF5 library and include files are installed]),
-            [HDF5_PREFIX=$withval])
-AC_ARG_WITH(zlib-prefix,
-            AC_HELP_STRING([--with-zlib-prefix=PFX],
-                           [prefix where the ZLIB library and include files are installed]),
-            ZLIB_PREFIX=$withval)
+
+
+CIGMA_OPTIONS_ZLIB
+CIGMA_OPTIONS_HDF5
+CIGMA_OPTIONS_VTK
+
+
 
 dnl Get the operating system name
 UNAME=`uname`
@@ -51,44 +53,22 @@ esac
 dnl See if we need a .exe extension on executables
 AC_EXEEXT
 
+
 dnl Check for standard math library
 AC_CHECK_LIB(m,main)
 
-CIGMA_LIBS=""
-CIGMA_DIRS="h5io ann"
 
-dnl Check for zlib
-ZLIB=""
-if test "x${ZLIB_PREFIX}" != "x"; then
-  LDFLAGS="-L${ZLIB_PREFIX} -L${ZLIB_PREFIX}/lib ${LDFLAGS}"
-fi
-AC_CHECK_LIB(z,main,ZLIB="yes",ZLIB="no")
+dnl Check for the python include directories
+CIGMA_PATH_PYTHON
 
-dnl Check for HDF5 (needs ZLIB)
-if test "x${ZLIB}" = "xyes"; then
-  if test "x${HDF5_PREFIX}" != "x"; then
-    LDFLAGS="-L${HDF5_PREFIX}/lib ${LDFLAGS}"
-  fi
-  AC_CHECK_LIB(hdf5,main,HDF5="yes",HDF5="no")
-  if test "x${HDF5}" = "xyes"; then
-    if test "x${HDF5_PREFIX}" = "x"; then
-      CIGMA_LIBS="${CIGMA_LIBS} -lhdf5"
-    else
-      CIGMA_LIBS="${CIGMA_LIBS} -L${HDF5_PREFIX}/lib -lhdf5"
-      FLAGS="${FLAGS} -I${HDF5_PREFIX}/include"
-    fi
-  fi
-fi
+dnl Check for zlib and hdf5
+CIGMA_PATH_ZLIB
+CIGMA_PATH_HDF5
 
-dnl Complete zlib link line (zlib must be linked after HDF5)
-if test "x${ZLIB}" = "xyes"; then
-  if test "x${ZLIB_PREFIX}" = "x"; then
-    CIGMA_LIBS="${CIGMA_LIBS} -lz"
-  else
-    CIGMA_LIBS="${CIGMA_LIBS} -L${ZLIB_PREFIX} -L${ZLIB_PREFIX}/lib -lz"
-    FLAGS="${FLAGS} -I${ZLIB_PREFIX} -I${ZLIB_PREFIX}/include"
-  fi
-fi
+dnl Check for vtk-5.0
+AM_PATH_VTK
+
+
 
 dnl Write output
 AC_SUBST(UNAME)
@@ -98,7 +78,23 @@ AC_SUBST(LINKER)
 AC_SUBST(CIGMA_DIRS)
 AC_SUBST(CIGMA_LIBS)
 AC_SUBST(AR)
-AC_OUTPUT(variables)
+
+AC_SUBST(VTK_INCLUDES)
+AC_SUBST(VTK_LIBS)
+AC_SUBST(VTK_LDFLAGS)
+
+AC_SUBST(HDF5_INCLUDES)
+AC_SUBST(HDF5_LIBS)
+AC_SUBST(HDF5_LDFLAGS)
+
+AC_SUBST(PYTHON_INCLUDES)
+AC_SUBST(PYTHON_LIBS)
+AC_SUBST(PYTHON_LDFLAGS)
+
+AC_CONFIG_FILES([Makefile variables])
+
+AC_OUTPUT
+
 
 dnl Print some information
 echo "********************************************************************"

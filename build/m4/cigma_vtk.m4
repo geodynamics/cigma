@@ -13,17 +13,17 @@
 
 ##############################################################################
 #
-# AM_OPTIONS_VTK
+# CIGMA_OPTIONS_VTK
 #
 # Adds the --with-vtk=PATH option to the configure options
 #
-AC_DEFUN([AM_OPTIONS_VTK],[
+AC_DEFUN([CIGMA_OPTIONS_VTK],[
     AC_ARG_WITH([vtk],
                 [AC_HELP_STRING(
                     [--with-vtk],
-                    [The prefix where VTK is installed (default is /usr/local)])],
+                    [The prefix where VTK is installed (default is /usr)])],
                 [with_vtk=$withval],
-                [with_vtk="/usr/local"])
+                [with_vtk="/usr"])
     AC_ARG_WITH([vtk-version],
                 [AC_HELP_STRING(
                     [--with-vtk-version],
@@ -67,11 +67,12 @@ AC_DEFUN([AM_PATH_VTK],[
             AC_MSG_RESULT([yes])
 
             dnl these are the VTK libraries of a default build
-            VTK_LIBS="-lvtkCommon -lvtkFiltering"
+            VTK_LIBS="-lvtkCommon -lvtkIO -lvtkFiltering"
 
             dnl set VTK c,cpp,ld flags
             VTK_CFLAGS="-I$VTK_PREFIX/include/vtk$vtk_suffix"
             VTK_CXXFLAGS="$VTK_CFLAGS"
+            VTK_INCLUDES="-I$VTK_PREFIX/include/vtk$vtk_suffix"
             VTK_LDFLAGS="-L$VTK_PREFIX/lib/vtk $VTK_LIBS"
 
             dnl now, eventually check version

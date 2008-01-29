@@ -11,7 +11,7 @@ AC_DEFUN([CIGMA_OPTIONS_HDF5], [
     AC_ARG_VAR(HDF5_HOME, [home path to HDF5 library])
     AC_ARG_WITH([hdf5],
         [AC_HELP_STRING([--with-hdf5],
-                        [enable HDF5 @<:@default=/usr@:>@])],
+                        [The prefix where HDF5 is installed @<:@default=/usr@:>@])],
         [with_hdf5="$withval"],
         [with_hdf5="/usr"])
 ])
@@ -22,11 +22,12 @@ AC_DEFUN([CIGMA_OPTIONS_HDF5], [
 #
 AC_DEFUN([CIGMA_PATH_HDF5],[
     
+    # AC_REQUIRE([CIGMA_PATH_ZLIB])
+
+
     if [[ $with_hdf5 = "yes" ]]; then
-
-        dnl in case user wrote --with-hdf5=yes
+        dnl In case user wrote --with-hdf5=yes
         with_hdf5="/usr"
-
     fi
 
 
@@ -34,7 +35,7 @@ AC_DEFUN([CIGMA_PATH_HDF5],[
 
         HDF5_PREFIX="$with_hdf5"
 
-        AC_CHECK_FILE([$HDF5_PREFIX/include/hdf5.h],[hdf5Found="OK"])
+        AC_CHECK_FILE([$HDF5_PREFIX/include/hdf5.h], [hdf5Found="OK"])
         AC_MSG_CHECKING([if HDF5 is installed in $HDF5_PREFIX])
 
         if [[ -z "$hdf5Found" ]]; then
@@ -46,9 +47,15 @@ AC_DEFUN([CIGMA_PATH_HDF5],[
         else
 
             dnl HDF5 found!
+
             AC_MSG_RESULT([yes])
-            HDF5_CFLAGS="-I$HDF5_PREFIX/include"
-            HDF5_CXXFLAGS="$HDF5_CFLAGS"
+
+            AC_CHECK_LIB(hdf5,main,[hdf5lib="OK"])
+
+            #HDF5_CFLAGS="-I$HDF5_PREFIX/include"
+            #HDF5_CXXFLAGS="$HDF5_CFLAGS"
+
+            HDF5_INCLUDES="-I$HDF5_PREFIX/include"
             HDF5_LIBS="-lhdf5"
             HDF5_LDFLAGS="-L$HDF5_PREFIX/lib $HDF5_LIBS -Wl,--rpath -Wl,$HDF5_PREFIX/lib"
             $2
@@ -61,8 +68,7 @@ AC_DEFUN([CIGMA_PATH_HDF5],[
         dnl nothing to do?
         /bin/false
 
-    fi  # if [[ $with_hdf5 != "no" ]];
-
+    fi
 
 ])
 
