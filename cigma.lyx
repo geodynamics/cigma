@@ -220,9 +220,29 @@ Lastly, as an automated tool, Cigma can help developers in creating regression
 
 \begin_layout Standard
 At its core, Cigma draws from a variety of libraries.
- The FIAT Python Library used in Cigma in particular extends and generalizes
- its functionality so it can handle other types of elements and offer the
- ability to compare vector fields.
+ The 
+\begin_inset LatexCommand htmlurl
+name "FInite element Automatic Tabulator (FIAT)"
+target "www.fenics.org/wiki/FIAT"
+
+\end_inset
+
+ Python Library supports generation of arbitrary order instances of the
+ Lagrange elements on lines, triangles, and tetrahedra.
+ It can also generate order instances of Jacobi-type quadrature rules on
+ the same element shapes.
+ The 
+\begin_inset LatexCommand htmlurl
+name "Approximate Nearest Neighbor (ANN)"
+target "www.cs.umd.edu/~mount/ANN/"
+
+\end_inset
+
+ Library, written in C++, supports data structures and algorithms for both
+ exact and nearest-neighbor searching in arbitrarily high dimensions.
+ Both of these libraries particularly extend and generalize Cigma's functionalit
+y so it can handle other types of elements, and provide the ability to compare
+ vector fields.
 \end_layout
 
 \begin_layout Section
