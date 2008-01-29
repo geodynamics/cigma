@@ -127,23 +127,21 @@ int main(int argc, char *argv[])
 
     reader->open(filename);
 
-    reader->set_coordinates_path(coords_loc.c_str());
-    reader->set_connectivity_path(connect_loc.c_str());
-    reader->set_dataset_path(field_loc.c_str());
 
     int nno, nsd;
     double *coords;
-    reader->get_coordinates(&coords, &nno, &nsd);
+    reader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
 
     int nel, ndofs;
     int *connect;
-    reader->get_connectivity(&connect, &nel, &ndofs);
+    reader->get_connectivity(connect_loc.c_str(), &connect, &nel, &ndofs);
 
 
     int dset_dims[2];
     double *dset_data;
-    reader->get_dataset(&dset_data, &dset_dims[0], &dset_dims[1]);
+    reader->get_dataset(field_loc.c_str(), &dset_data, &dset_dims[0], &dset_dims[1]);
     
+
     cout << "Reading " << filename << endl;
     cout << "Coordinates: " << coords_loc << " (" << nno << " x " << nsd << ")" << endl;
     cout << "Connectivity: " << connect_loc << " (" << nel << " x " << ndofs << ")" << endl;
