@@ -70,11 +70,10 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     /* setup flags and options */
     opt->setFlag("help", 'h');
 
-    // options for first field, in the form /path/to/file:/path/to/dset
-    opt->setOption("first",'a');
-
-    // option for second field, in the form /path/to/file:/path/to/dset
-    opt->setOption("second",'b');
+    // options for mesh
+    opt->setOption("mesh");
+    opt->setOption("mesh-coordinates");
+    opt->setOption("mesh-connectivity");
 
     // options for quadrature
     opt->setOption("order");
@@ -82,12 +81,24 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->setOption("rule-points");
     opt->setOption("rule-weights");
 
+    // options for first field, in the form /path/to/file:/path/to/dset
+    opt->setOption("first",'a');
+    opt->setOption("first-mesh");
+    opt->setOption("first-mesh-coordinates");
+    opt->setOption("first-mesh-connectivity");
+
+    // option for second field, in the form /path/to/file:/path/to/dset
+    opt->setOption("second",'b');
+    opt->setOption("second-mesh");
+    opt->setOption("second-mesh-coordinates");
+    opt->setOption("second-mesh-connectivity");
+
     // options for output
     opt->setOption("output");
+    opt->setOption("output-frequency",'f');
 
     // other options
     opt->setFlag("verbose");
-    opt->setOption("output-frequency",'f');
 }
 
 void cigma::CompareCmd::configure(AnyOption *opt)
@@ -160,6 +171,26 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputstr = in;
     string_to_int(inputstr, output_frequency);
+
+
+    /*
+     * Initialization order:
+     *  Load Integration mesh
+     *  Load Quadrature rule
+     *  Load First field
+     *      If FE_Field
+     *          Load MeshA
+     *          Load DofsB
+     *      Else
+     *          Load Analytic Field
+     *  Load Second field
+     *      If FE_Field
+     *          Load MeshB
+     *          Load DofsB
+     *      Else
+     *          Load Analytic Field
+     */
+
 
 
     field_a = new FE_Field();
