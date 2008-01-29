@@ -137,7 +137,7 @@ AC_DEFUN([AM_PATH_VTK],[
 
             else
 
-                dnl if we don't ahve to check for minimum version
+                dnl if we don't have to check for minimum version
                 dnl (because the user did not set that option),
                 dnl then we can execute here the block action-if-found
                 CFLAGS="$VTK_CFLAGS $CFLAGS"
