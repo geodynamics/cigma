@@ -29,7 +29,6 @@ OBJS = \
 	Quadrature.o \
 	FiatProxy.o \
 	MeshPart.o \
-	VtkUgMeshPart.o \
 	CubeMeshPart.o \
 	DofHandler.o \
 	FE.o \
@@ -37,9 +36,9 @@ OBJS = \
 	FE_Field.o \
 	ExternalField.o \
 	Reader.o \
-	TextReader.o \
-	VtkUgReader.o \
 	HdfReader.o \
+	TextReader.o \
+	VtkReader.o \
 	Writer.o \
 	TextWriter.o \
 	VtkUgSimpleWriter.o \
