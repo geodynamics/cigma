@@ -39,6 +39,7 @@ OBJS = \
 	Reader.o \
 	TextReader.o \
 	VtkUgReader.o \
+	HdfReader.o \
 	Writer.o \
 	TextWriter.o \
 	VtkUgSimpleWriter.o \
@@ -86,6 +87,8 @@ tests: $(TESTLIB)
 
 clean:
 	rm -f $(OBJS) cigma.o vtkls.o
+	#cd h5io && make clean
+	#cd ann && make clean
 
 purge: clean
 	rm -f $(TESTLIB)
