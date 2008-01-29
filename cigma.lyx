@@ -1,4 +1,4 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -219,10 +219,10 @@ Lastly, as an automated tool, Cigma can help developers in creating regression
 \end_layout
 
 \begin_layout Standard
-At its core, Cigma draws from a variety of libraries, particularly the FIAT
- Python Library from Cigma extends and generalizes the functionality therein
- to handle other types of elements as well as adding the ability to compare
- vector fields.
+At its core, Cigma draws from a variety of libraries.
+ The FIAT Python Library used in Cigma in particular extends and generalizes
+ its functionality so it can handle other types of elements and offer the
+ ability to compare vector fields.
 \end_layout
 
 \begin_layout Section
@@ -425,13 +425,20 @@ NumPy
 
 \begin_layout Standard
 NumPy is a Python module which adds support for large multi-dimensional
- arrays and matrices, and is available for download from [TODO]numpy.scipy.org.
+ arrays and matrices, and is available for download from the 
+\begin_inset LatexCommand htmlurl
+name "NumPy Home Page"
+target "numpy.scipy.org "
+
+\end_inset
+
+.
  To install this extension module from source, download it and issue the
  following command in the NumPy source directory
 \end_layout
 
-\begin_layout Standard
-$ sudo python setup.py install[TODO:lyxcode]
+\begin_layout LyX-Code
+$ sudo python setup.py install
 \end_layout
 
 \begin_layout Subsection
@@ -443,7 +450,14 @@ The Finite Element Automatic Tabulator (FIAT) Python module supports generation
  of arbitrary order instances of the Lagrange elements, as well as arbitrary
  order instances of the Jacobi-type quadrature rules on the same element
  shapes.
- It is available from [TODO]http://www.fenics.org/wiki/FIAT
+ It is available from 
+\begin_inset LatexCommand htmlurl
+name "The FEniCS Project"
+target "www.fenics.org/wiki/FIAT"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -451,8 +465,8 @@ To install this module, download it and issue the following command inside
  the FIAT source directory:
 \end_layout
 
-\begin_layout Standard
-$ sudo python setup.py install[TODO:lyxcode]
+\begin_layout LyX-Code
+$ sudo python setup.py install
 \end_layout
 
 \begin_layout Subsection
@@ -826,54 +840,13 @@ This release of Cigma provides you with two built-in finite element spaces
  shown below.
  The location of each element is indexed into a spatial database in order
  to speed up the evaluation process.
- [TODO: drop the tet4, hex8 images but keep the formulas --adding more element
- types, so will use single image]
+ 
 \end_layout
 
-\begin_layout Standard
-
-\newpage
-
-\end_layout
-
-\begin_layout Standard
+\begin_layout Paragraph*
 Function Space 
 \bar under
 tet4
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/reference-tet4.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reference tetrahedral element
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -888,55 +861,10 @@ TN_{d} & = & \frac{1}{2}(1+z)\end{eqnarray*}
 
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\newpage
-
-\end_layout
-
-\begin_layout Standard
+\begin_layout Paragraph*
 Function Space 
 \bar under
 hex8
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/reference-hex8.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reference hexahedral element
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -949,11 +877,6 @@ HN_{e} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1+z\right)\\
 HN_{f} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1+z\right)\\
 HN_{g} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1+z\right)\\
 HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
 
 \end_inset
 
