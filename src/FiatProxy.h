@@ -13,7 +13,7 @@ class cigma::FiatProxy
 {
 public:
     typedef enum {
-        LINE=11,
+        LINE=12,
         TRIANGLE=23,
         QUADRANGLE=24,
         TETRAHDRON=34,
