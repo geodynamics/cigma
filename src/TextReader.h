@@ -4,16 +4,21 @@
 #include <cstdio>
 #include <string>
 
+#include "Reader.h"
+
 namespace cigma
 {
     class TextReader;
 };
 
-class cigma::TextReader
+class cigma::TextReader : public Reader
 {
 public:
     TextReader();
     ~TextReader();
+
+public:
+    ReaderType getType() { return TXT_READER; }
 
 public:
     void open(std::string filename);
