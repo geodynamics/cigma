@@ -4,10 +4,12 @@
 #include <cstdio>
 #include <string>
 
+
 namespace cigma
 {
     class Writer;
 };
+
 
 class cigma::Writer
 {
@@ -18,9 +20,13 @@ public:
         VTK_WRITER,
         TXT_WRITER
     } WriterType;
+
 public:
     Writer();
     ~Writer();
+
+public:
+    virtual WriterType getType() = 0;
 };
 
 // ---------------------------------------------------------------------------
