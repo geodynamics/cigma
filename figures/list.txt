@@ -1,6 +1,6 @@
 
 p0500 -> /pylith/tet4_0500m
-g0500 -> /pylith/tet4_0250m
+g0500 -> /geofest/tet4_0250m
 
 
 ssng-p0500-g0500-isosurf-disp-000.png
