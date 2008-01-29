@@ -2,7 +2,7 @@
 #define __FIAT_PROXY_H__
 
 #include "Python.h"
-#include "arrayobject.h"
+#include "numpy/arrayobject.h"
 
 namespace cigma
 {
