@@ -6,8 +6,8 @@
 
 #include "../Numeric.h"
 #include "../TextWriter.h"
-#include "../VtkUgReader.h"
-#include "../VtkUgMeshPart.h"
+#include "../VtkReader.h"
+#include "../MeshPart.h"
 #include "../Misc.h"
 
 using namespace cigma;
@@ -37,7 +37,7 @@ int main(void)
     TextWriter *writer = new TextWriter();
     writer->fp = stdout;
 
-    VtkUgReader *reader = new VtkUgReader();
+    VtkReader *reader = new VtkReader();
     std::string filename = "strikeslip_tet4_1000m_t0.vtk";
     reader->open(filename);
 
@@ -49,7 +49,7 @@ int main(void)
     int nel, ndofs;
     reader->get_connectivity(&connect, &nel, &ndofs);
 
-    VtkUgMeshPart *meshPart = new VtkUgMeshPart();
+    MeshPart *meshPart = new MeshPart();
 
     meshPart->set_coordinates(coords, nno, nsd);
     meshPart->set_connectivity(connect, nel, ndofs);

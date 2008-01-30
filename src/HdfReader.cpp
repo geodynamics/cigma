@@ -7,6 +7,7 @@
 
 cigma::HdfReader::HdfReader()
 {
+    file_id = -1;
 }
 
 cigma::HdfReader::~HdfReader()
@@ -28,6 +29,10 @@ void cigma::HdfReader::
 close()
 {
     herr_t status = H5Fclose(file_id);
+    if (status < 0)
+    {
+        // XXX: emit warning?
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -37,10 +42,18 @@ get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd)
 {
     int rank;
     hid_t type_id;
-    hid_t coords_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    hid_t coords_id;
+    herr_t status;
+
+    coords_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    assert(H5Tget_class(type_id) == H5T_FLOAT);
     assert(coords_id >= 0);
     assert(rank == 2);
-    herr_t status = H5Dclose(coords_id);
+    status = H5Dclose(coords_id);
+    if (status < 0)
+    {
+        // XXX: emit warning
+    }
 
     int ierr;
     ierr = h5io_dset_read2(file_id, loc, H5T_NATIVE_DOUBLE,
@@ -53,10 +66,18 @@ get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs)
 {
     int rank;
     hid_t type_id;
-    hid_t connect_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    hid_t connect_id;
+    herr_t status;
+
+    connect_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    assert(H5Tget_class(type_id) == H5T_INTEGER);
     assert(connect_id >= 0);
     assert(rank == 2);
-    herr_t status = H5Dclose(connect_id);
+    status = H5Dclose(connect_id);
+    if (status < 0)
+    {
+        // XXX: emit warning
+    }
 
     int ierr;
     ierr = h5io_dset_read2(file_id, loc, H5T_NATIVE_INT,
@@ -68,10 +89,18 @@ get_dataset(const char *loc, double **data, int *num, int *dim)
 {
     int rank;
     hid_t type_id;
-    hid_t dataset_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    hid_t dataset_id;
+    herr_t status;
+
+    dataset_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
+    assert(H5Tget_class(type_id) == H5T_FLOAT);
     assert(dataset_id >= 0);
     assert(rank == 2);
-    herr_t status = H5Dclose(dataset_id);
+    status = H5Dclose(dataset_id);
+    if (status < 0)
+    {
+        // XXX: emit warning
+    }
 
     int ierr;
     ierr = h5io_dset_read2(file_id, loc, H5T_NATIVE_DOUBLE,

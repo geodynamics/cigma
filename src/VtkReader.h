@@ -14,7 +14,7 @@ namespace cigma
     class VtkReader;
 }
 
-class cigma::VtkReader : cigma::Reader
+class cigma::VtkReader : public cigma::Reader
 {
 public:
     typedef enum {

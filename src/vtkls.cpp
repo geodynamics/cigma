@@ -285,7 +285,6 @@ int main(int argc, char *argv[])
         for (i = 0; i < n; i++)
         {
             const char *name = reader->GetScalarsNameInFile(i);
-            vtkDataArray *dataArray = pointData->GetArray(i);
             cout << "Scalars[" << i << "] = " << name;
             cout << endl;
         }

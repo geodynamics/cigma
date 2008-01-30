@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <string>
 
+#include "FE_Field.h"
+
 
 namespace cigma
 {
@@ -27,7 +29,13 @@ public:
 
 public:
     virtual WriterType getType() = 0;
+    virtual void open(std::string filename) = 0;
+    virtual void close() = 0;
+
+public:
+    virtual void write_field(FE_Field *field) = 0;
 };
+
 
 // ---------------------------------------------------------------------------
 

@@ -116,7 +116,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     in = opt->getValue("first");
     if (in == 0)
     {
-        in = "./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0";
+        in = (char *)"./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0"; // XXX: get rid of these defaults and the subsequent if(!debug){} construct
         if (!debug)
         {
             std::cerr << "compare: Please specify the option --fieldA" << std::endl;
@@ -132,7 +132,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     in = opt->getValue("second");
     if (in == 0)
     {
-        in = "./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
+        in = (char *)"./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
         if (!debug)
         {
             std::cerr << "compare: Please specify the option --fieldB" << std::endl;
@@ -147,7 +147,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     in = opt->getValue("output");
     if (in == 0)
     {
-        in = "foo.vtk";
+        in = (char *)"foo.vtk";
         if (!debug)
         {
             std::cerr << "compare: Please specify the option --output" << std::endl;
@@ -167,7 +167,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     in = opt->getValue("output-frequency");
     if (in == 0)
     {
-        in = "1000";
+        in = (char *)"1000";
     }
     inputstr = in;
     string_to_int(inputstr, output_frequency);
@@ -194,7 +194,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
 
     field_a = new FE_Field();
-    load_field(inputfileA, locationA, readerA, field_a);
+    //load_field(inputfileA, locationA, readerA, field_a);
     std::cout << "first field location = " << locationA << std::endl;
     std::cout << "first field inputfile = " << inputfileA << std::endl;
     std::cout << "first field extension = " << extA << std::endl;
@@ -205,7 +205,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
               << field_a->n_rank() << std::endl;
 
     field_b = new FE_Field();
-    load_field(inputfileB, locationB, readerB, field_b);
+    //load_field(inputfileB, locationB, readerB, field_b);
     std::cout << "second field location = " << locationB << std::endl;
     std::cout << "second field inputfile = " << inputfileB << std::endl;
     std::cout << "second field extension = " << extB << std::endl;
@@ -239,6 +239,7 @@ int cigma::CompareCmd::run()
     assert(field_b != 0);
     assert(field_a->n_dim() == field_a->n_dim());
     assert(field_a->n_rank() == field_b->n_rank());
+    assert(writer != 0);
 
 
     Cell *cell_a = field_a->fe->cell;
@@ -271,8 +272,8 @@ int cigma::CompareCmd::run()
     time(&t_0);
     t_e = t_0;
 
-    const int eltPeriod = output_frequency;
-    const int eltMax = 1000;
+    //const int eltPeriod = output_frequency;
+    //const int eltMax = 1000;
 
     if (verbose)
     {
@@ -355,7 +356,24 @@ int cigma::CompareCmd::run()
     std::cout << std::setprecision(12);
     std::cout << "L2 = " << L2 << std::endl;
 
+
     /* write out data */
+    {
+        residuals = new FE_Field();
+        residuals->fe = 0;
+        residuals->meshPart = mesh;
+        residuals->dofHandler = new DofHandler();
+        residuals->dofHandler->nno = nel;
+        residuals->dofHandler->ndim = 1;
+        residuals->dofHandler->dofs = epsilon;
+
+        writer->open(output_filename);
+        writer->write_field(residuals);
+        writer->close();
+    }
+
+
+    /* write out data
     {
         int nno = mesh->nno;
         int nsd = mesh->nsd;
@@ -363,7 +381,8 @@ int cigma::CompareCmd::run()
         double *coords = mesh->coords;
         int *connect = mesh->connect;
 
-        /* XXX: create a cell-based ResidualField class */
+        // XXX: create a cell-based ResidualField class
+
         //std::cout << "Creating file " << output_filename << std::endl;
         VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
         writer->open(output_filename);
@@ -374,7 +393,7 @@ int cigma::CompareCmd::run()
         writer->write_cell_data(output_name.c_str(), epsilon, nel, 1);
         writer->close();
         //delete writer;
-    }
+    } // */
 
     /* clean up */
     delete [] epsilon;

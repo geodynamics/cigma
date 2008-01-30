@@ -8,8 +8,8 @@
 #include "ANN/ANN.h"
 
 #include "MeshPart.h"
-#include "VtkUgMeshPart.h"
-#include "VtkUgReader.h"
+#include "MeshPart.h"
+#include "VtkReader.h"
 
 #include "Cell.h"
 #include "Tet.h"
@@ -178,14 +178,14 @@ int main(int argc, char *argv[])
     int nel, ndofs;
     int *connect;
 
-    VtkUgReader reader;
+    VtkReader reader;
     reader.open(filename);
     reader.get_coordinates(&coords, &nno, &nsd);
     reader.get_connectivity(&connect, &nel, &ndofs);
     assert(nsd == 3);
 
     MeshPart *meshPart;
-    meshPart = new VtkUgMeshPart();
+    meshPart = new MeshPart();
     meshPart->set_coordinates(coords, nno, nsd);
     meshPart->set_connectivity(connect, nel, ndofs);
     meshPart->cell = 0;
@@ -291,7 +291,6 @@ int main(int argc, char *argv[])
             cout << "                                 "
                  << "                                 "
                  << "                                 "
-                 << "                                 "
                  << "\r";
 
             cout << std::flush;
@@ -358,8 +357,6 @@ int main(int argc, char *argv[])
                         << point[2] << ") ";
         }
 
-
-        //cout << "fubar'd -> " << i << endl;
         locator->find(point, cellIndices);
 
         for (j = 0; j < num_candidates; j++)
@@ -387,7 +384,6 @@ int main(int argc, char *argv[])
                  << progress << "% ";
 
             cout << "                                 "
-                 << "                                 "
                  << "                                 "
                  << "                                 "
                  << "\r";

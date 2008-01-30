@@ -3,6 +3,7 @@
 
 #include "Python.h"
 #include "numpy/arrayobject.h"
+#include "Cell.h"
 
 namespace cigma
 {
@@ -13,10 +14,11 @@ class cigma::FiatProxy
 {
 public:
     typedef enum {
+        POINT=0,
         LINE=12,
         TRIANGLE=23,
         QUADRANGLE=24,
-        TETRAHDRON=34,
+        TETRAHEDRON=34,
         HEXAHEDRON=38
     } FiatShape;
 
@@ -27,6 +29,9 @@ public:
 public:
     void initialize();
     void finalize();
+
+public:
+    static FiatShape getFiatShape(Cell::Geometry cellGeometry);
 
 public:
     void test(const char *msg, int n);

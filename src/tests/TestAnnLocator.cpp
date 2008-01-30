@@ -4,8 +4,7 @@
 
 #include "AnnLocator.h"
 #include "MeshPart.h"
-#include "VtkUgMeshPart.h"
-#include "VtkUgReader.h"
+#include "VtkReader.h"
 #include "Misc.h"
 #include "StringUtils.h"
 
@@ -45,14 +44,13 @@ int main(int argc, char *argv[])
     int *connect;
 
 
-    VtkUgReader reader;
+    VtkReader reader;
     reader.open(filename);
     reader.get_coordinates(&coords, &nno, &nsd);
     reader.get_connectivity(&connect, &nel, &ndofs);
 
 
     MeshPart *meshPart;
-    //meshPart = new VtkUgMeshPart();
     meshPart = new MeshPart();
     meshPart->set_coordinates(coords, nno, nsd);
     meshPart->set_connectivity(connect, nel, ndofs);

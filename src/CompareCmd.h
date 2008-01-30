@@ -33,7 +33,7 @@ public:
     MeshPart *mesh;
     FE_Field *field_a;
     FE_Field *field_b;
-    Field *residuals;
+    FE_Field *residuals;
     Reader *readerA;
     Reader *readerB;
     Reader *readerQ;
@@ -41,7 +41,10 @@ public:
     Writer *writer;
 
 public:
-    std::string locationA, locationB;
+    std::string locationA;
+    std::string locationB;
+    std::string locationQ;
+    std::string locationM;
     std::string output_filename, output_name;
     bool verbose;
     int output_frequency;

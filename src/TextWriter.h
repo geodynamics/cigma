@@ -4,20 +4,28 @@
 #include <cstdio>
 #include <string>
 
+#include "Writer.h"
+
+
 namespace cigma
 {
     class TextWriter;
 };
 
-class cigma::TextWriter
+
+class cigma::TextWriter : public Writer
 {
 public:
     TextWriter();
     ~TextWriter();
 
 public:
+    WriterType getType() { return TXT_WRITER; }
     void open(std::string filename);
     void close();
+
+public:
+    void write_field(FE_Field *field);
 
 public:
     void write_connectivity(int *connectivity, int nel, int ndofs);
@@ -27,6 +35,7 @@ public:
 public:
     FILE *fp;
 };
+
 
 // ---------------------------------------------------------------------------
 

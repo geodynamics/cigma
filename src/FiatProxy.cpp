@@ -78,12 +78,40 @@ void cigma::FiatProxy::finalize()
         Py_XDECREF(module);
 }
 
+
+
+// ---------------------------------------------------------------------------
+
+cigma::FiatProxy::FiatShape
+cigma::FiatProxy::getFiatShape(Cell::Geometry cellGeometry)
+{
+    switch (cellGeometry)
+    {
+    case Cell::TRIANGLE:
+        return FiatProxy::TRIANGLE;
+    case Cell::QUADRANGLE:
+        return FiatProxy::QUADRANGLE;
+    case Cell::TETRAHEDRON:
+        return FiatProxy::TETRAHEDRON;
+    case Cell::HEXAHEDRON:
+        return FiatProxy::HEXAHEDRON;
+    default:
+        break;
+    }
+    return FiatProxy::POINT;
+}
+
+
+
+
+// ---------------------------------------------------------------------------
+
 void cigma::FiatProxy::test(const char *msg, int n)
 {
     PyObject *result;
     long answer;
     
-    result = PyObject_CallFunction(test_fn, "(si)", msg, n);
+    result = PyObject_CallFunction(test_fn, (char *)"(si)", msg, n);
 
     if (result)
     {

@@ -152,6 +152,8 @@ int cigma::CubeCmd::run()
     writer->write_cell_types(mesh->nsd, mesh->nel, mesh->ndofs);
     writer->close();
     //delete writer;
+
+    return 0;
 }
 
 // ---------------------------------------------------------------------------

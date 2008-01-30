@@ -14,6 +14,7 @@ cigma::TextWriter::~TextWriter()
 }
 
 // ---------------------------------------------------------------------------
+
 void cigma::TextWriter::open(std::string filename)
 {
     fp = fopen(filename.c_str(), "w");
@@ -26,6 +27,15 @@ void cigma::TextWriter::close()
     {
         fclose(fp);
     }
+}
+
+
+// ---------------------------------------------------------------------------
+
+void cigma::TextWriter::
+write_field(FE_Field *field)
+{
+    assert(field != 0);
 }
 
 

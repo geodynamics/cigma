@@ -2,9 +2,9 @@
 #include <cassert>
 #include "EvalCmd.h"
 #include "StringUtils.h"
-#include "VtkUgReader.h"
-#include "VtkUgSimpleWriter.h"
-#include "VtkUgMeshPart.h"
+#include "VtkReader.h"
+#include "VtkWriter.h"
+#include "MeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
 
@@ -90,7 +90,7 @@ void cigma::EvalCmd::configure(AnyOption *opt)
     int dofs_nno, dofs_valdim;
     double *dofs;
 
-    VtkUgReader *reader = new VtkUgReader();
+    VtkReader *reader = new VtkReader();
     reader->open(inputfile);
     reader->get_coordinates(&coords, &nno, &nsd);
     reader->get_connectivity(&connect, &nel, &ndofs);
@@ -99,7 +99,7 @@ void cigma::EvalCmd::configure(AnyOption *opt)
     field = new FE_Field();
     field->dim = nsd;
     field->rank = dofs_valdim;
-    field->meshPart = new cigma::VtkUgMeshPart();
+    field->meshPart = new MeshPart();
     field->meshPart->set_coordinates(coords, nno, nsd);
     field->meshPart->set_connectivity(connect, nel, ndofs);
 
@@ -127,7 +127,7 @@ void cigma::EvalCmd::configure(AnyOption *opt)
     int pts_nno, pts_nsd;
     double *pts_coords;
 
-    VtkUgReader *pointsreader = new VtkUgReader();
+    VtkReader *pointsreader = new VtkReader();
     pointsreader->open(pointsfile);
     pointsreader->get_coordinates(&pts_coords, &pts_nno, &pts_nsd);
     points = new Points();
@@ -162,7 +162,7 @@ int cigma::EvalCmd::run()
     }
 
     std::cout << "Creating file " << output_filename << std::endl;
-    VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
+    VtkWriter *writer = new VtkWriter();
     writer->open(output_filename);
     writer->write_header();
     writer->write_point_data("values", phi, npts, valdim);

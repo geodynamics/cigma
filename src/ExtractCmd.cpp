@@ -2,9 +2,9 @@
 #include <cassert>
 #include "ExtractCmd.h"
 #include "StringUtils.h"
-#include "VtkUgReader.h"
-#include "VtkUgMeshPart.h"
-#include "VtkUgSimpleWriter.h"
+#include "VtkReader.h"
+#include "VtkWriter.h"
+#include "MeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
 
@@ -79,13 +79,13 @@ void cigma::ExtractCmd::configure(AnyOption *opt)
 
         std::cout << "Reading file " << meshfile << std::endl;
 
-        VtkUgReader reader;
+        VtkReader reader;
         reader.open(meshfile);
         reader.get_coordinates(&coordinates, &nno, &nsd);
         reader.get_connectivity(&connectivity, &nel, &ndofs);
         std::cout << "mesh ndofs = " << ndofs << std::endl;
 
-        coords->meshPart = new VtkUgMeshPart();
+        coords->meshPart = new MeshPart();
         coords->meshPart->set_coordinates(coordinates, nno, nsd);
         coords->meshPart->set_connectivity(connectivity, nel, ndofs);
 
@@ -218,7 +218,7 @@ int cigma::ExtractCmd::run()
     }
 
     std::cout << "Creating file " << output_filename << std::endl;
-    VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
+    VtkWriter *writer = new VtkWriter();
     writer->open(output_filename);
     writer->write_header();
     writer->write_points(global_points, nel*nq, nsd);

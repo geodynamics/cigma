@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cassert>
 #include "../TextWriter.h"
-#include "../VtkUgReader.h"
+#include "../VtkReader.h"
 #include "../Numeric.h"
 using namespace cigma;
 
@@ -12,7 +12,7 @@ int main(void)
     writer->fp = stdout;
 
 
-    VtkUgReader *reader = new VtkUgReader();
+    VtkReader *reader = new VtkReader();
     std::string filename = "strikeslip_tet4_1000m_t0.vtk";
     reader->open(filename);
 

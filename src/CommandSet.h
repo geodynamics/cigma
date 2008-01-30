@@ -2,6 +2,7 @@
 #define __COMMAND_SET_H__
 
 #include <map>
+#include <vector>
 #include <string>
 
 #include "Command.h"
@@ -19,6 +20,7 @@ class cigma::CommandSet
 {
 public:
     typedef std::map<std::string,Command*> CmdMap;
+    typedef std::vector<std::string> CmdNames;
 
 public:
     CommandSet();
@@ -33,6 +35,7 @@ public:
     Command *getCommand(std::string name);
 
 public:
+    CmdNames names;
     CmdMap commands;
 };
 

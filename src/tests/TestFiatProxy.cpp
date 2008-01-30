@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     //* run test function first
     {
-        char *msg = "hello world";
+        const char *msg = "hello world";
         fiat->test(msg, 3);
     } // */
 

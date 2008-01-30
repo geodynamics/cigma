@@ -26,7 +26,7 @@ public:
     void get_data(int num, int *nodes, double *d);
 
 public:
-    int nno;
+    int nno;            // XXX: rename to num (using for both PointData and CellData)
     int ndim;
     double *dofs;
     MeshPart *meshPart;

@@ -30,7 +30,7 @@ cigma::VtkReader::~VtkReader()
 
 void cigma::VtkReader::open(std::string filename)
 {
-    int ierr;
+    //int ierr;
 
     /* XXX: throw exception if file doesn't exist */
     reader = vtkUnstructuredGridReader::New();

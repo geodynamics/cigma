@@ -50,13 +50,13 @@ void load_reader(Reader **reader, string ext)
 
     if (ext == ".txt")
     {
-        *reader == new TextReader();
+        *reader = new TextReader();
         return;
     }
 
     if (ext == ".vtk")
     {
-        *reader == new VtkReader();
+        *reader = new VtkReader();
         return;
     }
 
@@ -66,19 +66,19 @@ void load_writer(Writer **writer, string ext)
 {
     if (ext == ".h5")
     {
-        writer = new HdfWriter();
+        *writer = new HdfWriter();
         return;
     }
 
     if (ext == ".txt")
     {
-        writer = new TextWriter();
+        *writer = new TextWriter();
         return;
     }
 
     if (ext == ".vtk")
     {
-        writer = new VtkWriter();
+        *writer = new VtkWriter();
         return;
     }
 
@@ -155,6 +155,10 @@ void load_quadrature(Quadrature *quadrature,
     double hex_qwts[8*3] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
 
 
+    int order;
+    string_to_int(arg_order, order);
+
+
     if (reader == 0)
     {
         assert(cell != 0);
@@ -180,6 +184,8 @@ void load_quadrature(Quadrature *quadrature,
                 quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
                 quadrature->set_globaldim(hex_nsd);
                 break;
+            default:
+                break;
             }
         }
         else
@@ -200,12 +206,14 @@ void load_quadrature(Quadrature *quadrature,
         switch (reader->getType())
         {
         case Reader::HDF_READER:
-            assert(quadrature_path != "");
+            assert(arg_quadrature_path != "");
             break;
 
         case Reader::TXT_READER:
-            assert(points_loc != "");
-            assert(weights_loc != "");
+            assert(arg_points_loc != "");
+            assert(arg_weights_loc != "");
+            break;
+        default:
             break;
         }
     }
@@ -232,6 +240,9 @@ void load_mesh(MeshPart *meshPart,
         break;
 
     case Reader::VTK_READER:
+        break;
+
+    default:
         break;
     }
 }
@@ -275,7 +286,7 @@ void load_field(FE_Field *field,
      * For detecting the filetype, one could rely only on the extension,
      * or possibly check for a magic number at the beginning of the file.
      */
-    switch (reader->getType())
+    switch (fieldReader->getType())
     {
     case Reader::HDF_READER:
         //XXX: cast to HdfReader
@@ -285,14 +296,18 @@ void load_field(FE_Field *field,
         break;
 
     case Reader::VTK_READER:
-        //XXX: cast to VtkReader
-        //reader.open(inputfile);
-        reader->get_coordinates(&coords, &nno, &nsd);
-        reader->get_connectivity(&connect, &nel, &ndofs);
-        //reader->get_dofs(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-        //reader->get_vector_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-        reader->get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-        //reader->get_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        /* XXX: cast to VtkReader
+        //fieldReader.open(inputfile);
+        fieldReader->get_coordinates(&coords, &nno, &nsd);
+        fieldReader->get_connectivity(&connect, &nel, &ndofs);
+        //fieldReader->get_dofs(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        //fieldReader->get_vector_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        fieldReader->get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        //fieldReader->get_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        // */
+        break;
+
+    default:
         break;
     }
 
@@ -381,7 +396,7 @@ void load_field(FE_Field *field,
 
     //XXX: move to field->set_quadrature(...)
     Quadrature *Q = new cigma::Quadrature();
-    load_quadrature(field->meshPart->cell, Q);
+    //load_quadrature(field->meshPart->cell, Q); XXX
 
     field->fe = new cigma::FE();
     field->fe->set_cell_quadrature(field->meshPart->cell, Q);

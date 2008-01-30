@@ -32,7 +32,7 @@ void cigma::CommandSet::initialize()
     addCommand(help);
     addCommand(new CompareCmd());
     addCommand(new ExtractCmd());
-    addCommand(new CubeCmd());
+    //addCommand(new CubeCmd());
     addCommand(new EvalCmd());
     //addCommand(new SkelCmd());
 

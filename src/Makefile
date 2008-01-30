@@ -12,6 +12,8 @@ INCLUDES += -I./ann/include
 FLAGS += $(INCLUDES)
 
 LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
+LDFLAGS += $(PYTHON_LDFLAGS) $(PYTHON_LIBS)
+LDFLAGS += $(HDF5_LDFLAGS) $(HDF5_LIBS)
 
 ANNLIB = ../lib/libann.a
 H5IOLIB = ../lib/libh5io.a
@@ -40,8 +42,9 @@ OBJS = \
 	TextReader.o \
 	VtkReader.o \
 	Writer.o \
+	HdfWriter.o \
 	TextWriter.o \
-	VtkUgSimpleWriter.o \
+	VtkWriter.o \
 	AnyOption.o \
 	StringUtils.o \
 	Command.o \
