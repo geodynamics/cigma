@@ -7,6 +7,7 @@
 #include "FE_Field.h"
 #include "Writer.h"
 #include "Reader.h"
+#include "Misc.h"
 
 namespace cigma
 {
@@ -34,18 +35,27 @@ public:
     FE_Field *field_a;
     FE_Field *field_b;
     FE_Field *residuals;
-    Reader *readerA;
-    Reader *readerB;
-    Reader *readerQ;
-    Reader *readerM;
-    Writer *writer;
 
 public:
-    std::string locationA;
-    std::string locationB;
-    std::string locationQ;
-    std::string locationM;
-    std::string output_filename, output_name;
+    MeshIO meshIO;
+    QuadratureIO quadratureIO;
+    FieldIO firstFieldIO;
+    FieldIO secondFieldIO;
+    FieldIO residualsIO;
+
+    //Reader *readerA;
+    //Reader *readerB;
+    //Reader *readerQ;
+    //Reader *readerM;
+    //Writer *writer;
+
+    //std::string locationA;
+    //std::string locationB;
+    //std::string locationQ;
+    //std::string locationM;
+    //std::string output_filename, output_name;
+
+public:
     bool verbose;
     int output_frequency;
 };

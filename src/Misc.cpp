@@ -84,13 +84,34 @@ void load_writer(Writer **writer, string ext)
 
 }
 
-void load_quadrature(Quadrature *quadrature,
-                     Cell *cell,
-                     Reader *reader,
-                     string arg_quadrature_path,
-                     string arg_points_loc,
-                     string arg_weights_loc,
-                     string arg_order)
+
+// ---------------------------------------------------------------------------
+
+void MeshIO::load(cigma::MeshPart *meshPart)
+{
+    assert(meshPart != 0);
+
+    switch (reader->getType())
+    {
+    case Reader::HDF_READER:
+        break;
+
+    case Reader::TXT_READER:
+        break;
+
+    case Reader::VTK_READER:
+        break;
+
+    default:
+        break;
+    }
+}
+
+
+
+// ---------------------------------------------------------------------------
+
+void QuadratureIO::load(cigma::Quadrature *quadrature, cigma::Cell *cell)
 {
     assert(quadrature != 0);
     assert(cell != 0);
@@ -223,39 +244,11 @@ void load_quadrature(Quadrature *quadrature,
     assert(quadrature->n_globaldim() > 0);
 }
 
-void load_mesh(MeshPart *meshPart,
-               Reader *reader,
-               string mesh_path,
-               string coords_loc,
-               string connect_loc)
-{
-    assert(meshPart != 0);
-
-    switch (reader->getType())
-    {
-    case Reader::HDF_READER:
-        break;
-
-    case Reader::TXT_READER:
-        break;
-
-    case Reader::VTK_READER:
-        break;
-
-    default:
-        break;
-    }
-}
 
 
-void load_field(FE_Field *field,
-                MeshPart *meshPart,
-                Reader *fieldReader,
-                Reader *meshReader,
-                string field_path,
-                string mesh_path,
-                string coords_path,
-                string connect_path)
+// ---------------------------------------------------------------------------
+
+void FieldIO::load(cigma::FE_Field *field)
 {
 
     int nno, nsd;
@@ -286,7 +279,7 @@ void load_field(FE_Field *field,
      * For detecting the filetype, one could rely only on the extension,
      * or possibly check for a magic number at the beginning of the file.
      */
-    switch (fieldReader->getType())
+    switch (reader->getType())
     {
     case Reader::HDF_READER:
         //XXX: cast to HdfReader
@@ -413,3 +406,12 @@ void load_field(FE_Field *field,
     return;
 }
 
+
+
+void FieldIO::save(cigma::FE_Field *field)
+{
+    assert(field != 0);
+}
+
+
+// ---------------------------------------------------------------------------

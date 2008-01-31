@@ -35,11 +35,11 @@ cigma::CompareCmd::CompareCmd()
     residuals = 0; //XXX: create ResidualField class?
 
     // readers & writers
-    readerA = 0;
-    readerB = 0;
-    readerM = 0;
-    readerQ = 0;
-    writer = 0;
+    //readerA = 0;
+    //readerB = 0;
+    //readerM = 0;
+    //readerQ = 0;
+    //writer = 0;
 
     // parameters
     verbose = false;
@@ -101,13 +101,15 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->setFlag("verbose");
 }
 
+
 void cigma::CompareCmd::configure(AnyOption *opt)
 {
     std::cout << "Calling cigma::CompareCmd::configure()" << std::endl;
 
-    std::string inputA, inputB;
-    std::string inputfileA, inputfileB;
-    std::string extA, extB;
+    //std::string inputA, inputB;
+    //std::string inputfileA, inputfileB;
+    //std::string extA, extB;
+
     std::string inputstr;
     char *in;
 
@@ -123,10 +125,10 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
-    inputA = in;
-    parse_dataset_path(inputA, locationA, inputfileA, extA);
-    load_reader(&readerA, extA);
-    readerA->open(inputfileA);
+    //inputA = in;
+    //parse_dataset_path(inputA, locationA, inputfileA, extA);
+    //load_reader(&readerA, extA);
+    //readerA->open(inputfileA);
 
 
     in = opt->getValue("second");
@@ -139,10 +141,12 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
-    inputB = in;
-    parse_dataset_path(inputB, locationB, inputfileB, extB);
-    load_reader(&readerB, extB);
-    readerB->open(inputfileB);
+    //inputB = in;
+    //parse_dataset_path(inputB, locationB, inputfileB, extB);
+    //load_reader(&readerB, extB);
+    //readerB->open(inputfileB);
+
+
 
     in = opt->getValue("output");
     if (in == 0)
@@ -154,12 +158,13 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
-    string output_ext;
-    string output_fileroot;
-    output_filename = in;
-    path_splitext(output_filename, output_fileroot, output_ext);
-    load_writer(&writer, output_ext);
-    output_name = "epsilon";
+    //output_filename = in;
+    //string output_ext;
+    //string output_fileroot;
+    //path_splitext(output_filename, output_fileroot, output_ext);
+    //load_writer(&writer, output_ext);
+    //output_name = "epsilon";
+
 
 
     verbose = opt->getFlag("verbose");
@@ -171,6 +176,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     }
     inputstr = in;
     string_to_int(inputstr, output_frequency);
+
 
 
     /*
@@ -191,13 +197,15 @@ void cigma::CompareCmd::configure(AnyOption *opt)
      *          Load Analytic Field
      */
 
+    mesh = 0;
 
 
     field_a = new FE_Field();
+    firstFieldIO.load(field_a);
     //load_field(inputfileA, locationA, readerA, field_a);
-    std::cout << "first field location = " << locationA << std::endl;
-    std::cout << "first field inputfile = " << inputfileA << std::endl;
-    std::cout << "first field extension = " << extA << std::endl;
+    //std::cout << "first field location = " << locationA << std::endl;
+    //std::cout << "first field inputfile = " << inputfileA << std::endl;
+    //std::cout << "first field extension = " << extA << std::endl;
     std::cout << "first field dimensions = "
               << field_a->meshPart->nel << " cells, "
               << field_a->meshPart->nno << " nodes, " 
@@ -205,17 +213,18 @@ void cigma::CompareCmd::configure(AnyOption *opt)
               << field_a->n_rank() << std::endl;
 
     field_b = new FE_Field();
+    secondFieldIO.load(field_b);
     //load_field(inputfileB, locationB, readerB, field_b);
-    std::cout << "second field location = " << locationB << std::endl;
-    std::cout << "second field inputfile = " << inputfileB << std::endl;
-    std::cout << "second field extension = " << extB << std::endl;
+    //std::cout << "second field location = " << locationB << std::endl;
+    //std::cout << "second field inputfile = " << inputfileB << std::endl;
+    //std::cout << "second field extension = " << extB << std::endl;
     std::cout << "second field dimensions = "
               << field_b->meshPart->nel << " cells, "
               << field_b->meshPart->nno << " nodes, " 
               << field_b->fe->cell->n_nodes() << " dofs/cell, rank "
               << field_b->n_rank() << std::endl;
 
-    std::cout << "outputfile = " << output_filename << std::endl;
+    //std::cout << "outputfile = " << output_filename << std::endl;
 
 
     /* if no mesh specified, get it from fieldA
@@ -224,11 +233,12 @@ void cigma::CompareCmd::configure(AnyOption *opt)
      * if fieldA still has no mesh, then produce error if no mesh
      * was specified to begin with.
      */
-    mesh = field_a->meshPart;
-    quadrature = field_a->fe->quadrature;
+    //mesh = field_a->meshPart;
+    //quadrature = field_a->fe->quadrature;
 
     return;
 }
+
 
 int cigma::CompareCmd::run()
 {
@@ -239,7 +249,7 @@ int cigma::CompareCmd::run()
     assert(field_b != 0);
     assert(field_a->n_dim() == field_a->n_dim());
     assert(field_a->n_rank() == field_b->n_rank());
-    assert(writer != 0);
+    //assert(writer != 0);
 
 
     Cell *cell_a = field_a->fe->cell;
@@ -367,9 +377,10 @@ int cigma::CompareCmd::run()
         residuals->dofHandler->ndim = 1;
         residuals->dofHandler->dofs = epsilon;
 
-        writer->open(output_filename);
-        writer->write_field(residuals);
-        writer->close();
+        residualsIO.save(residuals);
+        //writer->open(output_filename);
+        //writer->write_field(residuals);
+        //writer->close();
     }
 
 
@@ -395,8 +406,10 @@ int cigma::CompareCmd::run()
         //delete writer;
     } // */
 
+
     /* clean up */
     delete [] epsilon;
+
 
     return 0;
 }
