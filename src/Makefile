@@ -65,7 +65,7 @@ default: libann libh5io testlib cigma vtkls tests
 %.o: %.cpp
 	$(CXX) $(FLAGS) -c $^
 
-testlib: purge $(TESTLIB)
+testlib: $(TESTLIB)
 
 libh5io:
 	cd h5io && make
@@ -89,10 +89,11 @@ tests: $(TESTLIB)
 
 clean:
 	rm -f $(OBJS) cigma.o vtkls.o
-	#cd h5io && make clean
-	#cd ann && make clean
+	cd tests && make clean
 
 purge: clean
-	rm -f $(TESTLIB)
+	cd ../lib && make clean
+	cd h5io && make clean
+	cd ann && make clean
 
-.PHONY: clean purge
+.PHONY: clean purge tests libann libh5io

@@ -38,7 +38,7 @@ TESTOBJS = \
 
 TESTS = $(TESTOBJS:.o=.out)
 
-default: clean $(TESTOBJS) $(TESTS)
+default: $(TESTOBJS) $(TESTS)
 
 Test%.o: Test%.cpp
 	$(CXX) $(FLAGS) -c $^
