@@ -24,14 +24,22 @@ int main()
     {
         string vtkpath = "/path/to/file.vtk:temperature";
         string hdfpath = "/path/to/file.h5:/path/to/dataset";
-        string testpath1 = "/path/to/some/file.ext:foo:bar";
+        string testpath0 = ".:/path/to/file.ext";
+        string testpath1 = "/path/to/file.ext";
         string testpath2 = "/path/to/file.ext:";
+        string testpath3 = "/path/to/file.ext:foo";
+        string testpath4 = "/path/to/file.ext:foo:";
+        string testpath5 = "/path/to/file.ext:foo:bar";
 
         vector<string> paths;
         paths.push_back(vtkpath);
         paths.push_back(hdfpath);
+        paths.push_back(testpath0);
         paths.push_back(testpath1);
         paths.push_back(testpath2);
+        paths.push_back(testpath3);
+        paths.push_back(testpath4);
+        paths.push_back(testpath5);
 
         string path;
         string location, filename, ext;
@@ -44,9 +52,9 @@ int main()
 
             parse_dataset_path(path, location, filename, ext);
             cout << "path      = '" << path << "'\n";
+            cout << "location  = '" << location << "'\n";
             cout << "filename  = '" << filename << "'\n";
             cout << "extension = '" << ext << "'\n";
-            cout << "location  = '" << location << "'\n";
 
             path_dirname(location, locdir);
             path_basename(location, locbase);
