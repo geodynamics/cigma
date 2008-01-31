@@ -171,6 +171,7 @@ void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix)
 
 // ---------------------------------------------------------------------------
 
+/*
 void read_double_dset(HdfReader *reader, double **data, int *num, int *dim)
 {
 }
@@ -208,9 +209,11 @@ void read_double_dset(Reader *reader, double **data, int *num, int *dim)
     }
 
 }
+*/
 
 // ---------------------------------------------------------------------------
 
+/*
 void read_int_dset(HdfReader *reader, int **data, int *num, int *dim)
 {
 }
@@ -248,11 +251,13 @@ void read_int_dset(Reader *reader, int **data, int *num, int *dim)
     }
 
 }
+*/
 
 
 // ---------------------------------------------------------------------------
 
 
+/*
 void read_coords(Reader *reader, double **coords, int *nno, int *nsd)
 {
     read_double_dset(reader, coords, nno, nsd);
@@ -267,6 +272,7 @@ void read_dofs(Reader *reader, double **dofs, int *nno, int *valdim)
 {
     read_double_dset(reader, dofs, nno, valdim);
 }
+*/
 
 
 
@@ -285,17 +291,8 @@ MeshIO::~MeshIO()
     }
 }
 
-/*
-void MeshIO::configure(AnyOption *opt, const char *cmd, const char *name)
-{
-    configure_mesh(opt, this, name);
-    // check for required options
-}*/
-
 void MeshIO::load()
 {
-    const bool debug = true;
-
     string mesh_loc, mesh_file, mesh_ext;
     string coords_loc, coords_file, coords_ext;
     string connect_loc, connect_file, connect_ext;
@@ -323,7 +320,7 @@ void MeshIO::load()
         if (coords_reader->getType() == Reader::HDF_READER)
         {
             HdfReader *hdfReader = static_cast<HdfReader*>(coords_reader);
-            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
+            hdfReader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
             hdfReader->close();
         }
         else if (coords_reader->getType() == Reader::TXT_READER)
@@ -354,7 +351,7 @@ void MeshIO::load()
         if (connect_reader->getType() == Reader::HDF_READER)
         {
             HdfReader *hdfReader = static_cast<HdfReader*>(connect_reader);
-            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
+            hdfReader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
             hdfReader->close();
         }
         else if (connect_reader->getType() == Reader::TXT_READER)
@@ -384,8 +381,8 @@ void MeshIO::load()
             coords_loc = mesh_loc + "/coordinates";
             connect_loc = mesh_loc + "/connectivity";
             HdfReader *hdfReader = static_cast<HdfReader*>(mesh_reader);
-            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
-            hdfReader->get_connectivity(connect_loc, &connect, &nel, &ndofs);
+            hdfReader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
+            hdfReader->get_connectivity(connect_loc.c_str(), &connect, &nel, &ndofs);
         }
         else if (mesh_reader->getType() == Reader::TXT_READER)
         {
@@ -486,20 +483,9 @@ QuadratureIO::~QuadratureIO()
     }
 }
 
-/*
-void QuadratureIO::configure(AnyOption *opt, const char *cmd, const char *name)
-{
-    configure_quadrature(opt, this, name);
-    // check for required options
-}*/
-
 void QuadratureIO::load(cigma::Cell *cell)
 {
     assert(cell != 0);
-
-    quadrature = new Quadrature();
-
-
 
     // XXX: change *_nsd to *_celldim since we are
     // talking about quadrature points in the appropriate
@@ -561,41 +547,39 @@ void QuadratureIO::load(cigma::Cell *cell)
     double hex_qwts[8*3] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
 
 
+    int nq,nd;
+    double *qx, *qw;
 
-    int order;
-    string_to_int(arg_order, order);
+    nq = 0;
+    nd = 0;
+    qx = 0;
+    qw = 0;
 
-
-    if (reader == 0)
+    if (quadrature_path != "")
     {
-        assert(cell != 0);
+        string quadrature_loc, quadrature_file, quadrature_ext;
+        parse_dataset_path(quadrature_path, quadrature_loc, quadrature_file, quadrature_ext);
+        new_reader(&reader, quadrature_ext);
 
-        if (order < 0)
+        if (reader->getType() == Reader::HDF_READER)
         {
-            // assign defaults
-            switch (cell->geometry())
-            {
-            case Cell::TRIANGLE:
-                quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
-                quadrature->set_globaldim(tri_nsd);
-                break;
-            case Cell::QUADRANGLE:
-                quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
-                quadrature->set_globaldim(quad_nsd);
-                break;
-            case Cell::TETRAHEDRON:
-                quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
-                quadrature->set_globaldim(tet_nsd);
-                break;
-            case Cell::HEXAHEDRON:
-                quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
-                quadrature->set_globaldim(hex_nsd);
-                break;
-            default:
-                break;
-            }
+
         }
-        else
+        else if (reader->getType() == Reader::TXT_READER)
+        {
+
+        }
+        else if (reader->getType() == Reader::VTK_READER)
+        {
+
+        }
+    }
+    else if (quadrature_order != "")
+    {
+        int order;
+        string_to_int(quadrature_order, order);
+
+        if (order > 0)
         {
             /* call FiatProxy
             //fiat->set(quadrature);
@@ -610,21 +594,42 @@ void QuadratureIO::load(cigma::Cell *cell)
     }
     else
     {
-        switch (reader->getType())
+        // assign reasonable defaults
+        switch (cell->geometry())
         {
-        case Reader::HDF_READER:
-            assert(arg_quadrature_path != "");
+        case Cell::TRIANGLE:
+            quadrature = new Quadrature();
+            quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
+            quadrature->set_globaldim(tri_nsd);
             break;
-
-        case Reader::TXT_READER:
-            assert(arg_points_loc != "");
-            assert(arg_weights_loc != "");
+        case Cell::QUADRANGLE:
+            quadrature = new Quadrature();
+            quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
+            quadrature->set_globaldim(quad_nsd);
+            break;
+        case Cell::TETRAHEDRON:
+            quadrature = new Quadrature();
+            quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
+            quadrature->set_globaldim(tet_nsd);
+            break;
+        case Cell::HEXAHEDRON:
+            quadrature = new Quadrature();
+            quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
+            quadrature->set_globaldim(hex_nsd);
             break;
         default:
             break;
         }
     }
 
+    if ((qx != 0) && (qw != 0))
+    {
+        quadrature = new Quadrature();
+        quadrature->set_quadrature(qx, qw, nq, nd);
+        quadrature->set_globaldim(3); // XXX
+    }
+
+    assert(quadrature != 0);
     assert(quadrature->n_points() > 0);
     assert(quadrature->n_refdim() > 0);
     assert(quadrature->n_globaldim() > 0);
@@ -646,13 +651,6 @@ FieldIO::~FieldIO()
         // XXX: traverse field structure and delete everything
     }
 }
-
-/*
-void FieldIO::configure(AnyOption *opt, const char *cmd, const char *name)
-{
-    configure_field(opt, this, name);
-    // check
-}*/
 
 void FieldIO::load()
 {
