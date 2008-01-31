@@ -40,7 +40,7 @@ void bbox_random_point(double minpt[3], double maxpt[3], double x[3])
 
 // ---------------------------------------------------------------------------
 
-void load_reader(Reader **reader, string ext)
+void new_reader(Reader **reader, string ext)
 {
     if (ext == ".h5")
     {
@@ -62,7 +62,7 @@ void load_reader(Reader **reader, string ext)
 
 }
 
-void load_writer(Writer **writer, string ext)
+void new_writer(Writer **writer, string ext)
 {
     if (ext == ".h5")
     {
@@ -87,34 +87,419 @@ void load_writer(Writer **writer, string ext)
 
 // ---------------------------------------------------------------------------
 
-void MeshIO::load(cigma::MeshPart *meshPart)
+void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO)
 {
-    assert(meshPart != 0);
+    assert(opt != 0);
+    assert(quadratureIO != 0);
 
-    switch (reader->getType())
+    char *in;
+
+    in = opt->getValue("order");
+    if (in != 0)
     {
-    case Reader::HDF_READER:
-        break;
-
-    case Reader::TXT_READER:
-        break;
-
-    case Reader::VTK_READER:
-        break;
-
-    default:
-        break;
+        quadratureIO->quadrature_order = in;
     }
+
+    in = opt->getValue("rule");
+    if (in != 0)
+    {
+        quadratureIO->quadrature_path = in;
+    }
+
+    in = opt->getValue("rule-points");
+    if (in != 0)
+    {
+        quadratureIO->points_path = in;
+    }
+
+    in = opt->getValue("rule-weights");
+    if (in != 0)
+    {
+        quadratureIO->weights_path = in;
+    }
+}
+
+
+void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix)
+{
+    assert(opt != 0);
+    assert(meshIO != 0);
+
+    char *in;
+    string optstr;
+    string mesh_name = opt_prefix;
+
+    in = opt->getValue(mesh_name.c_str());
+    if (in != 0)
+    {
+        meshIO->mesh_path = in;
+    }
+
+    optstr = mesh_name + "-coordinates";
+    in = opt->getValue(optstr.c_str());
+    if (in != 0)
+    {
+        meshIO->coords_path = in;
+    }
+
+    optstr = mesh_name + "-connectivity";
+    in = opt->getValue(optstr.c_str());
+    if (in != 0)
+    {
+        meshIO->connect_path = in;
+    }
+}
+
+void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix)
+{
+    assert(opt != 0);
+    assert(fieldIO != 0);
+
+    char *in;
+    string field_name = opt_prefix;
+    string mesh_name = field_name + "-mesh";
+
+    in = opt->getValue(field_name.c_str());
+    if (in != 0)
+    {
+        fieldIO->field_path = in;
+    }
+
+    configure_mesh(opt, &(fieldIO->meshIO), mesh_name.c_str());
+
+}
+
+// ---------------------------------------------------------------------------
+
+void read_double_dset(HdfReader *reader, double **data, int *num, int *dim)
+{
+}
+
+void read_double_dset(TextReader *reader, double **data, int *num, int *dim)
+{
+}
+
+void read_double_dset(VtkReader *reader, double **data, int *num, int *dim)
+{
+}
+
+void read_double_dset(Reader *reader, double **data, int *num, int *dim)
+{
+
+    if (reader->getType() == Reader::HDF_READER)
+    {
+        meshPart = new MeshPart();
+        HdfReader *hdfReader = static_cast<HdfReader*>(reader);
+        read_double_dset(hdfReader, data, num, dim);
+
+    }
+    else if (reader->getType() == Reader::TXT_READER)
+    {
+        meshPart = new MeshPart();
+        TextReader *textReader = static_cast<TextReader*>(reader);
+        read_double_dset(textReader, data, num, dim);
+
+    }
+    else if (reader->getType() == Reader::VTK_READER)
+    {
+        meshPart = new MeshPart();
+        VtkReader *vtkReader = static_cast<VtkReader*>(reader);
+        read_double_dset(vtkReader, data, num, dim);
+    }
+
+}
+
+// ---------------------------------------------------------------------------
+
+void read_int_dset(HdfReader *reader, int **data, int *num, int *dim)
+{
+}
+
+void read_int_dset(TextReader *reader, int **data, int *num, int *dim)
+{
+}
+
+void read_int_dset(VtkReader *reader, int **data, int *num, int *dim)
+{
+}
+
+void read_int_dset(Reader *reader, int **data, int *num, int *dim)
+{
+
+    if (reader->getType() == Reader::HDF_READER)
+    {
+        meshPart = new MeshPart();
+        HdfReader *hdfReader = static_cast<HdfReader*>(reader);
+        read_int_dset(hdfReader, data, num, dim);
+
+    }
+    else if (reader->getType() == Reader::TXT_READER)
+    {
+        meshPart = new MeshPart();
+        TextReader *textReader = static_cast<TextReader*>(reader);
+        read_int_dset(textReader, data, num, dim);
+
+    }
+    else if (reader->getType() == Reader::VTK_READER)
+    {
+        meshPart = new MeshPart();
+        VtkReader *vtkReader = static_cast<VtkReader*>(reader);
+        read_int_dset(vtkReader, data, num, dim);
+    }
+
+}
+
+
+// ---------------------------------------------------------------------------
+
+
+void read_coords(Reader *reader, double **coords, int *nno, int *nsd)
+{
+    read_double_dset(reader, coords, nno, nsd);
+}
+
+void read_connect(Reader *reader, int **connect, int *nel, int *ndofs)
+{
+    read_int_dset(reader, connect, nel, ndofs);
+}
+
+void read_dofs(Reader *reader, double **dofs, int *nno, int *valdim)
+{
+    read_double_dset(reader, dofs, nno, valdim);
 }
 
 
 
 // ---------------------------------------------------------------------------
 
-void QuadratureIO::load(cigma::Quadrature *quadrature, cigma::Cell *cell)
+MeshIO::MeshIO()
 {
-    assert(quadrature != 0);
+    meshPart = 0;
+}
+
+MeshIO::~MeshIO()
+{
+    if (meshPart != 0)
+    {
+        // XXX: traverse meshPart structure and delete everything
+    }
+}
+
+/*
+void MeshIO::configure(AnyOption *opt, const char *cmd, const char *name)
+{
+    configure_mesh(opt, this, name);
+    // check for required options
+}*/
+
+void MeshIO::load()
+{
+    const bool debug = true;
+
+    string mesh_loc, mesh_file, mesh_ext;
+    string coords_loc, coords_file, coords_ext;
+    string connect_loc, connect_file, connect_ext;
+
+    int nno, nsd;
+    double *coords = 0;
+
+    int nel, ndofs;
+    int *connect = 0;
+
+    nno = nsd = 0;
+    nel = ndofs = 0;
+
+
+    if (coords_path != "")
+    {
+        // XXX: use auto_ptr for this local reader, so we can throw exceptions
+        Reader *coords_reader;
+        parse_dataset_path(coords_path, coords_loc, coords_file, coords_ext);
+        new_reader(&coords_reader, coords_ext);
+        coords_reader->open(coords_file);
+
+        //read_coords(coords_reader, &coords, &nno, &nsd);
+
+        if (coords_reader->getType() == Reader::HDF_READER)
+        {
+            HdfReader *hdfReader = static_cast<HdfReader*>(coords_reader);
+            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
+            hdfReader->close();
+        }
+        else if (coords_reader->getType() == Reader::TXT_READER)
+        {
+            TextReader *textReader = static_cast<TextReader*>(coords_reader);
+            textReader->get_coordinates(&coords, &nno, &nsd);
+            textReader->close();
+
+        }
+        else if (coords_reader->getType() == Reader::VTK_READER)
+        {
+            VtkReader *vtkReader = static_cast<VtkReader*>(coords_reader);
+            vtkReader->get_coordinates(&coords, &nno, &nsd);
+            vtkReader->close();
+        }
+    }
+
+    if (connect_path != "")
+    {
+        // XXX: use auto_ptr for this local reader, so we can throw exceptions
+        Reader *connect_reader;
+        parse_dataset_path(connect_path, connect_loc, connect_file, connect_ext);
+        new_reader(&connect_reader, connect_ext);
+        connect_reader->open(connect_file);
+
+        //read_connect(connect_reader, &nel, &ndofs);
+
+        if (connect_reader->getType() == Reader::HDF_READER)
+        {
+            HdfReader *hdfReader = static_cast<HdfReader*>(connect_reader);
+            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
+            hdfReader->close();
+        }
+        else if (connect_reader->getType() == Reader::TXT_READER)
+        {
+            TextReader *textReader = static_cast<TextReader*>(connect_reader);
+            textReader->get_coordinates(&coords, &nno, &nsd);
+            textReader->close();
+        }
+        else if (connect_reader->getType() == Reader::VTK_READER)
+        {
+            VtkReader *vtkReader = static_cast<VtkReader*>(connect_reader);
+            vtkReader->get_coordinates(&coords, &nno, &nsd);
+            vtkReader->close();
+        }
+    }
+
+    if ((mesh_path != "") && ((coords == 0) || (connect == 0)))
+    {
+        // XXX: use auto_ptr for this local reader, so we can throw exceptions
+        Reader *mesh_reader;
+        parse_dataset_path(mesh_path, mesh_loc, mesh_file, mesh_ext);
+        new_reader(&mesh_reader, mesh_ext);
+        mesh_reader->open(mesh_file);
+
+        if (mesh_reader->getType() == Reader::HDF_READER)
+        {
+            coords_loc = mesh_loc + "/coordinates";
+            connect_loc = mesh_loc + "/connectivity";
+            HdfReader *hdfReader = static_cast<HdfReader*>(mesh_reader);
+            hdfReader->get_coordinates(coords_loc, &coords, &nno, &nsd);
+            hdfReader->get_connectivity(connect_loc, &connect, &nel, &ndofs);
+        }
+        else if (mesh_reader->getType() == Reader::TXT_READER)
+        {
+            TextReader *textReader = static_cast<TextReader*>(mesh_reader);
+            textReader->get_coordinates(&coords, &nno, &nsd);
+            textReader->get_connectivity(&connect, &nel, &ndofs);
+        }
+        else if (mesh_reader->getType() == Reader::VTK_READER)
+        {
+            // read mesh from single vtk file
+            VtkReader *vtkReader = static_cast<VtkReader*>(mesh_reader);
+            vtkReader->get_coordinates(&coords, &nno, &nsd);
+            vtkReader->get_connectivity(&connect, &nel, &ndofs);
+        }
+
+        reader->close();
+
+        /*
+        if (mesh_ext == ".h5")
+        {
+            assert(mesh_reader->getType() == Reader::HDF_READER);
+
+            HdfReader *hdfReader = static_cast<HdfReader*>(mesh_reader);
+            // open mesh_file in read only mode
+
+            // assert that mesh_path points to an HDF5 group
+
+            // read metadata from that group
+
+            // if no metadata is available, look inside group
+            // for two datasets named coordinates & connectivity
+            
+        }
+        else if (mesh_ext == ".txt")
+        {
+            assert(reader->getType() == Reader::TXT_READER);
+
+            // read mesh from single text file
+        }
+        else if (mesh_ext == ".vtk")
+        {
+            assert(reader->getType() == Reader::VTK_READER);
+
+            // read mesh from single vtk file
+            VtkReader *vtkReader = static_cast<VtkReader*>(mesh_reader);
+            vtkReader->open(mesh_file);
+            vtkReader->get_coordinates(&coords, &nno, &nsd);
+            vtkReader->get_connectivity(&connect, &nel, &ndofs);
+            vtkReader->close();
+        } */
+    }
+
+    if ((coords != 0) && (connect != 0))
+    {
+        meshPart = new MeshPart();
+
+        meshPart->nno = nno;
+        meshPart->nsd = nsd;
+        meshPart->coords = coords;
+
+        meshPart->nel = nel;
+        meshPart->ndofs = ndofs;
+        meshPart->connect = connect;
+
+    }
+    else
+    {
+        if (coords == 0)
+        {
+            cerr << "MeshIO::load() error: Could not find mesh coordinates";
+            cerr << endl;
+
+        }
+        if (connect == 0)
+        {
+            cerr << "MeshIO::load() error: Could not find mesh connectivity";
+            cerr << endl;
+        }
+    }
+
+
+}
+
+
+
+// ---------------------------------------------------------------------------
+
+QuadratureIO::QuadratureIO()
+{
+    quadrature = 0;
+}
+
+QuadratureIO::~QuadratureIO()
+{
+    if (quadrature != 0)
+    {
+        delete quadrature;
+    }
+}
+
+/*
+void QuadratureIO::configure(AnyOption *opt, const char *cmd, const char *name)
+{
+    configure_quadrature(opt, this, name);
+    // check for required options
+}*/
+
+void QuadratureIO::load(cigma::Cell *cell)
+{
     assert(cell != 0);
+
+    quadrature = new Quadrature();
+
+
 
     // XXX: change *_nsd to *_celldim since we are
     // talking about quadrature points in the appropriate
@@ -174,6 +559,7 @@ void QuadratureIO::load(cigma::Quadrature *quadrature, cigma::Cell *cell)
          0.57735027,  0.57735027,  0.57735027,
         -0.57735027,  0.57735027,  0.57735027 };
     double hex_qwts[8*3] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
+
 
 
     int order;
@@ -248,7 +634,27 @@ void QuadratureIO::load(cigma::Quadrature *quadrature, cigma::Cell *cell)
 
 // ---------------------------------------------------------------------------
 
-void FieldIO::load(cigma::FE_Field *field)
+FieldIO::FieldIO()
+{
+    field = 0;
+}
+
+FieldIO::~FieldIO()
+{
+    if (field != 0)
+    {
+        // XXX: traverse field structure and delete everything
+    }
+}
+
+/*
+void FieldIO::configure(AnyOption *opt, const char *cmd, const char *name)
+{
+    configure_field(opt, this, name);
+    // check
+}*/
+
+void FieldIO::load()
 {
 
     int nno, nsd;
@@ -408,7 +814,7 @@ void FieldIO::load(cigma::FE_Field *field)
 
 
 
-void FieldIO::save(cigma::FE_Field *field)
+void FieldIO::save()
 {
     assert(field != 0);
 }

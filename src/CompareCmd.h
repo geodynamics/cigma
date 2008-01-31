@@ -39,8 +39,8 @@ public:
 public:
     MeshIO meshIO;
     QuadratureIO quadratureIO;
-    FieldIO firstFieldIO;
-    FieldIO secondFieldIO;
+    FieldIO firstIO;
+    FieldIO secondIO;
     FieldIO residualsIO;
 
     //Reader *readerA;

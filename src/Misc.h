@@ -24,6 +24,7 @@
  *
  */
 
+
 class GeneralIO
 {
 public:
@@ -41,27 +42,35 @@ public:
 class MeshIO : public GeneralIO
 {
 public:
-    std::string filename;
     std::string mesh_path;
     std::string coords_path;
     std::string connect_path;
+    cigma::MeshPart *meshPart;
 
 public:
-    void load(cigma::MeshPart *meshPart);
+    MeshIO();
+    ~MeshIO();
+    //void configure(AnyOption *opt, const char *cmd, const char *name);
+    void load();
+    void save();
 };
 
 
 class QuadratureIO : public GeneralIO
 {
 public:
-    std::string filename;
     std::string quadrature_order;
     std::string quadrature_path;
     std::string points_path;
     std::string weights_path;
+    cigma::Quadrature *quadrature;
 
 public:
-    void load(cigma::Quadrature *quadrature, cigma::Cell *cell);
+    QuadratureIO();
+    ~QuadratureIO();
+    //void configure(AnyOption *opt, const char *cmd, const char *name);
+    void load(cigma::Cell *cell);
+    void save();
 };
 
 
@@ -69,17 +78,19 @@ public:
 class FieldIO : public GeneralIO
 {
 public:
-    std::string filename;
-    std::string dofs_path;
-
-public:
     MeshIO meshIO;
     QuadratureIO quadratureIO;
+    std::string field_path;
+    cigma::FE_Field *field;
 
 public:
-    void load(cigma::FE_Field *field);
-    void save(cigma::FE_Field *field);
+    FieldIO();
+    ~FieldIO();
+    //void configure(AnyOption *opt, const char *cmd, const char *name);
+    void load();
+    void save();
 };
+
 
 
 /* 
@@ -90,10 +101,15 @@ public:
 double pick_from_interval(double a, double b);
 void bbox_random_point(double minpt[3], double maxpt[3], double x[3]);
 
+void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO);
+void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix);
+void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix);
 
+
+/*
 void load_reader(cigma::Reader **reader, std::string ext);
 void load_writer(cigma::Writer **writer, std::string ext);
-
+*/
 
 
 /*

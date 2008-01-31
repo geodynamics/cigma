@@ -4,18 +4,20 @@
 #include "CompareCmd.h"
 #include "StringUtils.h"
 
-//#include "VtkUgMeshPart.h"
 #include "MeshPart.h"
 #include "Tet.h"
 #include "Hex.h"
 #include "Numeric.h"
 #include "AnnLocator.h"
 
-//#include "VtkUgSimpleWriter.h"
 #include "HdfReader.h"
 #include "VtkReader.h"
+#include "VtkWriter.h"
 
 #include "Misc.h"
+
+
+using namespace std;
 
 
 
@@ -70,6 +72,14 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     /* setup flags and options */
     opt->setFlag("help", 'h');
 
+    //meshIO.setup_options(opt, "mesh");
+    //quadratureIO.setup_options(opt, "rule");
+    //firstIO.setup_options(opt, "first");
+    //secondIO.setup_options(opt, "second");
+    //residualsIO.setup_options(opt, "output");
+
+    //* set these here
+
     // options for mesh
     opt->setOption("mesh");
     opt->setOption("mesh-coordinates");
@@ -95,10 +105,12 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
 
     // options for output
     opt->setOption("output");
-    opt->setOption("output-frequency",'f');
+
+    // */
 
     // other options
     opt->setFlag("verbose");
+    opt->setOption("output-frequency",'f');
 }
 
 
@@ -110,26 +122,41 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     //std::string inputfileA, inputfileB;
     //std::string extA, extB;
 
+    string field_prefix;
     std::string inputstr;
     char *in;
 
-    bool debug = true;
 
+    /*
     in = opt->getValue("first");
     if (in == 0)
     {
-        in = (char *)"./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0"; // XXX: get rid of these defaults and the subsequent if(!debug){} construct
+        // XXX: get rid of these defaults and the subsequent if(!debug){} construct
+        in = (char *)"./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0";
         if (!debug)
         {
             std::cerr << "compare: Please specify the option --fieldA" << std::endl;
             exit(1);
         }
     }
+    firstIO.field_path = in;
+
+    in = opt->getValue("first-mesh");
+    if (in == 0) { }
+    firstIO.meshIO.mesh_path = in;
+
+    in = opt->getValue("first-mesh-coordinates");
+    if (in == 0) { }
+    firstIO.meshIO.coords_path = in;
+
+    in = opt->getValue("first-mesh-connectivity");
+    if (in == 0) { }
+    firstIO.meshIO.connect_path = in;
+    
     //inputA = in;
     //parse_dataset_path(inputA, locationA, inputfileA, extA);
     //load_reader(&readerA, extA);
     //readerA->open(inputfileA);
-
 
     in = opt->getValue("second");
     if (in == 0)
@@ -141,12 +168,23 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
+
+    in = opt->getValue("second-mesh");
+    if (in == 0) { }
+    secondIO.meshIO.mesh_path = in;
+
+    in = opt->getValue("second-mesh-coordinates");
+    if (in == 0) { }
+    secondIO.meshIO.coords_path = in;
+
+    in = opt->getValue("second-mesh-connectivity");
+    if (in == 0) { }
+    secondIO.meshIO.connect_path = in;
+    
     //inputB = in;
     //parse_dataset_path(inputB, locationB, inputfileB, extB);
     //load_reader(&readerB, extB);
     //readerB->open(inputfileB);
-
-
 
     in = opt->getValue("output");
     if (in == 0)
@@ -165,8 +203,9 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     //load_writer(&writer, output_ext);
     //output_name = "epsilon";
 
+    // */
 
-
+    
     verbose = opt->getFlag("verbose");
 
     in = opt->getValue("output-frequency");
@@ -197,11 +236,55 @@ void cigma::CompareCmd::configure(AnyOption *opt)
      *          Load Analytic Field
      */
 
-    mesh = 0;
+    /* if no mesh specified, get it from fieldA
+     * if fieldA has no mesh (e.g. specified by analytic soln), then
+     * swap fieldA and fieldB, and try again.
+     * if fieldA still has no mesh, then produce error if no mesh
+     * was specified to begin with.
+     */
+
+    //const char *cmd_name = name.c_str();
+    //meshIO.configure(opt, cmd_name, "mesh");
+    //quadratureIO.configure(opt, cmd_name, "rule");
+    //firstIO.configure(opt, cmd_name, "first");
+    //secondIO.configure(opt, cmd_name, "second");
+    //residualsIO.configure(opt, cmd_name, "output");
 
 
+
+    configure_mesh(opt, &meshIO, "mesh");
+    configure_quadrature(opt, &quadratureIO);
+    configure_field(opt, &firstIO, "first");
+    configure_field(opt, &secondIO, "second");
+    configure_field(opt, &residualsIO, "output");
+
+
+    meshIO.load();
+    mesh = meshIO.meshPart;
+
+    firstIO.load();
+    field_a = firstIO.field;
+    if (mesh == 0)
+    {
+        mesh = firstIO.field->meshPart;
+    }
+    assert(field_a != 0);
+    assert(mesh != 0);
+
+
+    secondIO.load();
+    if (secondIO.field != 0)
+    {
+        field_b = secondIO.field;
+    }
+
+    quadratureIO.load(mesh->cell);
+    quadrature = quadratureIO.quadrature;
+
+
+    /*
     field_a = new FE_Field();
-    firstFieldIO.load(field_a);
+    firstIO.load(field_a);
     //load_field(inputfileA, locationA, readerA, field_a);
     //std::cout << "first field location = " << locationA << std::endl;
     //std::cout << "first field inputfile = " << inputfileA << std::endl;
@@ -213,7 +296,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
               << field_a->n_rank() << std::endl;
 
     field_b = new FE_Field();
-    secondFieldIO.load(field_b);
+    secondIO.load(field_b);
     //load_field(inputfileB, locationB, readerB, field_b);
     //std::cout << "second field location = " << locationB << std::endl;
     //std::cout << "second field inputfile = " << inputfileB << std::endl;
@@ -226,15 +309,11 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     //std::cout << "outputfile = " << output_filename << std::endl;
 
-
-    /* if no mesh specified, get it from fieldA
-     * if fieldA has no mesh (e.g. specified by analytic soln), then
-     * swap fieldA and fieldB, and try again.
-     * if fieldA still has no mesh, then produce error if no mesh
-     * was specified to begin with.
-     */
     //mesh = field_a->meshPart;
     //quadrature = field_a->fe->quadrature;
+
+    // */
+
 
     return;
 }
@@ -368,23 +447,25 @@ int cigma::CompareCmd::run()
 
 
     /* write out data */
-    {
-        residuals = new FE_Field();
-        residuals->fe = 0;
-        residuals->meshPart = mesh;
-        residuals->dofHandler = new DofHandler();
-        residuals->dofHandler->nno = nel;
-        residuals->dofHandler->ndim = 1;
-        residuals->dofHandler->dofs = epsilon;
+    /* use residualsIO
+    residuals = new FE_Field();
+    residuals->fe = 0;
+    residuals->meshPart = mesh;
+    residuals->dofHandler = new DofHandler();
+    residuals->dofHandler->nno = nel;   //XXX: In DofHandler, rename nno to num
+    residuals->dofHandler->ndim = 1;
+    residuals->dofHandler->dofs = epsilon;
 
-        residualsIO.save(residuals);
-        //writer->open(output_filename);
-        //writer->write_field(residuals);
-        //writer->close();
-    }
+    residualsIO.field = residuals;
+    residualsIO.save();
 
+    //writer->open(output_filename);
+    //writer->write_field(residuals);
+    //writer->close();
 
-    /* write out data
+    // */
+
+    //* write out data
     {
         int nno = mesh->nno;
         int nsd = mesh->nsd;
@@ -392,10 +473,14 @@ int cigma::CompareCmd::run()
         double *coords = mesh->coords;
         int *connect = mesh->connect;
 
+        string output_filename = residualsIO.field_path;
+        string output_name = "epsilon";
+
         // XXX: create a cell-based ResidualField class
 
-        //std::cout << "Creating file " << output_filename << std::endl;
-        VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
+        std::cout << "Creating file " << output_filename << std::endl;
+        //VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
+        VtkWriter *writer = new VtkWriter();
         writer->open(output_filename);
         writer->write_header();
         writer->write_points(coords, nno, nsd);
@@ -408,6 +493,10 @@ int cigma::CompareCmd::run()
 
 
     /* clean up */
+    //delete residuals->dofHandler;
+    //delete residuals;
+    //residualsIO.field = 0;
+
     delete [] epsilon;
 
 
