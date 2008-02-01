@@ -664,9 +664,10 @@ void FieldIO::load()
     double *dofs;
 
 
-    // XXX: parse field_path here
-
-
+    if (field_path != "")
+    {
+        assert(false);
+    }
 
     /* XXX: For the following two cases, I need a static initializer on
      * Reader class that instantiates the right subclass based on the
@@ -683,6 +684,8 @@ void FieldIO::load()
      * For detecting the filetype, one could rely only on the extension,
      * or possibly check for a magic number at the beginning of the file.
      */
+
+    /*
     switch (reader->getType())
     {
     case Reader::HDF_READER:
@@ -693,7 +696,7 @@ void FieldIO::load()
         break;
 
     case Reader::VTK_READER:
-        /* XXX: cast to VtkReader
+        // XXX: cast to VtkReader
         //fieldReader.open(inputfile);
         fieldReader->get_coordinates(&coords, &nno, &nsd);
         fieldReader->get_connectivity(&connect, &nel, &ndofs);
@@ -701,7 +704,6 @@ void FieldIO::load()
         //fieldReader->get_vector_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
         fieldReader->get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
         //fieldReader->get_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-        // */
         break;
 
     default:
@@ -721,13 +723,14 @@ void FieldIO::load()
     // move to set_mesh()
     field->meshPart->set_cell();
     assert(field->meshPart->cell != 0);
-    //* // XXX: Create locator only when necessary
+
+    // XXX: Create locator only when necessary
     cigma::AnnLocator *locator = new cigma::AnnLocator();
     field->meshPart->set_locator(locator);
-    // */
+    ////
 
 
-    /*
+    //
     switch (field->dim)
     {
     case 2:
@@ -789,7 +792,7 @@ void FieldIO::load()
         break;
     }
     field->fe->cell = field->meshPart->cell;
-    // */
+    ////
 
     //XXX: move to field->set_quadrature(...)
     Quadrature *Q = new cigma::Quadrature();
@@ -807,6 +810,7 @@ void FieldIO::load()
     field->dofHandler->meshPart = field->meshPart;
     field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
 
+    // */
     return;
 }
 
