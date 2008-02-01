@@ -101,19 +101,20 @@ static bool read_imat(FILE *fp, int **mat, int *rows, int *cols)
 
 // ---------------------------------------------------------------------------
 
-void cigma::TextReader::get_connectivity(int **connectivity, int *nel, int *ndofs)
+void cigma::TextReader::get_dataset(const char *loc, double **data, int *num, int *dim)
+{
+    read_dmat(fp, data, num, dim);
+}
+
+void cigma::TextReader::get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs)
 {
     read_imat(fp, connectivity, nel, ndofs);
 }
 
-void cigma::TextReader::get_coordinates(double **coordinates, int *nno, int *nsd)
+void cigma::TextReader::get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd)
 {
     read_dmat(fp, coordinates, nno, nsd);
 }
 
-void cigma::TextReader::get_dofs(double **dofs, int *num, int *ndim)
-{
-    read_dmat(fp, dofs, num, ndim);
-}
 
 // ---------------------------------------------------------------------------

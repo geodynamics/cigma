@@ -72,6 +72,73 @@ void cigma::VtkReader::close()
 // ---------------------------------------------------------------------------
 
 void cigma::VtkReader::
+get_dataset(const char *loc, double **data, int *num, int *dim)
+{
+    assert(grid != 0);
+    assert(loc != 0);
+
+    int size = 0;
+    int dims[2] = {0, 0};
+    double *array = 0;
+
+    vtkPointData *pointData = grid->GetPointData();
+
+    if (pointData->HasArray(loc) == 1)
+    {
+        vtkDataArray *dataArray = pointData->GetArray(loc);
+        assert(dataArray != 0);
+
+        dims[0] = dataArray->GetNumberOfTuples();
+        dims[1] = dataArray->GetNumberOfComponents();
+
+        size = dims[0] * dims[1];
+        array = new double[size];
+
+        int dataType = dataArray->GetDataType();
+
+        if (dataType == VTK_DOUBLE)
+        {
+            double *ptr = static_cast<double*>(dataArray->GetVoidPointer(0));
+            for (int i = 0; i < size; i++)
+            {
+                array[i] = ptr[i];
+            }
+        }
+        else if (dataType == VTK_FLOAT)
+        {
+            float *ptr = static_cast<float*>(dataArray->GetVoidPointer(0));
+            for (int i = 0; i < size; i++)
+            {
+                array[i] = ptr[i];
+            }
+        }
+        else
+        {
+            assert(false);
+        }
+    }
+
+    *data = array;
+    *num = dims[0];
+    *dim = dims[1];
+}
+
+void cigma::VtkReader::
+get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd)
+{
+    get_coordinates(coordinates, nno, nsd);
+}
+
+void cigma::VtkReader::
+get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs)
+{
+    get_connectivity(connectivity, nel, ndofs);
+}
+
+
+// ---------------------------------------------------------------------------
+
+void cigma::VtkReader::
 get_coordinates(double **coordinates, int *nno, int *nsd)
 {
     assert(grid != 0);
@@ -141,7 +208,6 @@ get_connectivity(int **connectivity, int *nel, int *ndofs)
     *ndofs = dofs_per_elt;
 }
 
-
 void cigma::VtkReader::
 get_vector_point_data(const char *name, double **vectors, int *num, int *dim)
 {
@@ -155,7 +221,7 @@ get_vector_point_data(const char *name, double **vectors, int *num, int *dim)
         assert(pointData->HasArray(name) == 1);
         dataArray = pointData->GetVectors(name);
     } else {
-        dataArray = pointData->GetScalars();
+        dataArray = pointData->GetVectors();
     }
     //dataArray->PrintSelf(std::cout, 0);
 
@@ -202,5 +268,6 @@ get_scalar_point_data(const char *name, double **scalars, int *num, int *dim)
     *num = dataArray->GetNumberOfTuples();
     *dim = dataArray->GetNumberOfComponents();
 }
+
 
 // ---------------------------------------------------------------------------

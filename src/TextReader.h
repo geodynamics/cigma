@@ -25,9 +25,9 @@ public:
     void close();
 
 public:
-    void get_connectivity(int **connectivity, int *nel, int *ndofs);
-    void get_coordinates(double **coordinates, int *nno, int *nsd);
-    void get_dofs(double **dofs, int *nno, int *ndim);
+    void get_dataset(const char *loc, double **data, int *num, int *dim);
+    void get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd);
+    void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs);
 
 public:
     FILE *fp;
