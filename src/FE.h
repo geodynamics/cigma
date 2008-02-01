@@ -21,7 +21,8 @@ public:
     ~FE();
 
 public:
-    void set_cell_quadrature(Cell *cell, Quadrature *quadrature);
+    void set_cell(Cell *cell);
+    void set_quadrature(Quadrature *quadrature);
 
 public:
     Cell *cell;

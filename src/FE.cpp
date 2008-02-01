@@ -22,12 +22,16 @@ cigma::FE::~FE()
 
 // ---------------------------------------------------------------------------
 
-void cigma::FE::set_cell_quadrature(Cell *cell, Quadrature *quadrature)
+void cigma::FE::set_cell(Cell *cell)
 {
     assert(cell != 0);
-    assert(quadrature != 0);
-
     this->cell = cell;
+}
+
+void cigma::FE::set_quadrature(Quadrature *quadrature)
+{
+    assert(cell != 0);
+
     this->quadrature = quadrature;
 
     assert(quadrature->n_points() > 0);
