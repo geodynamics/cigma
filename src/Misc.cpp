@@ -94,7 +94,7 @@ void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO)
 
     char *in;
 
-    in = opt->getValue("order");
+    in = opt->getValue("rule-order");
     if (in != 0)
     {
         quadratureIO->quadrature_order = in;
