@@ -106,26 +106,31 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     /*
      * Initialization order:
-     *  Load Integration mesh
-     *  Load Quadrature rule
      *  Load First field
      *      If FE_Field
-     *          Load MeshA
-     *          Load DofsB
+     *          Load DofsA
+     *          Load MeshA if req'd
+     *          Load RuleA if req'd
      *      Else
      *          Load Analytic Field
      *  Load Second field
      *      If FE_Field
-     *          Load MeshB
      *          Load DofsB
+     *          Load MeshB if req'd
+     *          Load RuleB if req'd
      *      Else
      *          Load Analytic Field
+     *  Load Integration mesh
+     *  Load Quadrature rule
      */
 
     /* Gather up the expected command line arguments */
 
+    //XXX: add "rule" to last arg
+    //XXX: rename configure_quadrature to configure_rule
+
     configure_mesh(opt, &meshIO, "mesh");
-    configure_quadrature(opt, &quadratureIO);
+    configure_quadrature(opt, &quadratureIO, "rule");
     configure_field(opt, &firstIO, "first");
     configure_field(opt, &secondIO, "second");
     configure_field(opt, &residualsIO, "output");
@@ -151,26 +156,22 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     if (secondIO.field_path == "")
     {
         cerr << "compare: Please specify the option --second" << endl;
-        exit(2);
+        exit(1);
     }
     if (residualsIO.field_path == "")
     {
         cerr << "compare: Please specify the option --output" << endl;
+        exit(1);
     }
 
-    /* XXX: if no mesh specified, get it from fieldA
-     * if fieldA has no mesh (e.g. specified by analytic soln), then
-     * swap fieldA and fieldB, and try again.
-     * if fieldA still has no mesh, then produce error if no mesh
-     * was specified to begin with.
-     */
 
-    meshIO.load();
-    mesh = meshIO.meshPart;
+    /* Load the datasets into memory */
 
     firstIO.load();
     field_a = firstIO.field;
     assert(field_a != 0);
+    field_a->fe = new FE();
+    field_a->fe->set_cell(field_a->meshPart->cell);
     cout << "first field path = " << firstIO.field_path << endl;
     cout << "first field dimensions = "
          << field_a->meshPart->nel << " cells, "
@@ -178,22 +179,33 @@ void cigma::CompareCmd::configure(AnyOption *opt)
          << field_a->fe->cell->n_nodes() << " dofs/cell, "
          << "rank " << field_a->n_rank() << endl;
 
-    if (mesh == 0)
-    {
-        mesh = firstIO.field->meshPart;
-    }
-    assert(mesh != 0);
-
-
     secondIO.load();
     field_b = secondIO.field;
     assert(field_b != 0);
+    field_b->fe = new FE();
+    field_b->fe->set_cell(field_b->meshPart->cell);
     cout << "second field path = " << secondIO.field_path << endl;
     cout << "second field dimensions = "
          << field_b->meshPart->nel << " cells, "
          << field_b->meshPart->nno << " nodes, "
          << field_b->fe->cell->n_nodes() << " dofs/cell, "
          << "rank " << field_b->n_rank() << endl;
+
+
+    /* XXX: if no --mesh option was specified, get mesh from the
+     * first field. if the first field has no mesh, (e.g. specified
+     * by an analytic soln), then try using the second field's mesh.
+     * if we still don't have a mesh that we can use for the integration,
+     * then exit with an error suggesting the user to specify the --mesh
+     * option.
+     */
+    meshIO.load();
+    mesh = meshIO.meshPart;
+    if (mesh == 0)
+    {
+        mesh = firstIO.field->meshPart;
+    }
+    assert(mesh != 0);
 
 
     quadratureIO.load(mesh->cell);
@@ -203,6 +215,10 @@ void cigma::CompareCmd::configure(AnyOption *opt)
         quadrature = field_a->fe->quadrature;
     }
     assert(quadrature != 0);
+
+    // XXX: perhaps quadrature data should be loaded first!
+    // move this line back into FieldIO load() method
+    field_a->fe->set_quadrature(quadrature);
 
 
     /* Determine the output-frequency option */
@@ -290,6 +306,7 @@ int cigma::CompareCmd::run()
         field_a->tabulate();
 
         // ... calculate phi_a[]
+        // XXX: use tabulation instead of calling eval repeatedly!
         for (q = 0; q < nq; q++)
         {
             field_a->eval((*quadrature)[q], &phi_a[valdim*q]);

@@ -98,7 +98,7 @@ public:
 double pick_from_interval(double a, double b);
 void bbox_random_point(double minpt[3], double maxpt[3], double x[3]);
 
-void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO);
+void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix);
 void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix);
 void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix);
 
