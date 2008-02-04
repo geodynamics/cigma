@@ -91,7 +91,10 @@ AC_SUBST(PYTHON_INCLUDES)
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_LDFLAGS)
 
-AC_CONFIG_FILES([Makefile variables])
+AC_CONFIG_FILES([Makefile
+                 variables
+                 src/Makefile
+                 ])
 
 AC_OUTPUT
 

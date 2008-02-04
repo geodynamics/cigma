@@ -1,8 +1,10 @@
-include ../build/variables
+include ../variables
 
-FLAGS = -Wall -Wno-deprecated
+#FLAGS = -Wall -Wno-deprecated
+FLAGS += -Wno-deprecated
 FLAGS += -g
 
+INCLUDES  =
 INCLUDES += $(PYTHON_INCLUDES)
 INCLUDES += $(VTK_INCLUDES)
 INCLUDES += $(HDF5_INCLUDES)
@@ -57,7 +59,7 @@ OBJS = \
 	CubeCmd.o \
 	Misc.o \
 	Locator.o \
-	AnnLocator.o \
+	AnnLocator.o
 
 
 default: libann libh5io testlib cigma vtkls tests
