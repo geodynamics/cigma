@@ -20,8 +20,7 @@ cigma::VtkReader::VtkReader()
 
 cigma::VtkReader::~VtkReader()
 {
-    if (reader != 0)
-        reader->Delete();
+    close();
 }
 
 
@@ -65,6 +64,16 @@ void cigma::VtkReader::open(std::string filename)
 
 void cigma::VtkReader::close()
 {
+    if (grid != 0)
+    {
+        grid->Delete();
+        grid = 0;
+    }
+    if (reader != 0)
+    {
+        reader->Delete();
+        reader = 0;
+    }
 }
 
 
