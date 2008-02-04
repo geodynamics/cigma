@@ -1,0 +1,17 @@
+---high-----------------------------------------------------------------------
+Migrate to automake from custom makefiles
+Run strike-slip & reverse-slip benchmarks on the 250m resolution datasets
+
+---normal---------------------------------------------------------------------
+Test vtk.m4 autodetection
+Test hdf.m4 autodetection
+Use Leif's python.m4 (in /cs/autoconf/)
+
+---low------------------------------------------------------------------------
+Add class PointField (explicit set of values)
+Add class InterpolatedPointField (nearest-neighbor interpolation)
+Add method AnnLocator::initialize(Points *points)
+Move vtkls.cpp into 'cigma list' command
+Add --mesh-locator option (values: none,ann)
+Intercept --version in CommandSet::run()
+
