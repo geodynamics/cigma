@@ -2,7 +2,7 @@ bin_PROGRAMS = cigma
 
 noinst_LIBRARIES = libh5io.a libann.a
 
-cigma_LDADD = libh5io.a libann.a $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir)
+cigma_LDADD = libh5io.a libann.a $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS)
 cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
 
 libh5io_a_CPPFLAGS = $(HDF5_INCLUDES)
@@ -67,16 +67,12 @@ cigma_SOURCES = \
 	CompareCmd.cpp \
 	CompareCmd.h \
 	convert.h \
-	CubeCmd.cpp \
-	CubeCmd.h \
 	CubeMeshPart.cpp \
 	CubeMeshPart.h \
 	DofHandler.cpp \
-	DofHandler.h
+	DofHandler.h \
 	EvalCmd.cpp \
 	EvalCmd.h \
-	ExternalField.cpp \
-	ExternalField.h \
 	ExtractCmd.cpp \
 	ExtractCmd.h \
 	FE.cpp \
@@ -127,10 +123,6 @@ cigma_SOURCES = \
 	VtkReader.h \
 	VtkUgMeshPart.cpp \
 	VtkUgMeshPart.h \
-	VtkUgReader.cpp \
-	VtkUgReader.h \
-	VtkUgSimpleWriter.cpp \
-	VtkUgSimpleWriter.h \
 	VtkWriter.cpp \
 	VtkWriter.h \
 	Writer.cpp \
