@@ -1,102 +1,106 @@
 #!/bin/bash
 
+##############################################################################
 
-################
-# 0: tet4_1000m
-# 1: tet4_0500m
-# 2: hex8_1000m
-# 3: hex8_0500m
+function cigma-compare()
+{
+    of=${pf}-${a}_${aa}-${b}_${bb}-step${step}.vtk
+    echo $sep
+    echo "# Creating $of"
+    cigma compare --output=${of} \
+        --first=${df}:/${a}/${bm}_${aa}/variables/${av}/${step} \
+        --first-mesh=${df}:/mesh/${bm}_${aa} \
+        --second=${df}:/${b}/${bm}_${bb}/variables/${bv}/${step} \
+        --second-mesh=${df}:/mesh/${bm}_${aa} \
+        --verbose --output-frequency=10000
+}
+function compare-steps()
+{
+    for t in $*; do
+        step="step$t"
+        cigma-compare
+    done
+}
 
+sep="# ----------------------------------------------"
 
-################
-# r='00'
-# a='tet4_1000m'
-# b='tet4_1000m'
+##############################################################################
 
-# r='01'
-# a='tet4_1000m'
-# b='tet4_0500m'
+bm=bmssnog
+df=$bm.h5
 
-# r='02'
-# a='tet4_1000m'
-# b='hex8_1000m'
+t0=00000
+t1=00010
+t2=00050
+t3=00100
 
-# r='03'
-# a='tet4_1000m'
-# b='hex8_0500m'
+##############################################################################
 
+a=geofest
+b=geofest
 
-################
-# r='10'
-# a='tet4_0500m'
-# b='tet4_1000m'
+pf=ss-disp
+av=displacement
+bv=displacement
+aa=tet4_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_1000m
+bb=tet4_0250m
+compare-steps $t0 $t1 $t2 $t3
 
-# r='11'
-# a='tet4_0500m'
-# b='tet4_0500m'
+pf=ss-velo
+av=del_displacement
+bv=del_displacement
+aa=tet4_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_1000m
+bb=tet4_0250m
+compare-steps $t0 $t1 $t2 $t3
 
-# r='12'
-# a='tet4_0500m'
-# b='hex8_1000m'
+##############################################################################
 
-# r='13'
-# a='tet4_0500m'
-# b='hex8_0500m'
+a=pylith
+b=geofest
 
+pf=ss-disp
+av=displacement
+bv=displacement
+aa=hex8_1000m
+bb=tet4_1000m
+compare-steps $t0 $t1 $t2 $t3
+aa=hex8_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_0250m
+bb=tet4_0500m
+compare-steps $t0
+aa=tet4_0250m
+bb=tet4_0250m
+compare-steps $t0
 
-################
-# r='20'
-# a='hex8_1000m'
-# b='tet4_1000m'
+pf=ss-velo
+av=velocity
+bv=del_displacement
+aa=hex8_1000m
+bb=tet4_1000m
+compare-steps $t0 $t1 $t2 $t3
+aa=hex8_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_1000m
+bb=tet4_0500m
+compare-steps $t0 $t1 $t2 $t3
+aa=tet4_0250m
+bb=tet4_0500m
+compare-steps $t0
+#aa=tet4_0250m
+#bb=tet4_0250m
+#compare-steps $t0
 
-# r='21'
-# a='hex8_1000m'
-# b='tet4_0500m'
-
-# r='22'
-# a='hex8_1000m'
-# b='hex8_1000m'
-
-# r='23'
-# a='tet4_1000m'
-# b='hex8_0500m'
-
-
-################
-# r='30'
-# a='hex8_0500m'
-# b='tet4_1000m'
-
-# r='31'
-# a='hex8_0500m'
-# b='tet4_0500m'
-
-# r='32'
-# a='hex8_0500m'
-# b='hex8_1000m'
-
-# r='33'
-# a='hex8_0500m'
-# b='hex8_0500m'
-
-
-
-
-#######################################################
-
-path1="./strikeslip_${a}_t0.vtk:displacements_t0"
-path2="./strikeslip_${b}_t0.vtk:displacements_t0"
-outputfile="./residuals${r}-${a}-${b}.vtk"
-
-echo "Case ${r}"
-echo "Comparing ${a} with ${b}"
-echo "../cigma compare --output=${outputfile} --first=${path1} --second=${path2} ${*}"
-
-../cigma compare \
-    --output=${outputfile}  \
-    --first=${path1}        \
-    --second=${path2}       \
-    ${*}
-
-
-#EOF
+##############################################################################
+##############################################################################
