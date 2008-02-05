@@ -19,36 +19,37 @@ UNAME=`uname`
 dnl Check for default compilers
 AC_PROG_CC
 AC_PROG_CXX
-if test "x${CC}" = "x" -o "x${CXX}" = "x"; then
-    AC_MSG_ERROR([Could not find required compilers, aborting.])
-fi
-LINKER="${CXX}"
+#if test "x${CC}" = "x" -o "x${CXX}" = "x"; then
+#    AC_MSG_ERROR([Could not find required compilers, aborting.])
+#fi
+#LINKER="${CXX}"
 
 dnl Use C++ for all compilation tests
 AC_LANG(C++)
 
 dnl Set default flags
-FLAGS="-Wall"
-OPTIM="-g -O2"
+#FLAGS="-Wall"
+#OPTIM="-g -O2"
 
 dnl Check for various programs
 AC_PROG_CPP
 
 dnl How to build static libraries?
-case "$UNAME" in
-  Darwin*)
-    AR="libtool -o"
-    RANLIB=true
-    ;;
-  *)
-    AC_PROG_RANLIB
-    AC_PATH_PROG(AR, ar)
-    if test "x${AR}" = "x"; then
-        AC_MSG_ERROR([Could not find the library archiver, aborting.])
-    fi
-    AR="${AR} ruvs"
-    ;;
-esac
+AC_PROG_RANLIB
+#case "$UNAME" in
+#  Darwin*)
+#    AR="libtool -o"
+#    RANLIB=true
+#    ;;
+#  *)
+#    AC_PROG_RANLIB
+#    AC_PATH_PROG(AR, ar)
+#    if test "x${AR}" = "x"; then
+#        AC_MSG_ERROR([Could not find the library archiver, aborting.])
+#    fi
+#    AR="${AR} ruvs"
+#    ;;
+#esac
 
 dnl See if we need a .exe extension on executables
 AC_EXEEXT
@@ -71,13 +72,14 @@ AM_PATH_VTK
 
 
 dnl Write output
-AC_SUBST(UNAME)
-AC_SUBST(FLAGS)
-AC_SUBST(OPTIM)
-AC_SUBST(LINKER)
+
+#AC_SUBST(UNAME)
+#AC_SUBST(FLAGS)
+#AC_SUBST(OPTIM)
+#AC_SUBST(LINKER)
 AC_SUBST(CIGMA_DIRS)
 AC_SUBST(CIGMA_LIBS)
-AC_SUBST(AR)
+#AC_SUBST(AR)
 
 AC_SUBST(VTK_INCLUDES)
 AC_SUBST(VTK_LIBS)
@@ -92,7 +94,6 @@ AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_LDFLAGS)
 
 AC_CONFIG_FILES([Makefile
-                 variables
                  src/Makefile
                  ])
 

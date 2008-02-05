@@ -3,13 +3,13 @@
 
 #include "ANN/ANN.h"
 #include "Locator.h"
+#include "MeshPart.h"
 
 
 namespace cigma
 {
     class AnnLocator;
 }
-
 
 
 class cigma::AnnLocator : public cigma::Locator

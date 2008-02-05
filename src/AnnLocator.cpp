@@ -1,6 +1,5 @@
 #include <cassert>
 #include "AnnLocator.h"
-#include "MeshPart.h"
 
 
 // ---------------------------------------------------------------------------

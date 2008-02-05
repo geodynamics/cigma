@@ -1,16 +1,18 @@
-bin_PROGRAMS = cigma vtkls
+bin_PROGRAMS = cigma
 
-noinst_LIBRARIES = libh5io.a libann.a libcigma.a
+noinst_LIBRARIES = libh5io.a libann.a
 
-cigma_SOURCES = cigma.cpp
-cigma_LDADD = libcigma.a libh5io.a libann.a -lhdf5
-cigma_CPPFLAGS = -I$(srcdir)/h5io -I$(srcdir)/ann/include
+cigma_LDADD = libh5io.a libann.a $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir)
+cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
 
-vtkls_SOURCES = vtkls.cpp
+libh5io_a_CPPFLAGS = $(HDF5_INCLUDES)
+libann_a_CPPFLAGS = -I$(srcdir)/ann/include
+#libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) -I$(srcdir)/ann/include
+
+#vtkls_SOURCES = vtkls.cpp
 
 
 ##############################################################################
-
 
 libh5io_a_SOURCES = \
 	h5io/h5array.c \
@@ -50,7 +52,8 @@ libann_a_SOURCES = \
 	ann/src/pr_queue.h \
 	ann/src/pr_queue_k.h
 
-libcigma_a_SOURCES = \
+cigma_SOURCES = \
+	cigma.cpp \
 	AnnLocator.cpp \
 	AnnLocator.h \
 	AnyOption.cpp \
