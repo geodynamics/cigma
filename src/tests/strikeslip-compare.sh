@@ -4,7 +4,7 @@
 
 function cigma-compare()
 {
-    of=${pf}-${a}_${aa}-${b}_${bb}-step${step}.vtk
+    of=${pf}-${a}_${aa}-${b}_${bb}-${step}.vtk
     echo $sep
     echo "# Creating $of"
     cigma compare --output=${of} \
@@ -98,9 +98,9 @@ compare-steps $t0 $t1 $t2 $t3
 aa=tet4_0250m
 bb=tet4_0500m
 compare-steps $t0
-#aa=tet4_0250m
-#bb=tet4_0250m
-#compare-steps $t0
+aa=tet4_0250m
+bb=tet4_0250m
+compare-steps $t0
 
 ##############################################################################
 ##############################################################################
