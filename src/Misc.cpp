@@ -499,9 +499,13 @@ void FieldIO::load()
         field->meshPart->set_cell();
         assert(field->meshPart->cell != 0);
 
-        // XXX: instantiate this only when necessary!
-        AnnLocator *locator = new AnnLocator();
-        field->meshPart->set_locator(locator);
+        // XXX: Instantiate Locator only when necessary!
+        // XXX: Decide threshold based on number of elements?
+        if (field->meshPart->nel > 1000)
+        {
+            AnnLocator *locator = new AnnLocator();
+            field->meshPart->set_locator(locator);
+        }
 
         field->dofHandler = new DofHandler();
         field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
