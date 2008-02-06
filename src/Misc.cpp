@@ -209,7 +209,7 @@ void MeshIO::load()
         new_reader(&coords_reader, coords_ext);
         coords_reader->open(coords_file);
         coords_reader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
-        coords_reader->close();
+        //coords_reader->close();
     }
 
     if (connect_path != "")
@@ -219,7 +219,7 @@ void MeshIO::load()
         new_reader(&connect_reader, connect_ext);
         connect_reader->open(connect_file);
         connect_reader->get_connectivity(connect_loc.c_str(), &connect, &nel, &ndofs);
-        connect_reader->close();
+        //connect_reader->close();
     }
 
     if ((mesh_path != "") && ((coords == 0) || (connect == 0)))
@@ -244,7 +244,7 @@ void MeshIO::load()
             }
             mesh_reader->get_connectivity(connect_loc.c_str(), &connect, &nel, &ndofs);
         }
-        mesh_reader->close();
+        //mesh_reader->close();
     }
 
     if ((coords != 0) && (connect != 0))
@@ -478,7 +478,7 @@ void FieldIO::load()
         new_reader(&reader, dofs_ext);
         reader->open(dofs_file);
         reader->get_dataset(dofs_loc.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-        reader->close();
+        //reader->close();
 
 
         if (meshIO.mesh_path == "")

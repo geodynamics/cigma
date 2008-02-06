@@ -20,7 +20,8 @@ cigma::VtkReader::VtkReader()
 
 cigma::VtkReader::~VtkReader()
 {
-    close();
+    //XXX: avoid calling close() for now
+    //close();
 }
 
 
@@ -64,6 +65,7 @@ void cigma::VtkReader::open(std::string filename)
 
 void cigma::VtkReader::close()
 {
+    /* XXX: fix this!
     if (grid != 0)
     {
         grid->Delete();
@@ -74,6 +76,7 @@ void cigma::VtkReader::close()
         reader->Delete();
         reader = 0;
     }
+    // */
 }
 
 
