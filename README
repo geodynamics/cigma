@@ -2,16 +2,11 @@
 # Quick Build instructions
 # 
 
-cd build
 autoreconf -fi
 
 # Flags only necessary if respective prefix is not /usr
 ./configure --with-hdf5=/path/to/hdf5/prefix \
             --with-vtk=/path/to/vtk/prefix   \
 
-cd ../src
-
 make
-
-./cigma help
-
+make install
