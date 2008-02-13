@@ -54,7 +54,7 @@ def quad_qr(order):
             x[n,1] = qpts[q]
             w[n] = qwts[r]*qwts[q]
             n += 1
-    assert (n == nq*nq*nq)
+    assert (n == nq*nq)
     return (x,w)
 
 
