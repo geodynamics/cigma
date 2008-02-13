@@ -50,12 +50,21 @@ get_dataset(const char *loc, double **data, int *num, int *dim)
     dataset_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
     assert(H5Tget_class(type_id) == H5T_FLOAT);
     assert(dataset_id >= 0);
-    assert(rank == 2);
+    assert((rank == 1) || (rank == 2));
     status = H5Dclose(dataset_id);
     assert(status >= 0); // XXX: emit warning?
 
-    ierr = h5io_dset_read2(file_id, loc, H5T_NATIVE_DOUBLE,
-                           (void **)data, num, dim);
+    if (rank == 2)
+    {
+        ierr = h5io_dset_read2(file_id, loc, H5T_NATIVE_DOUBLE,
+                               (void **)data, num, dim);
+    }
+    else if (rank == 1)
+    {
+        ierr = h5io_dset_read1(file_id, loc, H5T_NATIVE_DOUBLE,
+                               (void **)data, num);
+        *dim = 1;
+    }
     assert(ierr >= 0);
 }
 
