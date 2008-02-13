@@ -11,7 +11,7 @@ using namespace cigma;
 // ---------------------------------------------------------------------------
 
 
-void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix)
+void load_args(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix)
 {
     assert(opt != 0);
     assert(fieldIO != 0);
@@ -26,7 +26,7 @@ void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix)
         fieldIO->field_path = in;
     }
 
-    configure_mesh(opt, &(fieldIO->meshIO), mesh_name.c_str());
+    load_args(opt, &(fieldIO->meshIO), mesh_name.c_str());
 
 }
 

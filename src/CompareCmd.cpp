@@ -128,14 +128,11 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     /* Gather up the expected command line arguments */
 
-    //XXX: add "rule" to last arg
-    //XXX: rename configure_quadrature to configure_rule
-
-    configure_mesh(opt, &meshIO, "mesh");
-    configure_quadrature(opt, &quadratureIO, "rule");
-    configure_field(opt, &firstIO, "first");
-    configure_field(opt, &secondIO, "second");
-    configure_field(opt, &residualsIO, "output");
+    load_args(opt, &meshIO, "mesh");
+    load_args(opt, &quadratureIO, "rule");
+    load_args(opt, &firstIO, "first");
+    load_args(opt, &secondIO, "second");
+    load_args(opt, &residualsIO, "output");
 
 
     /* Validate these arguments and complain about missing ones */

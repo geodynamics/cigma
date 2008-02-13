@@ -26,7 +26,7 @@ public:
 };
 
 
-void configure_field(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix);
+void load_args(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix);
 
 
 #endif

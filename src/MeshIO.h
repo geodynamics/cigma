@@ -42,7 +42,7 @@ public:
 
 
 
-void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix);
+void load_args(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix);
 void validate_args(MeshIO *meshIO, const char *cmd_name);
 
 

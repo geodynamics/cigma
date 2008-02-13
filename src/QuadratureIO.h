@@ -29,7 +29,7 @@ public:
 };
 
 
-void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix);
+void load_args(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix);
 
 
 #endif

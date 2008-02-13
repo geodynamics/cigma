@@ -7,7 +7,7 @@ using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-void configure_quadrature(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix)
+void load_args(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix)
 {
     assert(opt != 0);
     assert(quadratureIO != 0);

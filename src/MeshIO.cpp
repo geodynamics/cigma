@@ -8,7 +8,7 @@ using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix)
+void load_args(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix)
 {
     assert(opt != 0);
     assert(meshIO != 0);
