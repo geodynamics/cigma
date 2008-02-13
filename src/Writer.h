@@ -37,6 +37,7 @@ public:
 };
 
 
-// ---------------------------------------------------------------------------
+void new_writer(cigma::Writer **writer, std::string ext);
+
 
 #endif
