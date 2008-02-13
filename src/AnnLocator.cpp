@@ -17,12 +17,21 @@ cigma::AnnLocator::AnnLocator()
 
     nnIdx = 0;
     nnDists = 0;
+
+    locatorType = NULL_LOCATOR;
 }
 
 cigma::AnnLocator::~AnnLocator()
 {
     if (kdtree != 0) delete kdtree;
-    if (dataPoints != 0) annDeallocPts(dataPoints);
+
+    if (dataPoints != 0)
+    {
+        if (locatorType == CELL_LOCATOR)
+        {
+            annDeallocPts(dataPoints);
+        }
+    }
 
     if (nnIdx != 0) delete [] nnIdx;
     if (nnDists != 0) delete [] nnDists;
@@ -65,6 +74,35 @@ void cigma::AnnLocator::initialize(MeshPart *meshPart)
     }
 
     kdtree = new ANNkd_tree(dataPoints, npts, dim);
+
+    locatorType = CELL_LOCATOR;
+}
+
+
+// ---------------------------------------------------------------------------
+
+void cigma::AnnLocator::initialize(Points *points)
+{
+    assert(nnk > 0);
+
+    npts = points->n_points();
+    dim  = points->n_dim();
+
+    assert(npts > 0);
+    assert(nsd > 0);
+
+    // XXX watch out for when you change the ANNpoint type to float
+    assert(sizeof(ANNpoint) == sizeof(double));
+
+    dataPoints = (ANNpointArray)(points->data);
+    queryPoint = annAllocPt(dim);
+
+    nnIdx = new ANNidx[nnk];
+    nnDists = new ANNdist[nnk];
+
+    kdtree = new ANNkd_tree(dataPoints, npts, dim);
+
+    locatorType = POINT_LOCATOR;
 }
 
 

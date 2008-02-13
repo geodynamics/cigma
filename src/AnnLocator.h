@@ -4,7 +4,7 @@
 #include "ANN/ANN.h"
 #include "Locator.h"
 #include "MeshPart.h"
-
+#include "Points.h"
 
 namespace cigma
 {
@@ -20,11 +20,15 @@ public:
 
 public:
     void initialize(MeshPart *meshPart);
+    void initialize(Points *points);
+
+public:
     void search(double *globalPoint);
 
 public:
     int n_idx();
     int idx(int i);
+
 
 public:
     int nnk;            // number of nearest neighbors
@@ -40,6 +44,16 @@ public:
     ANNpoint queryPoint;    // query point for search()
     ANNidxArray nnIdx;      // near neighbor indices
     ANNdistArray nnDists;   // near neighbor distances
+
+public:
+
+    typedef enum {
+        NULL_LOCATOR,
+        POINT_LOCATOR,
+        CELL_LOCATOR
+    } AnnLocatorType;
+
+    AnnLocatorType locatorType;
 
 };
 

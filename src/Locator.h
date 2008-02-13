@@ -6,6 +6,7 @@ namespace cigma
 {
     class Locator;
     class MeshPart;
+    class Points;
 }
 
 
@@ -16,7 +17,11 @@ public:
     virtual ~Locator();
 
 public:
+    // XXX: figure out a better scheme for initializing Locator instances
     virtual void initialize(MeshPart *meshPart) = 0;
+    virtual void initialize(Points *points) = 0;
+
+public:
     virtual void search(double *globalPoint) = 0;
 
 public:
