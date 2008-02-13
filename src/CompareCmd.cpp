@@ -151,6 +151,11 @@ void cigma::CompareCmd::configure(AnyOption *opt)
             residualsIO.field_path = "foo.vtk";
     }
 
+    if (residualsIO.field_path == "")
+    {
+        cerr << "compare: Please specify the option --output" << endl;
+        exit(1);
+    }
     if (firstIO.field_path == "")
     {
         cerr << "compare: Please specify the option --first" << endl;
@@ -161,11 +166,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
         cerr << "compare: Please specify the option --second" << endl;
         exit(1);
     }
-    if (residualsIO.field_path == "")
-    {
-        cerr << "compare: Please specify the option --output" << endl;
-        exit(1);
-    }
+    validate_args(&meshIO, "compare");
 
 
     /* Load the datasets into memory */
@@ -241,6 +242,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     if (output_frequency == 0)
     {
+        // XXX: emit warning?
         verbose = false;
     }
 

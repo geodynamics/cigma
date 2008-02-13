@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "MeshIO.h"
 #include "StringUtils.h"
 
@@ -37,6 +38,64 @@ void configure_mesh(AnyOption *opt, MeshIO *meshIO, const char *opt_prefix)
     }
 }
 
+void validate_args(MeshIO *meshIO, const char *cmd_name)
+{
+    assert(meshIO != 0);
+
+    if (meshIO->has_paths())
+    {
+        if (meshIO->mesh_path == "")
+        {
+            if (meshIO->coords_path == "")
+            {
+                cerr << cmd_name
+                     << ": Detected missing option --mesh-coordinates"
+                     << endl;
+
+                exit(1);
+            }
+            if (meshIO->connect_path == "")
+            {
+                cerr << cmd_name
+                     << ": Detected missing option --mesh-connectivity"
+                     << endl;
+
+                exit(1);
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+
+bool MeshIO::has_paths()
+{
+    return (mesh_path != "") || (coords_path != "") || (connect_path != "");
+}
+
+bool MeshIO::has_coords_path()
+{
+    return (mesh_path != "") || (coords_path != "");
+}
+
+bool MeshIO::has_connect_path()
+{
+    return (mesh_path != "") || (connect_path != "");
+}
+
+bool MeshIO::has_valid_paths()
+{
+    // empty state is also valid
+    if (!has_paths())
+    {
+        return true;
+    }
+
+    // require both coords and connect paths if mesh path is absent
+    return (mesh_path != "") || ((coords_path != "") && (connect_path != ""));
+}
+
 // ---------------------------------------------------------------------------
 
 MeshIO::MeshIO()
@@ -58,9 +117,15 @@ void MeshIO::load()
 {
     cout << "Calling MeshIO::load()" << endl;
 
-    string mesh_loc, mesh_file, mesh_ext;
-    string coords_loc, coords_file, coords_ext;
-    string connect_loc, connect_file, connect_ext;
+    // skip this method if paths are empty
+    if (!has_paths())
+    {
+        return;
+    }
+
+    //string mesh_loc, mesh_file, mesh_ext;
+    //string coords_loc, coords_file, coords_ext;
+    //string connect_loc, connect_file, connect_ext;
 
     int nno, nsd;
     double *coords = 0;
@@ -70,6 +135,13 @@ void MeshIO::load()
 
     nno = nsd = 0;
     nel = ndofs = 0;
+
+
+    //
+    // Note that each of coords_path and connect_path will override
+    // the corresponding component of mesh_path
+    //
+
 
     // XXX: use auto_ptr for the local readers, so we can throw exceptions
     if (coords_path != "")
