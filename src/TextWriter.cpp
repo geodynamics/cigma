@@ -17,8 +17,18 @@ cigma::TextWriter::~TextWriter()
 
 void cigma::TextWriter::open(std::string filename)
 {
-    fp = fopen(filename.c_str(), "w");
-    assert(fp != NULL);
+    fp = NULL;
+
+    if (filename != "")
+    {
+        fp = fopen(filename.c_str(), "w");
+    }
+    else
+    {
+        fp = stdout;
+    }
+
+    assert(fp != NULL); // XXX: use return value instead of assert
 }
 
 void cigma::TextWriter::close()
