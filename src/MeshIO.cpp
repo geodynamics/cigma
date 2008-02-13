@@ -156,8 +156,8 @@ bool MeshIO::prepare()
         {
             // no coords path specified...
             // read coords from mesh file
-            // connect_loc will have to be determined later in load()
-            connect_loc = "";
+            // coords_loc will have to be determined later in load()
+            coords_loc  = "";
             coords_file = mesh_file;
             coords_ext  = mesh_ext;
         }
