@@ -1,18 +1,25 @@
 bin_PROGRAMS = cigma
 
-noinst_LIBRARIES = libh5io.a libann.a
-
-cigma_LDADD = libh5io.a libann.a $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS)
-cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
+noinst_LIBRARIES = libh5io.a libann.a libcigma.a
 
 libh5io_a_CPPFLAGS = $(HDF5_INCLUDES)
+
 libann_a_CPPFLAGS = -I$(srcdir)/ann/include
-#libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) -I$(srcdir)/ann/include
+
+libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
+#libcigma_a_LIBADD = libh5io.a libann.a
+
+cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
+cigma_LDFLAGS = -I$(srcdir)/h5io -I$(srcdir)/ann/include
+cigma_LDADD = $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) libcigma.a libh5io.a libann.a
 
 #vtkls_SOURCES = vtkls.cpp
 
 
 ##############################################################################
+
+cigma_SOURCES = \
+	cigma.cpp
 
 libh5io_a_SOURCES = \
 	h5io/h5array.c \
@@ -52,8 +59,7 @@ libann_a_SOURCES = \
 	ann/src/pr_queue.h \
 	ann/src/pr_queue_k.h
 
-cigma_SOURCES = \
-	cigma.cpp \
+libcigma_a_SOURCES = \
 	AnnLocator.cpp \
 	AnnLocator.h \
 	AnyOption.cpp \
