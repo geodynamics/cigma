@@ -64,31 +64,78 @@ void QuadratureIO::load(cigma::Cell *cell)
 
     assert(cell != 0);
 
-    // XXX: change *_nsd to *_celldim since we are
-    // talking about quadrature points in the appropriate
-    // reference domain
+    int i,j;
 
-    const int tri_nno = 1;
+
+    //
+    // XXX: move these default rules into the appropriate Cell subclasses
+    //
+
+    // tri_qr(5)
+    const int tri_nno = 9;
+    const int tri_celldim = 2;
     const int tri_nsd = 3;
-    double tri_qpts[tri_nno * tri_nsd] = {
-        0.0, 0.0, 0.0
+    double tri_qpts[tri_nno * tri_celldim] = {
+        -0.79456469, -0.82282408,
+        -0.86689186, -0.18106627,
+        -0.95213774,  0.57531892,
+        -0.08858796, -0.82282408,
+        -0.40946686, -0.18106627,
+        -0.78765946,  0.57531892,
+         0.61738877, -0.82282408,
+         0.04795814, -0.18106627,
+        -0.62318119,  0.57531892
     };
     double tri_qwts[tri_nno] = {
-        0.0
+        0.22325768,  0.25471234,  0.07758553,  0.35721229,  0.40753974,
+        0.12413685,  0.22325768,  0.25471234,  0.07758553
     };
+    for (i = 0; i < tri_nno; i++)
+    {
+        for (j = 0; j < tri_celldim; j++)
+        {
+            int n = tri_celldim * i + j;
+            tri_qpts[n] += 1;
+            tri_qpts[n] *= 0.5;
+        }
+    }
 
-    const int quad_nno = 1;
+
+    // quad_qr(7)
+    const int quad_nno = 16;
+    const int quad_celldim = 2;
     const int quad_nsd = 3;
-    double quad_qpts[quad_nno * quad_nsd] = {
-        0.0, 0.0, 0.0
+    double quad_qpts[quad_nno * quad_celldim] = {
+        -0.86113631, -0.86113631,
+        -0.33998104, -0.86113631,
+         0.33998104, -0.86113631,
+         0.86113631, -0.86113631,
+         0.86113631, -0.33998104,
+         0.86113631,  0.33998104,
+         0.86113631,  0.86113631,
+         0.33998104,  0.86113631,
+        -0.33998104,  0.86113631,
+        -0.86113631,  0.86113631,
+        -0.86113631,  0.33998104,
+        -0.86113631, -0.33998104,
+        -0.33998104, -0.33998104,
+         0.33998104, -0.33998104,
+        -0.33998104,  0.33998104,
+         0.33998104,  0.33998104
     };
     double quad_qwts[quad_nno] = {
-        0.0
+        0.12100299,  0.22685185,  0.22685185,  0.12100299,  0.22685185,
+        0.22685185,  0.12100299,  0.22685185,  0.22685185,  0.12100299,
+        0.22685185,  0.22685185,  0.4252933 ,  0.4252933 ,  0.4252933 ,
+        0.4252933
     };
 
+
+    // tet_qr(3)
     const int tet_nno = 8;
+    const int tet_celldim = 3;
     const int tet_nsd = 3;
-    double tet_qpts[tet_nno * tet_nsd] = {
+    double tet_qpts[tet_nno * tet_celldim] = {
         -0.68663473, -0.72789005, -0.75497035,
         -0.83720867, -0.85864055,  0.08830369,
         -0.86832263,  0.13186633, -0.75497035,
@@ -99,20 +146,23 @@ void QuadratureIO::load(cigma::Cell *cell)
         -0.74470688, -0.4120024 ,  0.08830369 };
     double tet_qwts[tet_nno] = {
         0.29583885,  0.12821632,  0.16925605,  0.07335544,  0.29583885,
-        0.12821632,  0.16925605,  0.07335544 };
-    for (int i = 0; i < tet_nno; i++)
+        0.12821632,  0.16925605,  0.07335544
+    };
+    for (i = 0; i < tet_nno; i++)
     {
-        for (int j = 0; j < tet_nsd; j++)
+        for (j = 0; j < tet_celldim; j++)
         {
-            int n = tet_nsd * i + j;
+            int n = tet_celldim * i + j;
             tet_qpts[n] += 1;
             tet_qpts[n] *= 0.5;
         }
     }
 
+    // hex_qr(3)
     const int hex_nno = 8;
+    const int hex_celldim = 3;
     const int hex_nsd = 3;
-    double hex_qpts[8*3] = {
+    double hex_qpts[hex_nno * hex_celldim] = {
         -0.57735027, -0.57735027, -0.57735027,
          0.57735027, -0.57735027, -0.57735027,
          0.57735027,  0.57735027, -0.57735027,
@@ -121,7 +171,7 @@ void QuadratureIO::load(cigma::Cell *cell)
          0.57735027, -0.57735027,  0.57735027,
          0.57735027,  0.57735027,  0.57735027,
         -0.57735027,  0.57735027,  0.57735027 };
-    double hex_qwts[8*3] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
+    double hex_qwts[hex_nno] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
 
 
     int nq,nd;
@@ -177,22 +227,22 @@ void QuadratureIO::load(cigma::Cell *cell)
         {
         case Cell::TRIANGLE:
             quadrature = new Quadrature();
-            quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_nsd);
+            quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_celldim);
             quadrature->set_globaldim(tri_nsd);
             break;
         case Cell::QUADRANGLE:
             quadrature = new Quadrature();
-            quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_nsd);
+            quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_celldim);
             quadrature->set_globaldim(quad_nsd);
             break;
         case Cell::TETRAHEDRON:
             quadrature = new Quadrature();
-            quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_nsd);
+            quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_celldim);
             quadrature->set_globaldim(tet_nsd);
             break;
         case Cell::HEXAHEDRON:
             quadrature = new Quadrature();
-            quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_nsd);
+            quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_celldim);
             quadrature->set_globaldim(hex_nsd);
             break;
         default:
