@@ -39,6 +39,57 @@ void load_args(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefi
     }
 }
 
+void validate_args(QuadratureIO *quadratureIO, const char *cmd_name)
+{
+    assert(quadratureIO != 0);
+
+    //
+    // Check for incompatible/inconsistent options
+    //
+
+    if ((quadratureIO->points_path == "") && (quadratureIO->weights_path != ""))
+    {
+        cerr << cmd_name
+             << ": You also need to set the option --rule-points"
+             << endl;
+
+        exit(1);
+    }
+
+    if ((quadratureIO->weights_path == "") && (quadratureIO->points_path != ""))
+    {
+        cerr << cmd_name
+             << ": You also need to set the option --rule-weights"
+             << endl;
+
+        exit(1);
+    }
+    
+    if ((quadratureIO->weights_path != "") && (quadratureIO->points_path != ""))
+    {
+        if (quadratureIO->quadrature_path != "")
+        {
+            cerr << cmd_name
+                 << ": Using explicit points and weights (--rule not necessary)"
+                 << endl;
+
+            exit(1);
+        }
+    }
+
+    if ((quadratureIO->quadrature_order != "")
+            && ((quadratureIO->quadrature_path != "") 
+            || ((quadratureIO->points_path != "") && (quadratureIO->weights_path != ""))))
+    {
+        cerr << cmd_name
+             << ": Cannot use --rule-order with an explicit quadrature rule"
+             << endl;
+
+        exit(1);
+    }
+
+
+}
 
 // ---------------------------------------------------------------------------
 
@@ -185,20 +236,6 @@ void QuadratureIO::load(cigma::Cell *cell)
     qx = 0;
     qw = 0;
 
-
-    if ((points_path == "") && (weights_path != ""))
-    {
-        cerr << "Missing option --rule-points" << endl;
-        assert(false);
-        return;
-    }
-
-    if ((weights_path == "") && (points_path != ""))
-    {
-        cerr << "Missing option --rule-weights" << endl;
-        assert(false);
-        return;
-    }
 
     if ((points_path != "") && (weights_path != ""))
     {

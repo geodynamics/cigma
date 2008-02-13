@@ -30,6 +30,7 @@ public:
 
 
 void load_args(AnyOption *opt, QuadratureIO *quadratureIO, const char *opt_prefix);
+void validate_args(QuadratureIO *quadratureIO, const char *cmd_name);
 
 
 #endif

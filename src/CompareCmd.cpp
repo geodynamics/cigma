@@ -164,6 +164,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
     validate_args(&meshIO, "compare");
+    validate_args(&quadratureIO, "compare");
 
 
     /* Load the datasets into memory */
