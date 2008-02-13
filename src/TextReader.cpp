@@ -1,6 +1,7 @@
 #include "TextReader.h"
 #include <cassert>
 #include <cstdlib>
+#include <cstring>
 
 // ---------------------------------------------------------------------------
 cigma::TextReader::TextReader()
@@ -16,9 +17,20 @@ cigma::TextReader::~TextReader()
 // ---------------------------------------------------------------------------
 int cigma::TextReader::open(std::string filename)
 {
-    fp = fopen(filename.c_str(), "r");
-    assert(fp != NULL);
-    return 0; // XXX: change return value instead of using assert
+    fp = NULL;
+
+    if (filename != "")
+    {
+        fp = fopen(filename.c_str(), "r");
+    }
+
+    // check for failure
+    if (fp == NULL)
+    {
+        return -1;
+    }
+    
+    return 0;
 }
 
 void cigma::TextReader::close()
@@ -31,6 +43,16 @@ void cigma::TextReader::close()
 
 
 // ---------------------------------------------------------------------------
+
+static FILE *get_fp(const char *loc, FILE *default_fp)
+{
+    FILE *fp = default_fp;
+    if ((loc != NULL) && (strcmp(loc, "") != 0))
+    {
+        fp = fopen(loc, "r");
+    }
+    return fp;
+}
 
 static bool read_dmat(FILE *fp, double **mat, int *rows, int *cols)
 {
@@ -100,21 +122,32 @@ static bool read_imat(FILE *fp, int **mat, int *rows, int *cols)
     return true;
 }
 
+
 // ---------------------------------------------------------------------------
 
 void cigma::TextReader::get_dataset(const char *loc, double **data, int *num, int *dim)
 {
-    read_dmat(fp, data, num, dim);
+    FILE *loc_fp = get_fp(loc, fp);
+    assert(loc_fp != NULL);
+    read_dmat(loc_fp, data, num, dim);
 }
 
 void cigma::TextReader::get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs)
 {
-    read_imat(fp, connectivity, nel, ndofs);
+    // XXX: add support for sections (c.f. gmsh format) so we can scan a single file
+    // for now, interpret loc argument to be an entirely new file
+    FILE *loc_fp = get_fp(loc, fp);
+    assert(loc_fp != NULL);
+    read_imat(loc_fp, connectivity, nel, ndofs);
 }
 
 void cigma::TextReader::get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd)
 {
-    read_dmat(fp, coordinates, nno, nsd);
+    // XXX: add support for sections (c.f. gmsh format) so we can scan a single file
+    // for now, interpret loc argument to be an entirely new file
+    FILE *loc_fp = get_fp(loc, fp);
+    assert(loc_fp != NULL);
+    read_dmat(loc_fp, coordinates, nno, nsd);
 }
 
 

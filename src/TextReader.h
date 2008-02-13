@@ -30,7 +30,7 @@ public:
     void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs);
 
 public:
-    FILE *fp;
+    FILE *fp;   // default file pointer
 };
 
 // ---------------------------------------------------------------------------
