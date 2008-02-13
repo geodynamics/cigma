@@ -13,6 +13,7 @@ public:
     cigma::Writer *writer;
 
 public:
+    std::string field_option;
     std::string field_path;
     cigma::FE_Field *field;
     MeshIO meshIO;
@@ -27,6 +28,7 @@ public:
 
 
 void load_args(AnyOption *opt, FieldIO *fieldIO, const char *opt_prefix);
+void validate_args(FieldIO *fieldIO, const char *cmd_name);
 
 
 #endif

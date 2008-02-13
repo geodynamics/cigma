@@ -139,30 +139,23 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     if (opt->getFlag("debug"))
     {
-        // assign defaults if we're in debug mode
+        // 
+        // assign defaults if we're in debug mode. this overrides
+        // the command line settings from load_args()
+        //
         if (firstIO.field_path == "")
             firstIO.field_path = "./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0";
+
         if (secondIO.field_path == "")
             secondIO.field_path = "./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
+
         if (residualsIO.field_path == "")
             residualsIO.field_path = "foo.vtk";
     }
 
-    if (residualsIO.field_path == "")
-    {
-        cerr << "compare: Please specify the option --output" << endl;
-        exit(1);
-    }
-    if (firstIO.field_path == "")
-    {
-        cerr << "compare: Please specify the option --first" << endl;
-        exit(1);
-    }
-    if (secondIO.field_path == "")
-    {
-        cerr << "compare: Please specify the option --second" << endl;
-        exit(1);
-    }
+    validate_args(&residualsIO, "compare");
+    validate_args(&firstIO, "compare");
+    validate_args(&secondIO, "compare");
     validate_args(&meshIO, "compare");
     validate_args(&quadratureIO, "compare");
 
@@ -240,7 +233,8 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
     if (output_frequency == 0)
     {
-        // XXX: emit warning?
+        // XXX: emit warning, or quit?
+        cerr << "compare: Warning: ignoring option --output-frequency" << endl;
         verbose = false;
     }
 
