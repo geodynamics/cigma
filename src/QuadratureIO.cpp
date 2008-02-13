@@ -65,6 +65,7 @@ void QuadratureIO::load(cigma::Cell *cell)
     assert(cell != 0);
 
     int i,j;
+    int ierr;
 
 
     //
@@ -143,7 +144,8 @@ void QuadratureIO::load(cigma::Cell *cell)
          0.16949513, -0.72789005, -0.75497035,
         -0.39245447, -0.85864055,  0.08830369,
         -0.50857335,  0.13186633, -0.75497035,
-        -0.74470688, -0.4120024 ,  0.08830369 };
+        -0.74470688, -0.4120024 ,  0.08830369
+    };
     double tet_qwts[tet_nno] = {
         0.29583885,  0.12821632,  0.16925605,  0.07335544,  0.29583885,
         0.12821632,  0.16925605,  0.07335544
@@ -170,7 +172,8 @@ void QuadratureIO::load(cigma::Cell *cell)
         -0.57735027, -0.57735027,  0.57735027,
          0.57735027, -0.57735027,  0.57735027,
          0.57735027,  0.57735027,  0.57735027,
-        -0.57735027,  0.57735027,  0.57735027 };
+        -0.57735027,  0.57735027,  0.57735027
+    };
     double hex_qwts[hex_nno] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
 
 
@@ -182,24 +185,96 @@ void QuadratureIO::load(cigma::Cell *cell)
     qx = 0;
     qw = 0;
 
-    if (quadrature_path != "")
+
+    if ((points_path == "") && (weights_path != ""))
     {
+        cerr << "Missing option --rule-points" << endl;
+        assert(false);
+        return;
+    }
+
+    if ((weights_path == "") && (points_path != ""))
+    {
+        cerr << "Missing option --rule-weights" << endl;
+        assert(false);
+        return;
+    }
+
+    if ((points_path != "") && (weights_path != ""))
+    {
+        Reader *points_reader;
+        string points_loc, points_file, points_ext;
+        parse_dataset_path(points_path, points_loc, points_file, points_ext);
+        new_reader(&points_reader, points_ext);
+        ierr = points_reader->open(points_file);
+        assert(ierr == 0);
+        cout << "quadrature points file = " << points_file << endl;
+        points_reader->get_dataset(points_loc.c_str(), &qx, &nq, &nd);
+        assert(nq > 0);
+        assert(nd > 0);
+        //points_reader->close();
+
+        int wtdims[2];
+        Reader *weights_reader;
+        string weights_loc, weights_file, weights_ext;
+        parse_dataset_path(weights_path, weights_loc, weights_file, weights_ext);
+        new_reader(&weights_reader, weights_ext);
+        ierr = weights_reader->open(weights_file);
+        assert(ierr == 0);
+        cout << "quadrature weights file = " << weights_file << endl;
+        weights_reader->get_dataset(weights_loc.c_str(), &qw, &wtdims[0], &wtdims[1]);
+        assert(wtdims[0] == nq);
+        assert(wtdims[1] == 1);
+        //weights_reader->close();
+    }
+    else if (quadrature_path != "")
+    {
+        int ierr;
         string quadrature_loc, quadrature_file, quadrature_ext;
         parse_dataset_path(quadrature_path, quadrature_loc, quadrature_file, quadrature_ext);
         new_reader(&reader, quadrature_ext);
+        ierr = reader->open(quadrature_file);
+        assert(ierr == 0);
+        cout << "quadrature file = " << quadrature_file << endl;
 
         if (reader->getType() == Reader::HDF_READER)
         {
-            // Load quadrature from HDF5 file
+            string points_loc = quadrature_loc + "/points";
+            cout << "quadrature points = " << points_loc << endl;
+            reader->get_dataset(points_loc.c_str(), &qx, &nq, &nd);
+
+            int wtdims[2];
+            string weights_loc = quadrature_loc + "/weights";
+            cout << "quadrature weights = " << weights_loc << endl;
+            reader->get_dataset(weights_loc.c_str(), &qw, &wtdims[0], &wtdims[1]);
+            assert(wtdims[0] == nq);
+            assert(wtdims[1] == 1);
+            
         }
         else if (reader->getType() == Reader::TXT_READER)
         {
-            // Load quadrature from 
+            int rows, cols;
+            double *wxdata;
+            reader->get_dataset(0, &wxdata, &rows, &cols);
+            nq = rows;
+            nd = cols - 1;
+            assert(nq >= 1);
+            assert(nd >= 1);
+            qx = new double[nq*nd];
+            qw = new double[nq];
+            for (i = 0; i < nq; i++)
+            {
+                qw[i] = wxdata[cols*i + 0];
+                for (j = 0; j < nd; j++)
+                {
+                    qx[nd*i + j] = wxdata[cols*i + (j+1)];
+                }
+            }
+            delete [] wxdata;
         }
         else if (reader->getType() == Reader::VTK_READER)
         {
-            // XXX: not supported!
-            assert(false);
+            assert(false); // XXX: VtkReader not supported!
         }
     }
     else if (quadrature_order != "")
@@ -261,6 +336,15 @@ void QuadratureIO::load(cigma::Cell *cell)
     assert(quadrature->n_points() > 0);
     assert(quadrature->n_refdim() > 0);
     assert(quadrature->n_globaldim() > 0);
+
+    cout << "quadrature rule = "
+         << quadrature->n_points() << " points, "
+         << "celldim " << quadrature->n_refdim() << ", "
+         << "dim " << quadrature->n_globaldim()
+         << endl;
+
+    if (qx != 0) delete [] qx;
+    if (qw != 0) delete [] qw;
 }
 
 // ---------------------------------------------------------------------------
