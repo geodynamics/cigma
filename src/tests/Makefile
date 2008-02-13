@@ -1,4 +1,4 @@
-include ../../build/variables
+include ../../variables
 FLAGS = -Wall -Wno-deprecated
 FLAGS += -g
 FLAGS += -I..
@@ -14,9 +14,9 @@ LDFLAGS += $(VTK_LDFLAGS) $(VTK_LIBS)
 LDFLAGS += $(PYTHON_LDFLAGS) $(PYTHON_LIBS)
 LDFLAGS += $(HDF5_LDFLAGS) $(HDF5_LIBS)
 
-ANNLIB = ../../lib/libann.a
-H5IOLIB = ../../lib/libh5io.a
-TESTLIB = ../../lib/libcigma_d.a
+ANNLIB = ../libann.a
+H5IOLIB = ../libh5io.a
+CIGMALIB = ../libcigma.a
 
 TESTOBJS = \
 	TestAnyOption.o \
@@ -44,7 +44,7 @@ Test%.o: Test%.cpp
 	$(CXX) $(FLAGS) -c $^
 
 Test%.out: Test%.o
-	$(CXX) $(LDFLAGS) $^ $(TESTLIB) $(H5IOLIB) $(ANNLIB) -o $@
+	$(CXX) $(LDFLAGS) $^ $(CIGMALIB) $(H5IOLIB) $(ANNLIB) -o $@
 
 clean:
 	rm -f $(TESTOBJS)
