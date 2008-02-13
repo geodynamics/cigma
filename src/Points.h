@@ -2,6 +2,7 @@
 #define __POINTS_H__
 
 #include <cassert>
+#include "Locator.h"
 
 namespace cigma
 {
@@ -21,6 +22,7 @@ public:
 
 public:
     void set_data(double *data, int num, int dim);
+    void set_locator(Locator *locator);
 
 public:
     double operator()(int i, int j);
@@ -35,6 +37,9 @@ public:
     int num;
     int dim;
     double *data;
+
+public:
+    Locator *locator;
 };
 
 // ---------------------------------------------------------------------------

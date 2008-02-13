@@ -23,4 +23,11 @@ void cigma::Points::set_data(double *data, int num, int dim)
     this->dim = dim;
 }
 
+void cigma::Points::set_locator(Locator *locator)
+{
+    this->locator = locator;
+    locator->initialize(this);
+}
+
+
 // ---------------------------------------------------------------------------
