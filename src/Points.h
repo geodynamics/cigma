@@ -40,6 +40,7 @@ public:
 
 public:
     Locator *locator;
+    bool find_ann_index(double *globalPoint, int *annIndex);
 };
 
 // ---------------------------------------------------------------------------
