@@ -45,7 +45,7 @@ get_dataset(const char *loc, double **data, int *num, int *dim)
     hid_t type_id;
     hid_t dataset_id;
     herr_t status;
-    int ierr;
+    int ierr = -1;
 
     dataset_id = h5io_dset_open(file_id, loc, &type_id, &rank, NULL, NULL);
     assert(H5Tget_class(type_id) == H5T_FLOAT);
