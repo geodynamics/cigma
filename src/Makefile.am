@@ -89,6 +89,8 @@ libcigma_a_SOURCES = \
 	FiatProxy.h \
 	Field.cpp \
 	Field.h \
+	FieldIO.cpp \
+	FieldIO.h \
 	HdfReader.cpp \
 	HdfReader.h \
 	HdfWriter.cpp \
@@ -99,6 +101,8 @@ libcigma_a_SOURCES = \
 	Hex.h \
 	Locator.cpp \
 	Locator.h \
+	MeshIO.cpp \
+	MeshIO.h \
 	MeshPart.cpp \
 	MeshPart.h \
 	Misc.cpp \
@@ -113,6 +117,8 @@ libcigma_a_SOURCES = \
 	Quad.h \
 	Quadrature.cpp \
 	Quadrature.h \
+	QuadratureIO.cpp \
+	QuadratureIO.h \
 	Reader.cpp \
 	Reader.h \
 	SkelCmd.cpp \

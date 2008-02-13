@@ -7,7 +7,9 @@
 #include "FE_Field.h"
 #include "Writer.h"
 #include "Reader.h"
-#include "Misc.h"
+#include "MeshIO.h"
+#include "QuadratureIO.h"
+#include "FieldIO.h"
 
 namespace cigma
 {
