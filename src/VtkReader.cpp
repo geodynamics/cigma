@@ -28,30 +28,30 @@ cigma::VtkReader::~VtkReader()
 
 // ---------------------------------------------------------------------------
 
-void cigma::VtkReader::open(std::string filename)
+int cigma::VtkReader::open(std::string filename)
 {
-    //int ierr;
+    int ierr;
 
     /* XXX: throw exception if file doesn't exist */
     reader = vtkUnstructuredGridReader::New();
     reader->SetFileName(filename.c_str());
 
 
-    /* detect bad vtk file
+    //* detect bad vtk file
     ierr = reader->OpenVTKFile();
     if (ierr == 0)
     {
-        reader->Delete();
+        //reader->Delete(); // XXX
         reader = 0;
-        return;
+        return -1;
     }
 
-    ierr = reader->ReaderHeader();
+    ierr = reader->ReadHeader();
     if (ierr == 0)
     {
-        reader->Delete();
+        //reader->Delete(); // XXX
         reader = 0;
-        return;
+        return -1;
     } // */
 
 
@@ -61,6 +61,7 @@ void cigma::VtkReader::open(std::string filename)
     grid = reader->GetOutput();
     //grid->PrintSelf(std::cout, 4);
 
+    return 0;
 }
 
 void cigma::VtkReader::close()

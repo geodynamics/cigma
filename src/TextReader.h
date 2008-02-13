@@ -21,7 +21,7 @@ public:
     ReaderType getType() { return TXT_READER; }
 
 public:
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
 
 public:

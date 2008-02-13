@@ -58,7 +58,7 @@ public:
 
 
 public:
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
 
 public:

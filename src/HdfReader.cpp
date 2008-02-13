@@ -17,11 +17,12 @@ cigma::HdfReader::~HdfReader()
 // ---------------------------------------------------------------------------
 
 
-void cigma::HdfReader::
+int cigma::HdfReader::
 open(std::string filename)
 {
     file_id = h5io_file_open(filename.c_str(), "r");
     assert(file_id >= 0);
+    return 0; // XXX: change return value instead of using assert
 }
 
 

@@ -14,10 +14,11 @@ cigma::TextReader::~TextReader()
 }
 
 // ---------------------------------------------------------------------------
-void cigma::TextReader::open(std::string filename)
+int cigma::TextReader::open(std::string filename)
 {
     fp = fopen(filename.c_str(), "r");
     assert(fp != NULL);
+    return 0; // XXX: change return value instead of using assert
 }
 
 void cigma::TextReader::close()

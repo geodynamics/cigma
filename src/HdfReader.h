@@ -27,7 +27,7 @@ public:
     ReaderType getType() { return HDF_READER; }
 
 public:
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
 
 public:
