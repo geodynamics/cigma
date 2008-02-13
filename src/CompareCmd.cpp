@@ -63,6 +63,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
+    opt->setFlag("debug"); // XXX: uses specific defaults
 
     // options for mesh
     opt->setOption("mesh");
@@ -124,6 +125,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
      *  Load Quadrature rule
      */
 
+
     /* Gather up the expected command line arguments */
 
     //XXX: add "rule" to last arg
@@ -135,10 +137,10 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     configure_field(opt, &secondIO, "second");
     configure_field(opt, &residualsIO, "output");
 
+
     /* Validate these arguments and complain about missing ones */
 
-    const bool debug = true;
-    if (debug)
+    if (opt->getFlag("debug"))
     {
         // assign defaults if we're in debug mode
         if (firstIO.field_path == "")
@@ -148,6 +150,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
         if (residualsIO.field_path == "")
             residualsIO.field_path = "foo.vtk";
     }
+
     if (firstIO.field_path == "")
     {
         cerr << "compare: Please specify the option --first" << endl;
