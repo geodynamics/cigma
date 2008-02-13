@@ -1,10 +1,13 @@
 #include "../FiatProxy.h"
 #include <iostream>
+#include <unistd.h>
 
 
 int main(int argc, char *argv[])
 {
     using namespace cigma;
+
+    chdir("..");
 
     FiatProxy *fiat = new FiatProxy();
     fiat->initialize();
