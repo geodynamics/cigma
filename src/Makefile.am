@@ -107,6 +107,8 @@ libcigma_a_SOURCES = \
 	Numeric.h \
 	Points.cpp \
 	Points.h \
+	PointField.cpp \
+	PointField.h \
 	Quad.cpp \
 	Quad.h \
 	Quadrature.cpp \
