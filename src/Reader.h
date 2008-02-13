@@ -33,4 +33,8 @@ public:
     virtual void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs) = 0;
 };
 
+
+void new_reader(cigma::Reader **reader, std::string ext);
+
+
 #endif
