@@ -24,10 +24,11 @@ public:
 
 public:
     virtual ReaderType getType() = 0;
-    virtual int open(std::string filename) = 0;
+    virtual int open(std::string filename) = 0;     // XXX: change std::string -> const char *
     virtual void close() = 0;
 
 public:
+    // XXX: return error codes in the following functions
     virtual void get_dataset(const char *loc, double **data, int *num, int *dim) = 0;
     virtual void get_coordinates(const char *loc, double **coordinates, int *nno, int *nsd) = 0;
     virtual void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs) = 0;
