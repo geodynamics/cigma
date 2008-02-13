@@ -380,6 +380,60 @@ void QuadratureIO::load(cigma::Cell *cell)
          << "dim " << quadrature->n_globaldim()
          << endl;
 
+    // 
+    // XXX: now we need to ensure that every point in our
+    // quadrature rule is indeed contained inside our cell.
+    //
+    bool all_contained = true;
+    for (i = 0; i < quadrature->n_points(); i++)
+    {
+        double refpt[3] = {0,0,0};
+        for (j = 0; j < quadrature->n_refdim(); j++)
+        {
+            refpt[j] = quadrature->point(i,j);
+        }
+        if (!cell->interior(refpt[0], refpt[1], refpt[2]))
+        {
+            all_contained = false;
+            break;
+        }
+
+    }
+    if (!all_contained)
+    {
+        // XXX: add more information here (e.g., actual reference cell used,
+        // such as tri3, quad4, tet4, hex8, ...)
+        cerr << "QuadratureIO::load() error: "
+             << "Not all points provided lie inside required reference cell"
+             << endl;
+        exit(1);
+    }
+
+    //
+    // XXX: emit warning if there are any negative quadrature weights?
+    //
+    bool some_neg_wts = false;
+    for (i = 0; i < quadrature->n_points(); i++)
+    {
+        if (quadrature->weight(i) < 0)
+        {
+            some_neg_wts = true;
+            break;
+        }
+    }
+    if (some_neg_wts)
+    {
+        // 
+        // XXX: only emit warning. exit(1) is not necessary...
+        //
+        cerr << "QuadratureIO::load() warning: "
+             << "Some weights are negative"
+             << endl;
+    }
+
+    // 
+    // Clean up any local allocations
+    //
     if (qx != 0) delete [] qx;
     if (qw != 0) delete [] qw;
 }
