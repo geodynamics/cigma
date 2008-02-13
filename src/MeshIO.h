@@ -18,10 +18,15 @@ public:
     std::string mesh_loc, mesh_file, mesh_ext;
     std::string coords_loc, coords_file, coords_ext;
     std::string connect_loc, connect_file, connect_ext;
+    bool prepare();
 
 public:
     cigma::Reader *reader;
+    cigma::Reader *coords_reader;
+    cigma::Reader *connect_reader;
     cigma::Writer *writer;
+    cigma::Writer *coords_writer;
+    cigma::Writer *connect_writer;
     cigma::MeshPart *meshPart;
 
 public:
@@ -29,7 +34,6 @@ public:
     ~MeshIO();
 
 public:
-    void prepare();
     void load();
     void save();
 
