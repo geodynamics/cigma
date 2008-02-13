@@ -39,7 +39,7 @@ public:
 public:
     ANNpoint queryPoint;    // query point for search()
     ANNidxArray nnIdx;      // near neighbor indices
-    ANNdistArray nnDists;   // near neighbord distances
+    ANNdistArray nnDists;   // near neighbor distances
 
 };
 
