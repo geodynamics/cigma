@@ -59,7 +59,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->addUsage("   cigma compare [options]");
     opt->addUsage("     -a  --first      First field location");
     opt->addUsage("     -b  --second     Second field location");
-    opt->addUsage("         --output     Output file");
+    opt->addUsage("     -o  --output     Output file");
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
