@@ -234,7 +234,10 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     if (output_frequency == 0)
     {
         // XXX: emit warning, or quit?
-        cerr << "compare: Warning: ignoring option --output-frequency" << endl;
+        if (opt->getValue("output-frequency") != 0)
+        {
+            cerr << "compare: Warning: ignoring option --output-frequency" << endl;
+        }
         verbose = false;
     }
 
