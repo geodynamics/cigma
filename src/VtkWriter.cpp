@@ -28,6 +28,7 @@ close()
     if (fp != NULL)
     {
         fclose(fp);
+        fp = NULL;
     }
 }
 
