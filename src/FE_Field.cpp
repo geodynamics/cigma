@@ -73,6 +73,20 @@ void cigma::FE_Field::eval(double *point, double *value)
 
 void cigma::FE_Field::tabulate()
 {
+    // XXX: move this function to FE::tabulate()
+
+    assert(fe != 0);
+    
+    // get shape function values at known quadrature points
+    fe->cell->shape(fe->quadrature->n_points(), fe->quadrature->qpts, fe->basis_tab);
+
+    // get shape function derivatives at known quadrature points
+    fe->cell->grad_shape(fe->quadrature->n_points(), fe->quadrature->qpts, fe->basis_jet);
+}
+
+
+void cigma::FE_Field::eval(int e, double *values)
+{
     assert(fe != 0);
     assert(meshPart != 0);
 
@@ -84,16 +98,39 @@ void cigma::FE_Field::tabulate()
     assert(quadrature != 0);
     int nq = quadrature->n_points();
     double *qpts = quadrature->qpts;
-    double *qwts = quadrature->qwts;
+    //double *qwts = quadrature->qwts;
 
     // get shape function values at known quadrature points
-    cell->shape(nq, qpts, fe->basis_tab);
+    //cell->shape(nq, qpts, fe->basis_tab);
 
     // get shape function derivatives at known quadrature points
-    cell->grad_shape(nq, qpts, fe->basis_jet);
+    //cell->grad_shape(nq, qpts, fe->basis_jet);
 
+    // XXX: move this step out of tabulate()
     // evaluate jacobian at known quadrature points and calculate jxw
-    fe->update_jxw();
+    //fe->update_jxw();
+
+    // tabulate the function values
+    int i,j;
+    const int valdim = n_rank();
+    const int ndofs = cell->n_nodes();
+    double dofs[ndofs * valdim];
+
+    get_cell_dofs(e, dofs);
+
+    for (int q = 0; q < nq; q++)
+    {
+        double *N = &(fe->basis_tab[ndofs*q]);
+        for (i = 0; i < valdim; i++)
+        {
+            double sum = 0.0;
+            for (j = 0; j < ndofs; j++)
+            {
+                sum += dofs[i + valdim*j] * N[j];
+            }
+            values[valdim*q + i] = sum;
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------

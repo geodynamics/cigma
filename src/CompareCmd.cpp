@@ -264,35 +264,53 @@ int cigma::CompareCmd::run()
 
     // indices
     int e,q;
+    int i,j;
 
     // dimensions
     int nel = mesh->nel;
     int nq = quadrature->n_points();
     //int celldim = cell_a->n_celldim();
+    int ndofs = cell_a->n_nodes();
     int valdim = field_a->n_rank();
 
     // local data;
     //double *jxw = new double[nq];
+    double *jxw = field_a->fe->jxw;
+    double *dofs_a = new double[ndofs * valdim];
     double *phi_a = new double[nq * valdim];
     double *phi_b = new double[nq * valdim];
-    double *jxw = field_a->fe->jxw;
     
     // norm
     double L2 = 0.0;
     double *epsilon = new double[nel];
 
+    // XXX: what about case (mesh != field_a->meshPart)?
     //FE *fe;
     Cell *cell = cell_a;
 
+    // start timer
     Timer timer;
     if (verbose)
     {
-        std::cout << std::setprecision(4);
+        std::cout << std::setprecision(5);
         timer.print_header(std::cout, "elts");
         timer.start(nel);
         timer.update(0);
         std::cout << timer;
     }
+
+
+    if (true)
+    {
+        // XXX: move this block into FE::tabulate(...)
+
+        // get shape function values at known quadrature points
+        cell->shape(nq, quadrature->qpts, field_a->fe->basis_tab);
+
+        // get shape function derivatives at known quadrature points
+        cell->grad_shape(nq, quadrature->qpts, field_a->fe->basis_jet);
+    }
+
 
     for (e = 0; e < nel; e++)
     {
@@ -304,13 +322,31 @@ int cigma::CompareCmd::run()
         // obtain global points from current quadrature rule
         quadrature->apply_refmap(cell);
 
-        field_a->tabulate();
 
         // ... calculate phi_a[]
-        // XXX: use tabulation instead of calling eval repeatedly!
+        // XXX: using eval()
+        //for (q = 0; q < nq; q++)
+        //{
+        //    field_a->eval((*quadrature)[q], &phi_a[valdim*q]);
+        //}
+
+        // ... calculate phi_a[]
+        // XXX: using tabulation
+        
+        field_a->get_cell_dofs(e, dofs_a);
+        //field_a->tabulate();
         for (q = 0; q < nq; q++)
         {
-            field_a->eval((*quadrature)[q], &phi_a[valdim*q]);
+            double *N = &(field_a->fe->basis_tab[ndofs*q]);
+            for (i = 0; i < valdim; i++)
+            {
+                double valsum = 0.0;
+                for (j = 0; j < ndofs; j++)
+                {
+                    valsum += dofs_a[i + valdim*j] * N[j];
+                }
+                phi_a[valdim*q + i] = valsum;
+            }
         }
 
         // ... calculate phi_b[]
@@ -319,11 +355,14 @@ int cigma::CompareCmd::run()
             field_b->eval((*quadrature)[q], &phi_b[valdim*q]);
         }
 
+        // evaluate jacobian at known quadrature points
+        field_a->fe->update_jxw();
+
         // ... apply quadrature rule
         double err = 0.0;
         for (q = 0; q < nq; q++)
         {
-            for (int i = 0; i < valdim; i++)
+            for (i = 0; i < valdim; i++)
             {
                 int qi = valdim*q + i;
                 err += jxw[q] * SQR(phi_a[qi] - phi_b[qi]);
@@ -408,3 +447,6 @@ int cigma::CompareCmd::run()
 
     return 0;
 }
+
+
+// ---------------------------------------------------------------------------
