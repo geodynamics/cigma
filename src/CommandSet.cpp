@@ -31,9 +31,9 @@ void cigma::CommandSet::initialize()
     /* assemble set of commands */
     addCommand(help);
     addCommand(new CompareCmd());
-    addCommand(new ExtractCmd());
+    //addCommand(new ExtractCmd());
     //addCommand(new CubeCmd());
-    addCommand(new EvalCmd());
+    //addCommand(new EvalCmd());
     //addCommand(new SkelCmd());
 
     /* once assembled, pass set of commands to help command */
