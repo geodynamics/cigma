@@ -38,6 +38,8 @@ open(std::string filename)
     grid = reader->GetOutput();
     //cout << endl << endl;
     //grid->PrintSelf(cout, 4);
+
+    return 0;
 }
 
 void cigma::VtkXmlReader::
