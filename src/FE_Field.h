@@ -2,9 +2,9 @@
 #define __FE_FIELD_H__
 
 #include "Field.h"
-#include "FE.h"
-#include "MeshPart.h"
 #include "DofHandler.h"
+#include "MeshPart.h"
+#include "FE.h"
 
 namespace cigma
 {
@@ -31,16 +31,18 @@ public:
     void eval(double *point, double *value);
 
 public:
+    void set_quadrature_rule(QuadratureRule *rule);
     void tabulate_element(int e, double *values);
 
 public:
     void get_cell_dofs(int cellIndex, double *cellDofs);
 
 public:
+    
     int dim;
     int rank;
-    MeshPart *meshPart;
     DofHandler *dofHandler;
+    MeshPart *meshPart;
     FE *fe;
 };
 

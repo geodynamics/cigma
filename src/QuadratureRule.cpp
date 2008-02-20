@@ -10,10 +10,12 @@ cigma::QuadratureRule::QuadratureRule()
 {
     meshPart = 0;
     points = 0;
+    jxw = 0;
 }
 
 cigma::QuadratureRule::~QuadratureRule()
 {
+    if (jxw != 0) delete [] jxw;
 }
 
 
@@ -32,9 +34,8 @@ set_quadrature_points(QuadraturePoints *points)
     assert(meshPart != 0);
     assert(meshPart->cell != 0);
 
-    assert(points != 0);
-
     this->points = points;
+    assert(points != 0);
     assert(points->n_points() > 0);
     assert(points->n_dim() == meshPart->cell->n_celldim());
 

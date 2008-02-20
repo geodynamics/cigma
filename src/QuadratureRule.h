@@ -20,7 +20,7 @@ public:
 
 public:
     void set_mesh(MeshPart *mesh);
-    void set_quadrature_points(QuadraturePoints *pts);
+    virtual void set_quadrature_points(QuadraturePoints *pts);
 
 public:
     void select_cell(int e);

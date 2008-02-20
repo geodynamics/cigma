@@ -47,7 +47,12 @@ cigma::CompareCmd::CompareCmd()
 
 cigma::CompareCmd::~CompareCmd()
 {
-    if (qr != 0) delete qr;
+    /* XXX: for now, don't delete
+    if (qr != 0)
+    {
+        delete qr; // XXX
+    } // */
+
     if (residuals != 0) delete residuals;
 }
 
@@ -214,25 +219,25 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     firstIO.load();
     field_a = firstIO.field;
     assert(field_a != 0);
-    field_a->fe = new FE();
-    field_a->fe->set_cell(field_a->meshPart->cell);
+    //field_a->fe = new FE();
+    //field_a->fe->set_cell(field_a->meshPart->cell);
     cout << "first field path = " << firstIO.field_path << endl;
     cout << "first field dimensions = "
          << field_a->meshPart->nel << " cells, "
          << field_a->meshPart->nno << " nodes, "
-         << field_a->fe->cell->n_nodes() << " dofs/cell, "
+         << field_a->meshPart->cell->n_nodes() << " dofs/cell, "
          << "rank " << field_a->n_rank() << endl;
 
     secondIO.load();
     field_b = secondIO.field;
     assert(field_b != 0);
-    field_b->fe = new FE();
-    field_b->fe->set_cell(field_b->meshPart->cell);
+    //field_b->fe = new FE();
+    //field_b->fe->set_cell(field_b->meshPart->cell);
     cout << "second field path = " << secondIO.field_path << endl;
     cout << "second field dimensions = "
          << field_b->meshPart->nel << " cells, "
          << field_b->meshPart->nno << " nodes, "
-         << field_b->fe->cell->n_nodes() << " dofs/cell, "
+         << field_b->meshPart->cell->n_nodes() << " dofs/cell, "
          << "rank " << field_b->n_rank() << endl;
 
 
@@ -261,10 +266,35 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     quadratureIO.load(mesh->cell);
     quadrature = quadratureIO.quadrature;
     assert(quadrature != 0);
-    field_a->fe->set_quadrature(quadrature); // XXX: eliminate need for this statement
+    //field_a->fe->set_quadrature(quadrature); // XXX: eliminate need for this statement
+
+
+    field_a->fe = new FE();
+    field_a->fe->set_mesh(field_a->meshPart);
+    //field_a->fe->set_quadrature_points(field_a->meshPart->cell->default_quadrature_points);
+    field_a->fe->set_quadrature_points(quadrature); // XXX
+
+
+    field_b->fe = new FE();
+    field_b->fe->set_mesh(field_b->meshPart);
+    //field_b->fe->set_quadrature_points(field_b->meshPart->cell->default_quadrature_points);
+
+
+    // XXX: if field_a has a quadrature rule, reuse it
+    // XXX: however, this complicates our destructor...
+    qr = field_a->fe;
+    assert(field_a->meshPart == mesh); // XXX
+
+
+    /* XXX: when neither field_a or field_b have a mesh, need own QuadratureRule instance
+    assert(mesh != 0);
+    assert(field_a->meshPart == 0);
+    assert(field_b->meshPart == 0);
     qr = new QuadratureRule();
     qr->set_mesh(mesh);
     qr->set_quadrature_points(quadrature);
+    // */
+
 
 
     return;
@@ -293,6 +323,7 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
     //qr->set_quadrature_points(quadrature);
     QuadratureRule *qr = env->qr;   // XXX: replace MeshPart fn arg by QuadratureRule
     assert(qr != 0);
+    assert(qr->points != 0);
 
     // dimensions
     int nel = qr->meshPart->nel;
@@ -407,8 +438,9 @@ int cigma::CompareCmd::run()
 
 
     // start with the obvious checks
-    assert(mesh != 0);
     assert(quadrature != 0);
+    assert(mesh != 0);
+    assert(qr != 0);
     assert(field_a != 0);
     assert(field_b != 0);
 

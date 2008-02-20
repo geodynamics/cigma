@@ -20,13 +20,13 @@ cigma::FE_Field::~FE_Field()
 
 void cigma::FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
 {
-    assert(fe != 0);
     assert(dofHandler != 0);
     assert(meshPart != 0);
+
     assert(0 <= cellIndex);
     assert(cellIndex < (meshPart->nel));
 
-    const int ndofs = fe->cell->n_nodes();
+    const int ndofs = meshPart->cell->n_nodes();
     const int valdim = n_rank();
 
     int *n = &(meshPart->connect[ndofs * cellIndex]);
@@ -47,7 +47,7 @@ void cigma::FE_Field::eval(double *point, double *value)
     assert(meshPart != 0);
 
     // get reference cell object from fe
-    Cell *cell = fe->cell;
+    Cell *cell = meshPart->cell;
     assert(cell != 0);
 
     // find the cell which contains given point
@@ -72,17 +72,17 @@ void cigma::FE_Field::tabulate_element(int e, double *values)
 {
     assert(fe != 0);
     assert(meshPart != 0);
+    assert(fe->meshPart == meshPart);
+    assert(fe->points != 0);
 
-    Cell *cell = fe->cell;
+    Cell *cell = meshPart->cell;
     assert(cell != 0);
 
-    QuadraturePoints *quadrature = fe->quadrature;
-    assert(quadrature != 0);
-    int nq = quadrature->n_points();
-    double *qpts = quadrature->qpts;
+    QuadraturePoints *points = fe->points;
+    assert(points != 0);
+    int nq = points->n_points();
 
     // tabulate the function values
-    int i,j;
     const int valdim = n_rank();
     const int ndofs = cell->n_nodes();
     double dofs[ndofs * valdim]; // XXX
@@ -93,10 +93,10 @@ void cigma::FE_Field::tabulate_element(int e, double *values)
     for (int q = 0; q < nq; q++)
     {
         double *N = &(fe->basis_tab[ndofs*q]);
-        for (i = 0; i < valdim; i++)
+        for (int i = 0; i < valdim; i++)
         {
             double sum = 0.0;
-            for (j = 0; j < ndofs; j++)
+            for (int j = 0; j < ndofs; j++)
             {
                 sum += dofs[i + valdim*j] * N[j];
             }
