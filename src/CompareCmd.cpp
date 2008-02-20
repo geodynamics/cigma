@@ -59,6 +59,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->addUsage("   cigma compare [options]");
     opt->addUsage("     -a  --first      First field location");
     opt->addUsage("     -b  --second     Second field location");
+    opt->addUsage("     -r  --rule       Quadrature rule location");
     opt->addUsage("     -o  --output     Output file");
 
     /* setup flags and options */
@@ -71,7 +72,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->setOption("mesh-connectivity");
 
     // options for quadrature
-    opt->setOption("rule");
+    opt->setOption("rule",'r');
     opt->setOption("rule-order");
     opt->setOption("rule-points");
     opt->setOption("rule-weights");
