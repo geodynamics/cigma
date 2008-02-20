@@ -18,6 +18,7 @@
 
 
 using namespace std;
+using namespace cigma;
 
 
 
@@ -264,10 +265,184 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     return;
 }
 
+
+// ---------------------------------------------------------------------------
 
+void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field_b)
+{
+    assert(env != 0);
+    const int output_frequency = env->output_frequency;
+    const bool verbose = env->verbose;
+
+    // XXX: remove need for this assert stmt ...
+    assert(mesh == field_a->meshPart);
+
+
+    // XXX: first variable block
+    Cell *cell = field_a->fe->cell; // XXX: change to mesh->fe->cell
+    Quadrature *quadrature = field_a->fe->quadrature; // XXX: change to mesh->fe->quadrature
+    ResidualField *residuals = env->residuals;
+
+
+
+    // dimensions
+    int nel = mesh->nel;
+    int nq = field_a->fe->quadrature->n_points(); // XXX: change to mesh->fe->quadrature->n_points()
+    int ndofs = cell->n_nodes();
+    int valdim = field_a->n_rank();
+
+    // local data
+    double *jxw = field_a->fe->jxw; // XXX: change to mesh->fe->jxw
+    double *phi_a = new double[nq * valdim]; // XXX: use Points object?
+    double *phi_b = new double[nq * valdim]; // XXX: use Points object?
+
+    // norm
+    double L2 = 0.0;
+    double *epsilon = residuals->epsilon;
+
+    // start timer
+    Timer timer;
+    if (verbose)
+    {
+        cout << std::setprecision(5);
+        timer.print_header(cout, "elts");
+        timer.start(nel);
+        timer.update(0);
+        cout << timer;
+    }
+
+    int e,q,i;
+    for (e = 0; e < nel; e++)
+    {
+        // update cell data
+        mesh->select_cell(e);
+
+        // obtain global points from current quadrature rule
+        quadrature->apply_refmap(cell);
+
+        // ... calculate phi_a[]
+        field_a->tabulate_element(e, phi_a); // XXX: second variable block
+
+        // ... calculate phi_b[]
+        // XXX: change this to field_b->eval(quadrature, phi_b)?
+        // do this if we make phi_b an object of type (Points *)
+        for (q = 0; q < nq; q++)
+        {
+            field_b->eval((*quadrature)[q], &phi_b[valdim*q]);
+        }
+
+        // evaluate jacobian at qpts
+        // XXX: change this to mesh->fe->update_jxw()
+        field_a->fe->update_jxw();
+
+        // apply norm
+        // XXX: calculate squared_differences from phi_a, phi_b
+        // XXX: other norms?
+
+        // apply quadrature rule
+        // XXX: change this to: err = mesh->quadrature->L2(phi_a, phi_b)
+        // XXX: alternative   : err = mesh->quadrature->apply(squared_differences)
+        double err = 0.0;
+        for (q = 0; q < nq; q++)
+        {
+            for (i = 0; i < valdim; i++)
+            {
+                int qi = valdim*q + i;
+                err += jxw[q] * SQR(phi_a[qi] - phi_b[qi]);
+            }
+        }
+        epsilon[e] = err;
+        L2 += err;
+
+        // debug info
+        if (verbose && ((e+1) % output_frequency == 0))
+        {
+            timer.update(e+1);
+            cout << timer;
+        }
+    }
+
+    if (verbose)
+    {
+        timer.update(nel);
+        cout << timer << endl;
+    }
+
+    // report global norm
+    L2 = sqrt(L2);
+    cout << setprecision(12);
+    cout << "L2 = " << L2 << endl;
+
+    // write out data
+    residuals->write_vtk(env->output_path.c_str());
+
+    // clean up
+    delete [] phi_a;
+    delete [] phi_b;
+}
+
+/* XXX: first, time the effects of introducing branches in the main loop
+void compare(MeshPart *mesh, FE_Field *field_a, Field *field_b,
+             ResidualField *residuals, int output_frequency)
+{
+}
+
+void compare(FE_Field *field_a, Field *field_b,
+             ResidualField *residuals, int output_frequency)
+{
+}
+
+void compare(FE_Field *field_a, PointField *field_b,
+             ResidualField *residuals, int output_frequency)
+{
+}
+
+void compare(MeshPart *mesh, Field *field_a, PointField *field_b,
+             ResidualField *residuals, int output_frequency)
+{
+}
+// */
+
+
+//* XXX: new run() method
 int cigma::CompareCmd::run()
 {
     std::cout << "Calling cigma::CompareCmd::run()" << std::endl;
+
+    // 
+    // XXX: need to fail gracefully at this point, instead of throwing
+    // a nasty assert statement whenever something unexpected happens.
+    // clean up memory management so that we can use exceptions, and
+    // verify that all resources are properly finalized.
+    //
+
+
+    // start with the obvious checks
+    assert(mesh != 0);
+    assert(quadrature != 0);
+    assert(field_a != 0);
+    assert(field_b != 0);
+
+
+    // make sure the field dimensions match
+    assert(field_a->n_dim() == field_a->n_dim());
+    assert(field_a->n_rank() == field_b->n_rank());
+
+
+    // XXX: call the appropriate compare method based on the field types
+    // XXX: enclose statements in a try-catch-finally clause
+    compare(this, mesh, field_a, field_b);
+
+
+    return 0;
+} // */
+
+
+/* XXX: old run() method
+int cigma::CompareCmd::run()
+{
+    std::cout << "Calling cigma::CompareCmd::run()" << std::endl;
+
     assert(mesh != 0);
     assert(quadrature != 0);
     assert(field_a != 0);
@@ -386,17 +561,16 @@ int cigma::CompareCmd::run()
     std::cout << "L2 = " << L2 << std::endl;
 
 
-    /* write out data */
+    // write out data
     residuals->write_vtk(output_path.c_str());
 
 
-    /* clean up */
+    // clean up
     delete [] phi_a;
     delete [] phi_b;
 
 
     return 0;
-}
+} // */
 
-
 // ---------------------------------------------------------------------------
