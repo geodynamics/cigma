@@ -17,7 +17,7 @@ public:
 public:
     int n_nodes() { return 3; }
     int n_celldim() { return 2; }
-    int n_dim() { return 3; }
+    int n_dim() { return 2; } // XXX: how to handle embedding in 3d space?
     Geometry geometry() { return TRIANGLE; }
 
 public:

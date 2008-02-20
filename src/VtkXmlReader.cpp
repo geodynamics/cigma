@@ -126,19 +126,17 @@ get_coordinates(double **coordinates, int *nno, int *nsd)
     vtkPoints *points = grid->GetPoints();
     //points->PrintSelf(cout, 0);
 
-    int dims[2];
-    dims[0] = points->GetNumberOfPoints();
-    dims[1] = 3;
-
 
     // XXX: need to know if we're loading 2D cells, so we can
     // recalculate size & nsd....if 3D, we leave things alone
 
-    // XXX: for now, assume 2D grid of quadrangles
 
+    int dims[2];
+    dims[0] = points->GetNumberOfPoints();
+    //dims[1] = 3;
+    dims[1] = 2;    // XXX: for now, assume 2D grid of quadrangles
 
-    //int size = dims[0] * dims[1];
-    int size = dims[0] * 2;
+    int size = dims[0] * dims[1];
     double *coords = new double[size];
 
 

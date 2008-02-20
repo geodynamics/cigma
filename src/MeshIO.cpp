@@ -351,6 +351,14 @@ void MeshIO::load()
     coords_reader->get_coordinates(coords_loc.c_str(), &coords, &nno, &nsd);
     connect_reader->get_connectivity(connect_loc.c_str(), &connect, &nel, &ndofs);
 
+    /*
+    cout << "*** "
+         << "nno = " << nno << ", "
+         << "nsd = " << nsd << ", "
+         << "nel = " << nel << ", "
+         << "ndofs = " << ndofs << endl;
+    // */
+
 
 
     /* XXX: use auto_ptr for the local readers, so we can throw exceptions

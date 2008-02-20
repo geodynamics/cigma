@@ -126,7 +126,7 @@ void QuadratureIO::load(cigma::Cell *cell)
     // tri_qr(5)
     const int tri_nno = 9;
     const int tri_celldim = 2;
-    const int tri_nsd = 3;
+    const int tri_nsd = 2; //XXX
     double tri_qpts[tri_nno * tri_celldim] = {
         -0.79456469, -0.82282408,
         -0.86689186, -0.18106627,
@@ -156,7 +156,7 @@ void QuadratureIO::load(cigma::Cell *cell)
     // quad_qr(7)
     const int quad_nno = 16;
     const int quad_celldim = 2;
-    const int quad_nsd = 3;
+    const int quad_nsd = 2; //XXX
     double quad_qpts[quad_nno * quad_celldim] = {
         -0.86113631, -0.86113631,
         -0.33998104, -0.86113631,

@@ -140,10 +140,14 @@ void FieldIO::load()
 
         // XXX: Instantiate Locator only when necessary!
         // XXX: Decide threshold based on number of elements?
+        // XXX: For now, use ann locator for 3D meshes only (use quadtree locator for 2D meshes?)
         if (field->meshPart->nel > 1000)
         {
-            AnnLocator *locator = new AnnLocator();
-            field->meshPart->set_locator(locator);
+            if (field->meshPart->nsd == 3)
+            {
+                AnnLocator *locator = new AnnLocator();
+                field->meshPart->set_locator(locator);
+            }
         }
 
         field->dofHandler = new DofHandler();
