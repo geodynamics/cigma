@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cassert>
-#include <ctime>
 #include "CompareCmd.h"
 #include "StringUtils.h"
 
@@ -14,6 +13,7 @@
 #include "VtkReader.h"
 #include "VtkWriter.h"
 
+#include "Timer.h"
 #include "Misc.h"
 
 
@@ -284,14 +284,14 @@ int cigma::CompareCmd::run()
     //FE *fe;
     Cell *cell = cell_a;
 
-    time_t t_0, t_e;
-    time(&t_0);
-    t_e = t_0;
-
+    Timer timer;
     if (verbose)
     {
         std::cout << std::setprecision(4);
-        std::cout << "elts rate mins eta total progress\n";
+        timer.print_header(std::cout, "elts");
+        timer.start(nel);
+        timer.update(0);
+        std::cout << timer;
     }
 
     for (e = 0; e < nel; e++)
@@ -333,36 +333,18 @@ int cigma::CompareCmd::run()
         epsilon[e] = err;
         L2 += err;
 
-        //* XXX: debug info
-        if (verbose && (e % output_frequency == 0))
+        // XXX: debug info
+        if (verbose && ((e+1) % output_frequency == 0))
         {
-            double elapsed_mins;
-            double rate_per_min;
-            double cells_per_sec;
-            double remaining_mins;
-            double total_mins;
-            double progress;
-
-            time(&t_e);
-            elapsed_mins = (t_e - t_0) / 60.0;
-            rate_per_min = elapsed_mins / (e + 1.0);
-            cells_per_sec = (1.0/60.0) / rate_per_min;
-            remaining_mins = (nel - e) * rate_per_min;
-            total_mins = nel * rate_per_min;
-            progress = 100 * elapsed_mins / total_mins;
-
-            //std::cout << e << " " << std::flush;
-            //std::cout << remaining_mins << "          " << std::flush;
-            std::cout << e << " " << cells_per_sec << " " << elapsed_mins << " " << remaining_mins << " " << total_mins << " " << progress << "%";
-            std::cout << "                                                                            \r" << std::flush;
-
-        } // */
-
+            timer.update(e+1);
+            std::cout << timer;
+        }
     }
 
     if (verbose)
     {
-        std::cout << std::endl;
+        timer.update(nel);
+        std::cout << timer << std::endl;
     }
 
     L2 = sqrt(L2);

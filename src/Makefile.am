@@ -131,6 +131,7 @@ libcigma_a_SOURCES = \
 	TextReader.h \
 	TextWriter.cpp \
 	TextWriter.h \
+	Timer.h \
 	Tri.cpp \
 	Tri.h \
 	VtkReader.cpp \
