@@ -324,8 +324,6 @@ int cigma::CompareCmd::run()
     {
         // update cell data
         mesh->select_cell(e);
-        //mesh->get_cell_coords(e, cell->globverts);
-        //cell->set_global_vertices(...);
         
         // obtain global points from current quadrature rule
         quadrature->apply_refmap(cell);
