@@ -20,6 +20,13 @@ cigma::QuadratureRule::~QuadratureRule()
 // ---------------------------------------------------------------------------
 
 void cigma::QuadratureRule::
+set_mesh(MeshPart *mesh)
+{
+    assert(mesh != 0);
+    this->meshPart = mesh;
+}
+
+void cigma::QuadratureRule::
 set_quadrature_points(QuadraturePoints *points)
 {
     assert(meshPart != 0);

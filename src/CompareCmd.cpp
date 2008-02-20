@@ -16,7 +16,6 @@
 #include "Timer.h"
 #include "Misc.h"
 
-#include "QuadratureRule.h"
 
 using namespace std;
 using namespace cigma;
@@ -32,6 +31,7 @@ cigma::CompareCmd::CompareCmd()
     // integrating mesh
     mesh = 0;
     quadrature = 0;
+    qr = 0;
 
     // fields
     field_a = 0;
@@ -47,7 +47,8 @@ cigma::CompareCmd::CompareCmd()
 
 cigma::CompareCmd::~CompareCmd()
 {
-    delete residuals;
+    if (qr != 0) delete qr;
+    if (residuals != 0) delete residuals;
 }
 
 
@@ -260,7 +261,10 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     quadratureIO.load(mesh->cell);
     quadrature = quadratureIO.quadrature;
     assert(quadrature != 0);
-    field_a->fe->set_quadrature(quadrature);
+    field_a->fe->set_quadrature(quadrature); // XXX: eliminate need for this statement
+    qr = new QuadratureRule();
+    qr->set_mesh(mesh);
+    qr->set_quadrature_points(quadrature);
 
 
     return;
@@ -283,10 +287,12 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
 
     // XXX: we need need to initialize qr much earlier, so we avoid
     // assuming that we can load the quadrature points from field_a->fe object
-    QuadraturePoints *quadrature = field_a->fe->quadrature;
-    QuadratureRule *qr = new QuadratureRule();
-    qr->meshPart = mesh;
-    qr->set_quadrature_points(quadrature);
+    //QuadraturePoints *quadrature = field_a->fe->quadrature;
+    //QuadratureRule *qr = new QuadratureRule();
+    //qr->meshPart = mesh;
+    //qr->set_quadrature_points(quadrature);
+    QuadratureRule *qr = env->qr;   // XXX: replace MeshPart fn arg by QuadratureRule
+    assert(qr != 0);
 
     // dimensions
     int nel = qr->meshPart->nel;

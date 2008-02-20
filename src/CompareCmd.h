@@ -6,6 +6,7 @@
 #include "MeshPart.h"
 #include "Field.h"
 #include "FE_Field.h"
+#include "QuadratureRule.h"
 #include "ResidualField.h"
 #include "Writer.h"
 #include "Reader.h"
@@ -34,10 +35,14 @@ public:
     int run();
 
 public:
+    
     QuadraturePoints *quadrature;
     MeshPart *mesh;
+    QuadratureRule *qr;
+
     FE_Field *field_a;
     FE_Field *field_b;
+    
     ResidualField *residuals;
 
 public:

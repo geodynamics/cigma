@@ -19,6 +19,7 @@ public:
     ~QuadratureRule();
 
 public:
+    void set_mesh(MeshPart *mesh);
     void set_quadrature_points(QuadraturePoints *pts);
 
 public:
