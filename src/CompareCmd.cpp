@@ -272,14 +272,16 @@ int cigma::CompareCmd::run()
     assert(quadrature != 0);
     assert(field_a != 0);
     assert(field_b != 0);
+
+    // make sure the field dimensions match
+    // XXX: need graceful failure mode
     assert(field_a->n_dim() == field_a->n_dim());
     assert(field_a->n_rank() == field_b->n_rank());
-    //assert(writer != 0);
-
 
     Cell *cell_a = field_a->fe->cell;
     Cell *cell_b = field_b->fe->cell;
     assert(cell_a->n_celldim() == cell_b->n_celldim());
+
 
     // indices
     int e,q;
@@ -288,26 +290,24 @@ int cigma::CompareCmd::run()
     // dimensions
     int nel = mesh->nel;
     int nq = quadrature->n_points();
-    //int celldim = cell_a->n_celldim();
     int ndofs = cell_a->n_nodes();
     int valdim = field_a->n_rank();
 
     // local data;
-    //double *jxw = new double[nq]; // XXX: instead, use memory allocated by field_a->fe
     double *jxw = field_a->fe->jxw;
-    double *dofs_a = new double[ndofs * valdim];
     double *phi_a = new double[nq * valdim]; // XXX: not needed when using tabulation
     double *phi_b = new double[nq * valdim];
     
     // norm
     double L2 = 0.0;
-    //double *epsilon = new double[nel]; // XXX: instead, use memory allocated by residuals member
     double *epsilon = residuals->epsilon;
 
 
-    // XXX: what about case (mesh != field_a->meshPart)?
-    //FE *fe;
+    // XXX: don't forget about the case when (mesh != field_a->meshPart)
+    // Regardless, this cell pointer needs to come from the integrating
+    // mesh object, not from field_a.
     Cell *cell = cell_a;
+
 
     // start timer
     Timer timer;
@@ -320,6 +320,8 @@ int cigma::CompareCmd::run()
         std::cout << timer;
     }
 
+    // XXX: time to move this main loop into its own function
+    // so we can use polymorphic dispatch on the argument types
     for (e = 0; e < nel; e++)
     {
         // update cell data
@@ -330,16 +332,12 @@ int cigma::CompareCmd::run()
 
 
         // ... calculate phi_a[]
-        //
-        // XXX: time to move this main loop into its own function
-        // so we can use polymorphic dispatch on the argument types
-        //
         // XXX: using eval() -- applicable in general (Field obj)
         //for (q = 0; q < nq; q++)
         //{
         //    field_a->eval((*quadrature)[q], &phi_a[valdim*q]);
         //}
-        //
+
         // ... calculate phi_a[]
         // XXX: using tabulation -- applicable to FE_Field obj
         field_a->tabulate_element(e, phi_a);
@@ -393,9 +391,8 @@ int cigma::CompareCmd::run()
 
 
     /* clean up */
-    //delete [] phi_a;
+    delete [] phi_a;
     delete [] phi_b;
-    delete [] dofs_a;
 
 
     return 0;
