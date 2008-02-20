@@ -1,10 +1,12 @@
 #ifndef __COMPARE_CMD_H__
 #define __COMPARE_CMD_H__
 
+#include <string>
 #include "Command.h"
 #include "MeshPart.h"
 #include "Field.h"
 #include "FE_Field.h"
+#include "ResidualField.h"
 #include "Writer.h"
 #include "Reader.h"
 #include "MeshIO.h"
@@ -36,14 +38,14 @@ public:
     MeshPart *mesh;
     FE_Field *field_a;
     FE_Field *field_b;
-    FE_Field *residuals;
+    ResidualField *residuals;
 
 public:
     MeshIO meshIO;
     QuadratureIO quadratureIO;
     FieldIO firstIO;
     FieldIO secondIO;
-    FieldIO residualsIO;
+    std::string output_path;
 
 public:
     bool verbose;

@@ -121,6 +121,8 @@ libcigma_a_SOURCES = \
 	QuadratureIO.h \
 	Reader.cpp \
 	Reader.h \
+	ResidualField.cpp \
+	ResidualField.h \
 	SkelCmd.cpp \
 	SkelCmd.h \
 	StringUtils.cpp \

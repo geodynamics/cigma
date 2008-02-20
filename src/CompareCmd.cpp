@@ -34,7 +34,9 @@ cigma::CompareCmd::CompareCmd()
     // fields
     field_a = 0;
     field_b = 0;
-    residuals = 0; //XXX: create ResidualField class?
+
+    // residuals
+    residuals = new ResidualField();
 
     // parameters
     verbose = false;
@@ -43,6 +45,7 @@ cigma::CompareCmd::CompareCmd()
 
 cigma::CompareCmd::~CompareCmd()
 {
+    delete residuals;
 }
 
 
@@ -106,6 +109,53 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     std::string inputstr;
     char *in;
 
+
+    /* Check if --verbose was enabled */
+
+    verbose = opt->getFlag("verbose");
+    if (verbose)
+    {
+        output_frequency = 1000;
+    }
+
+    /* Determine the --output-frequency option */
+
+    in = opt->getValue("output-frequency");
+    if (in != 0)
+    {
+        inputstr = in;
+        string_to_int(inputstr, output_frequency);
+    }
+
+    if (output_frequency == 0)
+    {
+        // XXX: emit warning, or quit?
+        if (opt->getValue("output-frequency") != 0)
+        {
+            cerr << "compare: Warning: ignoring option --output-frequency" << endl;
+        }
+        verbose = false;
+    }
+
+    /* Determine the --output option */
+
+    in = opt->getValue("output");
+    if (in == 0)
+    {
+        if (opt->getFlag("debug"))
+        {
+            // XXX: provide default name when in debug mode
+            in = (char *)"foo.vtk";
+        }
+        else
+        {
+            cerr << "compare: Please specify the option --output" << endl;
+            exit(1);
+        }
+    }
+    output_path = in;
+
+
     /*
      * Initialization order:
      *  Load First field
@@ -133,7 +183,6 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     load_args(opt, &quadratureIO, "rule");
     load_args(opt, &firstIO, "first");
     load_args(opt, &secondIO, "second");
-    load_args(opt, &residualsIO, "output");
 
 
     /* Validate these arguments and complain about missing ones */
@@ -149,12 +198,8 @@ void cigma::CompareCmd::configure(AnyOption *opt)
 
         if (secondIO.field_path == "")
             secondIO.field_path = "./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
-
-        if (residualsIO.field_path == "")
-            residualsIO.field_path = "foo.vtk";
     }
 
-    validate_args(&residualsIO, "compare");
     validate_args(&firstIO, "compare");
     validate_args(&secondIO, "compare");
     validate_args(&meshIO, "compare");
@@ -202,6 +247,7 @@ void cigma::CompareCmd::configure(AnyOption *opt)
         mesh = firstIO.field->meshPart;
     }
     assert(mesh != 0);
+    residuals->set_mesh(mesh);
 
 
     /* Now load the quadrature rule. If no rule is specified on the
@@ -214,31 +260,6 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     assert(quadrature != 0);
     field_a->fe->set_quadrature(quadrature);
 
-
-    /* Determine the output-frequency option */
-
-    verbose = opt->getFlag("verbose");
-    if (verbose)
-    {
-        output_frequency = 1000;
-    }
-
-    in = opt->getValue("output-frequency");
-    if (in != 0)
-    {
-        inputstr = in;
-        string_to_int(inputstr, output_frequency);
-    }
-
-    if (output_frequency == 0)
-    {
-        // XXX: emit warning, or quit?
-        if (opt->getValue("output-frequency") != 0)
-        {
-            cerr << "compare: Warning: ignoring option --output-frequency" << endl;
-        }
-        verbose = false;
-    }
 
     return;
 }
@@ -280,7 +301,9 @@ int cigma::CompareCmd::run()
     
     // norm
     double L2 = 0.0;
-    double *epsilon = new double[nel];
+    //double *epsilon = new double[nel]; // XXX: instead, use memory allocated by residuals member
+    double *epsilon = residuals->epsilon;
+
 
     // XXX: what about case (mesh != field_a->meshPart)?
     //FE *fe;
@@ -368,57 +391,13 @@ int cigma::CompareCmd::run()
 
 
     /* write out data */
-    /* use residualsIO
-    residuals = new FE_Field();
-    residuals->fe = 0;
-    residuals->meshPart = mesh;
-    residuals->dofHandler = new DofHandler();
-    residuals->dofHandler->nno = nel;   //XXX: In DofHandler, rename nno to num
-    residuals->dofHandler->ndim = 1;
-    residuals->dofHandler->dofs = epsilon;
-
-    residualsIO.field = residuals;
-    residualsIO.save();
-
-    //writer->open(output_filename);
-    //writer->write_field(residuals);
-    //writer->close();
-
-    // */
-
-    //* write out data
-    {
-        int nno = mesh->nno;
-        int nsd = mesh->nsd;
-        int ndofs = mesh->ndofs;
-        double *coords = mesh->coords;
-        int *connect = mesh->connect;
-
-        string output_filename = residualsIO.field_path;
-        string output_name = "epsilon";
-
-        // XXX: create a cell-based ResidualField class
-
-        std::cout << "Creating file " << output_filename << std::endl;
-        //VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
-        VtkWriter *writer = new VtkWriter();
-        writer->open(output_filename);
-        writer->write_header();
-        writer->write_points(coords, nno, nsd);
-        writer->write_cells(connect, nel, ndofs);
-        writer->write_cell_types(nsd, nel, ndofs);
-        writer->write_cell_data(output_name.c_str(), epsilon, nel, 1);
-        writer->close();
-        //delete writer;
-    } // */
+    residuals->write_vtk(output_path.c_str());
 
 
     /* clean up */
-    //delete residuals->dofHandler;
-    //delete residuals;
-    //residualsIO.field = 0;
-
-    delete [] epsilon;
+    //delete [] phi_a;
+    delete [] phi_b;
+    delete [] dofs_a;
 
 
     return 0;
