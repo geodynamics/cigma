@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cmath>
 #include "ResidualField.h"
 #include "VtkWriter.h"
 
@@ -27,6 +28,36 @@ void cigma::ResidualField::set_mesh(MeshPart *meshPart)
     this->meshPart = meshPart;
     this->nel = meshPart->nel;
     epsilon = new double[nel];
+}
+
+// ---------------------------------------------------------------------------
+
+void cigma::ResidualField::zero_out()
+{
+    assert(nel > 0);
+    assert(epsilon != 0);
+
+    global_error = 0.0;
+
+    for (int e = 0; e < nel; e++)
+    {
+        epsilon[e] = 0.0;
+    }
+}
+
+void cigma::ResidualField::update(int e, double cell_residual)
+{
+    // remember residual on this cell
+    epsilon[e] = cell_residual;
+
+    // XXX: this would generalize into global_error = norm_sum(global_error, cell_residual)
+    global_error += cell_residual;
+
+}
+
+double cigma::ResidualField::L2()
+{
+    return sqrt(global_error); // XXX: generalize to norm_pow(global_error)
 }
 
 // ---------------------------------------------------------------------------
