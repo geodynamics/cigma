@@ -127,7 +127,7 @@ get_dataset(const char *loc, double **data, int *num, int *dim)
         }
         else
         {
-            assert(false);
+            assert(false); // XXX: throw exception instead
         }
     }
 
@@ -185,7 +185,7 @@ get_coordinates(double **coordinates, int *nno, int *nsd)
     }
     else
     {
-        assert(false);
+        assert(false); // XXX: throw exception instead
     }
 
     *coordinates = coords;

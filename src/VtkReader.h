@@ -26,12 +26,6 @@ public:
         VTK_FILE_RECTILINEAR_GRID
     } VtkFileType;
 
-public:
-    VtkReader();
-    ~VtkReader();
-
-public:
-
     ReaderType getType()
     {
         return VTK_READER;
@@ -56,6 +50,9 @@ public:
         return VTK_FILE_NONE;
     }
 
+public:
+    VtkReader();
+    ~VtkReader();
 
 public:
     int open(std::string filename);
