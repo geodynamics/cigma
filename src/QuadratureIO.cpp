@@ -338,22 +338,22 @@ void QuadratureIO::load(cigma::Cell *cell)
         switch (cell->geometry())
         {
         case Cell::TRIANGLE:
-            quadrature = new Quadrature();
+            quadrature = new QuadraturePoints();
             quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_celldim);
             quadrature->set_globaldim(tri_nsd);
             break;
         case Cell::QUADRANGLE:
-            quadrature = new Quadrature();
+            quadrature = new QuadraturePoints();
             quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_celldim);
             quadrature->set_globaldim(quad_nsd);
             break;
         case Cell::TETRAHEDRON:
-            quadrature = new Quadrature();
+            quadrature = new QuadraturePoints();
             quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_celldim);
             quadrature->set_globaldim(tet_nsd);
             break;
         case Cell::HEXAHEDRON:
-            quadrature = new Quadrature();
+            quadrature = new QuadraturePoints();
             quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_celldim);
             quadrature->set_globaldim(hex_nsd);
             break;
@@ -364,7 +364,7 @@ void QuadratureIO::load(cigma::Cell *cell)
 
     if ((qx != 0) && (qw != 0))
     {
-        quadrature = new Quadrature();
+        quadrature = new QuadraturePoints();
         quadrature->set_quadrature(qx, qw, nq, nd);
         quadrature->set_globaldim(3); // XXX: how to treat 2D case?
     }

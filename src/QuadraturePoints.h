@@ -1,24 +1,24 @@
-#ifndef __QUADRATURE_H__
-#define __QUADRATURE_H__
+#ifndef __QUADRATURE_POINTS_H__
+#define __QUADRATURE_POINTS_H__
 
 #include "Cell.h"
 #include "Points.h"
 
 namespace cigma
 {
-    class Quadrature;
+    class QuadraturePoints;
 }
 
 /**
- * @brief Quadrature scheme
+ * @brief QuadraturePoints scheme
  *
  */
 
-class cigma::Quadrature : public Points
+class cigma::QuadraturePoints : public Points
 {
 public:
-    Quadrature();
-    ~Quadrature();
+    QuadraturePoints();
+    ~QuadraturePoints();
 
 public:
     void set_quadrature(double *quadpts, double *quadwts, int npts, int qdim);
@@ -42,22 +42,22 @@ public:
 // ---------------------------------------------------------------------------
 
 
-inline int cigma::Quadrature::n_refdim() const
+inline int cigma::QuadraturePoints::n_refdim() const
 {
     return qdim;
 }
 
-inline int cigma::Quadrature::n_globaldim() const
+inline int cigma::QuadraturePoints::n_globaldim() const
 {
     return dim;
 }
 
-inline double cigma::Quadrature::point(int i, int j) const
+inline double cigma::QuadraturePoints::point(int i, int j) const
 {
     return qpts[qdim*i + j];
 }
 
-inline double cigma::Quadrature::weight(int i) const
+inline double cigma::QuadraturePoints::weight(int i) const
 {
     return qwts[i];
 }

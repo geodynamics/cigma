@@ -80,7 +80,7 @@ void cigma::FE_Field::tabulate_element(int e, double *values)
     assert(cell != 0);
 
     // quadrature
-    Quadrature *quadrature = fe->quadrature;
+    QuadraturePoints *quadrature = fe->quadrature;
     assert(quadrature != 0);
     int nq = quadrature->n_points();
     double *qpts = quadrature->qpts;

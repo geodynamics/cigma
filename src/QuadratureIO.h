@@ -5,7 +5,7 @@
 #include "AnyOption.h"
 #include "Reader.h"
 #include "Writer.h"
-#include "Quadrature.h"
+#include "QuadraturePoints.h"
 #include "Cell.h"
 
 class QuadratureIO
@@ -19,7 +19,7 @@ public:
     std::string quadrature_path;
     std::string points_path;
     std::string weights_path;
-    cigma::Quadrature *quadrature;
+    cigma::QuadraturePoints *quadrature;
 
 public:
     QuadratureIO();

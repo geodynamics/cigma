@@ -3,7 +3,7 @@
 
 #include "Cell.h"
 #include "Points.h"
-#include "Quadrature.h"
+#include "QuadraturePoints.h"
 
 namespace cigma
 {
@@ -22,14 +22,14 @@ public:
 
 public:
     void set_cell(Cell *cell);
-    void set_quadrature(Quadrature *quadrature);
+    void set_quadrature(QuadraturePoints *quadrature);
 
 public:
     void update_jxw();
 
 public:
     Cell *cell;
-    Quadrature *quadrature;
+    QuadraturePoints *quadrature;
     double *jxw;
     double *basis_tab;  // [nq x ndofs]
     double *basis_jet;  // [nq x ndofs x celldim]

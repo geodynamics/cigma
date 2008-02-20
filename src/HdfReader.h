@@ -5,7 +5,7 @@
 #include "hdf5.h"
 #include "Reader.h"
 
-#include "Quadrature.h"
+#include "QuadraturePoints.h"
 #include "MeshPart.h"
 #include "DofHandler.h"
 #include "FE_Field.h"
@@ -36,8 +36,8 @@ public:
     void get_connectivity(const char *loc, int **connectivity, int *nel, int *ndofs);
 
 public:
-    void get_quadrature(Quadrature *quadrature, const char *loc);
-    void get_quadrature(Quadrature *quadrature, const char *points_loc, const char *weights_loc);
+    void get_quadrature(QuadraturePoints *quadrature, const char *loc);
+    void get_quadrature(QuadraturePoints *quadrature, const char *points_loc, const char *weights_loc);
 
 public:
     void get_field(FE_Field *field, const char *loc);

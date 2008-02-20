@@ -28,7 +28,7 @@ void cigma::FE::set_cell(Cell *cell)
     this->cell = cell;
 }
 
-void cigma::FE::set_quadrature(Quadrature *quadrature)
+void cigma::FE::set_quadrature(QuadraturePoints *quadrature)
 {
     assert(cell != 0);
 

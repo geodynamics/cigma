@@ -1,8 +1,8 @@
-#include "Quadrature.h"
+#include "QuadraturePoints.h"
 
 // ---------------------------------------------------------------------------
 
-cigma::Quadrature::Quadrature()
+cigma::QuadraturePoints::QuadraturePoints()
 {
     qdim = 0;
     qpts = 0;
@@ -10,7 +10,7 @@ cigma::Quadrature::Quadrature()
 }
 
 
-cigma::Quadrature::~Quadrature()
+cigma::QuadraturePoints::~QuadraturePoints()
 {
     if (qpts != 0) delete [] qpts;
     if (qwts != 0) delete [] qwts;
@@ -20,7 +20,7 @@ cigma::Quadrature::~Quadrature()
 
 // ---------------------------------------------------------------------------
 
-void cigma::Quadrature::set_quadrature(double *quadpts, double *quadwts, int npts, int qdim)
+void cigma::QuadraturePoints::set_quadrature(double *quadpts, double *quadwts, int npts, int qdim)
 {
     /* some basic assertions */
     assert(quadpts != 0);
@@ -53,7 +53,7 @@ void cigma::Quadrature::set_quadrature(double *quadpts, double *quadwts, int npt
     }
 }
 
-void cigma::Quadrature::set_globaldim(int dim)
+void cigma::QuadraturePoints::set_globaldim(int dim)
 {
     assert(num > 0);
     this->dim = dim;
@@ -68,7 +68,7 @@ void cigma::Quadrature::set_globaldim(int dim)
 }
 
 
-void cigma::Quadrature::apply_refmap(Cell *cell)
+void cigma::QuadraturePoints::apply_refmap(Cell *cell)
 {
     assert(cell != 0);
     assert(data != 0);

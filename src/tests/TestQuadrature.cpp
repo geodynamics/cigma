@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include "../Tet.h"
-#include "../Quadrature.h"
+#include "../QuadraturePoints.h"
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
         -0.74470688, -0.4120024 ,  0.08830369
     };
 
-    Quadrature Q;
+    QuadraturePoints Q;
     Q.set_quadrature(qpts, qwts, npts, 3);
 
     /*

@@ -34,7 +34,7 @@ public:
     int run();
 
 public:
-    Quadrature *quadrature;
+    QuadraturePoints *quadrature;
     MeshPart *mesh;
     FE_Field *field_a;
     FE_Field *field_b;

@@ -280,7 +280,7 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
 
     // XXX: first variable block
     Cell *cell = field_a->fe->cell; // XXX: change to mesh->fe->cell
-    Quadrature *quadrature = field_a->fe->quadrature; // XXX: change to mesh->fe->quadrature
+    QuadraturePoints *quadrature = field_a->fe->quadrature; // XXX: change to mesh->fe->quadrature
     ResidualField *residuals = env->residuals;
 
 
