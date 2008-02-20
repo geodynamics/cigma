@@ -48,3 +48,16 @@ void cigma::FE::set_quadrature(Quadrature *quadrature)
 
 // ---------------------------------------------------------------------------
 
+void cigma::FE::update_jxw()
+{
+    const int nq = quadrature->n_points();
+    const int celldim = cell->n_celldim();
+    for (int q = 0; q < nq; q++)
+    {
+        double jac[3][3];
+        jxw[q] = quadrature->weight(q) * cell->jacobian((*quadrature)[q], jac);
+    }
+}
+
+// ---------------------------------------------------------------------------
+

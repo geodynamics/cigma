@@ -93,14 +93,7 @@ void cigma::FE_Field::tabulate()
     cell->grad_shape(nq, qpts, fe->basis_jet);
 
     // evaluate jacobian at known quadrature points and calculate jxw
-    int q;
-    int celldim = cell->n_celldim();
-    double *jxw = fe->jxw;
-    for (q = 0; q < nq; q++)
-    {
-        double jac[3][3];
-        jxw[q] = qwts[q] * cell->jacobian(&qpts[celldim*q], jac);
-    }
+    fe->update_jxw();
 }
 
 // ---------------------------------------------------------------------------

@@ -25,6 +25,9 @@ public:
     void set_quadrature(Quadrature *quadrature);
 
 public:
+    void update_jxw();
+
+public:
     Cell *cell;
     Quadrature *quadrature;
     double *jxw;
