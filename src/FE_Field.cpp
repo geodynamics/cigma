@@ -87,7 +87,8 @@ void cigma::FE_Field::tabulate_element(int e, double *values)
     const int ndofs = cell->n_nodes();
     double dofs[ndofs * valdim]; // XXX
 
-    get_cell_dofs(e, dofs);
+    get_cell_dofs(e, dofs); // XXX: do we split this function so that this call
+                            //      is independent from the following loop?
 
     for (int q = 0; q < nq; q++)
     {

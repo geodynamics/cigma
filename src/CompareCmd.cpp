@@ -278,37 +278,29 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
     // XXX: remove need for this assert stmt ...
     assert(mesh == field_a->meshPart);
 
-
-    // XXX: first variable block
-    //Cell *cell = field_a->fe->cell; // XXX: change to mesh->fe->cell
-    QuadraturePoints *quadrature = field_a->fe->quadrature; // XXX: change to mesh->fe->quadrature
+    // XXX: remove need for env...consider moving this function back to run() 
     ResidualField *residuals = env->residuals;
 
-    QuadratureRule *qr = new QuadratureRule(); // XXX: initialize this earlier
+    // XXX: we need need to initialize qr much earlier, so we avoid
+    // assuming that we can load the quadrature points from field_a->fe object
+    QuadraturePoints *quadrature = field_a->fe->quadrature;
+    QuadratureRule *qr = new QuadratureRule();
     qr->meshPart = mesh;
     qr->set_quadrature_points(quadrature);
 
-
     // dimensions
-    int nel = mesh->nel;
-    int nq = field_a->fe->quadrature->n_points(); // XXX: change to mesh->fe->quadrature->n_points()
-    //int ndofs = cell->n_nodes();
+    int nel = qr->meshPart->nel;
+    int nq = qr->points->n_points();
     int valdim = field_a->n_rank();
 
-    // local data
-    //double *jxw = field_a->fe->jxw; // XXX: change to mesh->fe->jxw
+    // field values at quadrature points
+    Points phi_a, phi_b;
+    double *values_a = new double[nq * valdim];
+    double *values_b = new double[nq * valdim];
+    phi_a.set_data(values_a, nq, valdim);
+    phi_b.set_data(values_b, nq, valdim);
 
-    double *phi_a = new double[nq * valdim];
-    double *phi_b = new double[nq * valdim];
-
-    Points f,g;
-    f.set_data(phi_a, nq, valdim);
-    g.set_data(phi_b, nq, valdim);
-
-    // norm
-    //double L2 = 0.0;
-    //double *epsilon = residuals->epsilon;
-
+    // reset error accumulator
     residuals->zero_out();
 
     // start timer
@@ -322,53 +314,27 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
         cout << timer;
     }
 
-    int e,q,i;
-    for (e = 0; e < nel; e++)
+    for (int e = 0; e < nel; e++)
     {
         // update cell data
-        //mesh->select_cell(e);
-
-        // obtain global points from current quadrature rule
-        //quadrature->apply_refmap(cell);
-
         qr->select_cell(e);
 
-        // ... calculate phi_a[]
-        field_a->tabulate_element(e, phi_a); // XXX: second variable block
+        // ... calculate phi_a
+        //field_a->Field::eval(*(qr->points), phi_a);
+        field_a->tabulate_element(e, phi_a.data);   // XXX: call when field_b is an instance of FE_Field
 
-        // ... calculate phi_b[]
-        // XXX: change this to field_b->eval(quadrature, phi_b)?
-        // do this if we make phi_b an object of type (Points *)
-        //for (q = 0; q < nq; q++)
-        //{
-        //    field_b->eval((*qr->points)[q], &phi_b[valdim*q]);
-        //}
-        field_b->Field::eval(*(qr->points), g);
-
-        // evaluate jacobian at qpts
-        // XXX: change this to mesh->fe->update_jxw()
-        //field_a->fe->update_jxw();
-
-        // apply norm
-        // XXX: calculate squared_differences from phi_a, phi_b
-        // XXX: doing this here would allow for alternative norms
-        // XXX: move this functionality to residuals->update() method
+        // ... calculate phi_b
+        field_b->Field::eval(*(qr->points), phi_b);
+        //field_b->tabulate_element(e, phi_b.data); // XXX: call when field_b->meshPart, field_a->meshPart,
+                                                    //      and qr->meshPart are all identical...
+                                                    //      this will result in redundant call to get_cell_dofs().
+                                                    //      is it worth it to optimize this? it would avoid
+                                                    //      jumping around the connectivity array a second time..
 
         // apply quadrature rule
-        // XXX: change to  : err = mesh->quadrature->L2(phi_a, phi_b)
-        // XXX: alternative: err = mesh->quadrature->apply(squared_differences)
-        //double err = 0.0;
-        //for (q = 0; q < nq; q++)
-        //{
-        //    for (i = 0; i < valdim; i++)
-        //    {
-        //        int qi = valdim*q + i;
-        //        err += jxw[q] * SQR(phi_a[qi] - phi_b[qi]);
-        //    }
-        //}
-        //epsilon[e] = err;
-        //L2 += err;
-        double err = qr->L2(f,g);
+        double err = qr->L2(phi_a, phi_b);
+
+        // update error accumulator
         residuals->update(e, err);
 
         // debug info
@@ -385,8 +351,7 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
         cout << timer << endl;
     }
 
-    // report global norm
-    //L2 = sqrt(L2);
+    // report global error
     double L2 = residuals->L2();
     cout << setprecision(12);
     cout << "L2 = " << L2 << endl;
@@ -395,8 +360,8 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
     residuals->write_vtk(env->output_path.c_str());
 
     // clean up
-    delete [] phi_a;
-    delete [] phi_b;
+    delete [] values_a;
+    delete [] values_b;
 }
 
 /* XXX: first, time the effects of introducing branches in the main loop
