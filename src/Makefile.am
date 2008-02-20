@@ -136,6 +136,8 @@ libcigma_a_SOURCES = \
 	Tri.h \
 	VtkReader.cpp \
 	VtkReader.h \
+	VtkXmlReader.cpp \
+	VtkXmlReader.h \
 	VtkUgMeshPart.cpp \
 	VtkUgMeshPart.h \
 	VtkWriter.cpp \
