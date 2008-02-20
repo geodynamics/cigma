@@ -79,28 +79,16 @@ void cigma::FE_Field::tabulate_element(int e, double *values)
     Cell *cell = fe->cell;
     assert(cell != 0);
 
-    // quadrature
     QuadraturePoints *quadrature = fe->quadrature;
     assert(quadrature != 0);
     int nq = quadrature->n_points();
     double *qpts = quadrature->qpts;
-    //double *qwts = quadrature->qwts;
-
-    // get shape function values at known quadrature points
-    //cell->shape(nq, qpts, fe->basis_tab);
-
-    // get shape function derivatives at known quadrature points
-    //cell->grad_shape(nq, qpts, fe->basis_jet);
-
-    // XXX: move this step out of tabulate()
-    // evaluate jacobian at known quadrature points and calculate jxw
-    //fe->update_jxw();
 
     // tabulate the function values
     int i,j;
     const int valdim = n_rank();
     const int ndofs = cell->n_nodes();
-    double dofs[ndofs * valdim];
+    double dofs[ndofs * valdim]; // XXX
 
     get_cell_dofs(e, dofs);
 
