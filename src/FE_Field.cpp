@@ -59,13 +59,10 @@ void cigma::FE_Field::eval(double *point, double *value)
     // use dofs as weights on the shape function values
     const int ndofs = cell->n_nodes();
     int valdim = n_rank();
+    double field_dofs[ndofs * valdim]; // XXX
 
-    //double globalCellCoords[cell_nno * cell_nsd];
-    //meshPart->get_cell_coords(e, globalCellCoords);
-    //cell->interpolate(globalCellCoords, point, value, valdim);
-
-    double field_dofs[ndofs * valdim];
     get_cell_dofs(e, field_dofs);
+
     double uvw[3];
     cell->xyz2uvw(point,uvw);
     cell->interpolate(field_dofs, uvw, value, valdim);
