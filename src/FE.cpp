@@ -42,8 +42,15 @@ void cigma::FE::set_quadrature(Quadrature *quadrature)
     int dim = cell->n_celldim();
 
     jxw = new double[nq];
+
     basis_tab = new double[nq * ndofs];
     basis_jet = new double[nq * ndofs * dim];
+
+    // get shape function values at known quadrature points
+    cell->shape(nq, quadrature->qpts, basis_tab);
+
+    // get shape function values at known quadrature points
+    cell->grad_shape(nq, quadrature->qpts, basis_jet);
 }
 
 // ---------------------------------------------------------------------------

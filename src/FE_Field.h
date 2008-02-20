@@ -31,8 +31,7 @@ public:
     void eval(double *point, double *value);
 
 public:
-    void tabulate();
-    void eval(int e, double *values);
+    void tabulate_element(int e, double *values);
 
 public:
     void get_cell_dofs(int cellIndex, double *cellDofs);

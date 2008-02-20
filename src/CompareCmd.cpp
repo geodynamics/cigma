@@ -204,16 +204,14 @@ void cigma::CompareCmd::configure(AnyOption *opt)
     assert(mesh != 0);
 
 
+    /* Now load the quadrature rule. If no rule is specified on the
+     * command line, a default rule is assigned based on the type of
+     * the cell. Also, an exception is thrown if the specified a rule
+     * does not conform geometrically to the interior of the cell.
+     */
     quadratureIO.load(mesh->cell);
     quadrature = quadratureIO.quadrature;
-    if (quadrature == 0)
-    {
-        quadrature = field_a->fe->quadrature;
-    }
     assert(quadrature != 0);
-
-    // XXX: perhaps quadrature data should be loaded first!
-    // move this line back into FieldIO load() method
     field_a->fe->set_quadrature(quadrature);
 
 
@@ -274,10 +272,10 @@ int cigma::CompareCmd::run()
     int valdim = field_a->n_rank();
 
     // local data;
-    //double *jxw = new double[nq];
+    //double *jxw = new double[nq]; // XXX: instead, use memory allocated by field_a->fe
     double *jxw = field_a->fe->jxw;
     double *dofs_a = new double[ndofs * valdim];
-    double *phi_a = new double[nq * valdim];
+    double *phi_a = new double[nq * valdim]; // XXX: not needed when using tabulation
     double *phi_b = new double[nq * valdim];
     
     // norm
@@ -299,19 +297,6 @@ int cigma::CompareCmd::run()
         std::cout << timer;
     }
 
-
-    if (true)
-    {
-        // XXX: move this block into FE::tabulate(...)
-
-        // get shape function values at known quadrature points
-        cell->shape(nq, quadrature->qpts, field_a->fe->basis_tab);
-
-        // get shape function derivatives at known quadrature points
-        cell->grad_shape(nq, quadrature->qpts, field_a->fe->basis_jet);
-    }
-
-
     for (e = 0; e < nel; e++)
     {
         // update cell data
@@ -324,30 +309,19 @@ int cigma::CompareCmd::run()
 
 
         // ... calculate phi_a[]
-        // XXX: using eval()
+        //
+        // XXX: time to move this main loop into its own function
+        // so we can use polymorphic dispatch on the argument types
+        //
+        // XXX: using eval() -- applicable in general (Field obj)
         //for (q = 0; q < nq; q++)
         //{
         //    field_a->eval((*quadrature)[q], &phi_a[valdim*q]);
         //}
-
+        //
         // ... calculate phi_a[]
-        // XXX: using tabulation
-        
-        field_a->get_cell_dofs(e, dofs_a);
-        //field_a->tabulate();
-        for (q = 0; q < nq; q++)
-        {
-            double *N = &(field_a->fe->basis_tab[ndofs*q]);
-            for (i = 0; i < valdim; i++)
-            {
-                double valsum = 0.0;
-                for (j = 0; j < ndofs; j++)
-                {
-                    valsum += dofs_a[i + valdim*j] * N[j];
-                }
-                phi_a[valdim*q + i] = valsum;
-            }
-        }
+        // XXX: using tabulation -- applicable to FE_Field obj
+        field_a->tabulate_element(e, phi_a);
 
         // ... calculate phi_b[]
         for (q = 0; q < nq; q++)
@@ -356,7 +330,9 @@ int cigma::CompareCmd::run()
         }
 
         // evaluate jacobian at known quadrature points
-        field_a->fe->update_jxw();
+        field_a->fe->update_jxw();  // XXX: somehow, this method needs to be attached
+                                    // to the MeshPart object, so maybe it needs its
+                                    // own FE object after all?
 
         // ... apply quadrature rule
         double err = 0.0;

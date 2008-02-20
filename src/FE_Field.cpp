@@ -71,21 +71,7 @@ void cigma::FE_Field::eval(double *point, double *value)
     cell->interpolate(field_dofs, uvw, value, valdim);
 }
 
-void cigma::FE_Field::tabulate()
-{
-    // XXX: move this function to FE::tabulate()
-
-    assert(fe != 0);
-    
-    // get shape function values at known quadrature points
-    fe->cell->shape(fe->quadrature->n_points(), fe->quadrature->qpts, fe->basis_tab);
-
-    // get shape function derivatives at known quadrature points
-    fe->cell->grad_shape(fe->quadrature->n_points(), fe->quadrature->qpts, fe->basis_jet);
-}
-
-
-void cigma::FE_Field::eval(int e, double *values)
+void cigma::FE_Field::tabulate_element(int e, double *values)
 {
     assert(fe != 0);
     assert(meshPart != 0);
