@@ -115,6 +115,8 @@ libcigma_a_SOURCES = \
 	QuadratureIO.h \
 	QuadraturePoints.cpp \
 	QuadraturePoints.h \
+	QuadratureRule.cpp \
+	QuadratureRule.h \
 	Reader.cpp \
 	Reader.h \
 	ResidualField.cpp \

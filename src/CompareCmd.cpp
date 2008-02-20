@@ -16,6 +16,7 @@
 #include "Timer.h"
 #include "Misc.h"
 
+#include "QuadratureRule.h"
 
 using namespace std;
 using namespace cigma;
@@ -279,26 +280,36 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
 
 
     // XXX: first variable block
-    Cell *cell = field_a->fe->cell; // XXX: change to mesh->fe->cell
+    //Cell *cell = field_a->fe->cell; // XXX: change to mesh->fe->cell
     QuadraturePoints *quadrature = field_a->fe->quadrature; // XXX: change to mesh->fe->quadrature
     ResidualField *residuals = env->residuals;
 
+    QuadratureRule *qr = new QuadratureRule(); // XXX: initialize this earlier
+    qr->meshPart = mesh;
+    qr->set_quadrature_points(quadrature);
 
 
     // dimensions
     int nel = mesh->nel;
     int nq = field_a->fe->quadrature->n_points(); // XXX: change to mesh->fe->quadrature->n_points()
-    int ndofs = cell->n_nodes();
+    //int ndofs = cell->n_nodes();
     int valdim = field_a->n_rank();
 
     // local data
-    double *jxw = field_a->fe->jxw; // XXX: change to mesh->fe->jxw
-    double *phi_a = new double[nq * valdim]; // XXX: use Points object?
-    double *phi_b = new double[nq * valdim]; // XXX: use Points object?
+    //double *jxw = field_a->fe->jxw; // XXX: change to mesh->fe->jxw
+
+    double *phi_a = new double[nq * valdim];
+    double *phi_b = new double[nq * valdim];
+
+    Points f,g;
+    f.set_data(phi_a, nq, valdim);
+    g.set_data(phi_b, nq, valdim);
 
     // norm
-    double L2 = 0.0;
-    double *epsilon = residuals->epsilon;
+    //double L2 = 0.0;
+    //double *epsilon = residuals->epsilon;
+
+    residuals->zero_out();
 
     // start timer
     Timer timer;
@@ -315,10 +326,12 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
     for (e = 0; e < nel; e++)
     {
         // update cell data
-        mesh->select_cell(e);
+        //mesh->select_cell(e);
 
         // obtain global points from current quadrature rule
-        quadrature->apply_refmap(cell);
+        //quadrature->apply_refmap(cell);
+
+        qr->select_cell(e);
 
         // ... calculate phi_a[]
         field_a->tabulate_element(e, phi_a); // XXX: second variable block
@@ -326,33 +339,37 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
         // ... calculate phi_b[]
         // XXX: change this to field_b->eval(quadrature, phi_b)?
         // do this if we make phi_b an object of type (Points *)
-        for (q = 0; q < nq; q++)
-        {
-            field_b->eval((*quadrature)[q], &phi_b[valdim*q]);
-        }
+        //for (q = 0; q < nq; q++)
+        //{
+        //    field_b->eval((*qr->points)[q], &phi_b[valdim*q]);
+        //}
+        field_b->Field::eval(*(qr->points), g);
 
         // evaluate jacobian at qpts
         // XXX: change this to mesh->fe->update_jxw()
-        field_a->fe->update_jxw();
+        //field_a->fe->update_jxw();
 
         // apply norm
         // XXX: calculate squared_differences from phi_a, phi_b
-        // XXX: other norms?
+        // XXX: doing this here would allow for alternative norms
+        // XXX: move this functionality to residuals->update() method
 
         // apply quadrature rule
-        // XXX: change this to: err = mesh->quadrature->L2(phi_a, phi_b)
-        // XXX: alternative   : err = mesh->quadrature->apply(squared_differences)
-        double err = 0.0;
-        for (q = 0; q < nq; q++)
-        {
-            for (i = 0; i < valdim; i++)
-            {
-                int qi = valdim*q + i;
-                err += jxw[q] * SQR(phi_a[qi] - phi_b[qi]);
-            }
-        }
-        epsilon[e] = err;
-        L2 += err;
+        // XXX: change to  : err = mesh->quadrature->L2(phi_a, phi_b)
+        // XXX: alternative: err = mesh->quadrature->apply(squared_differences)
+        //double err = 0.0;
+        //for (q = 0; q < nq; q++)
+        //{
+        //    for (i = 0; i < valdim; i++)
+        //    {
+        //        int qi = valdim*q + i;
+        //        err += jxw[q] * SQR(phi_a[qi] - phi_b[qi]);
+        //    }
+        //}
+        //epsilon[e] = err;
+        //L2 += err;
+        double err = qr->L2(f,g);
+        residuals->update(e, err);
 
         // debug info
         if (verbose && ((e+1) % output_frequency == 0))
@@ -369,7 +386,8 @@ void compare(CompareCmd *env, MeshPart *mesh, FE_Field *field_a, FE_Field *field
     }
 
     // report global norm
-    L2 = sqrt(L2);
+    //L2 = sqrt(L2);
+    double L2 = residuals->L2();
     cout << setprecision(12);
     cout << "L2 = " << L2 << endl;
 
