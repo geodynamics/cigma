@@ -54,7 +54,7 @@ void cigma::FE_Field::eval(double *point, double *value)
     int e;
     bool found_cell = false;
     found_cell = meshPart->find_cell(point, &e);
-    assert(found_cell);
+    assert(found_cell); // XXX: how to handle... throw exception?
 
     // use dofs as weights on the shape function values
     const int ndofs = cell->n_nodes();
