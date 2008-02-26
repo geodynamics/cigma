@@ -3,14 +3,14 @@
 #
 #
 
-FIND_PATH(CIGMA_INCLUDE_DIR h5io.h
-    $ENV{CIGMA_HOME}/h5io
+FIND_PATH(CIGMA_INCLUDE_DIR CompareCmd.h
+    $ENV{CIGMA_HOME}/src
     /usr/local/include
     /usr/include
 )
 
-FIND_LIBRARY(CIGMA_LIBRARY h5io
-    $ENV{CIGMA_HOME}/lib
+FIND_LIBRARY(CIGMA_LIBRARY cigma
+    $ENV{CIGMA_HOME}/src
     /usr/local/lib
     /usr/lib
 )

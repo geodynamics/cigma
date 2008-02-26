@@ -45,6 +45,17 @@ SET(cg_MOC_HEADERS
 
 
 # ----------------------------------------------------------------------------
+# Configure Cigma
+INCLUDE(${cg_SOURCE_DIR}/CMake/FindCigma.cmake)
+
+
+# ----------------------------------------------------------------------------
+# Configure HDF5
+INCLUDE(${cg_SOURCE_DIR}/CMake/FindHDF5.cmake)
+INCLUDE(${cg_SOURCE_DIR}/CMake/FindZLIB.cmake)
+
+
+# ----------------------------------------------------------------------------
 # Configure VTK
 FIND_PACKAGE(VTK REQUIRED)
 INCLUDE(${VTK_USE_FILE})
