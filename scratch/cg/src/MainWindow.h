@@ -4,6 +4,8 @@
 #include <QtGui>
 #include "ui_MainWindow.h"
 
+class vtkRenderer;
+
 
 class MainWindow : public QMainWindow, Ui::MainWindow
 {
@@ -16,6 +18,8 @@ public:
 public slots:
     void fileExit();
 
+public:
+    vtkRenderer *ren;
 };
 
 #endif
