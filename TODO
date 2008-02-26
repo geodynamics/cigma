@@ -1,18 +1,28 @@
 ---high-----------------------------------------------------------------------
-Migrate to automake from custom makefiles
-Figure out how to define HAVE_VTK in config.h
-Run strike-slip & reverse-slip benchmarks on the 250m resolution datasets
+Write test case for Quad::jacobian() function (interpolation works fine in TestQuad.cpp...)
+Debug the crash in ~QuadraturePoints() destructor  -- (who is managing the data?)
+Switch to boost's smart_ptr, shared_ptr, weak_ptr for managing most array allocs/refs
+Add extent[6] member variable to MeshPart class (bounding box)
 
 ---normal---------------------------------------------------------------------
-Test vtk.m4 autodetection
-Test hdf.m4 autodetection
-Use Leif's python.m4 (in /cs/autoconf/)
+Write TestVtkXmlReader.cpp test case to make sure it works fine
+Write TestPointField.cpp test case
+Write TestAnnLocatorSearch.cpp to test efficiency of searches in 2d (proportion of cells not found?)
+
+---medium---------------------------------------------------------------------
+Figure out how to define HAVE_VTK in config.h
+Run strike-slip & reverse-slip benchmarks on the 250m resolution datasets (done)
+Migrate to automake from custom makefiles (done)
+Test cigma_vtk.m4 autodetection -- (done? version detection didn't work..disable?)
+Test cigma_hdf5.m4 autodetection -- (done? version)
+Use Leif's python.m4 (in /cs/autoconf/) -- (done? test on difft systems)
+Note that it's very easy to configure python by using cmake -- switch over?
 
 ---low------------------------------------------------------------------------
-Add class PointField (explicit set of values)
+Add class PointField (explicit set of values) -- done
 Add class InterpolatedPointField (nearest-neighbor interpolation)
-Add method AnnLocator::initialize(Points *points)
-Move vtkls.cpp into 'cigma list' command
+Add method AnnLocator::initialize(Points *points) -- done
+Move vtkls.cpp into 'cigma list' command -- done
 Add --mesh-locator option (values: none,ann)
 Intercept --version in CommandSet::run()
 
