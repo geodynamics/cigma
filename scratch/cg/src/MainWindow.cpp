@@ -9,6 +9,8 @@
 
 #include "OrientationAxes.h"
 #include "RenderPoints.h"
+#include "RenderTriangle.h"
+#include "RenderQuadrangle.h"
 #include "RenderTetrahedron.h"
 #include "RenderHexahedron.h"
 
@@ -31,7 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //RenderPoints(ren);
     //RenderTetrahedron(ren);
-    RenderHexahedron(ren);
+    //RenderHexahedron(ren);
+    //RenderQuadrangle(ren);
+    RenderTriangle(ren);
 }
 
 
