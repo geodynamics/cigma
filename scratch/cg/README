@@ -1,1 +1,19 @@
 Cigma GUI Utility
+=================
+
+This utility has the following dependencies:
+
+  * cmake build system
+  * Qt4 development libraries
+  * VTK development libraries
+  * cigma 
+
+To build, simply issue the following instructions:
+
+  mkdir build
+  cd build
+  cmake ..
+  make
+
+
+
