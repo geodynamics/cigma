@@ -25,7 +25,7 @@
  * @param coords TBA
  * @param dofs   TBA
  */
-void RenderTetra(vtkRenderer *ren)
+void RenderTetrahedron(vtkRenderer *ren)
 {
     assert(ren != 0);
 
