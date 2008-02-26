@@ -1,0 +1,86 @@
+# CMakeLists.txt
+#
+# To build the application, run the following commands:
+# 
+#   mkdir cbuild
+#   cd cbuild
+#   cmake ../
+#   make
+#
+# Here are some reference links:
+#
+#   http://wiki.qtcentre.org/index.php?title=Compiling_Qt4_apps_with_CMake
+#   http://qtnode.net/wiki/Qt_with_cmake#cmake_for_Qt_4
+#
+
+PROJECT(cg)
+
+
+# ----------------------------------------------------------------------------
+# Require CMake (>= 2.4.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4.0)
+
+# Verbose - on/off
+SET(CMAKE_VERBOSE_MAKEFILE ON)
+
+# Disallow in-source build
+STRING(COMPARE EQUAL "${cg_SOURCE_DIR}" "${cg_BINARY_DIR}" INSOURCE)
+IF(INSOURCE)
+    MESSAGE(FATAL_ERROR "cg requires an out of source build. Please create a separate binary directory and run cmake there.")
+ENDIF(INSOURCE)
+
+
+# ----------------------------------------------------------------------------
+# Input files
+SET(cg_UIS
+    src/MainWindow.ui
+)
+SET(cg_SOURCES
+    src/main.cpp
+    src/MainWindow.cpp
+)
+SET(cg_MOC_HEADERS
+    src/MainWindow.h
+)
+
+
+# ----------------------------------------------------------------------------
+# Configure Qt4
+FIND_PACKAGE(Qt4 REQUIRED)
+INCLUDE(${QT_USE_FILE})
+
+# Qt4 definitions
+QT4_WRAP_UI(cg_UIS_H ${cg_UIS})
+QT4_WRAP_CPP(cg_MOC_SOURCES ${cg_MOC_HEADERS})
+QT4_AUTOMOC(${cg_SOURCES})
+
+
+# ----------------------------------------------------------------------------
+# Definitions
+ADD_DEFINITIONS(
+    -Wall
+    ${QT_DEFINITIONS}
+)
+
+# Include directories
+INCLUDE_DIRECTORIES(
+    ${CMAKE_BINARY_DIR}
+    ${QT_INCLUDES}
+    src
+)
+
+# The main build target
+ADD_EXECUTABLE(cigma-gui
+    ${cg_SOURCES}
+    ${cg_UIS_H}
+    ${cg_MOC_SOURCES}
+    ${cg_UIS}
+)
+
+# Libraries to be linked to the project
+TARGET_LINK_LIBRARIES(cigma-gui
+    ${QT_LIBRARIES}
+)
+
+
+#EOF
