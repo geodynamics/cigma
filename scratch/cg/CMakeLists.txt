@@ -45,6 +45,12 @@ SET(cg_MOC_HEADERS
 
 
 # ----------------------------------------------------------------------------
+# Configure VTK
+FIND_PACKAGE(VTK REQUIRED)
+INCLUDE(${VTK_USE_FILE})
+
+
+# ----------------------------------------------------------------------------
 # Configure Qt4
 FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE(${QT_USE_FILE})
@@ -80,6 +86,12 @@ ADD_EXECUTABLE(cigma-gui
 # Libraries to be linked to the project
 TARGET_LINK_LIBRARIES(cigma-gui
     ${QT_LIBRARIES}
+    QVTK
+    vtkCommon
+    vtkIO
+    vtkRendering
+    vtkGraphics
+    vtkWidgets
 )
 
 
