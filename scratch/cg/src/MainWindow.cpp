@@ -10,6 +10,7 @@
 #include "OrientationAxes.h"
 #include "RenderPoints.h"
 #include "RenderTetrahedron.h"
+#include "RenderHexahedron.h"
 
 
 // ---------------------------------------------------------------------------
@@ -29,7 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     AddOrientationAxes(qvtkWidget);
 
     //RenderPoints(ren);
-    RenderTetra(ren);
+    //RenderTetrahedron(ren);
+    RenderHexahedron(ren);
 }
 
 
