@@ -14,7 +14,7 @@ cigma::QuadraturePoints::~QuadraturePoints()
 {
     if (qpts != 0) delete [] qpts;
     if (qwts != 0) delete [] qwts;
-    if (data != 0) delete [] data;
+    //if (data != 0) delete [] data; //XXX: why does it crash here?
 }
 
 
