@@ -5,17 +5,18 @@
 #include <cmath>
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
+
 #include "vtkFloatArray.h"
 #include "vtkPoints.h"
 #include "vtkPolyVertex.h"
 #include "vtkUnstructuredGrid.h"
+
 #include "vtkOutlineFilter.h"
 #include "vtkDataSetMapper.h"
 #include "vtkPolyDataMapper.h"
 #include "vtkActor.h"
 #include "vtkProperty.h"
 
-using namespace std;
 
 void RenderPoints(vtkRenderer *ren)
 {

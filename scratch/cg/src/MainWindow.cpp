@@ -1,13 +1,16 @@
-#include "MainWindow.h"
-#include "OrientationAxes.h"
-#include "RenderPoints.h"
-
-#include "vtkRenderer.h"
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+
+#include "MainWindow.h"
+#include "vtkRenderer.h"
+#include "vtkRenderWindow.h"
+
+#include "OrientationAxes.h"
+#include "RenderPoints.h"
+#include "RenderTetrahedron.h"
+
 
 // ---------------------------------------------------------------------------
 
@@ -24,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     ren->SetBackground(25./256, 51./256, 102./256);
     qvtkWidget->GetRenderWindow()->AddRenderer(ren);
     AddOrientationAxes(qvtkWidget);
-    RenderPoints(ren);
+
+    //RenderPoints(ren);
+    RenderTetra(ren);
 }
 
 
