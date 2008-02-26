@@ -95,6 +95,8 @@ libcigma_a_SOURCES = \
 	HelpCmd.h \
 	Hex.cpp \
 	Hex.h \
+	ListCmd.cpp \
+	ListCmd.h \
 	Locator.cpp \
 	Locator.h \
 	MeshIO.cpp \
@@ -134,6 +136,8 @@ libcigma_a_SOURCES = \
 	Timer.h \
 	Tri.cpp \
 	Tri.h \
+	VtkList.cpp \
+	VtkList.h \
 	VtkReader.cpp \
 	VtkReader.h \
 	VtkXmlReader.cpp \
