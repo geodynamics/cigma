@@ -1,8 +1,16 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
 \textclass book
+\begin_preamble
+\usepackage{hyperref}
+
+\let\myUrl\url
+\renewcommand{\url}[1]{(\myUrl{#1})}
+
+\newcommand{\note}[1]{}
+\end_preamble
 \language english
 \inputencoding auto
 \font_roman default
@@ -45,6 +53,22 @@ Introduction
 
 \begin_layout Section
 About Cigma
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+note{here's a note}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
