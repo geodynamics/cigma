@@ -1,24 +1,16 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
+#include "TestWindow.h"
 
-#include "MainWindow.h"
 #include "vtkRenderer.h"
 #include "vtkRenderWindow.h"
 
 #include "OrientationAxes.h"
 #include "RenderPoints.h"
-#include "RenderTriangle.h"
-#include "RenderQuadrangle.h"
-#include "RenderTetrahedron.h"
-#include "RenderHexahedron.h"
 
 
 // ---------------------------------------------------------------------------
 
-
-MainWindow::MainWindow(QWidget *parent)
+TestWindow::TestWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     setupUi(this);
@@ -32,26 +24,19 @@ MainWindow::MainWindow(QWidget *parent)
     AddOrientationAxes(qvtkWidget);
 
     RenderPoints(ren);
-    //RenderTetrahedron(ren);
-    //RenderHexahedron(ren);
-    //RenderQuadrangle(ren);
-    //RenderTriangle(ren);
 }
 
 
-MainWindow::~MainWindow()
+TestWindow::~TestWindow()
 {
-
 }
 
 
 // ---------------------------------------------------------------------------
 
-
-void MainWindow::fileExit()
+void TestWindow::fileExit()
 {
     qApp->exit();
 }
-
 
 // ---------------------------------------------------------------------------

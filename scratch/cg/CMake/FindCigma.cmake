@@ -4,12 +4,14 @@
 #
 
 FIND_PATH(CIGMA_INCLUDE_DIR CompareCmd.h
+    $ENV{HOME}/cigma/src
     $ENV{CIGMA_HOME}/src
     /usr/local/include
     /usr/include
 )
 
 FIND_LIBRARY(CIGMA_LIBRARY cigma
+    $ENV{HOME}/cigma/src
     $ENV{CIGMA_HOME}/src
     /usr/local/lib
     /usr/lib

@@ -31,7 +31,7 @@ ENDIF(INSOURCE)
 
 
 # ----------------------------------------------------------------------------
-# Input files
+# Input files for cg project
 SET(cg_UIS
     src/MainWindow.ui
 )
@@ -42,7 +42,6 @@ SET(cg_SOURCES
 SET(cg_MOC_HEADERS
     src/MainWindow.h
 )
-
 
 # ----------------------------------------------------------------------------
 # Configure Cigma
@@ -66,11 +65,6 @@ INCLUDE(${VTK_USE_FILE})
 FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE(${QT_USE_FILE})
 
-# Qt4 definitions
-QT4_WRAP_UI(cg_UIS_H ${cg_UIS})
-QT4_WRAP_CPP(cg_MOC_SOURCES ${cg_MOC_HEADERS})
-QT4_AUTOMOC(${cg_SOURCES})
-
 
 # ----------------------------------------------------------------------------
 # Definitions
@@ -79,12 +73,19 @@ ADD_DEFINITIONS(
     ${QT_DEFINITIONS}
 )
 
+# ----------------------------------------------------------------------------
 # Include directories
 INCLUDE_DIRECTORIES(
     ${CMAKE_BINARY_DIR}
     ${QT_INCLUDES}
     src
 )
+
+# ----------------------------------------------------------------------------
+# Qt4 definitions
+QT4_WRAP_UI(cg_UIS_H ${cg_UIS})
+QT4_WRAP_CPP(cg_MOC_SOURCES ${cg_MOC_HEADERS})
+QT4_AUTOMOC(${cg_SOURCES})
 
 # The main build target
 ADD_EXECUTABLE(cigma-gui
@@ -106,4 +107,37 @@ TARGET_LINK_LIBRARIES(cigma-gui
 )
 
 
+# ----------------------------------------------------------------------------
+# Build instructions for test application
+#SET(cgt_UIS
+#    src/TestWindow.ui
+#)
+#SET(cgt_SOURCES
+#    src/testapp.cpp
+#    src/TestWindow.cpp
+#)
+#SET(cgt_MOC_HEADERS
+#    src/TestWindow.h
+#)
+#QT4_WRAP_UI(cgt_UIS_H ${cgt_UIS})
+#QT4_WRAP_CPP(cgt_MOC_SOURCES ${cgt_MOC_HEADERS})
+#QT4_AUTOMOC(${cgt_SOURCES})
+#ADD_EXECUTABLE(cgt
+#    ${cgt_SOURCES}
+#    ${cgt_UIS_H}
+#    ${cgt_MOC_SOURCES}
+#    ${cgt_UIS}
+#)
+#TARGET_LINK_LIBRARIES(cgt
+#    ${QT_LIBRARIES}
+#    QVTK
+#    vtkCommon
+#    vtkIO
+#    vtkRendering
+#    vtkGraphics
+#    vtkWidgets
+#)
+
+
+# ----------------------------------------------------------------------------
 #EOF
