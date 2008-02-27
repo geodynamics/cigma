@@ -1,0 +1,206 @@
+---high-----------------------------------------------------------------------
+
+Refactor common functions into VtkReader
+Create VtkLegacyReader & VtkXmlReader subclasses of VtkReader
+
+Change points->num to points->npts
+Rename ResidualField to Residuals
+Rename Quadrature to QuadraturePoints
+Rename FE to FE_QR (since we subclassed QuadratureRule)
+    consists of:
+        a mesh to integrate over
+        a set of quadrature points for each cell type
+        a function to integrate
+
+Possible signatures
+    compare(Field, Field)
+    compare(PointField, Field)
+    compare(FE_Field, Field)
+    compare(FE_Field, QuadraturePoints)
+    compare(FE_Field, PointField)
+
+Detect --version in CommandSet::main(), like we do with --help
+Add --debug flag to Command class, to enable debug messages
+
+Remove initialize(MeshPart*) method from Locator class
+Rename AnnLocator to AnnCellLocator
+Create AnnPointLocator class
+
+Copy every VTK class necessary for I/O into own vtkio library
+
+Fix compiler warnings when running make
+
+Add --mesh-locator-option
+Change reader->open() to return error code
+Fix reader->close() -- wtf is wrong with vtk?
+Disable HDF5 traceback
+Assimilate functions from h5io into cigma I/O classes
+LoopTimer class (override << operator)
+PointValueField (implement eval() by picking value at nearest point)
+Compile ANN library with float coords (instead of double coords)
+Write UPDATE_FLOPS macro to keep track of number of floating point operations (global variable) -- add special configure flag
+Implement autoheader's HAVE_VTK_H for compiling vtk classes conditionally
+
+Command line behavior
+    When the --output option is not specified, the default output filename should be "comparison.vtk".
+    If the file "comparison.vtk" already exists, emit error explaining that a file with the default output filename
+    already exists, and that the user should specify the output filename through the --output option
+
+Work on the compare() main loops
+    eval, eval          -- looping over different meshes        (get rid of current ineficiency where we tabulate and still call eval)
+    tabulate, eval      -- looping over first field's mesh
+    tabulate, tabulate  -- looping over shared mesh
+
+add PointField class (from a cloud of points, interpolate an (x,y,z) to the value of the nearest neighbor point)
+    call it PointValueField (better name for this?)
+
+
+add "-Wl,--rpath -Wl,$HDF5_PREFIX/lib" flags to linker step
+    that way you don't add the path to LD_LIBRARY_PATH any more
+
+manual:
+    explain vtk input
+    explain vtk pipeline for visualization
+
+work on fiatproxy
+    helper script to dump desired .py module into a global const char[] array
+    load module from string (conditionally)
+
+work on ann indexing
+    subclass from Locator class
+
+generalize VtkReader
+work on TestHdfReader and TestHdfWriter
+delete VtkUgReader (replaced by VtkReader)
+delete VtkUgSimpleWriter (replaced by VtkWriter)
+
+vtkls
+vtktoh5
+txttoh5
+
+qt examples
+
+implement stuff from CommandUtils.cpp in Misc.cpp
+
+add enumeration types for subclasses of Reader/Writer
+    question to investigate: is RTTI a better approach here?
+
+Create Connectivity class (follow connectivity in vtk) -- necessary?
+    pro: we can reuse connectivity void pointer from vtk object...saving a lot of memory on large meshes
+    con: need to provide own indexing operations to skip first element
+    con: reading from hdf5 file becomes more complicated (need to read into a memory slice)
+
+Add ListCmd for examining data files (replacing vtkls and company...)
+    # for hdf5 format, have flags to include/exclude attribute data
+    # for vtk, have flags to display the vtk header
+    # for txt, make sure to skip comment lines at beginning of file
+    cigma list file.h5
+    cigma list file.vtk
+    cigma list dataset.txt
+
+Add MakeGroupCmd for creating groups recursively
+    cigma make-group file.h5:/path/to/some/possibly/non-existent/group
+
+Add ConvertCmd for converting entire hdf5 files to vtk files and viceversa
+    cigma convert file.vtk file.h5
+    cigma convert file.h5 file.vtk
+
+Add CopyCmd for importing/exporting datasets from txt,vtk,h5 formats
+    cigma copy <source-path> <destination-path>
+
+    # moving data from textfile to hdf5 file
+    cigma copy data.txt file.h5:/path/to/dataset
+
+    # dumpy data from hdf5 file to textfile
+    cigma copy file.h5:/path/to/dataset data.txt
+
+    # fail when moving data to vtk? (load into proper object, then save object to file...)
+    cigma copy file.h5:/path/to/dataset foo.vtk:dataset_name
+
+Add DumpCmd for dumping (slices?) of any hdf5/vtk dataset to a text file
+    CopyCmd alternative: Use - as an alias for stdout/stdin instead of implementing DumpCmd
+
+Add SetCmd/GetCmd/DelCmd for setting/getting/deleting attribute data on hdf5 objects
+    Keep in mind limit on metadata size (emit error or just a truncation warning if using --force cmdline argument)
+    Use string type by default (could also use)
+    cigma set --name=attribute-name --type=string --value=attribute-value --target=file.h5:/path/to/object
+
+    cigma del --name=attribute-name
+
+Add ProjectCmd for evaluating first order elements (equivalent to eval on the node points, for linear elts)
+
+Update CommandSet code to allow command aliases and a fixed sort order when displaying the help commands
+    keep list of aliases in Command object (initialized in constructor, along with the command's name, as before)
+    e.g.: mv => move, cp => copy, ls => list
+
+Update CommandSet to display the help commands in the order they were added
+    in corresponding set-method insert name into a sortOrder vector before inserting object into hash
+
+Downgrade cube command to its own executable?
+    problem: we to generate sample meshes for 3d,2d,1d (cube, square, and interval....i.e., not just a cube)
+    rename this command to something else? (e.g. cigma example [...args...])
+        cigma example --cube
+        cigma example --square
+        cigma example --interval
+        cigma example --nsd=3
+
+Fix ExternalField to load functions using dlopen/LoadLibrary/WhateverMacUsesToLoadSharedLibs into an appropriate Field class with callbacks
+Provide a directory location where people can add their own precompiled analytic fields
+
+Work on TestCell.cpp (testing Cell, Tet, & Hex objects)
+Create TestCell.vtk with sample data
+
+Write VtkMeshPart class (loads from VtkFile)
+Work on VtkMeshPart::find_cell(double *pts, int *e)
+
+Decide whether to split FiatProxy object
+    monkey-patch the modules to import fiatwrappers from a big string
+
+Write QuadratureRule virtual class
+Write MeshPart virtual class
+
+Write DofHandler class (done?)
+
+Write FEValues class (union of QuadratureRule & Cell) -- (called it FE instead...done?)
+
+Create Cell::Shape enumeration      (values: CELL_TRI, CELL_QUAD, CELL_TET, CELL_HEX, ...)
+Create Cell::FiatShape enumeration  (reuse Cell::ShapeType as above?)
+Create Cell::VtkShape enumeration   (accounting for quadratic elements?)
+
+---normal---------------------------------------------------------------------
+
+Python wrappers around the relevant C++ code
+
+Work on FiatProxy (use as namespace for python module)
+Work on FiatQuadrature class (uses FiatProxy class to communicate with fiat python module)
+Work on FiatTabulation class (uses FiatProxy)
+
+Work on FE_Field class (union of MeshPart & DofHandler)
+
+Work on hdf.m4
+Work on HdfMeshPart (using h5io as template)
+Decide whether to create a BaseMeshPart abstract class
+
+Replace cigma::Points by blitz::Array
+
+---low------------------------------------------------------------------------
+
+Implement "cigma version" or "cigma --version"
+Eliminate tabulation from Cell object (move this responsibility to FEValues) (done)
+
+Add functions from vtk.m4 to configure.ac
+Work on cigma::VtkCell classes (delegating work to vtk)
+Work on TestVtkCell.cpp
+
+Work on VtkSgReader, VtkSgXmlReader, VtkUgXmlReader (need VtkReader base class?)
+
+Repositories for cigma-portal / cigma-qt?
+
+
+---done-----------------------------------------------------------------------
+
+Split DataIO classes into readers and writers
+Start infrastructure for running commands
+Eliminated template MeshPart<CoordType,IndexType> for (double,int)
+
+

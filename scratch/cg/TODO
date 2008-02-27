@@ -1,0 +1,292 @@
+---normal-tasks---------------------------------------------------------------
+
+Implement the objects summarized in the notes below...
+
+
+---cg-objects-----------------------------------------------------------------
+
+Dataset -- array of (int, long, float, double) plus shape information -- use boost::shared_ptr and boost::weak_ptr
+Workspace -- collection of datasets
+VtkPipeline -- virtual class with 'void render(vtkRenderer*)' method
+
+
+---qt4-editors----------------------------------------------------------------
+
+Arrays should be represented by a table view widget
+Single values should be represented by a line edit widget
+Hierarchies should be represented by a tree view widget
+
+CellEditor
+    cellid -- workspace identifier for this cell
+    celltype -- tri3, quad4, tet4, hex8,
+    celldim -- can be either 2d or 3d depending on the cell type
+    (nno,celldim) -- shape of refverts array
+    (nno,3) -- shape of vertices array
+    refverts -- node vertices in reference coordinate system (stored in contiguous format)
+
+RuleEditor
+    ruleid -- workspace identifier for this quadrature rule
+    celltype -- conforming cell (tri3, ...)
+    (npts, dim) -- shape of points array
+    points -- quadrature point coordinates stored in contiguous format
+    weights -- array of npts elements
+
+MeshPartEditor
+    meshid -- workspace identifier for this mesh object
+    gridtype -- unstructured grid, structured grid, rectilinear grid
+    (nno,nsd) -- shape of coordinates array
+    (nel,ndofs) -- shape of connectivity array
+    unstructured grid table view
+        coords -- node coordinates
+        connect -- cell connectivity
+    structured grid
+        dims[3] -- dimensions along ijk directions
+        extent[6] -- bounding box coords in xyz order
+    rectilinear grid
+        dims[3] -- dimensions along ijk directions
+        xcoords -- array of x-coordinates
+        ycoords -- array of y-coordinates
+        zcoords -- array of z-coordinates
+
+
+FeFieldEditor
+    (dof_nno, dof_dim) -- shape for dofhandler dataset
+    dofhandler -- dataset for dofs
+    meshpart -- corresponding mesh part
+
+SelectMeshCell
+    meshpart -- selected mesh part
+    vertices -- vertices in global coordinate system (loaded from mesh -- stored in contiguous format)
+    
+SelectPoints
+    points -- array
+
+
+---qt4-dataset-table-view-----------------------------------------------------
+
+DatasetTableModel -- models access to dataset object
+DatasetTableView -- displays contents of dataset object
+
++---+--------------------------------------+
+| n |  x           y           z           |  node coordinates (points)
++---+--------------------------------------+
+| 0 |  0.00677301  0.00637808  0.00602881  |
+| 1 |  0.00659948  0.00621467  0.03149426  |
+| 2 |  0.00629476  0.00592772  0.07621362  |
+| 3 |  0.00587125  0.0055289   0.13836653  |
+|...|  ...                                 |
++---+--------------------------------------+
+
+
++-------+---------------------------------+
+|   e   |  n[0]    n[1]    n[2]    n[3]   |  connectivity for tet4 cells
++-------+---------------------------------+
+| ..... |  .....                          |
+| 49511 |  29888   27486   29839   29838  |
+| 49512 |  25102   25052   22700   25053  |
+| 49513 |  25053   25052   25003   27453  |
+| 49514 |  25051   25001   22649   25002  |
+| ..... |  .....                          |
++-------+---------------------------------+
+
++------+----------------------------------------------------------------+
+|  e   |  n[0]    n[1]    n[2]    n[3]    n[4]    n[5]    n[6]    n[7]  |  connectivity for hex8 cells
++------+----------------------------------------------------------------+
+| .... |  ....                                                          |
+| 2608 |  3240    3241    3228    3227    3071    3072    3059    3058  |
+| 2609 |  3241    3242    3229    3228    3072    3073    3060    3059  |
+| 2610 |  3242    3243    3230    3229    3073    3074    3061    3060  |
+| 2611 |  3243    3244    3231    3230    3074    3075    3062    3061  |
+| .... |  ....                                                          |
++------+----------------------------------------------------------------+
+
+
++---+--------------+
+| n |  d           | nodal degrees of freedom (scalar)
++---+--------------+
+| 0 |  3.00677301  |
+| 1 |  3.00659948  |
+| 2 |  3.00629476  |
+| 3 |  3.00587125  |
+|...|  ...         |
++---+--------------+
+
++---+--------------------------------------+
+| n |  d_x         d_y         d_z         | nodal degrees of freedom (vector)
++---+--------------------------------------+
+| 0 |  3.00677301  3.00637808  3.00602881  |
+| 1 |  3.00659948  3.00621467  3.03149426  |
+| 2 |  3.00629476  3.00592772  3.07621362  |
+| 3 |  3.00587125  3.0055289   3.13836653  |
+|...|  ...                                 |
++---+--------------------------------------+
+
+
++---+--------------+
+| n |  phi         | scalar function values at each point
++---+--------------+
+| 0 |  5.00677301  |
+| 1 |  5.00659948  |
+| 2 |  5.00629476  |
+| 3 |  5.00587125  |
+|...|  ...         |
++---+--------------+
+
++---+--------------------------------------+
+| n |  phi_x       phi_y       phi_z       | vector function values at each point
++---+--------------------------------------+
+| 0 |  5.00677301  5.00637808  5.00602881  |
+| 1 |  5.00659948  5.00621467  5.03149426  |
+| 2 |  5.00629476  5.00592772  5.07621362  |
+| 3 |  5.00587125  5.0055289   5.13836653  |
+|...|  ...                                 |
++---+--------------------------------------+
+
+
+---qt4-dataset-tree-view------------------------------------------------------
+
+FileTree -- display a collection of FileNodes
+FileNode -- represents a file (NODE_HDF5_FILE, NODE_VTK_FILE), and acts as container for GroupNodes
+GroupNode -- container for DataNodes or other GroupNodes
+DatasetNode -- wraps a pointer to a dataset (int, double, or float arrays)
+
+file.h5
+ |-- mesh
+ |   |-- [coordinates]
+ |   |-- [connectivity]
+ |   |-- part00
+ |   |   `-- [connectivity]
+ |   |-- part01
+ |   |   `-- [connectivity]
+ |   `-- ...
+ |-- variables
+ |   |-- temperature
+ |   |   `-- step
+ |   |       |-- [0000]
+ |   |       |-- [0001]
+ |   |       |-- [0002]
+ |   |       `-- ...
+ |   |-- displacement
+ |   |   `-- step
+ |   |       |-- [0000]
+ |   |       |-- [0001]
+ |   |       |-- [0002]
+ |   |       `-- ...
+ |   |-- velocity
+ |   |   `-- step
+ |   |       |-- [0000]
+ |   |       |-- [0001]
+ |   |       |-- [0002]
+ |   |       `-- ...
+ |   ` ...
+ |-- pointdata
+ |   |-- analytic_disloc3d_displacements
+ |   |   |-- [coordinates]
+ |   |   |-- displacements
+ |   |   |   `-- step
+ |   |   |       |-- [0000]
+ |   |   |       |-- [0001]
+ |   |   |       |-- [0002]
+ |   |   |       `-- ...
+ |   |   |-- velocities
+ |   |   |   `-- step
+ |   |   |       |-- [0000]
+ |   |   |       |-- [0001]
+ |   |   |       |-- [0002]
+ |   |   |       `-- ...
+ |   |   `-- ..
+ |   ` ...
+ |-- celldata
+ |   |-- displacement_residuals_a0500m_b0250m
+ |   |   `-- step
+ |   |       |-- [0000]
+ |   |       |-- [0001]
+ |   |       |-- [0002]
+ |   |       `-- ...
+ |   |-- displacement_residuals_a0250m_b0250m
+ |   |   `-- step
+ |   |       |-- [0000]
+ |   |       |-- [0001]
+ |   |       |-- [0002]
+ |   |       `-- ...
+ |   ` ...
+ `-- ...
+  
+file.vtk
+ |-- Points
+ |   `-- [coordinates]
+ |-- Cells
+ |   `-- [connectivity]
+ |-- PointData
+ |   |-- Scalars
+ |   |   |-- [temperature_t0000]
+ |   |   |-- [temperature_t0001]
+ |   |   |-- [temperature_t0002]
+ |   |   `-- ...
+ |   |-- Vectors
+ |   |   |-- [displacements_t0000]
+ |   |   |-- [displacements_t0001]
+ |   |   |-- [displacements_t0002]
+ |   |   `-- ...
+ |   `-- Tensors
+ |       `-- ...
+ |-- CellData
+ |   |-- Scalars
+ |   |   |-- [displacement_residuals_t0000]
+ |   |   |-- [displacement_residuals_t0001]
+ |   |   |-- [displacement_residuals_t0002]
+ |   |   `-- ...
+ |   |-- Vectors
+ |   |   |-- [displacement_pointwise_diff_t0000]
+ |   |   |-- [displacement_pointwise_diff_t0001]
+ |   |   |-- [displacement_pointwise_diff_t0002]
+ |   |   `-- ...
+ |   `-- Tensors
+ |       `-- ...
+ `...
+
+
+---vtk-pipelines--------------------------------------------------------------
+
+Design all these pipelines using VTK Designer 2
+
+How to compose these pipeline objects?
+How to delete a pipeline from the renderer?
+How to update source data in pipeline?
+
+Implement following RenderFoo functions as FooPipeline objects
+
+RenderHexahedron
+RenderTetrahedron
+RenderTriangle
+RenderQuadrangle
+
+RenderMeshPart  -- render entire mesh
+RenderElementPatch -- render local view of MeshPart
+
+Generic filters
+    Outline filter (draws bounding box)
+    Warp scalar (perturbs original mesh based on scalar values)
+    Warp vector (perturbs original mesh based on vector displacements)
+    Threshold (extracts cells based on scalar value range)
+
+Probes
+    line probe
+    spline probe
+    plane widget probe
+
+Pipelines for scalar point data
+    Surface maps
+    Contour surfaces
+    Volume rendering
+
+Pipelines for vector data
+    Glyphs on every node point
+    Glyphs on a given set of points
+    Hedgehog
+    Streamlines
+    
+Pipelines for tensor data
+    tensor glyphs
+    hyperstreamlines
+
