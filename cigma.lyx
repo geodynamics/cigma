@@ -71,7 +71,7 @@ thispagestyle{empty}
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
@@ -182,28 +182,27 @@ About Cigma
 \end_layout
 
 \begin_layout Standard
-The CIG Model Analyzer (Cigma) consists of a suite of tools intended to
- facilitate the comparison of numerical models.
+The CIG Model Analyzer (Cigma) consists of a suite of tools for comparing
+ numerical models.
  CIG has developed Cigma in response to demand from the short-term tectonics
  community for a simple tool that can perform rigorous error analysis on
- their FEM codes.
+ their finite element codes.
  The long-term goal for Cigma, however, is for it to be used for nearly
  all geodynamics modeling codes.
 \end_layout
 
 \begin_layout Standard
-In general, Cigma is intended for three types of tasks, namely (1) error
+Cigma was designed for performing three types of tasks, namely (1) error
  analysis, (2) benchmarking, and (3) code verification.
  
 \end_layout
 
 \begin_layout Standard
-There are two ways in which Cigma can help you with error analysis.
- It can take a random sampling of points inside a domain of interest and
- analyze the pointwise differences between physical fields, or otherwise
- perform an integration of the errors over a discretized version of the
- domain.
- This comparison can take place even when the meshes are not compatible.
+In error analysis, Cigma can calculate a global measure of the error between
+ two solutions by performing an integration over a discretized version of
+ the common domain.
+ This comparison can take place even when the underlying discretizations
+ do not overlap.
 \end_layout
 
 \begin_layout Standard
@@ -213,9 +212,9 @@ In benchmarking, Cigma can help the geodynamics community agree on a standard
 \end_layout
 
 \begin_layout Standard
-Lastly, as an automated tool, Cigma can help developers in creating regression
- tests to ensure that software changes do not affect the consistency of
- the results.
+Lastly, as an automated tool, Cigma can help application developers in creating
+ regression tests to ensure that software changes do not affect the consistency
+ of the results.
 \end_layout
 
 \begin_layout Standard
@@ -240,8 +239,11 @@ target "www.cs.umd.edu/~mount/ANN/"
 
  Library, written in C++, supports data structures and algorithms for both
  exact and nearest-neighbor searching in arbitrarily high dimensions.
- Both of these libraries particularly extend and generalize Cigma's functionalit
-y so it can handle other types of elements, and provide the ability to compare
+\end_layout
+
+\begin_layout Standard
+Both of these libraries particularly extend and generalize Cigma's functionality
+ so it can handle other types of elements, and provide the ability to compare
  vector fields.
 \end_layout
 
@@ -337,8 +339,7 @@ Installating from Source
 \end_layout
 
 \begin_layout Standard
-To use Cigma, download the source package (in the form of a compressed tar
- file) from the 
+To install Cigma, download the source package from the 
 \begin_inset LatexCommand htmlurl
 name "CIG Cigma web page"
 target "geodynamics.org/cig/software/packages/cs/cigma"
@@ -346,13 +347,17 @@ target "geodynamics.org/cig/software/packages/cs/cigma"
 \end_inset
 
 .
- This step will require the GNU C and C++ compilers.
- After unpacking the source and installing the dependencies, issue the following
- commands
+ You will need the GNU C++ compiler for this step.
+ The HDF5 and VTK libraries, described later in this section, are also required.
+\end_layout
+
+\begin_layout Standard
+After installing the necessary dependencies, simply unpack the source tar
+ file and issue the following commands
 \end_layout
 
 \begin_layout LyX-Code
-$ tar xvfz cigma-0.9.1
+$ tar xvfz cigma-0.9.1.tar.gz
 \end_layout
 
 \begin_layout LyX-Code
@@ -360,7 +365,7 @@ $ cd cigma-0.9.1
 \end_layout
 
 \begin_layout LyX-Code
-$ ./configure --with-hdf5=$HDF5_PREFIX
+$ ./configure --with-hdf5=$HDF5_PREFIX --with-vtk=$VTK_PREFIX
 \end_layout
 
 \begin_layout LyX-Code
@@ -376,7 +381,8 @@ HDF5
 \end_layout
 
 \begin_layout Standard
-HDF5 is available for download from 
+The Hierarchical Data Format (HDF5) library is available for download from
+ 
 \begin_inset LatexCommand htmlurl
 name "The HDF Group"
 target "hdfgroup.org/HDF5"
@@ -392,7 +398,7 @@ target "hdfgroup.org/HDF5/release/obtain5.html"
 \end_inset
 
 .
- To install from source, download the latest stable version of this library
+ To install from source, download the latest stable 1.6 version of this library
  (currently 1.6.5) and issue the following commands
 \end_layout
 
@@ -421,7 +427,11 @@ VTK
 \end_layout
 
 \begin_layout Standard
-VTK is available from 
+The Visualization Toolkit (VTK) library is a popular open source graphics
+ library for scientific visualizations.
+ We recommend that you obtain the binaries from a package manager, making
+ sure to install the associated development headers along with the library.
+ The source for the VTK library is available from 
 \begin_inset LatexCommand htmlurl
 name "Kitware, Inc."
 target "www.vtk.org/get-software.php"
@@ -429,14 +439,40 @@ target "www.vtk.org/get-software.php"
 \end_inset
 
 .
- If you obtain the binaries from a package manager, make sure to install
- the associated development headers along with the library.
- To enable VTK support in Cigma, use the following additional flag in the
- configure step for Cigma.
+ If you decide to compile VTK from source, you will also need the CMake
+ build environment, available from http://cmake.org/
+\end_layout
+
+\begin_layout Standard
+After downloading the source package, you can issue the following commands
 \end_layout
 
 \begin_layout LyX-Code
-./configure --with-vtk=/path/to/vtk
+$ tar xvfz vtk-5.0.4.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd VTK
+\end_layout
+
+\begin_layout LyX-Code
+$ mkdir build
+\end_layout
+
+\begin_layout LyX-Code
+$ cd build
+\end_layout
+
+\begin_layout LyX-Code
+$ ccmake ..
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ sudo make install
 \end_layout
 
 \begin_layout Subsection
@@ -459,6 +495,51 @@ target "numpy.scipy.org "
 
 \begin_layout LyX-Code
 $ sudo python setup.py install
+\end_layout
+
+\begin_layout Standard
+To verify the installation, the command `import numpy' should run successfully
+ from within your standard Python interpreter shell.
+\end_layout
+
+\begin_layout Subsection
+PyTables
+\end_layout
+
+\begin_layout Standard
+PyTables is a Python extension module that builds on top of the HDF5 library.
+ It provides a convenient scripting interface to manipulate HDF5 files,
+ which can be used to manipulate the input/output files created by Cigma.
+ PyTables is available for download from 
+\begin_inset LatexCommand htmlurl
+name "PyTables"
+target "www.pytables.org"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To install this extension from source, download the latest stable version
+ (currently 2.0.2) and issue the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz pytables-2.0.2
+\end_layout
+
+\begin_layout LyX-Code
+$ cd pytables-2.0.2
+\end_layout
+
+\begin_layout LyX-Code
+$ sudo python setup.py install
+\end_layout
+
+\begin_layout Standard
+To verify the installation, the command `import tables' should run successfully
+ from within your standard Python interpreter shell.
 \end_layout
 
 \begin_layout Subsection
@@ -489,39 +570,9 @@ To install this module, download it and issue the following command inside
 $ sudo python setup.py install
 \end_layout
 
-\begin_layout Subsection
-PyTables
-\end_layout
-
 \begin_layout Standard
-PyTables is a Python extension module that builds on top of the HDF5 library.
- It provides a convenient scripting interface to manipulate HDF5 files,
- which can be used to manipulate the input/output files created by Cigma.
- PyTables is available for download from 
-\begin_inset LatexCommand htmlurl
-name "PyTables"
-target "www.pytables.org"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-To install this extension from source, download the latest stable version
- (currently 2.0) and issue the following commands
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz pytables-2.x
-\end_layout
-
-\begin_layout LyX-Code
-$ cd pytables-2.x
-\end_layout
-
-\begin_layout LyX-Code
-$ sudo python setup.py install
+You should now be able to run `import FIAT' from within your standard Python
+ interpreter shell.
 \end_layout
 
 \begin_layout Subsection
@@ -532,7 +583,8 @@ HDFView (optional)
 NCSA HDFView is a graphical user interface tool for accessing data in your
  HDF5 files.
  You can use it for viewing the internal file hierarchy in a tree structure,
- adding new datasets, and modifying or deleting existing datasets.
+ adding new datasets, and modifying or deleting existing datasets, or altering
+ metadata on groups and datasets.
  You can download it from the 
 \begin_inset LatexCommand htmlurl
 name "HDFView home page"
@@ -558,7 +610,7 @@ status collapsed
 \begin_inset Graphics
 	filename figures/hdfview-bmrsnog.png
 	lyxscale 70
-	width 70page%
+	width 60page%
 
 \end_inset
 
@@ -593,22 +645,17 @@ Introduction
 
 \begin_layout Standard
 When studying differential equations that represent physical systems we
- often obtain solutions by using a variety of techniques, most of which
- are numerical in nature.
- In carefully designed problems one may of course obtain solutions in explicit
- analytical form, but for the most part we will deal with approximate solutions
- given by the Finite Element Method.
- Without any closed-form solution available, the quality of an approximation
- can only be assessed relative to other approximations.
+ often obtain solutions by using a variety of techniques.
+ Solving these equations using classical analytical methods is almost impossible
+, so we often resort to numerical algorithms such as the finite element
+ method.
 \end_layout
 
 \begin_layout Standard
-Thus, an important part of error analysis lies in the ability to calculate
- the distance between two putative solutions.
- Estimating the error between two arbitrarily represented fields is computationa
-lly challenging due to the variety of representations that are possible.
- For example, each field may use its own discretization of the original
- domain, and may use a different set of shape functions.
+For assessing the quality of the solution to our equations, it is important
+ to quantify the error in our numerical solutions.
+ To calculate this error, we will have to compare tentative solutions against
+ each other through the use of a distance measure between two functions.
 \end_layout
 
 \begin_layout Section
@@ -621,11 +668,11 @@ The simplest possible quantitative measure of the difference between two
  of both fields at a common set of points.
  While no finite sample of points can perfectly represent a continuum of
  values, valuable information can be inferred from a statistics analysis
- of the resulting residual values.
+ of the resulting set of differences.
 \end_layout
 
 \begin_layout Standard
-Another useful distance measure can be obtained by using the 
+Perhaps a more useful distance measure can be obtained by using the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -661,7 +708,11 @@ This gives us a single global estimate
 \end_inset
 
 .
- If we discretize the domain 
+ 
+\end_layout
+
+\begin_layout Standard
+If we discretize the domain 
 \begin_inset Formula $\Omega$
 \end_inset
 
@@ -701,7 +752,7 @@ In general, we won't be able to integrate each local contribution exactly
 \begin_inset Formula $v$
 \end_inset
 
- may have a representation that's incompatible with the local domain 
+ may have a representation that is incompatible with the local domain 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
@@ -718,6 +769,10 @@ key "Encyclopaedia of Cubature Formulas 2005"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Global Error
 \end_layout
 
 \begin_layout Standard
@@ -772,8 +827,105 @@ In calculating the norm of the residual field
 .
 \end_layout
 
+\begin_layout Section
+Comparing Residuals
+\end_layout
+
+\begin_layout Standard
+For comparing errors of different solutions, you can normalize the global
+ error by the norm of the exact solution.
+ This normalized error is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{rel} & = & \frac{||u-u^{h}||_{L_{2}}}{||u||_{L_{2}}}\\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u^{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This normalized error can be interpreted as the average error in the physical
+ quantity being evaluated, so that a value of 0.01 corresponds to an 1% averaged
+ error.
+ The norm in the denominator can be computing in Cigma by comparing against
+ the builtin zero function (see Section )
+\end_layout
+
+\begin_layout Standard
+Even if the exact solution is not currently known, this normalized error
+ may be used to test the accuracy between two or more numerical solutions,
+ defined on successively refined meshes.
+ 
+\end_layout
+
 \begin_layout Chapter
 Cigma Components
+\end_layout
+
+\begin_layout Standard
+The current version of cigma is intended for calculation of 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+residuals for finite element models.
+ A description of the inputs to this.
+\end_layout
+
+\begin_layout Section
+Input and Output
+\end_layout
+
+\begin_layout Standard
+The underlying data storage format for Cigma is the HDF5 format, due to
+ its flexibility for storing and organizing large amounts of data.
+ 
+\end_layout
+
+\begin_layout Standard
+The Hierarchical Data Format (HDF) is a portable file format developed at
+ the 
+\begin_inset LatexCommand htmlurl
+name "National Center for Supercomputing Applications (NCSA)"
+target "hdf.ncsa.uiuc.edu/HDF5"
+
+\end_inset
+
+.
+ It is designed for storing, retrieving, analyzing, visualizing, and converting
+ scientific data.
+ The current and most popular version is HDF5, which stores multi-dimensional
+ arrays together with ancillary data in a portable self-describing format.
+ It uses a hierarchical structure that provides application programmers
+ with a host of options for organizing how data is stored in HDF5 files.
+\end_layout
+
+\begin_layout Standard
+Using HDF5 datasets in Cigma allows us to avoid having to convert between
+ too many distinct formats.
+ Moreover, due to the amount of disk I/O, large finite element meshes can
+ be handled more efficiently in binary format.
+ 
+\end_layout
+
+\begin_layout Standard
+Cigma also supports the popular VTK format for certain kinds of input.
+ A simple text format is also supported to aid in debugging.
+ As described in Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Running-Cigma"
+
+\end_inset
+
+, you can easily examine the structure of an input file by using the 
+\family typewriter
+cigma list
+\family default
+ command, which will simply reveal the names and dimensions of all datasets
+ inside the specified file.
 \end_layout
 
 \begin_layout Section
@@ -781,7 +933,7 @@ Mesh
 \end_layout
 
 \begin_layout Standard
-In Cigma, we define a finite element mesh simply by the coordinates, 
+In Cigma, we define a finite element mesh simply by coordinates, 
 \begin_inset Formula $(x_{n},y_{n},z_{n})$
 \end_inset
 
@@ -793,6 +945,11 @@ In Cigma, we define a finite element mesh simply by the coordinates,
 tion.
 \end_layout
 
+\begin_layout Standard
+Since the evaluation points on two distinct meshes will, it is very important
+ to index the location of each element into spatial data structure.
+\end_layout
+
 \begin_layout Section
 Fields
 \end_layout
@@ -801,12 +958,12 @@ Fields
 A field is a function which assigns a physical quantity to every point in
  space.
  This quantity may correspond to a scalar, a vector, or even a tensor.
- For any given differential equation problem, a finite element approximation
- to an unknown field 
+ A finite element approximation to an unknown field 
 \begin_inset Formula $\phi(\vec{x})$
 \end_inset
 
- as a weighed sum over a fixed set of localized shape functions 
+ is simply the weighed sum over a fixed set of localized shape functions
+ 
 \begin_inset Formula $\phi_{n}(\vec{x})$
 \end_inset
 
@@ -856,11 +1013,8 @@ Elements
 \end_layout
 
 \begin_layout Standard
-This release of Cigma provides you with two built-in finite element spaces
- shown below.
- The location of each element is indexed into a spatial database in order
- to speed up the evaluation process.
- 
+The most common element types used in the finite element method are given
+ by the following shape functions, defined on their respective domains,
 \end_layout
 
 \begin_layout Paragraph*
@@ -903,258 +1057,19 @@ HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqn
 
 \end_layout
 
-\begin_layout Section
-Input Formats
+\begin_layout Standard
+These are builtin elements in Cigma, and you may refer to them by name in
+ the FunctionSpace.
 \end_layout
 
 \begin_layout Standard
-The underlying data storage format for Cigma is HDF5, although VTK files
- can also be specified as input if the VTK development libraries are installed
- when you configure and compile Cigma.
- As described in Chapter 
-\begin_inset LatexCommand ref
-reference "cha:Running-Cigma"
-
-\end_inset
-
-, you can easily examine the structure of an input file by using the 
-\family typewriter
-cigma list
-\family default
- command, which will simply reveal the names and dimensions of all datasets
- inside the specified file.
-\end_layout
-
-\begin_layout Subsection
-HDF5
+Higher order elements can also be used by specifying an explicit tabulation
+ matrix representing the values of your shape functions on the corresponding
+ set of quadrature points.
 \end_layout
 
 \begin_layout Standard
-The Hierarchical Data Format (HDF) is a portable file format developed at
- the 
-\begin_inset LatexCommand htmlurl
-name "National Center for Supercomputing Applications (NCSA)"
-target "hdf.ncsa.uiuc.edu/HDF5"
-
-\end_inset
-
-.
- It is designed for storing, retrieving, analyzing, visualizing, and converting
- scientific data.
- The current and most popular version is HDF5, which stores multi-dimensional
- arrays together with ancillary data in a portable self-describing format.
- It uses a hierarchical structure that provides application programmers
- with a host of options for organizing how data is stored in HDF5 files.
-\end_layout
-
-\begin_layout Standard
-HDF5 files are organized in a hierarchical structure, similar to a UNIX
- file system.
- Two types of primary objects, groups and datasets, are stored in this structure.
- A group contains instances of zero or more groups or datasets, while a
- dataset stores a multi-dimensional array of data elements.
- Both kinds of objects are accompanied by supporting metadata known as attribute
-s.
-\end_layout
-
-\begin_layout Standard
-A dataset is physically stored in two parts: a header and a data array.
- The header contains miscellaneous metadata describing the dataset as well
- as information that is needed to interpret the array portion of the dataset.
- Essentially, it includes the name, datatype, dataspace, and storage layout
- of the dataset.
- The name is a text string identifying the dataset.
- The datatype describes the type of the data array elements.
- The dataspace defines the dimensionality of the dataset, i.e., the size and
- shape of the multi-dimensional array.
-\end_layout
-
-\begin_layout Standard
-Using HDF5 datasets in Cigma allows us to avoid having to convert between
- too many distinct formats.
- Moreover, due to the amount of disk I/O, large finite element meshes can
- be handled more efficiently in binary format.
- A typical Cigma HDF5 file has the following structure:
-\end_layout
-
-\begin_layout LyX-Code
-model.h5
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-__ model
-\end_layout
-
-\begin_layout LyX-Code
-    |__ mesh
-\end_layout
-
-\begin_layout LyX-Code
-    |   |__ coordinates    [nno x nsd]
-\end_layout
-
-\begin_layout LyX-Code
-    |   
-\backslash
-__ connectivity   [nel x ndof]
-\end_layout
-
-\begin_layout LyX-Code
-    
-\backslash
-__ variables
-\end_layout
-
-\begin_layout LyX-Code
-        
-\backslash
-__ velocity
-\end_layout
-
-\begin_layout LyX-Code
-            
-\backslash
-__ step00010  [nno x ndim]
-\end_layout
-
-\begin_layout Standard
-You have a certain amount of flexibility in grouping your own data.
- Generally, Cigma will only require you to specify the path to a specific
- field dataset, along with a small amount of metadata on your field and
- mesh datasets, described below:
-\end_layout
-
-\begin_layout Description
-MeshID an identifier assigned for use in linking child datasets to their
- parent mesh.
-\end_layout
-
-\begin_layout Description
-MeshLocation points to the HDF5 group which contains the appropriate coordinates
- and connectivity datasets.
-\end_layout
-
-\begin_layout Description
-FunctionSpace string identifier to determine which shape functions to use
- for interpolating values inside the element (e.g., tet4, hex8, quad4, tri3,
- ...).
-\end_layout
-
-\begin_layout Description
-DatasetType string identifier for classifying the type of data contained
- in the dataset (e.g., points, connectivity, degrees of freedom, quadrature
- rules, global quadrature points, global field values).
-\end_layout
-
-\begin_layout Subsection
-VTK Files
-\end_layout
-
-\begin_layout Standard
-The Visualization Toolkit (VTK) is a popular open source graphics library
- for scientific visualizations.
-\end_layout
-
-\begin_layout Subsection
-Text Files
-\end_layout
-
-\begin_layout Standard
-Importing and exporting data into simple text can be accomplished with the
- 
-\family typewriter
-cigma
-\family default
- 
-\family typewriter
-copy
-\family default
- command.
- The format is always in table form, with the dimensions specified in the
- first line.
- For example, mesh coordinates can be specified in the following format
-\end_layout
-
-\begin_layout LyX-Code
-nno nsd
-\end_layout
-
-\begin_layout LyX-Code
-1 x1 y1 z1
-\end_layout
-
-\begin_layout LyX-Code
-2 x2 y2 z2
-\end_layout
-
-\begin_layout LyX-Code
-3 x3 y3 z3
-\end_layout
-
-\begin_layout LyX-Code
-...
-\end_layout
-
-\begin_layout Standard
-Mesh connectivity with 
-\end_layout
-
-\begin_layout LyX-Code
-nel ndofs
-\end_layout
-
-\begin_layout LyX-Code
-1 node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-2 node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-3 node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-...
-\end_layout
-
-\begin_layout Standard
-A generic field with 
-\family typewriter
-ndim
-\family default
- components (i.e., scalar, vector, or tensor) is specified by
-\end_layout
-
-\begin_layout LyX-Code
-num ndim
-\end_layout
-
-\begin_layout LyX-Code
-1 f1 f2 f3 ..
-\end_layout
-
-\begin_layout LyX-Code
-2 f1 f2 f3 ..
-\end_layout
-
-\begin_layout LyX-Code
-...
-\end_layout
-
-\begin_layout Standard
-In this last case, the number of rows could refer to either 
-\family typewriter
-nno
-\family default
- or 
-\family typewriter
-nel
-\family default
-, depending on whether the field is node-based or cell-based.
+Alternatively, 
 \end_layout
 
 \begin_layout Chapter
@@ -1167,17 +1082,19 @@ Running Cigma
 \end_layout
 
 \begin_layout Standard
-Cigma is designed to be scriptable, and thus all operations can be specified
- as command line arguments given to a single executable called 
+Cigma is designed to be scriptable.
+ Thus, all operations can be specified as command line arguments given to
+ a single executable called 
 \family typewriter
 cigma
 \family default
 .
- The available commands can be listed with 
+ A list of available commands can be obtained with
 \family typewriter
-cigma --help
+ cigma --help
 \family default
-, and help on a specific command can be obtained with 
+ .
+ Further usage information can also be obtained with 
 \family typewriter
 cigma help <command>
 \family default
@@ -1185,8 +1102,8 @@ cigma help <command>
 \end_layout
 
 \begin_layout Standard
-Since Cigma is used for obtaining error estimates between arbitrary fields,
- its primary operation involves the 
+Cigma is used for obtaining error estimates between arbitrary fields, so
+ naturally its primary operation involves the 
 \family typewriter
 compare
 \family default
@@ -1211,12 +1128,12 @@ Listing Data
 \end_layout
 
 \begin_layout Standard
-Since Cigma relies so much on being able to specify dataset paths, we have
- provided a command called 
+Because Cigma relies on the ability of the user to specify dataset paths,
+ we have provided a command called 
 \family typewriter
 list
 \family default
- for viewing the structure of the input file.
+ for viewing the structure of an input file.
  Its usage is very simple.
  
 \end_layout
@@ -1277,172 +1194,8 @@ PointDataArray[0] = displacements_t0 (119827 x 3)
 \end_layout
 
 \end_deeper
-\begin_layout Section
-Converting Data
-\end_layout
-
-\begin_layout Standard
-In order to easily move data into and out of the HDF5 format, you can use
- the 
-\family typewriter
-cigma copy
-\family default
- command.
- By default, it relies on the file extension to detect what format to use
- when reading or writing data.
- Various examples are given below.
-\end_layout
-
-\begin_layout Standard
-Usage is typically
-\end_layout
-
 \begin_layout LyX-Code
 
-\size small
-cigma copy <source-path> <destination-path>
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=<path> --destination=<path>
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy -s <path> -d <path>
-\end_layout
-
-\begin_layout Standard
-To dump the mesh information into a text file:
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=file.h5:/model/mesh/coords --destination=model-coords.txt
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=file.h5:/model/mesh/connect --destination=model-connect.txt
-\end_layout
-
-\begin_layout Standard
-To import a scalar field 
-\family typewriter
-pressure0
-\family default
- from a VTK file into an HDF5 file:
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=file.vtk:pressure0 --destination=file.h5:/model/variables/pres
-sure/t0
-\end_layout
-
-\begin_layout Standard
-To import a vector field called 
-\family typewriter
-displacement15
-\family default
- from a VTK file into an HDF5 file:
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=file.vtk:displacement15 --destination=file.h5:/model/variables
-/displacement/t15
-\end_layout
-
-\begin_layout Standard
-To convert residual data into a VTK file, and then into ASCII:
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=file.h5:/model/residuals/pressure0 --destination=pressure0-re
-siduals.vtk
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma copy --source=pressure0-residuals.vtk --destination=residuals.txt
-\end_layout
-
-\begin_layout Section
-Metadata
-\end_layout
-
-\begin_layout Standard
-As described in a previous chapter on the HDF5 input files, you can attach
- arbitrary metadata to any number of your datasets or groups.
- Cigma will make use of a few reserved attributes to determine which mesh
- and shape functions to use on a particular dataset, but in general you
- are free to assign your own.
-\end_layout
-
-\begin_layout Standard
-Usage is typically: 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set <target-object-path> <attribute-name>[:<type>] <value>
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma get <target-object-path> [<attribute>]
-\newline
-
-\end_layout
-
-\begin_layout Standard
-For example, 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set --target=file.h5:/model/ --attribute=AUTHOR --value='John Doe'
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set --target=file.h5:/model/vars/pressure --attribute=Units --value=MPa
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=Step:int32
- --value=10 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=MeshID:int32
- --value=1234
-\end_layout
-
-\begin_layout LyX-Code
-
-\size small
-cigma set --target=file.h5:/model/vars/pressure/t10 --attribute=FunctionSpace
- --value=tet4
 \end_layout
 
 \begin_layout Section
@@ -1469,9 +1222,7 @@ A basic comparison can be as simple as specifying the following arguments:
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk   
-\backslash
-
+cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout LyX-Code
@@ -1479,9 +1230,7 @@ cigma compare --output=squared-residuals.vtk
 \series bold
  
 \series default
-             --first=field1.h5:/field1/stepN  
-\backslash
-
+             --first=field1.h5:/field1/stepN
 \end_layout
 
 \begin_layout LyX-Code
@@ -1502,17 +1251,11 @@ To override the mesh used in the integration, you can specify an extra argument
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --mesh=mesh.h5:/model/mesh/   
-\backslash
-
+cigma compare [...]
 \end_layout
 
 \begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             [...]
+  --mesh=mesh.h5:/model/mesh/
 \end_layout
 
 \begin_layout Standard
@@ -1521,27 +1264,15 @@ You can also specify the coordinates and connectivity arrays separately,
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --mesh-coordinates=file1.h5:/model/mesh/coordinates    
-\backslash
-
+cigma compare [...]
 \end_layout
 
 \begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             --mesh-connectivity=file2.h5:/model/mesh/connectivity  
-\backslash
-
+  --mesh-coordinates=file1.h5:/model/mesh/coordinates
 \end_layout
 
 \begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             [...]
+  --mesh-connectivity=file2.h5:/model/mesh/connectivity
 \end_layout
 
 \begin_layout Subsection
@@ -1549,23 +1280,17 @@ Specifying a Quadrature Rule
 \end_layout
 
 \begin_layout Standard
-If you wish to specify your own quadrature rule, you will have to provide
- the quadrature weights and points in the appropriate reference element.
+To specify a quadrature rule, you will have to provide the quadrature weights
+ and points in the appropriate reference element.
  This can be done with the following additional argument:
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --rule=quadrature-rules.h5:/path/to/rule  
-\backslash
-
+cigma compare [...]
 \end_layout
 
 \begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             [...]
+  --rule=quadrature-rules.h5:/path/to/rule
 \end_layout
 
 \begin_layout Standard
@@ -1573,50 +1298,23 @@ You may also specify the location of the points and weights separately:
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --rule-points=file.h5:/path/to/rule/points    
-\backslash
+cigma compare [...]
+\end_layout
 
+\begin_layout LyX-Code
+  --rule-points=file.h5:/path/to/rule/points
+\end_layout
+
+\begin_layout LyX-Code
+  --rule-weights=file.h5:/path/to/rule/weights
 \end_layout
 
 \begin_layout LyX-Code
 
-\series bold
- 
-\series default
-             --rule-weights=file.h5:/path/to/rule/weights  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             [...]
-\end_layout
-
-\begin_layout Standard
-Alternatively, to perform a pointwise comparison at random sample points
- inside each element in the first mesh,
-\end_layout
-
-\begin_layout LyX-Code
-cigma compare --samples-per-element=1    
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             [...]
 \end_layout
 
 \begin_layout Subsection
-Against Known Values
+Comparing Against Known Values
 \end_layout
 
 \begin_layout Standard
@@ -1633,9 +1331,7 @@ First, extract the global coordinates of the integration points.
 \end_layout
 
 \begin_layout LyX-Code
-cigma extract --mesh=field1.h5:/model/mesh/  
-\backslash
-
+cigma extract --mesh=field1.h5:/model/mesh/
 \end_layout
 
 \begin_layout LyX-Code
@@ -1643,45 +1339,8 @@ cigma extract --mesh=field1.h5:/model/mesh/
 \end_layout
 
 \begin_layout Standard
-At this point, one possibility would be to copy the list of points to a
- text file, generate the corresponding list of values on your own and import
- that list of values back into an HDF5 file that Cigma can understand.
-\end_layout
-
-\begin_layout LyX-Code
-cigma copy --source=points.h5:/points  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           --destination=points.txt
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-# create values.txt
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-cigma copy --source=values.txt  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-           --destination=values.h5:/stepN_values
-\end_layout
-
-\begin_layout Standard
-Lastly, you can provide the path to the explicit set of values with
+Now you can use evaluate your function at the designated points.
+ You can provide the path to the explicit set of values with
 \end_layout
 
 \begin_layout LyX-Code
@@ -1697,7 +1356,7 @@ cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout Subsection
-Against a Known Function
+Comparing Against a Known Function
 \end_layout
 
 \begin_layout Standard
@@ -1711,9 +1370,7 @@ compare
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk 
-\backslash
-
+cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout LyX-Code
@@ -1721,9 +1378,7 @@ cigma compare --output=squared-residuals.vtk
 \series bold
  
 \series default
-             --first=field1.h5:/vars/displacement/step0 
-\backslash
-
+             --first=field1.h5:/vars/displacement/step0
 \end_layout
 
 \begin_layout LyX-Code
@@ -1760,15 +1415,11 @@ compare
 \end_layout
 
 \begin_layout LyX-Code
-cigma eval --function=disloc3d 
-\backslash
-
+cigma eval --function=disloc3d
 \end_layout
 
 \begin_layout LyX-Code
-           --points=points.h5:/points 
-\backslash
-
+           --points=points.h5:/points
 \end_layout
 
 \begin_layout LyX-Code
@@ -1780,15 +1431,11 @@ cigma eval --function=disloc3d
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk 
-\backslash
-
+cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout LyX-Code
-              --first=field1.h5:/vars/displacement/step0 
-\backslash
-
+              --first=field1.h5:/vars/displacement/step0
 \end_layout
 
 \begin_layout LyX-Code
@@ -1800,804 +1447,67 @@ cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout Chapter
-Visualization
+Examples
 \end_layout
 
 \begin_layout Standard
-As can be seen from the two images in Figure 
-\begin_inset LatexCommand ref
-reference "fig:PyLith-solution"
-
-\end_inset
-
-, simply visualizing two different solutions side by side does not give
- you enough insight into their actual differences.
- By using Cigma to calculate the residual field between them, you can get
- a better idea of how the local contributions to the global error are distribute
-d both spatially and temporally.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\align center
-\begin_inset Graphics
-	filename figures/ssng_tet4_1000m_pylith_disp_t00.png
-	lyxscale 40
-	width 40page%
-
-\end_inset
-
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/ssng_tet4_1000m_geofest_disp_t00.png
-	lyxscale 40
-	width 40page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-\noindent
-\begin_inset LatexCommand label
-name "fig:PyLith-solution"
-
-\end_inset
-
-Solution of a viscoelastic problem with a fault using two finite element
- codes: PyLith solution (left) and GeoFEST solution (right).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Benchmark Cases
-\end_layout
-
-\begin_layout Standard
-Here we compare the output from two codes, PyLith-0.8 and GeoFEST-4.5, on
- two 
-\begin_inset LatexCommand htmlurl
-name "benchmark cases"
-target "geodynamics.org/cig/workinggroups/short/workarea/benchmarks"
-
-\end_inset
-
- defined by the CIG Short-Term Tectonics working group.
- They are both defined on cube domain (Figure 
-\begin_inset LatexCommand ref
-reference "fig:Cube-domain-of"
-
-\end_inset
-
-) with sides having a length of 24 km, consisting of two layers of different
- material types.
- The top layer is nearly elastic while the bottom layer follows viscoelastic
- relaxation of stresses.
- Bottom and side displacements are set to the elastic analytic solution.
- A symmetric boundary condition is also imposed on the y=0 plane.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/layers.png
-	lyxscale 25
-	width 25page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-\noindent
-\begin_inset LatexCommand label
-name "fig:Cube-domain-of"
-
-\end_inset
-
-Cube domain of 24 km length consisting of two layers of different material
- types.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The first benchmark problem (left) consists of a vertical right-lateral
- strike-slip fault.
- The second benchmark problem consists of a 45-degree dipping reverse fault.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/strike-slip-fault.png
-	lyxscale 25
-	width 25page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/reverse-slip-fault.png
-	lyxscale 25
-	width 25page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Two benchmark problems: (left) Benchmark problem consisting of a vertical
- right-lateral strike-slip fault; (right) Benchmark problem consisting of
- a 45-degree dipping reverse fault.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-In both cases we solve for the displacement and vector fields at various
- time steps, namely 0, 1, 5, and 10 years.
- In the plots below, we show the distribution of the squared local residuals
- on each cell.
-\end_layout
-
-\begin_layout Subsection
-Strike-Slip with No Gravity
-\end_layout
-
-\begin_layout Standard
-In this section, we show ten equally spaced isosurfaces of the displacement
- field residuals for the strike-slip benchmark (0 and 10 years shown).
- In Figure 
-\begin_inset LatexCommand ref
-reference "fig:PyLith-solution"
-
-\end_inset
-
-, we see that the differences are very localized at t=0 years.
- There is not much difference between time steps at t=1, 5 and 10 years,
- so we are only showing the last time step.
- Note that the maximum errors are localized to the interface between the
- two layers on the symmetric boundary.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-isosurf-disp-000.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-isosurf-disp-100.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Strike-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
- resolution mesh (left: t=0 years, right: t=10 years).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Slightly different behavior can be observed in the velocity field residuals.
- Shown here are ten equally spaced isosurfaces at each time step, where
- each isosurface is displayed as a point distribution to reveal the inner
- structure.
- Note that after 10 years, most of the disagreement occurs inside the bottom
- viscoelastic layer, centered around the fault's interior sharp corner.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-point-isosurf-velo-000.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-point-isosurf-velo-010.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Strike-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m resolutio
-n mesh (left: t=0 years, right: t=1 year).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-point-isosurf-velo-050.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/ssng-p0500-g0500-point-isosurf-velo-100.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Strike-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m resolutio
-n mesh (left: t=5 years, right: t=10 years).
+When the exact solution of your equations is known, the norm of the error
+ for a finite element solution is easily computed through the procedure
+ given in Chapter 3 (TODO: insert ref to chapter).
  
 \end_layout
 
+\begin_layout Standard
+Another way of checking the accuracy of a solution is by rerunning the same
+ problem with a finer mesh.
+ Recall that in the finite element method, the weight functions and trial
+ solutions are chosen so that the finite element method is convergent.
+ In other words, as the element size 
+\begin_inset Formula $h$
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Finally, here is a higher resolution comparison of the displacement residuals
- at t=0 years, sampled over a 250m resolution mesh.
- Displayed here are ten equally spaced isosurfaces, nine of which are very
- near the fault.
- In this case, the linear taper over the internal edges of the fault is
- clearly visible.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/ssng-p0250-g0500-point-isosurf-disp-000.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Strike-slip: PyLith-GeoFEST comparison of displacement residuals on a 250m
- resolution mesh (t=0 years).
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Reverse-Slip with No Gravity
-\end_layout
-
-\begin_layout Standard
-You can also visualize the distribution of errors by plotting the residual
- field values over the surface of each cell and applying a threshold filter
- which eliminates cells containing values outside a threshold interval.
- Here we show how velocity field residuals in the reverse-slip benchmark
- are distributed temporally by throwing away all squared residuals lower
- than 
-\begin_inset Formula $10^{-7}(\mathrm{m}/\mathrm{s})^{2}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-cell-threshold-velo-000.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-cell-threshold-velo-010.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
- resolution mesh (left: t=0 years, right: t=1 year).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-cell-threshold-velo-050.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-cell-threshold-velo-100.png
-	lyxscale 30
-	width 30page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reverse-slip: PyLith-GeoFEST comparison of velocity residuals on a 500m
- resolution mesh (left: t=5 years, right: t=10 years).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Finally, below we display ten equally spaced isosurfaces over the displacement
- field residuals of the reverse-slip benchmark.
- Note that after 1 year, most of the disagreement occurs in the bottom viscoelas
-tic layer.
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-point-isosurf-res-disp-000.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-point-isosurf-res-disp-010.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
- resolution mesh (left: t=0 years, right: t=1 year).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\noindent
-\align center
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-point-isosurf-res-disp-050.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-\InsetSpace ~
-
-\begin_inset Graphics
-	filename figures/rsng-p0500-g0500-point-isosurf-res-disp-100.png
-	lyxscale 35
-	width 35page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reverse-slip: PyLith-GeoFEST comparison of displacement residuals on a 500m
- resolution mesh (left: t=5 years, right: t=10 years).
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-\start_of_appendix
-Shape Functions
+ decreases, the solution tends to the correct solution.
+ Thus, if the difference between the coarse and fine mesh solutions is small,
+ we can conclude that the coarse mesh solution is quite accurate.
+ However, if a solution changes noticeably with refinement of the mesh,
+ the coarse mesh solution is innacurate, and even the finer mesh may be
+ inadequate as well.
 \end_layout
 
 \begin_layout Section
-Linear Tetrahedral Element (tet4)
+Convergence
 \end_layout
 
 \begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="2">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename figures/cigma-abcd-triangle.jpg
-	lyxscale 25
-	scale 25
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\begin{array}{ccccc}
- &  &  & \phi\\
-(-1, & -1, & -1) & \mapsto & a\\
-(+1, & -1, & -1) & \mapsto & b\\
-(-1, & +1, & -1) & \mapsto & c\\
-(-1, & -1, & +1) & \mapsto & d\end{array}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+(TODO: retype commands and output here)
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-A field 
-\begin_inset Formula $\vec{\varphi}=\varphi_{x}\hat{x}+\varphi_{y}\hat{y}+\varphi_{z}\hat{z}$
+In this figure (insert example1.png and example2.png after this stmt), we
+ show the log of the 
+\begin_inset Formula $L_{2}$
 \end_inset
 
- defined over a linear tetrahedral element with vertices at 
-\begin_inset Formula $A(x_{0},y_{0},z_{0})$
-\end_inset
-
-, 
-\begin_inset Formula $B(x_{1},y_{1},z_{1})$
-\end_inset
-
-, 
-\begin_inset Formula $C(x_{2},y_{2},z_{2})$
-\end_inset
-
-, 
-\begin_inset Formula $D(x_{3},y_{3},z_{3})$
-\end_inset
-
-, has the following functional form inside the reference tetrahedral element
- shown in Figure 
-\begin_inset LatexCommand ref
-reference "fig:Cube-domain-of"
-
+ error norm as a function of the log of the element size 
+\begin_inset Formula $h$
 \end_inset
 
 .
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\begin{array}{c}
-\varphi_{x}(\vec{\xi})=\alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
-\varphi_{y}(\vec{\xi})=\beta_{0}+\beta_{1}\xi+\beta_{2}\eta+\beta_{3}\zeta\\
-\varphi_{z}(\vec{\xi})=\gamma_{0}+\gamma_{1}\xi+\gamma_{2}\eta+\gamma_{3}\zeta\end{array}\]
-
+As can be seen from these results, the log of the error varies linearly
+ with element size and the slope depends on the order of the element.
+ Denoting the slope by 
+\begin_inset Formula $\alpha$
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-In particular, the map from the reference coordinates into the regular coordinat
-es vector 
-\begin_inset Formula $\vec{x}(\vec{\xi})=x\hat{(\vec{\xi})x}+y(\vec{\xi})\hat{y}+y(\vec{\xi})\hat{z}$
-\end_inset
-
- looks like
+, then the error in the function can be expressed as
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \[
-\begin{array}{c}
-x(\vec{\xi})=\alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
-y(\vec{\xi})=\beta_{0}+\beta_{1}\xi+\beta_{2}\eta+\beta_{3}\zeta\\
-z(\vec{\xi})=\gamma_{0}+\gamma_{1}\xi+\gamma_{2}\eta+\gamma_{3}\zeta\end{array}\]
+\log\varepsilon=\log C+\alpha\log h\]
 
 \end_inset
 
@@ -2605,691 +1515,439 @@ z(\vec{\xi})=\gamma_{0}+\gamma_{1}\xi+\gamma_{2}\eta+\gamma_{3}\zeta\end{array}\
 \end_layout
 
 \begin_layout Standard
-The following natural mappings uniquely determine the coefficients 
-\begin_inset Formula $\alpha_{k}$
+where 
+\begin_inset Formula $\log C$
 \end_inset
 
-, 
-\begin_inset Formula $\beta_{k}$
+ is an arbitrary constant, the y-intercept of the curve.
+ The slope 
+\begin_inset Formula $\alpha$
 \end_inset
 
-, 
-\begin_inset Formula $\gamma_{k}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\vec{x}(-1,-1,-1) & \mapsto & (x_{0},y_{0},z_{0})\\
-\vec{x}(+1,-1,-1) & \mapsto & (x_{1},y_{1},z_{1})\\
-\vec{x}(-1,+1,-1) & \mapsto & (x_{2},y_{2},z_{2})\\
-\vec{x}(-1,-1,+1) & \mapsto & (x_{3},y_{3},z_{3})\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Considering only the first component 
-\begin_inset Formula $x(\vec{\xi})$
-\end_inset
-
-, we can obtain the matrix equation 
+ is the rate of convergence of the element.
+ We can rewrite this as
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \[
-\begin{array}{c}
-a\\
-b\\
-c\\
-d\end{array}\left[\begin{array}{cccc}
-1 & (-1) & (-1) & (-1)\\
-1 & (+1) & (-1) & (-1)\\
-1 & (-1) & (+1) & (-1)\\
-1 & (-1) & (-1) & (+1)\end{array}\right]\left[\begin{array}{c}
-\alpha_{0}\\
-\alpha_{1}\\
-\alpha_{2}\\
-\alpha_{3}\end{array}\right]=\left[\begin{array}{c}
-x_{0}\\
-x_{1}\\
-x_{2}\\
-x_{3}\end{array}\right]\]
+\varepsilon=Ch^{\alpha}\]
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-Applying our desired map to the other two functions yields two other identical
- systems.
- Thus we may augment the system as follows,
+\begin_layout Section
+Different Elements
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\left[\begin{array}{cccc}
-1 & -1 & -1 & -1\\
-1 & +1 & -1 & -1\\
-1 & -1 & +1 & -1\\
-1 & -1 & -1 & +1\end{array}\right]\left[\begin{array}{ccc}
-\alpha_{0} & \beta_{0} & \gamma_{0}\\
-\alpha_{1} & \beta_{1} & \gamma_{1}\\
-\alpha_{2} & \beta_{2} & \gamma_{2}\\
-\alpha_{3} & \beta_{3} & \gamma_{3}\end{array}\right]=\left[\begin{array}{ccc}
-x_{0} & y_{0} & z_{0}\\
-x_{1} & y_{1} & z_{1}\\
-x_{2} & y_{2} & z_{2}\\
-x_{3} & y_{3} & z_{3}\end{array}\right]\]
+(insert selections from old chapter 6)
+\end_layout
 
-\end_inset
-
-
+\begin_layout Section
+Analytic 
 \end_layout
 
 \begin_layout Standard
-Now we can easily invert the square matrix on the left, yielding the values
- of the unknown coefficients,
+(TODO: ask brad for his okada soln HDF5 file)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\left[\begin{array}{ccc}
-\alpha_{0} & \beta_{0} & \gamma_{0}\\
-\alpha_{1} & \beta_{1} & \gamma_{1}\\
-\alpha_{2} & \beta_{2} & \gamma_{2}\\
-\alpha_{3} & \beta_{3} & \gamma_{3}\end{array}\right]=\frac{1}{2}\left[\begin{array}{cccc}
--1 & 1 & 1 & 1\\
--1 & 1 & 0 & 0\\
--1 & 0 & 1 & 0\\
--1 & 0 & 0 & 1\end{array}\right]\left[\begin{array}{ccc}
-x_{0} & y_{0} & z_{0}\\
-x_{1} & y_{1} & z_{1}\\
-x_{2} & y_{2} & z_{2}\\
-x_{3} & y_{3} & z_{3}\end{array}\right]\]
-
-\end_inset
-
-
+(TODO: rerun these commands)
 \end_layout
 
 \begin_layout Standard
-Using the values for
-\begin_inset Formula $\alpha_{k}$
-\end_inset
-
-, we find that 
-\begin_inset Formula $x(\vec{\xi})$
-\end_inset
-
- becomes
+When the analytic solution is known, we may use it directly when specifying
+ a field argument to the 
+\family typewriter
+cigma compare
+\family default
+ command, although this will require you to register your function as a
+ builtin field.
+ To demonstrate this capability, the current version of Cigma includes disloc3d
+ as a builtin field.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-x(\vec{\xi}) & = & \alpha_{0}+\alpha_{1}\xi+\alpha_{2}\eta+\alpha_{3}\zeta\\
- & = & \,\,\,\left[\frac{1}{2}\left(-x_{0}+x_{1}+x_{2}+x_{3}\right)\right]\\
- &  & +\left[\frac{1}{2}\left(-x_{0}+x_{1}\right)\right]\xi\\
- &  & +\left[\frac{1}{2}\left(-x_{0}+x_{2}\right)\right]\eta\end{eqnarray*}
-
-\end_inset
-
-
+(TODO: retest 'cigma eval --function=disloc3d')
 \end_layout
 
 \begin_layout Standard
-Rearranging terms, we get
+Alternatively, you can also extract the required list of points on which
+ you need to evaluate the exact solution, and simply.
+ We can do this for the Pylith mesh in the previous section with the command
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma extract
+\end_layout
+
+\begin_layout LyX-Code
+    --mesh=strikeslip.h5:/tet4_1000m/mesh/
+\end_layout
+
+\begin_layout LyX-Code
+    --output=tet4_1000m_qpts.h5:/tet4_1000m_qpts
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-x(\vec{\xi}) & = & \,\,\,\left[\frac{1}{2}\left(-1-\xi-\eta-\zeta\right)\right]x_{0}\\
- &  & +\left[\frac{1}{2}\left(1+\xi\right)\right]x_{1}\\
- &  & +\left[\frac{1}{2}\left(1+\eta\right)\right]x_{2}\\
- &  & +\left[\frac{1}{2}\left(1+\zeta\right)\right]x_{3}\end{eqnarray*}
+The comparison can then take place
+\end_layout
 
-\end_inset
+\begin_layout LyX-Code
+$ cigma compare  
+\end_layout
 
+\begin_layout LyX-Code
+    --first=strikeslip.h5:/tet4_1000m/displacement/step0000
+\end_layout
 
+\begin_layout LyX-Code
+    --second=okada_solution.h5:/tet4_1000m_qpts_displacement
 \end_layout
 
 \begin_layout Standard
+Here, we have taken the 
+\end_layout
 
+\begin_layout Chapter
+\start_of_appendix
+File Formats
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-x(\vec{\xi}) & = & N_{0}(\vec{\xi})x_{0}+N_{1}(\vec{\xi})x_{1}+N_{2}(\vec{\xi})x_{2}+N_{3}(\vec{\xi})x_{3}\\
-y(\vec{\xi}) & = & N_{0}(\vec{\xi})y_{0}+N_{1}(\vec{\xi})y_{1}+N_{2}(\vec{\xi})y_{2}+N_{3}(\vec{\xi})y_{3}\\
-z(\vec{\xi}) & = & N_{0}(\vec{\xi})z_{0}+N_{1}(\vec{\xi})z_{1}+N_{2}(\vec{\xi})z_{2}+N_{3}(\vec{\xi})z_{3}\end{eqnarray*}
+To differentiate between these formats, you will need to provide an appropriate
+ extension for your input and output files.
+ The supported extensions are currently 
+\family typewriter
+.h5
+\family default
+ for HDF5, 
+\family typewriter
+.vtk
+\family default
+ for VTK files, and 
+\family typewriter
+.txt
+\family default
+ for simple text files.
+\end_layout
 
-\end_inset
-
-
+\begin_layout Section
+Input File Format
 \end_layout
 
 \begin_layout Standard
-
+In Cigma, there are about six different objects you will want to use as
+ input to cigma, all of which can be represented as two dimensional datasets.
+ These are the 
 \end_layout
 
-\begin_layout Standard
-where
+\begin_layout Itemize
+mesh coordinates
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-N_{0}(\vec{\xi}) & = & \frac{1}{2}\left(-1-\xi-\eta-\zeta\right)\\
-N_{1}(\vec{\xi}) & = & \frac{1}{2}\left(1+\xi\right)\\
-N_{2}(\vec{\xi}) & = & \frac{1}{2}\left(1+\eta\right)\\
-N_{3}(\vec{\xi}) & = & \frac{1}{2}\left(1+\zeta\right)\end{eqnarray*}
-
-\end_inset
-
-
+\begin_layout Itemize
+mesh connectivity
 \end_layout
 
-\begin_layout Standard
-\noindent
-\align center
-
+\begin_layout Itemize
+field coefficients (degrees of freedom)
 \end_layout
 
-\begin_layout Standard
-As a final note, observe that we can streamline the evaluation process over
- any number of points, 
-\begin_inset Formula $\vec{\xi}_{0},\vec{\xi}_{1},\vec{\xi}_{2},\ldots$
-\end_inset
-
-, inside the same element via the following matrix multiplication
+\begin_layout Itemize
+quadrature rule points
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula \[
-\left[\begin{array}{ccc}
-x(\vec{\xi}_{0}) & y(\vec{\xi}_{0}) & z(\vec{\xi}_{0})\\
-x(\vec{\xi}_{1}) & y(\vec{\xi}_{1}) & z(\vec{\xi}_{1})\\
-x(\vec{\xi}_{2}) & y(\vec{\xi}_{2}) & z(\vec{\xi}_{2})\\
-\vdots & \vdots & \vdots\end{array}\right]=\left[\begin{array}{cccc}
-N_{0}(\vec{\xi}_{0}) & N_{1}(\vec{\xi}_{0}) & N_{2}(\vec{\xi}_{0}) & N_{3}(\vec{\xi}_{0})\\
-N_{0}(\vec{\xi}_{1}) & N_{1}(\vec{\xi}_{1}) & N_{2}(\vec{\xi}_{1}) & N_{3}(\vec{\xi}_{1})\\
-N_{0}(\vec{\xi}_{2}) & N_{1}(\vec{\xi}_{2}) & N_{2}(\vec{\xi}_{2}) & N_{3}(\vec{\xi}_{2})\\
-\vdots & \vdots & \vdots & \vdots\end{array}\right]\left[\begin{array}{ccc}
-x{}_{0} & y_{0} & z_{0}\\
-x_{1} & y_{1} & z_{1}\\
-x_{2} & y_{2} & z_{2}\\
-x_{3} & y_{3} & z_{3}\end{array}\right]\]
-
-\end_inset
-
-
+\begin_layout Itemize
+quadrature rule weights
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
+\begin_layout Itemize
+shape function tabulation matrix
 \end_layout
 
 \begin_layout Subsection
-Jacobian Matrix
+HDF5
 \end_layout
 
 \begin_layout Standard
-Recall the definition of the Jacobian matrix:
+HDF5 files are organized in a hierarchical structure, similar to a UNIX
+ file system.
+ Two types of primary objects, groups and datasets, are stored in this structure.
+ A group contains instances of zero or more groups or datasets, while a
+ dataset stores a multi-dimensional array of data elements.
+ Both kinds of objects are accompanied by supporting metadata known as attribute
+s.
 \end_layout
 
 \begin_layout Standard
-
+A dataset is physically stored in two parts: a header and a data array.
+ The header contains miscellaneous metadata describing the dataset as well
+ as information that is needed to interpret the array portion of the dataset.
+ Essentially, it includes the name, datatype, dataspace, and storage layout
+ of the dataset.
+ The name is a text string identifying the dataset.
+ The datatype describes the type of the data array elements.
+ The dataspace defines the dimensionality of the dataset, i.e., the size and
+ shape of the multi-dimensional array.
 \end_layout
 
 \begin_layout Standard
-\noindent
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="2">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\frac{\partial\vec{x}}{\partial\vec{\xi}}=\left[\begin{array}{ccc}
-\frac{\partial x}{\partial\xi} & \frac{\partial x}{\partial\eta} & \frac{\partial x}{\partial\zeta}\\
-\frac{\partial y}{\partial\xi} & \frac{\partial y}{\partial\eta} & \frac{\partial y}{\partial\zeta}\\
-\frac{\partial z}{\partial\xi} & \frac{\partial z}{\partial\eta} & \frac{\partial z}{\partial\zeta}\end{array}\right]$
-\end_inset
-
-
+In Cigma you always provide an explicit path to every dataset, so you have
+ a fair amount of flexibility for how you organize your datasets inside
+ HDF5 files.
+ For example, a typical Cigma HDF5 file could have the following structure.
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\begin{array}{c}
-x\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)x_{i}\\
-y\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)y_{i}\\
-z\left(\vec{\xi}\right)=\sum_{i}N_{i}\left(\vec{\xi}\right)z_{i}\end{array}$
-\end_inset
-
-
+\begin_layout LyX-Code
+model.h5
 \end_layout
 
-\end_inset
-</cell>
-</row>
-</lyxtabular>
+\begin_layout LyX-Code
 
-\end_inset
-
-
+\backslash
+__ model
 \end_layout
 
-\begin_layout Standard
-
+\begin_layout LyX-Code
+    |__ mesh
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial x}{\partial\xi}=\sum_{i}\frac{\partial N_{i}}{\partial\xi}x_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial x}{\partial\eta}=\sum_{i}\frac{\partial N_{i}}{\partial\eta}x_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial x}{\partial\zeta}=\sum_{i}\frac{\partial N_{i}}{\partial\zeta}x_{i}\]
-
-\end_inset
-
-
+\begin_layout LyX-Code
+    |   |__ coordinates    [nno x nsd]
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial y}{\partial\xi}=\sum_{i}\frac{\partial N_{i}}{\partial\xi}y_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial y}{\partial\eta}=\sum_{i}\frac{\partial N_{i}}{\partial\eta}y_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial y}{\partial\zeta}=\sum_{i}\frac{\partial N_{i}}{\partial\zeta}y_{i}\]
-
-\end_inset
-
-
+\begin_layout LyX-Code
+    |   
+\backslash
+__ connectivity   [nel x ndof]
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial z}{\partial\xi}=\sum_{i}\frac{\partial N_{i}}{\partial\xi}z_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial z}{\partial\eta}=\sum_{i}\frac{\partial N_{i}}{\partial\eta}z_{i}\,\,\,\,\,\,,\,\,\,\frac{\partial z}{\partial\zeta}=\sum_{i}\frac{\partial N_{i}}{\partial\zeta}z_{i}\]
-
-\end_inset
-
-
+\begin_layout LyX-Code
+    
+\backslash
+__ variables
 \end_layout
 
-\begin_layout Standard
-
+\begin_layout LyX-Code
+        |__ temperature
 \end_layout
 
-\begin_layout Standard
-Applying these to our shape functions on a tetrahedron, we obtain
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 1]
 \end_layout
 
-\begin_layout Standard
-
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 1]
 \end_layout
 
-\begin_layout Standard
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="5">
-<features>
-<column alignment="center" valignment="top" leftline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $i$
-\end_inset
-
-
+\begin_layout LyX-Code
+        |   
+\backslash
+...
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $TN_{i}$
-\end_inset
-
-
+\begin_layout LyX-Code
+        |__ displacement
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\partial TN_{i}/\partial\xi$
-\end_inset
-
-
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 3]
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\partial TN_{i}/\partial\eta$
-\end_inset
-
-
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 3]
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\partial TN_{i}/\partial\zeta$
-\end_inset
-
-
+\begin_layout LyX-Code
+        |   
+\backslash
+...
 \end_layout
 
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
+\begin_layout LyX-Code
+        
+\backslash
+__ velocity
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\frac{1}{2}\left(-1-\xi-\eta-\zeta\right)$
-\end_inset
-
-
+\begin_layout LyX-Code
+            |__ step00000  [nno x 3]
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $-\frac{1}{2}$
-\end_inset
-
-
+\begin_layout LyX-Code
+            |__ step00010  [nno x 3]
 \end_layout
 
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $-\frac{1}{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $-\frac{1}{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\frac{1}{2}\left(1+\xi\right)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $+\frac{1}{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\frac{1}{2}\left(1+\eta\right)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $+\frac{1}{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $\frac{1}{2}\left(1+\zeta\right)$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-\begin_inset Formula $+\frac{1}{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+\begin_layout LyX-Code
+            
+\backslash
+...
 \end_layout
 
 \begin_layout Standard
+Generally, Cigma will only require you to specify the path to a specific
+ field dataset.
+ If a small amount of metadata is present in your field dataset, the rest
+ of the required information, such as which mesh and finite elements to
+ use, will be deduced from that metadata.
+\end_layout
 
+\begin_layout Description
+MeshID an identifier assigned for use in linking child datasets to their
+ parent mesh.
+\end_layout
+
+\begin_layout Description
+MeshLocation points to the HDF5 group which contains the appropriate coordinates
+ and connectivity datasets.
+\end_layout
+
+\begin_layout Description
+FunctionSpace string identifier to determine which shape functions to use
+ for interpolating values inside the element (e.g., tet4, hex8, quad4, tri3,
+ ...).
+\end_layout
+
+\begin_layout Description
+DatasetType string identifier for classifying the type of data contained
+ in the dataset (e.g., points, connectivity, degrees of freedom, quadrature
+ rules, global quadrature points, global field values).
+\end_layout
+
+\begin_layout Subsection
+VTK
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial x}{\partial\xi}=\left(-\frac{1}{2}\right)x_{0}+\left(\frac{1}{2}\right)x_{1}\,\,\,,\,\,\,\frac{\partial x}{\partial\eta}=\left(-\frac{1}{2}\right)x_{0}+\left(\frac{1}{2}\right)x_{2}\,\,\,,\,\,\,\frac{\partial x}{\partial\zeta}=\left(-\frac{1}{2}\right)x_{0}+\left(\frac{1}{2}\right)x_{3}\]
-
-\end_inset
-
-
+The current version of Cigma only supports VTK unstructured grid datasets
+ of a single element type.
+ You can still compare various unstructured grids with different element
+ types to each other.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial y}{\partial\xi}=\left(-\frac{1}{2}\right)y_{0}+\left(\frac{1}{2}\right)y_{1}\,\,\,,\,\,\,\frac{\partial y}{\partial\eta}=\left(-\frac{1}{2}\right)y_{0}+\left(\frac{1}{2}\right)y_{2}\,\,\,,\,\,\,\frac{\partial y}{\partial\zeta}=\left(-\frac{1}{2}\right)y_{0}+\left(\frac{1}{2}\right)y_{3}\]
-
-\end_inset
-
-
+Note that while you typically provide a path (or name) for every dataset,
+ this is not necessary when specifying a VTK mesh, since this data is taken
+ from the special Points and Cells arrays, which you cannot rename.
+ However, you will still need to provide a name when referring to the shape
+ function coefficients, which are assumed to be stored as Point Data in
+ the input VTK file.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\frac{\partial z}{\partial\xi}=\left(-\frac{1}{2}\right)z_{0}+\left(\frac{1}{2}\right)z_{1}\,\,\,,\,\,\,\frac{\partial z}{\partial\eta}=\left(-\frac{1}{2}\right)z_{0}+\left(\frac{1}{2}\right)z_{2}\,\,\,,\,\,\,\frac{\partial z}{\partial\zeta}=\left(-\frac{1}{2}\right)z_{0}+\left(\frac{1}{2}\right)z_{3}\]
+For more information, you may want to refer to the VTK File Formats document
+ available from http://www.vtk.org/pdf/file-formats.pdf
+\end_layout
 
-\end_inset
-
-
+\begin_layout Subsection
+Text
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\mathrm{J}=\left|\frac{\partial\vec{x}}{\partial\vec{\xi}}\right|=\left|\begin{array}{c}
-\frac{1}{2}\left(x_{1}-x_{0}\right)\,\,\frac{1}{2}\left(x_{2}-x_{0}\right)\,\,\frac{1}{2}\left(x_{3}-x_{0}\right)\\
-\frac{1}{2}\left(y_{1}-y_{0}\right)\,\,\frac{1}{2}\left(y_{2}-y_{0}\right)\,\,\frac{1}{2}\left(y_{3}-y_{0}\right)\\
-\frac{1}{2}\left(z_{1}-z_{0}\right)\,\,\frac{1}{2}\left(z_{2}-z_{0}\right)\,\,\frac{1}{2}\left(z_{3}-z_{0}\right)\end{array}\right|\]
+The text format is always in table form, with the dimensions of the table
+ specified in the first line.
+ For example, mesh coordinates can be specified in the following format
+\end_layout
 
-\end_inset
+\begin_layout LyX-Code
+nno nsd
+\end_layout
 
+\begin_layout LyX-Code
+x1 y1 z1
+\end_layout
 
+\begin_layout LyX-Code
+x2 y2 z2
+\end_layout
+
+\begin_layout LyX-Code
+x3 y3 z3
+\end_layout
+
+\begin_layout LyX-Code
+...
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-=\frac{1}{8}\left|\begin{array}{cccc}
-1 & x_{0} & y_{0} & z_{0}\\
-1 & x_{1} & y_{1} & z_{1}\\
-1 & x_{2} & y_{2} & z_{2}\\
-1 & x_{3} & y_{3} & z_{3}\end{array}\right|\]
+Mesh connectivity with 
+\end_layout
 
-\end_inset
+\begin_layout LyX-Code
+nel ndofs
+\end_layout
 
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
 
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
+
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+A generic field with 
+\family typewriter
+ndim
+\family default
+ components (i.e., scalar, vector, or tensor) is specified by
+\end_layout
+
+\begin_layout LyX-Code
+num ndim
+\end_layout
+
+\begin_layout LyX-Code
+f1 f2 f3 ..
+\end_layout
+
+\begin_layout LyX-Code
+f1 f2 f3 ..
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+In this last case, the number of rows could refer to either 
+\family typewriter
+nno
+\family default
+ or 
+\family typewriter
+nel
+\family default
+, depending on whether the field is node-based or cell-based.
+\end_layout
+
+\begin_layout Section
+Output File Format
+\end_layout
+
+\begin_layout Standard
+The output format for residuals consists simply of a list of scalars for
+ each element in the discretization.
+ If you specify a 
+\family typewriter
+.vtk
+\family default
+ extension for your output file, this will result in an scalar dataset named
+ epsilon stored using the legacy VTK file format in the Cell Data section
+ of the output file.
+ Note that this output consists of the squared values of the local residuals,
+ so further post-processing will be necessary.
 \end_layout
 
 \begin_layout Chapter
