@@ -192,8 +192,13 @@ The CIG Model Analyzer (Cigma) consists of a suite of tools for comparing
 \end_layout
 
 \begin_layout Standard
-Cigma was designed for performing three types of tasks, namely (1) error
- analysis, (2) benchmarking, and (3) code verification.
+The current version of Cigma is intended for the calculation of 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+residuals for finite element models.
+ This software was designed for performing the following three main tasks:
+ (1) error analysis, (2) benchmarking, and (3) code verification.
  
 \end_layout
 
@@ -862,19 +867,6 @@ Even if the exact solution is not currently known, this normalized error
  
 \end_layout
 
-\begin_layout Chapter
-Cigma Components
-\end_layout
-
-\begin_layout Standard
-The current version of cigma is intended for calculation of 
-\begin_inset Formula $L_{2}$
-\end_inset
-
-residuals for finite element models.
- A description of the inputs to this.
-\end_layout
-
 \begin_layout Section
 Input and Output
 \end_layout
@@ -1059,17 +1051,14 @@ HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqn
 
 \begin_layout Standard
 These are builtin elements in Cigma, and you may refer to them by name in
- the FunctionSpace.
+ the FunctionSpace metadata attribute on your datasets.
 \end_layout
 
 \begin_layout Standard
 Higher order elements can also be used by specifying an explicit tabulation
  matrix representing the values of your shape functions on the corresponding
  set of quadrature points.
-\end_layout
-
-\begin_layout Standard
-Alternatively, 
+ 
 \end_layout
 
 \begin_layout Chapter
