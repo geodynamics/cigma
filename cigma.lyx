@@ -1,4 +1,4 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -196,7 +196,7 @@ The current version of Cigma is intended for the calculation of
 \begin_inset Formula $L_{2}$
 \end_inset
 
-residuals for finite element models.
+ residuals for finite element models.
  This software was designed for performing the following three main tasks:
  (1) error analysis, (2) benchmarking, and (3) code verification.
  
@@ -217,7 +217,7 @@ In benchmarking, Cigma can help the geodynamics community agree on a standard
 \end_layout
 
 \begin_layout Standard
-Lastly, as an automated tool, Cigma can help application developers in creating
+Lastly, as an automated tool, Cigma can help application developers create
  regression tests to ensure that software changes do not affect the consistency
  of the results.
 \end_layout
@@ -641,6 +641,11 @@ With HFDFView, you can view the internal file hierarchy in a tree structure,
 \end_layout
 
 \begin_layout Chapter
+\begin_inset LatexCommand label
+name "cha:Error-Analysis"
+
+\end_inset
+
 Error Analysis
 \end_layout
 
@@ -854,10 +859,10 @@ For comparing errors of different solutions, you can normalize the global
 
 \begin_layout Standard
 This normalized error can be interpreted as the average error in the physical
- quantity being evaluated, so that a value of 0.01 corresponds to an 1% averaged
+ quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
  error.
- The norm in the denominator can be computing in Cigma by comparing against
- the builtin zero function (see Section )
+ The norm in the denominator can be computed in Cigma by comparing against
+ the built-in zero function (see Section TODO -- which section?)
 \end_layout
 
 \begin_layout Standard
@@ -938,8 +943,9 @@ tion.
 \end_layout
 
 \begin_layout Standard
-Since the evaluation points on two distinct meshes will, it is very important
- to index the location of each element into spatial data structure.
+Since the evaluation points on two distinct meshes will (TODO -- will do
+ what?), it is very important to index the location of each element into
+ spatial data structure.
 \end_layout
 
 \begin_layout Section
@@ -1050,8 +1056,8 @@ HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqn
 \end_layout
 
 \begin_layout Standard
-These are builtin elements in Cigma, and you may refer to them by name in
- the FunctionSpace metadata attribute on your datasets.
+These are built-in elements in Cigma, and you may refer to them by name
+ in the FunctionSpace metadata attribute on your datasets.
 \end_layout
 
 \begin_layout Standard
@@ -1078,16 +1084,23 @@ Cigma is designed to be scriptable.
 cigma
 \family default
 .
- A list of available commands can be obtained with
+ A list of available commands can be obtained by typing
+\end_layout
+
+\begin_layout LyX-Code
+
 \family typewriter
- cigma --help
-\family default
- .
- Further usage information can also be obtained with 
+cigma --help
+\end_layout
+
+\begin_layout Standard
+Further usage information can also be obtained with 
+\end_layout
+
+\begin_layout LyX-Code
+
 \family typewriter
 cigma help <command>
-\family default
-.
 \end_layout
 
 \begin_layout Standard
@@ -1197,13 +1210,11 @@ Comparing two arbitrary finite element fields can be accomplished with the
 \family typewriter
 cigma compare
 \family default
- command line utility.
+ command-line utility.
  By default, the comparison will take place over the elements in the mesh
  of the first field.
  Finally, the square of each of the local residual values are written to
  the specified VTK output file as cell-based scalars.
-\newline
-
 \end_layout
 
 \begin_layout Standard
@@ -1303,7 +1314,7 @@ cigma compare [...]
 \end_layout
 
 \begin_layout Subsection
-Comparing Against Known Values
+Comparing against Known Values
 \end_layout
 
 \begin_layout Standard
@@ -1328,7 +1339,23 @@ cigma extract --mesh=field1.h5:/model/mesh/
 \end_layout
 
 \begin_layout Standard
-Now you can use evaluate your function at the designated points.
+Now you can use evaluate (TODO -- is it 
+\begin_inset Quotes sld
+\end_inset
+
+use
+\begin_inset Quotes srd
+\end_inset
+
+ or 
+\begin_inset Quotes sld
+\end_inset
+
+evaluate
+\begin_inset Quotes srd
+\end_inset
+
+) your function at the designated points.
  You can provide the path to the explicit set of values with
 \end_layout
 
@@ -1345,7 +1372,7 @@ cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout Subsection
-Comparing Against a Known Function
+Comparing against a Known Function
 \end_layout
 
 \begin_layout Standard
@@ -1442,7 +1469,13 @@ Examples
 \begin_layout Standard
 When the exact solution of your equations is known, the norm of the error
  for a finite element solution is easily computed through the procedure
- given in Chapter 3 (TODO: insert ref to chapter).
+ given in Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Error-Analysis"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -1459,7 +1492,7 @@ Another way of checking the accuracy of a solution is by rerunning the same
  Thus, if the difference between the coarse and fine mesh solutions is small,
  we can conclude that the coarse mesh solution is quite accurate.
  However, if a solution changes noticeably with refinement of the mesh,
- the coarse mesh solution is innacurate, and even the finer mesh may be
+ the coarse mesh solution is inaccurate, and even the finer mesh may be
  inadequate as well.
 \end_layout
 
@@ -1472,8 +1505,8 @@ Convergence
 \end_layout
 
 \begin_layout Standard
-In this figure (insert example1.png and example2.png after this stmt), we
- show the log of the 
+In this figure (TODO insert example1.png and example2.png after this stmt
+ -- WHERE ARE THESE FILES?), we show the log of the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -1553,9 +1586,12 @@ When the analytic solution is known, we may use it directly when specifying
 cigma compare
 \family default
  command, although this will require you to register your function as a
- builtin field.
- To demonstrate this capability, the current version of Cigma includes disloc3d
- as a builtin field.
+ built-in field.
+ To demonstrate this capability, the current version of Cigma includes 
+\family typewriter
+disloc3d
+\family default
+ as a builti-n field.
 \end_layout
 
 \begin_layout Standard
@@ -1564,7 +1600,16 @@ cigma compare
 
 \begin_layout Standard
 Alternatively, you can also extract the required list of points on which
- you need to evaluate the exact solution, and simply.
+ you need to evaluate the exact solution, and simply [TODO -- do you mean
+ 
+\begin_inset Quotes sld
+\end_inset
+
+simplify
+\begin_inset Quotes srd
+\end_inset
+
+?].
  We can do this for the Pylith mesh in the previous section with the command
 \end_layout
 
@@ -1628,8 +1673,8 @@ Input File Format
 \end_layout
 
 \begin_layout Standard
-In Cigma, there are about six different objects you will want to use as
- input to cigma, all of which can be represented as two dimensional datasets.
+There are about six different objects you will want to use as input to cigma,
+ all of which can be represented as two-dimensional datasets.
  These are the 
 \end_layout
 
@@ -1827,8 +1872,15 @@ Note that while you typically provide a path (or name) for every dataset,
 \end_layout
 
 \begin_layout Standard
-For more information, you may want to refer to the VTK File Formats document
- available from http://www.vtk.org/pdf/file-formats.pdf
+For more information, you may want to refer to Visualization ToolKit's 
+\begin_inset LatexCommand htmlurl
+name "File Formats"
+target "www.vtk.org/pdf/file-formats.pdf"
+
+\end_inset
+
+ document.
+ 
 \end_layout
 
 \begin_layout Subsection
