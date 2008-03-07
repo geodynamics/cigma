@@ -61,7 +61,7 @@ cigma::CompareCmd::~CompareCmd()
 
 void cigma::CompareCmd::setupOptions(AnyOption *opt)
 {
-    std::cout << "Calling cigma::CompareCmd::setupOptions()" << std::endl;
+    //std::cout << "Calling cigma::CompareCmd::setupOptions()" << std::endl;
 
     assert(opt != 0);
 
@@ -111,7 +111,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
 
 void cigma::CompareCmd::configure(AnyOption *opt)
 {
-    std::cout << "Calling cigma::CompareCmd::configure()" << std::endl;
+    //std::cout << "Calling cigma::CompareCmd::configure()" << std::endl;
 
     string field_prefix;
     std::string inputstr;
@@ -427,7 +427,7 @@ void compare(MeshPart *mesh, Field *field_a, PointField *field_b,
 //* XXX: new run() method
 int cigma::CompareCmd::run()
 {
-    std::cout << "Calling cigma::CompareCmd::run()" << std::endl;
+    //std::cout << "Calling cigma::CompareCmd::run()" << std::endl;
 
     // 
     // XXX: need to fail gracefully at this point, instead of throwing

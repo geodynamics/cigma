@@ -9,6 +9,11 @@ Dataset -- array of (int, long, float, double) plus shape information -- use boo
 Workspace -- collection of datasets
 VtkPipeline -- virtual class with 'void render(vtkRenderer*)' method
 
+---qt4-actions----------------------------------------------------------------
+
+Typical actions to implement (correspond to slots associated with MainWindow class)
+    OpenFile -- dispatches standard filesystem dialog
+    CloseFile -- closes FileNode in corresponding treeview
 
 ---qt4-editors----------------------------------------------------------------
 
@@ -48,6 +53,8 @@ MeshPartEditor
         ycoords -- array of y-coordinates
         zcoords -- array of z-coordinates
 
+Camera/Viewport Editor
+    See documentation for OpenGL & VTK
 
 FeFieldEditor
     (dof_nno, dof_dim) -- shape for dofhandler dataset

@@ -38,7 +38,7 @@ void cigma::HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
 
 void cigma::HelpCmd::setupOptions(AnyOption *opt)
 {
-    std::cout << "Calling cigma::HelpCmd::setupOptions()" << std::endl;
+    //std::cout << "Calling cigma::HelpCmd::setupOptions()" << std::endl;
 
     assert(opt != 0);
 
@@ -62,7 +62,7 @@ void cigma::HelpCmd::setupOptions(AnyOption *opt)
 
 void cigma::HelpCmd::configure(AnyOption *opt)
 {
-    std::cout << "Calling cigma::HelpCmd::configure()" << std::endl;
+    //std::cout << "Calling cigma::HelpCmd::configure()" << std::endl;
 
     assert(opt != 0);
 
@@ -90,7 +90,7 @@ void cigma::HelpCmd::configure(AnyOption *opt)
 
 int cigma::HelpCmd::run()
 {
-    std::cout << "Calling cigma::HelpCmd::run()" << std::endl;
+    //std::cout << "Calling cigma::HelpCmd::run()" << std::endl;
 
     CommandSet::CmdMap::iterator it = commands->find(subcommand);
 

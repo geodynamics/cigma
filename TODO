@@ -1,15 +1,20 @@
 ---high-----------------------------------------------------------------------
+Re-enable the cigma buildbot -- done
 Write test case for Quad::jacobian() function (interpolation works fine in TestQuad.cpp...)
 Debug the crash in ~QuadraturePoints() destructor  -- (who is managing the data?)
 Switch to boost's smart_ptr, shared_ptr, weak_ptr for managing most array allocs/refs
 Add extent[6] member variable to MeshPart class (bounding box)
 Add configure flag --with-boost
 Add configure flag --with-cppunit
+Write corresponding man page for each the 'cigma foo' command (see git man pages)
+
+
 
 ---normal---------------------------------------------------------------------
 Write TestVtkXmlReader.cpp test case to make sure it works fine
 Write TestPointField.cpp test case
 Write TestAnnLocatorSearch.cpp to test efficiency of searches in 2d (proportion of cells not found?)
+
 
 ---medium---------------------------------------------------------------------
 Figure out how to define HAVE_VTK in config.h
