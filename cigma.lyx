@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -445,7 +445,7 @@ target "www.vtk.org/get-software.php"
 
 .
  If you decide to compile VTK from source, you will also need the CMake
- build environment, available from http://cmake.org/
+ build environment, available from (TODO: linkify)http://cmake.org/
 \end_layout
 
 \begin_layout Standard
@@ -503,8 +503,11 @@ $ sudo python setup.py install
 \end_layout
 
 \begin_layout Standard
-To verify the installation, the command `import numpy' should run successfully
- from within your standard Python interpreter shell.
+To verify the installation, the command `
+\family typewriter
+import numpy
+\family default
+' should run successfully from within your standard Python interpreter shell.
 \end_layout
 
 \begin_layout Subsection
@@ -543,8 +546,11 @@ $ sudo python setup.py install
 \end_layout
 
 \begin_layout Standard
-To verify the installation, the command `import tables' should run successfully
- from within your standard Python interpreter shell.
+To verify the installation, the command `
+\family typewriter
+import tables
+\family default
+' should run successfully from within your standard Python interpreter shell.
 \end_layout
 
 \begin_layout Subsection
@@ -576,8 +582,11 @@ $ sudo python setup.py install
 \end_layout
 
 \begin_layout Standard
-You should now be able to run `import FIAT' from within your standard Python
- interpreter shell.
+You should now be able to run `
+\family typewriter
+import FIAT
+\family default
+' from within your standard Python interpreter shell.
 \end_layout
 
 \begin_layout Subsection
@@ -862,7 +871,7 @@ This normalized error can be interpreted as the average error in the physical
  quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
  error.
  The norm in the denominator can be computed in Cigma by comparing against
- the built-in zero function (see Section TODO -- which section?)
+ the built-in zero function (see Section 4.2.4) (TODO: make into reference)
 \end_layout
 
 \begin_layout Standard
@@ -1339,23 +1348,7 @@ cigma extract --mesh=field1.h5:/model/mesh/
 \end_layout
 
 \begin_layout Standard
-Now you can use evaluate (TODO -- is it 
-\begin_inset Quotes sld
-\end_inset
-
-use
-\begin_inset Quotes srd
-\end_inset
-
- or 
-\begin_inset Quotes sld
-\end_inset
-
-evaluate
-\begin_inset Quotes srd
-\end_inset
-
-) your function at the designated points.
+Now you can evaluate your function at the designated points.
  You can provide the path to the explicit set of values with
 \end_layout
 
@@ -1501,12 +1494,40 @@ Convergence
 \end_layout
 
 \begin_layout Standard
-(TODO: retype commands and output here)
+To demonstrate the convergence in the FEM method, in this example we will
+ compare the error incurred in representing a continuous function by finite
+ elements.
+ 
 \end_layout
 
 \begin_layout Standard
-In this figure (TODO insert example1.png and example2.png after this stmt
- -- WHERE ARE THESE FILES?), we show the log of the 
+You can change the function by modifying the the 
+\family typewriter
+TestFunction.cpp
+\family default
+ source file.
+ Once you recompile cigma, you will be able to refer to it by the name 
+\family typewriter
+\bar under
+test
+\family default
+\bar default
+ when using the 
+\family typewriter
+cigma eval
+\family default
+ command.
+\end_layout
+
+\begin_layout Standard
+In the test directory you will find a series of successively refined meshes
+ that you can use for testing.
+ The original mesh files were created with the Gmsh, a three-dimensional
+ finite element mesh generator, but you will be accessing the HDF5.
+\end_layout
+
+\begin_layout Standard
+In the figure (TODO: regenerate plot), we show the log of the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -1560,23 +1581,34 @@ where
 \end_layout
 
 \begin_layout Section
-Different Elements
+Different Element Types
 \end_layout
 
 \begin_layout Standard
-(insert selections from old chapter 6)
+For this example we will use sample datasets from the strike-slip benchmark
+ case defined by the CIG Short-Term Tectonics working group.
+ In this benchmark problem, we solve for the viscoelastic relaxation of
+ stresses from a single finite earthquake while ignoring gravity.
+ The problem is defined on a cube domain with sides of 24 km consisting
+ of two layers of different material types.
+ The top layer of the cube is nearly elastic, while the bottom layer is
+ viscoelastic.
 \end_layout
 
 \begin_layout Section
-Analytic 
+Comparing Two Codes
 \end_layout
 
 \begin_layout Standard
-(TODO: ask brad for his okada soln HDF5 file)
+In this example, we will compare various codes
+\end_layout
+
+\begin_layout Section
+Analytic Comparison
 \end_layout
 
 \begin_layout Standard
-(TODO: rerun these commands)
+(TODO: ask brad for his okada soln HDF5 file and link to it here)
 \end_layout
 
 \begin_layout Standard
@@ -1591,25 +1623,20 @@ cigma compare
 \family typewriter
 disloc3d
 \family default
- as a builti-n field.
+ as a built-in field.
 \end_layout
 
 \begin_layout Standard
-(TODO: retest 'cigma eval --function=disloc3d')
+(TODO: rerun these commands)
+\end_layout
+
+\begin_layout Standard
+$cigma eval --function=disloc3d --output=tet4_1000m_qpts_displacement
 \end_layout
 
 \begin_layout Standard
 Alternatively, you can also extract the required list of points on which
- you need to evaluate the exact solution, and simply [TODO -- do you mean
- 
-\begin_inset Quotes sld
-\end_inset
-
-simplify
-\begin_inset Quotes srd
-\end_inset
-
-?].
+ you need to evaluate the exact solution.
  We can do this for the Pylith mesh in the previous section with the command
 \end_layout
 
@@ -1626,7 +1653,10 @@ $ cigma extract
 \end_layout
 
 \begin_layout Standard
-The comparison can then take place
+You can now take the list of points in a global coordinate system, and apply
+ your function.
+ For demonstration purposes, we can use the disloc3d built-in function.
+ The comparison can then take place
 \end_layout
 
 \begin_layout LyX-Code
