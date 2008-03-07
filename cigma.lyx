@@ -1,4 +1,4 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -294,8 +294,12 @@ Support
 \end_layout
 
 \begin_layout Standard
-Cigma development is supported by a grant from the National Science Foundation
- to CIG, managed by the California Institute of Technology.
+Cigma development is based upon work supported by the National Science Foundatio
+n under Grant No.
+ EAR-0406751.
+ Any opinions, findings, and conclusions or recommendations expressed in
+ this material are those of the authors and do not necessarily reflect the
+ views of the National Science Foundation.
  The code is being released under the GNU General Public License.
 \end_layout
 
