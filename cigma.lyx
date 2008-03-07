@@ -1,4 +1,4 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -445,7 +445,14 @@ target "www.vtk.org/get-software.php"
 
 .
  If you decide to compile VTK from source, you will also need the CMake
- build environment, available from (TODO: linkify)http://cmake.org/
+ build environment, available from 
+\begin_inset LatexCommand htmlurl
+name "CMake"
+target "cmake.org"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -871,7 +878,13 @@ This normalized error can be interpreted as the average error in the physical
  quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
  error.
  The norm in the denominator can be computed in Cigma by comparing against
- the built-in zero function (see Section 4.2.4) (TODO: make into reference)
+ the built-in zero function (see Section 
+\begin_inset LatexCommand ref
+reference "sub:Comparing-against-a"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
@@ -1365,6 +1378,11 @@ cigma compare --output=squared-residuals.vtk
 \end_layout
 
 \begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Comparing-against-a"
+
+\end_inset
+
 Comparing against a Known Function
 \end_layout
 
@@ -1501,7 +1519,7 @@ To demonstrate the convergence in the FEM method, in this example we will
 \end_layout
 
 \begin_layout Standard
-You can change the function by modifying the the 
+You can change the function by modifying the 
 \family typewriter
 TestFunction.cpp
 \family default
