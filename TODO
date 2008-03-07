@@ -4,6 +4,7 @@ Debug the crash in ~QuadraturePoints() destructor  -- (who is managing the data?
 Switch to boost's smart_ptr, shared_ptr, weak_ptr for managing most array allocs/refs
 Add extent[6] member variable to MeshPart class (bounding box)
 Add configure flag --with-boost
+Add configure flag --with-cppunit
 
 ---normal---------------------------------------------------------------------
 Write TestVtkXmlReader.cpp test case to make sure it works fine
