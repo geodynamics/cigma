@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -894,6 +894,28 @@ Even if the exact solution is not currently known, this normalized error
  
 \end_layout
 
+\begin_layout Chapter
+\begin_inset LatexCommand label
+name "cha:Running-Cigma"
+
+\end_inset
+
+Running Cigma
+\end_layout
+
+\begin_layout Standard
+Cigma is used for obtaining error estimates between arbitrary fields, so
+ naturally its primary operation is centered around the 
+\family typewriter
+compare
+\family default
+ command.
+ You will need to provide two datasets describing each of the two fields,
+ along with an integration rule and a mesh over which to integrate, although
+ these last two will have reasonable defaults if they are not specified.
+ This chapter aims to summarize the information you'll need to run cigma.
+\end_layout
+
 \begin_layout Section
 Input and Output
 \end_layout
@@ -931,7 +953,8 @@ Using HDF5 datasets in Cigma allows us to avoid having to convert between
 \end_layout
 
 \begin_layout Standard
-Cigma also supports the popular VTK format for certain kinds of input.
+Cigma also supports the popular VTK format for providing mesh and field
+ inputs.
  A simple text format is also supported to aid in debugging.
  As described in Chapter 
 \begin_inset LatexCommand ref
@@ -965,9 +988,10 @@ tion.
 \end_layout
 
 \begin_layout Standard
-Since the evaluation points on two distinct meshes will (TODO -- will do
- what?), it is very important to index the location of each element into
- spatial data structure.
+As seen from Equation Since the integration points on two distinct meshes
+ will not typically coincide, it is very important to index the location
+ of each element into spatial data structure.
+ 
 \end_layout
 
 \begin_layout Section
@@ -1089,13 +1113,8 @@ Higher order elements can also be used by specifying an explicit tabulation
  
 \end_layout
 
-\begin_layout Chapter
-\begin_inset LatexCommand label
-name "cha:Running-Cigma"
-
-\end_inset
-
-Running Cigma
+\begin_layout Section
+Command Line Interface
 \end_layout
 
 \begin_layout Standard
@@ -1126,18 +1145,6 @@ cigma help <command>
 \end_layout
 
 \begin_layout Standard
-Cigma is used for obtaining error estimates between arbitrary fields, so
- naturally its primary operation involves the 
-\family typewriter
-compare
-\family default
- command.
- You will need to provide two datasets describing each of the two fields,
- along with an integration rule and a mesh over which to integrate, although
- these last two will have reasonable defaults if they are not specified.
-\end_layout
-
-\begin_layout Standard
 Specifying the complete path to a dataset consists of the special form 
 \family typewriter
 \series bold
@@ -1147,7 +1154,7 @@ filepath:dataset
 , a colon-delimited pair of file path and dataset path.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Listing Data
 \end_layout
 
@@ -1222,7 +1229,7 @@ PointDataArray[0] = displacements_t0 (119827 x 3)
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Comparing Two Fields
 \end_layout
 
@@ -1469,12 +1476,34 @@ cigma compare --output=squared-residuals.vtk
               --second=values.h5:/disloc3d_values
 \end_layout
 
-\begin_layout LyX-Code
-
+\begin_layout Standard
+Another built-in function you might find useful for evaluating the norm
+ of your field is the 
+\family typewriter
+\bar under
+zero
+\family default
+\bar default
+ function, which simply returns zero when evaluated at any point.
 \end_layout
 
 \begin_layout Chapter
 Examples
+\end_layout
+
+\begin_layout Standard
+In this Chapter we will use sample datasets from the strike-slip benchmark
+ case defined by the CIG Short-Term Tectonics working group.
+ In this benchmark problem, we solve for the viscoelastic relaxation of
+ stresses from a single finite earthquake while ignoring gravity.
+ The problem is defined on a cube domain with sides of 24 km consisting
+ of two layers of different material types.
+ The top layer of the cube is nearly elastic, while the bottom layer is
+ viscoelastic.
+\end_layout
+
+\begin_layout Section
+Convergence
 \end_layout
 
 \begin_layout Standard
@@ -1505,10 +1534,6 @@ Another way of checking the accuracy of a solution is by rerunning the same
  However, if a solution changes noticeably with refinement of the mesh,
  the coarse mesh solution is inaccurate, and even the finer mesh may be
  inadequate as well.
-\end_layout
-
-\begin_layout Section
-Convergence
 \end_layout
 
 \begin_layout Standard
@@ -1603,94 +1628,7 @@ Different Element Types
 \end_layout
 
 \begin_layout Standard
-For this example we will use sample datasets from the strike-slip benchmark
- case defined by the CIG Short-Term Tectonics working group.
- In this benchmark problem, we solve for the viscoelastic relaxation of
- stresses from a single finite earthquake while ignoring gravity.
- The problem is defined on a cube domain with sides of 24 km consisting
- of two layers of different material types.
- The top layer of the cube is nearly elastic, while the bottom layer is
- viscoelastic.
-\end_layout
-
-\begin_layout Section
-Comparing Two Codes
-\end_layout
-
-\begin_layout Standard
-In this example, we will compare various codes
-\end_layout
-
-\begin_layout Section
-Analytic Comparison
-\end_layout
-
-\begin_layout Standard
-(TODO: ask brad for his okada soln HDF5 file and link to it here)
-\end_layout
-
-\begin_layout Standard
-When the analytic solution is known, we may use it directly when specifying
- a field argument to the 
-\family typewriter
-cigma compare
-\family default
- command, although this will require you to register your function as a
- built-in field.
- To demonstrate this capability, the current version of Cigma includes 
-\family typewriter
-disloc3d
-\family default
- as a built-in field.
-\end_layout
-
-\begin_layout Standard
-(TODO: rerun these commands)
-\end_layout
-
-\begin_layout Standard
-$cigma eval --function=disloc3d --output=tet4_1000m_qpts_displacement
-\end_layout
-
-\begin_layout Standard
-Alternatively, you can also extract the required list of points on which
- you need to evaluate the exact solution.
- We can do this for the Pylith mesh in the previous section with the command
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma extract
-\end_layout
-
-\begin_layout LyX-Code
-    --mesh=strikeslip.h5:/tet4_1000m/mesh/
-\end_layout
-
-\begin_layout LyX-Code
-    --output=tet4_1000m_qpts.h5:/tet4_1000m_qpts
-\end_layout
-
-\begin_layout Standard
-You can now take the list of points in a global coordinate system, and apply
- your function.
- For demonstration purposes, we can use the disloc3d built-in function.
- The comparison can then take place
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare  
-\end_layout
-
-\begin_layout LyX-Code
-    --first=strikeslip.h5:/tet4_1000m/displacement/step0000
-\end_layout
-
-\begin_layout LyX-Code
-    --second=okada_solution.h5:/tet4_1000m_qpts_displacement
-\end_layout
-
-\begin_layout Standard
-Here, we have taken the 
+Different codes
 \end_layout
 
 \begin_layout Chapter
