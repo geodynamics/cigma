@@ -3,7 +3,9 @@
 
 #include "Command.h"
 #include "FE_Field.h"
-
+#include "MeshIO.h"
+#include "QuadratureIO.h"
+#include "Writer.h"
 
 namespace cigma
 {
@@ -27,8 +29,16 @@ public:
     int run();
 
 public:
-    FE_Field *coords;
+    MeshIO meshIO;
+    QuadratureIO quadratureIO;
     std::string output_filename;
+    std::string points_path;
+    bool verbose;
+
+public:
+    FE_Field *coordsField;
+    Writer *writer;
+
 };
 
 #endif

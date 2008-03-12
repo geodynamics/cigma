@@ -2,165 +2,149 @@
 #include <cassert>
 #include "ExtractCmd.h"
 #include "StringUtils.h"
-#include "VtkReader.h"
+#include "HdfWriter.h"
+#include "TextWriter.h"
 #include "VtkWriter.h"
 #include "MeshPart.h"
-#include "Tet.h"
-#include "Hex.h"
+
+
+using namespace std;
+using namespace cigma;
+
 
 // ---------------------------------------------------------------------------
 
 cigma::ExtractCmd::ExtractCmd()
 {
     name = "extract";
-    coords = 0;
+    coordsField = 0;
+    writer = 0;
 }
 
 cigma::ExtractCmd::~ExtractCmd()
 {
 }
 
+
 // ---------------------------------------------------------------------------
 
 void cigma::ExtractCmd::setupOptions(AnyOption *opt)
 {
-    std::cout << "Calling cigma::ExtractCmd::setupOptions()" << std::endl;
+    //std::cout << "Calling cigma::ExtractCmd::setupOptions()" << std::endl;
     assert(opt != 0);
 
     /* setup usage */
     opt->addUsage("Usage:");
     opt->addUsage("   cigma extract [options]");
-    opt->addUsage("     --help          Display this screen");
-    opt->addUsage("     --order         Quadrature order");
-    opt->addUsage("     --meshfile      Mesh file");
-    opt->addUsage("     --output        Output file");
-    //opt->addUsage("     --meshpath      Mesh path");
+    opt->addUsage("     --help                  Display this screen");
+    opt->addUsage("     --mesh                  Input mesh file");
+    opt->addUsage("     --mesh-coordinates      Path to mesh coordinates");
+    opt->addUsage("     --mesh-connectivity     Path to mesh connectivity");
+    opt->addUsage("     --rule                  Quadrature rule");
+    opt->addUsage("     --output                Output file");
 
     /* setup flags and options */
+
     opt->setFlag("help", 'h');
-    opt->setOption("order", 'o');
-    opt->setOption("meshfile");
-    //opt->setOption("meshpath");
-    opt->setOption("output");
+    opt->setFlag("verbose", 'v');
+    
+    opt->setOption("mesh");
+    opt->setOption("mesh-coordinates");
+    opt->setOption("mesh-connectivity");
+
+    opt->setOption("rule", 'r');
+    opt->setOption("rule-order");
+    opt->setOption("rule-points");
+    opt->setOption("rule-weights");
+
+    opt->setOption("output", 'o');
 }
 
 
 void cigma::ExtractCmd::configure(AnyOption *opt)
 {
-    std::cout << "Calling cigma::ExtractCmd::configure()" << std::endl;
+    //std::cout << "Calling cigma::ExtractCmd::configure()" << std::endl;
     assert(opt != 0);
 
 
-    coords = new FE_Field();
-
-
-    std::string meshfile, meshpath;
-    std::string root, ext;
+    string inputstr;
     char *in;
 
-    in = opt->getValue("meshfile");
-    if (in == 0)
-    {
-        std::cerr << "extract: Please specify the option --meshfile" << std::endl;
-        exit(1);
-    }
-    meshfile = in;
-    path_splitext(meshfile, root, ext);
-    std::cout << "Parameter meshfile is " << meshfile << std::endl;
-    std::cout << "meshfile root is " << root << std::endl;
-    std::cout << "meshfile ext is " << ext << std::endl;
 
-    if (ext == ".vtk")
-    {
-        int nno, nsd;
-        int nel, ndofs;
-        double *coordinates;
-        int *connectivity;
+    // read verbose flag
+    verbose = opt->getFlag("verbose");
 
-        std::cout << "Reading file " << meshfile << std::endl;
-
-        VtkReader reader;
-        reader.open(meshfile);
-        reader.get_coordinates(&coordinates, &nno, &nsd);
-        reader.get_connectivity(&connectivity, &nel, &ndofs);
-        std::cout << "mesh ndofs = " << ndofs << std::endl;
-
-        coords->meshPart = new MeshPart();
-        coords->meshPart->set_coordinates(coordinates, nno, nsd);
-        coords->meshPart->set_connectivity(connectivity, nel, ndofs);
-
-        switch (ndofs)
-        {
-        case 4:
-            coords->fe = new FE();
-            coords->fe->cell = new Tet();
-            {
-                coords->fe->quadrature = new Quadrature();
-                double tet_qpts[8*3] = {
-                    -0.68663473, -0.72789005, -0.75497035,
-                    -0.83720867, -0.85864055,  0.08830369,
-                    -0.86832263,  0.13186633, -0.75497035,
-                    -0.93159441, -0.4120024 ,  0.08830369,
-                     0.16949513, -0.72789005, -0.75497035,
-                    -0.39245447, -0.85864055,  0.08830369,
-                    -0.50857335,  0.13186633, -0.75497035,
-                    -0.74470688, -0.4120024 ,  0.08830369 };
-                double tet_qwts[8] = {
-                    0.29583885,  0.12821632,  0.16925605,  0.07335544,  0.29583885,
-                    0.12821632,  0.16925605,  0.07335544 };
-                coords->fe->quadrature->set_quadrature(tet_qpts, tet_qwts, 8, 3);
-                coords->fe->quadrature->set_globaldim(3);
-            }
-            break;
-        case 8:
-            coords->fe = new FE();
-            coords->fe->cell = new Hex();
-            {
-                coords->fe->quadrature = new Quadrature();
-                double hex_qpts[8*3] = {
-                    -0.57735027, -0.57735027, -0.57735027,
-                     0.57735027, -0.57735027, -0.57735027,
-                     0.57735027,  0.57735027, -0.57735027,
-                    -0.57735027,  0.57735027, -0.57735027,
-                    -0.57735027, -0.57735027,  0.57735027,
-                     0.57735027, -0.57735027,  0.57735027,
-                     0.57735027,  0.57735027,  0.57735027,
-                    -0.57735027,  0.57735027,  0.57735027 };
-                double hex_qwts[8] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
-                coords->fe->quadrature->set_quadrature(hex_qpts, hex_qwts, 8, 3);
-                coords->fe->quadrature->set_globaldim(3);
-            }
-            break;
-        }
-        assert(coords->fe != 0);
-        assert(coords->fe->cell != 0);
-
-        coords->dofHandler = new DofHandler();
-        coords->dofHandler->meshPart = coords->meshPart;
-        coords->dofHandler->set_data(coords->meshPart->coords, nno, nsd);
-    }
-    else
-    {
-        assert(ext != ".vtk");
-    }
-
-
-    int order;
-    std::string quadrature_order;
-    in = opt->getValue("order");
-    quadrature_order = (in != 0) ? in : "2";
-    string_to_int(quadrature_order, order);
-    std::cout << "Quadrature order is " << order << std::endl;
-    assert(coords->fe->quadrature != 0);
-    // coords->fe->quadrature->initialize(order);
-
+    
+    /* determine the output option */
     in = opt->getValue("output");
     if (in == 0)
     {
-        std::cout << "extract: Please specify the option --output" << std::endl;
+        cerr << "extract: Please specify the option --output" << endl;
         exit(1);
     }
-    output_filename = in;
+    inputstr = in;
+
+
+    // determine the extension and instantiate the appropriate writer object
+    string ext;
+    parse_dataset_path(inputstr, points_path, output_filename, ext);
+    new_writer(&writer, ext);
+    if (writer == 0)
+    {
+        cerr << "extract: Specified bad extension (" << ext << ") for "
+             << "output file" << endl;
+        exit(1);
+    }
+    if ((points_path == "") && (writer->getType() == Writer::HDF_WRITER))
+    {
+        points_path = "/points";
+    }
+
+
+    /* gather up expected command line arguments */
+    load_args(opt, &meshIO, "mesh");
+    load_args(opt, &quadratureIO, "rule");
+
+    /* validate these arguments and complain about missing ones */
+    validate_args(&meshIO, "extract");
+    validate_args(&quadratureIO, "extract");
+
+    /* create empty field object */
+    coordsField = new FE_Field();
+
+    /* load mesh into memory */
+    meshIO.load();
+    if (meshIO.meshPart == 0)
+    {
+        if (!meshIO.has_paths())
+        {
+            cerr << "extract: Missing input option --mesh" << endl;
+            exit(1);
+        }
+        else
+        {
+            cerr << "extract: Invalid mesh options! Could not load mesh." << endl;
+            exit(1);
+        }
+    }
+    coordsField->meshPart = meshIO.meshPart;
+    coordsField->meshPart->set_cell();
+
+
+    /* now, load quadrature rule */
+    quadratureIO.load(coordsField->meshPart->cell);
+    if (quadratureIO.quadrature == 0)
+    {
+        cerr << "extract: Invalid quadrature rule options!" << endl;
+        exit(1);
+    }
+
+
+    /* finite element for interpolation on mesh coordinates */
+    coordsField->fe = new FE();
+    coordsField->fe->set_mesh(meshIO.meshPart);
+    coordsField->fe->set_quadrature_points(quadratureIO.quadrature);
+
 
     return;
 }
@@ -168,21 +152,28 @@ void cigma::ExtractCmd::configure(AnyOption *opt)
 
 int cigma::ExtractCmd::run()
 {
-    std::cout << "Calling cigma::ExtractCmd::run()" << std::endl;
-    assert(coords != 0);
+    //std::cout << "Calling cigma::ExtractCmd::run()" << std::endl;
+    assert(coordsField != 0);
+
+
+    // local data -- destructure field object
+
+    FE *fe = coordsField->fe;
+    assert(fe != 0);
+
+    MeshPart *meshPart = coordsField->meshPart;
+    assert(meshPart != 0);
+
+    QuadraturePoints *quadrature = fe->points;
+    assert(quadrature != 0);
+
+    Cell *cell = fe->meshPart->cell;
+    assert(cell != 0);
+
 
     // indices
     int e,q;
 
-    // local data
-    FE *fe = coords->fe;
-    assert(fe != 0);
-    MeshPart *meshPart = coords->meshPart;
-    assert(meshPart != 0);
-    Quadrature *quadrature = fe->quadrature;
-    assert(quadrature != 0);
-    Cell *cell = fe->cell;
-    assert(cell != 0);
 
     // dimensions
     int nel = meshPart->nel;
@@ -191,7 +182,16 @@ int cigma::ExtractCmd::run()
 
     const int cell_nno = cell->n_nodes();
 
-    double *global_points = new double[nel*nq*nsd];
+    double *global_points = new double[(nq*nel) * nsd];
+
+
+    if (verbose)
+    {
+        cout << "Extracting "
+             << (nq * nel)
+             << " points from input mesh..."
+             << endl;
+    }
 
     for (e = 0; e < nel; e++)
     {
@@ -217,15 +217,78 @@ int cigma::ExtractCmd::run()
         } // */
     }
 
+
+    /*
     std::cout << "Creating file " << output_filename << std::endl;
     VtkWriter *writer = new VtkWriter();
     writer->open(output_filename);
     writer->write_header();
     writer->write_points(global_points, nel*nq, nsd);
-    writer->close();
+    writer->close(); */
     //delete writer;
 
+
+    int ierr;
+
+    cout << "Creating file " << output_filename << endl;
+
+    if (writer->getType() == Writer::HDF_WRITER)
+    {
+        HdfWriter *hdfWriter = static_cast<HdfWriter*>(writer);
+        ierr = hdfWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not open (or create) the HDF5 file " << output_filename << endl;
+            exit(1);
+        }
+
+        ierr = hdfWriter->write_coordinates(points_path.c_str(), global_points, nq*nel, nsd);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not write points dataset " << points_path << endl;
+            exit(1);
+        }
+
+        hdfWriter->close();
+    }
+    else if (writer->getType() == Writer::TXT_WRITER)
+    {
+        TextWriter *txtWriter = static_cast<TextWriter*>(writer);
+        ierr = txtWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output text file " << output_filename << endl;
+            exit(1);
+        }
+
+        txtWriter->write_coordinates(global_points, nq * nel, nsd);
+        txtWriter->close();
+    }
+    else if (writer->getType() == Writer::VTK_WRITER)
+    {
+        VtkWriter *vtkWriter = static_cast<VtkWriter*>(writer);
+        ierr = vtkWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output VTK file " << output_filename << endl;
+            exit(1);
+        }
+
+        vtkWriter->write_header();
+        vtkWriter->write_points(global_points, nq * nel, nsd);
+        vtkWriter->close();
+    }
+    else
+    {
+        /* this should be unreachable */
+        cerr << "Fatal Error: Unsupported extension in output filename?" << endl;
+        return 1;
+    }
+
+    
+    // XXX: wrap this guy inside an auto_ptr
     delete [] global_points;
+
 
     return 0;
 }
