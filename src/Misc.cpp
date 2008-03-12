@@ -29,4 +29,20 @@ void bbox_random_point(double minpt[3], double maxpt[3], double x[3])
 }
 
 
+void linspace(double **x, double a, double b, int n)
+{
+    int i;
+    double dx = (b - a)/n;
+    double *y;
+
+    y = new double[n];
+
+    for (i = 0; i < n; i++)
+    {
+        y[i] = a + i * dx;
+    }
+
+    *x = y;
+}
+
 // ---------------------------------------------------------------------------
