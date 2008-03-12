@@ -85,7 +85,8 @@ int cigma::ListCmd::run()
     }
     else
     {
-        cerr << "list: File extension must be .h5 or .vtk" << endl;
+        cerr << "list: File extension must be .h5 or .vtk"
+             << " (found '" << extension << "')" << endl;
         return 2;
     }
 
