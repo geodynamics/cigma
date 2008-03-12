@@ -242,10 +242,10 @@ int cigma::CubeCmd::run()
 
     int ierr;
 
+    cout << "Creating file " << output_filename << endl;
+
     if (writer->getType() == Writer::HDF_WRITER)
     {
-        cout << "Creating file " << output_filename << endl;
-
         HdfWriter *hdfWriter = static_cast<HdfWriter*>(writer);
         ierr = hdfWriter->open(output_filename);
         if (ierr < 0)
@@ -272,8 +272,6 @@ int cigma::CubeCmd::run()
     }
     else if (writer->getType() == Writer::TXT_WRITER)
     {
-        cout << "Creating file " << output_filename << endl;
-
         TextWriter *txtWriter = static_cast<TextWriter*>(writer);
         ierr = txtWriter->open(output_filename);
         if (ierr < 0)
@@ -288,8 +286,6 @@ int cigma::CubeCmd::run()
     }
     else if (writer->getType() == Writer::VTK_WRITER)
     {
-        cout << "Creating file " << output_filename << endl;
-
         VtkWriter *vtkWriter = static_cast<VtkWriter*>(writer);
         ierr = vtkWriter->open(output_filename);
         if (ierr < 0)
@@ -306,7 +302,8 @@ int cigma::CubeCmd::run()
     }
     else
     {
-        cerr << "cube: File with bad extension?" << endl;
+        /* this should be unreachable */
+        cerr << "Fatal Error: Unsupported extension in output filename?" << endl;
         return 1;
     }
 
