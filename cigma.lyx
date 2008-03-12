@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -223,8 +223,8 @@ target "www.fenics.org/wiki/FIAT"
 
  Python Library supports generation of arbitrary order instances of the
  Lagrange elements on lines, triangles, and tetrahedra.
- It can also generate order instances of Jacobi-type quadrature rules on
- the same element shapes.
+ It can also generate higher order instances of Jacobi-type quadrature rules
+ on the same element shapes.
  The 
 \begin_inset LatexCommand htmlurl
 name "Approximate Nearest Neighbor (ANN)"
@@ -237,8 +237,8 @@ target "www.cs.umd.edu/~mount/ANN/"
 \end_layout
 
 \begin_layout Standard
-Both of these libraries particularly extend and generalize Cigma's functionality
- so it can handle other types of elements, and provide the ability to compare
+Both of these libraries extend and generalize Cigma's functionality so it
+ can handle other types of elements, and provide the ability to compare
  vector fields.
 \end_layout
 
@@ -250,8 +250,8 @@ Citation
 Computational Infrastructure for Geodynamics (CIG) is making this source
  code available to you in the hope that the software will enhance your research
  in geophysics.
- This is a brand-new code and at present no papers are published or at press
- for use as citations other than this manual, which is cited as follows:
+ This is a brand-new code and at present no papers are published or press.
+ Please cite this manual as follows:
 \end_layout
 
 \begin_layout Itemize
@@ -262,7 +262,7 @@ Armendariz, L., and S.
 Cigma User Manual.
 
 \emph default
- Pasadena, CA: Computational Infrastructure of Geodynamics, 2007.
+ Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
  URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
 \end_layout
 
@@ -597,9 +597,9 @@ HDFView (optional)
 \begin_layout Standard
 NCSA HDFView is a graphical user interface tool for accessing data in your
  HDF5 files.
- You can use it for viewing the internal file hierarchy in a tree structure,
- adding new datasets, and modifying or deleting existing datasets, or altering
- metadata on groups and datasets.
+ You can use it for viewing the internal file hierarchy in a tree structure
+ (see Figure 2.1 (TODO ref)), adding new datasets, and modifying or deleting
+ existing datasets, or altering metadata on groups and datasets.
  You can download it from the 
 \begin_inset LatexCommand htmlurl
 name "HDFView home page"
@@ -674,7 +674,7 @@ When studying differential equations that represent physical systems we
 \begin_layout Standard
 For assessing the quality of the solution to our equations, it is important
  to quantify the error in our numerical solutions.
- To calculate this error, we will have to compare tentative solutions against
+ To calculate this error, we will have to compare these solutions against
  each other through the use of a distance measure between two functions.
 \end_layout
 
@@ -684,15 +684,15 @@ Distance Measures
 
 \begin_layout Standard
 The simplest possible quantitative measure of the difference between two
- distinct fields you can make consists of taking the pointwise difference
- of both fields at a common set of points.
+ distinct fields consists of taking the pointwise difference of both fields
+ at a common set of points.
  While no finite sample of points can perfectly represent a continuum of
- values, valuable information can be inferred from a statistics analysis
- of the resulting set of differences.
+ values, valuable information can be inferred from the statistics of the
+ resulting set of differences.
 \end_layout
 
 \begin_layout Standard
-Perhaps a more useful distance measure can be obtained by using the 
+A very useful distance measure we can use is the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -705,11 +705,16 @@ Perhaps a more useful distance measure can be obtained by using the
 
 \end_inset
 
+where 
+\begin_inset Formula $u$
+\end_inset
 
-\end_layout
+ and 
+\begin_inset Formula $v$
+\end_inset
 
-\begin_layout Standard
-This gives us a single global estimate 
+ are the two functions on a global coordinate system.
+ This gives us a single global estimate 
 \begin_inset Formula $\varepsilon$
 \end_inset
 
@@ -736,30 +741,63 @@ If we discretize the domain
 \begin_inset Formula $\Omega$
 \end_inset
 
- into finite elements 
-\begin_inset Formula $\Omega_{e}$
+ into an appropriate set of finite elements 
+\begin_inset Formula $\{\Omega_{e}\}_{e=1}^{n_{el}}$
 \end_inset
 
-, the above integral can be broken up into a sum over local contributions
- on each element.
- For efficiency, each contribution can be integrated over a reference element
- 
+, we can compute the above integral as a sum over local contributions on
+ each element.
+ For efficiency purposes, each local contribution can in turn be integrated
+ over a reference element 
 \begin_inset Formula $\hat{\Omega}_{e}$
 \end_inset
 
- defined on a standard coordinate system.
- 
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
-\varepsilon^{2} & = & \sum_{e=1}^{\mathrm{nel}}\varepsilon_{e}^{2}\\
- & = & \sum_{e=1}^{\mathrm{nel}}\int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\\
- & = & \sum_{e=1}^{\mathrm{nel}}\int_{\hat{\Omega}_{e}}||u(\vec{\xi})-v(\vec{\xi})||^{2}J(\vec{\xi})d\vec{\xi}\end{eqnarray*}
+\varepsilon^{2} & = & \sum_{e=1}^{\mathrm{n_{el}}}\varepsilon_{e}^{2}\\
+ & = & \sum_{e=1}^{\mathrm{n_{el}}}\int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\\
+ & = & \sum_{e=1}^{\mathrm{n_{el}}}\int_{\hat{\Omega}_{e}}||u(\vec{\xi})-v(\vec{\xi})||^{2}J_{e}(\vec{\xi})d\vec{\xi}\end{eqnarray*}
 
 \end_inset
 
+where the additional factor 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
 
+\begin_inset Formula $J_{e}(\vec{\xi})$
+\end_inset
+
+ is the Jacobian determinant of the reference map 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+
+\begin_inset Formula $\vec{x}_{e}(\vec{\xi})$
+\end_inset
+
+ which describes how the physical element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ maps to its corresponding reference element 
+\begin_inset Formula $\hat{\Omega}_{e}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -772,7 +810,7 @@ In general, we won't be able to integrate each local contribution exactly
 \begin_inset Formula $v$
 \end_inset
 
- may have a representation that is incompatible with the local domain 
+ may have an incompatible representation with the local domain 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
@@ -796,7 +834,11 @@ Global Error
 \end_layout
 
 \begin_layout Standard
-Assuming we apply the same quadrature rule, with weights 
+Assuming we apply the same quadrature rule on every element, with 
+\begin_inset Formula $n_{Q}$
+\end_inset
+
+ weights 
 \begin_inset Formula $w_{q}$
 \end_inset
 
@@ -804,26 +846,26 @@ Assuming we apply the same quadrature rule, with weights
 \begin_inset Formula $\vec{\xi}_{q}$
 \end_inset
 
-, on every element,
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{e}^{2} & = & \sum_{q=1}^{\mathrm{nq}}w_{q}||\hat{\rho}(\vec{x}_{q})||^{2}\\
- & = & \sum_{q=1}^{\mathrm{nq}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})\end{eqnarray*}
-
+ for 
+\begin_inset Formula $q=1,\ldots,n_{Q}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||\hat{\rho}(\vec{x}_{q})||^{2}\\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
 thus we arrive at the final form
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
-\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{nel}}\sum_{q=1}^{\mathrm{nq}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})}\end{eqnarray*}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{q}}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})}\end{eqnarray*}
 
 \end_inset
 
@@ -854,7 +896,19 @@ Comparing Residuals
 \begin_layout Standard
 For comparing errors of different solutions, you can normalize the global
  error by the norm of the exact solution.
- This normalized error is given by
+ For a family of solutions 
+\begin_inset Formula $u^{h}(\vec{x})$
+\end_inset
+
+, parametrized by the the maximum element size 
+\begin_inset Formula $h$
+\end_inset
+
+ of the underlying discretization, and an exact solution 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+, this normalized error is given by
 \end_layout
 
 \begin_layout Standard
@@ -871,14 +925,6 @@ For comparing errors of different solutions, you can normalize the global
 This normalized error can be interpreted as the average error in the physical
  quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
  error.
- The norm in the denominator can be computed in Cigma by comparing against
- the built-in zero function (see Section 
-\begin_inset LatexCommand ref
-reference "sub:Comparing-against-a"
-
-\end_inset
-
-).
 \end_layout
 
 \begin_layout Standard
@@ -1804,9 +1850,9 @@ The current version of Cigma only supports VTK unstructured grid datasets
 Note that while you typically provide a path (or name) for every dataset,
  this is not necessary when specifying a VTK mesh, since this data is taken
  from the special Points and Cells arrays, which you cannot rename.
- However, you will still need to provide a name when referring to the shape
- function coefficients, which are assumed to be stored as Point Data in
- the input VTK file.
+ However, you will still need to provide a name when referring to the field
+ coefficients, which are assumed to be stored as Point Data in the input
+ VTK file.
 \end_layout
 
 \begin_layout Standard
