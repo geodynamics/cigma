@@ -19,6 +19,8 @@ Possible signatures
     compare(FE_Field, QuadraturePoints)
     compare(FE_Field, PointField)
 
+Test disloc3d function
+
 Detect --version in CommandSet::main(), like we do with --help
 Add --debug flag to Command class, to enable debug messages
 
@@ -73,6 +75,7 @@ generalize VtkReader
 work on TestHdfReader and TestHdfWriter
 delete VtkUgReader (replaced by VtkReader)
 delete VtkUgSimpleWriter (replaced by VtkWriter)
+
 
 vtkls
 vtktoh5
@@ -169,7 +172,10 @@ Create Cell::VtkShape enumeration   (accounting for quadratic elements?)
 
 ---normal---------------------------------------------------------------------
 
+Move utilities to their own directory
+
 Python wrappers around the relevant C++ code
+    (use freeze.py and load from string to avoid PYTHONPATH problems)
 
 Work on FiatProxy (use as namespace for python module)
 Work on FiatQuadrature class (uses FiatProxy class to communicate with fiat python module)

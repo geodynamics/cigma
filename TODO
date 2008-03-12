@@ -1,5 +1,5 @@
 ---high-----------------------------------------------------------------------
-Re-enable the cigma buildbot -- done
+Check all usage messages and make sure they're complete
 Write test case for Quad::jacobian() function (interpolation works fine in TestQuad.cpp...)
 Debug the crash in ~QuadraturePoints() destructor  -- (who is managing the data?)
 Switch to boost's smart_ptr, shared_ptr, weak_ptr for managing most array allocs/refs
