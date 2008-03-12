@@ -3,8 +3,9 @@
 #include <cassert>
 
 #include "CubeCmd.h"
-#include "VtkWriter.h"
 #include "HdfWriter.h"
+#include "TextWriter.h"
+#include "VtkWriter.h"
 #include "StringUtils.h"
 
 using namespace std;
@@ -30,7 +31,7 @@ cigma::CubeCmd::~CubeCmd()
 
 void cigma::CubeCmd::setupOptions(AnyOption *opt)
 {
-    std::cout << "Calling cigma::CubeCmd::setupOptions()" << std::endl;
+    //cout << "Calling cigma::CubeCmd::setupOptions()" << endl;
     assert(opt != 0);
 
     /* setup usage */
@@ -42,8 +43,8 @@ void cigma::CubeCmd::setupOptions(AnyOption *opt)
     opt->addUsage("    --hex8           Create hexahedral partition (default)");
     opt->addUsage("    --tet4           Create tetrahedral partition");
     opt->addUsage("    --output         Target output file");
-    opt->addUsage("    --coords         Target path for coordinates (.h5 only)");
-    opt->addUsage("    --connect        Target path for connectivity (.h5 only)");
+    opt->addUsage("    --coords-path    Target path for coordinates (.h5 only)");
+    opt->addUsage("    --connect-path   Target path for connectivity (.h5 only)");
 
     /* setup flags and options */
 
@@ -79,6 +80,11 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     char *in;
     string inputstr;
 
+
+    // read verbose flag
+    verbose = opt->getFlag("verbose");
+
+
     // read L
     in = opt->getValue('x');
     if (in == 0)
@@ -108,7 +114,9 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     }
     inputstr = in;
     string_to_int(inputstr, N);
-    
+
+
+
     // read output file
     in = opt->getValue("output");
     if (in == 0)
@@ -188,10 +196,6 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     assert(hexFlag != tetFlag);
 
 
-    // read verbose flag
-    verbose = opt->getFlag("verbose");
-
-
     // initialize mesh object
     mesh = new cigma::CubeMeshPart();
     mesh->calc_coordinates(L,M,N);
@@ -236,18 +240,17 @@ int cigma::CubeCmd::run()
         }
     }
 
+    int ierr;
 
     if (writer->getType() == Writer::HDF_WRITER)
     {
         cout << "Creating file " << output_filename << endl;
 
-        int ierr;
-
         HdfWriter *hdfWriter = static_cast<HdfWriter*>(writer);
         ierr = hdfWriter->open(output_filename);
         if (ierr < 0)
         {
-            cerr << "Error: Could not open HDF5 file " << output_filename << endl;
+            cerr << "Error: Could not open (or create) the HDF5 file " << output_filename << endl;
             exit(1);
         }
 
@@ -267,12 +270,34 @@ int cigma::CubeCmd::run()
 
         hdfWriter->close();
     }
+    else if (writer->getType() == Writer::TXT_WRITER)
+    {
+        cout << "Creating file " << output_filename << endl;
+
+        TextWriter *txtWriter = static_cast<TextWriter*>(writer);
+        ierr = txtWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output text file " << output_filename << endl;
+            exit(1);
+        }
+
+        txtWriter->write_coordinates(mesh->coords, mesh->nno, mesh->nsd);
+        txtWriter->write_connectivity(mesh->connect, mesh->nel, mesh->ndofs);
+        txtWriter->close();
+    }
     else if (writer->getType() == Writer::VTK_WRITER)
     {
         cout << "Creating file " << output_filename << endl;
 
         VtkWriter *vtkWriter = static_cast<VtkWriter*>(writer);
-        vtkWriter->open(output_filename);
+        ierr = vtkWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output VTK file " << output_filename << endl;
+            exit(1);
+        }
+
         vtkWriter->write_header();
         vtkWriter->write_points(mesh->coords, mesh->nno, mesh->nsd);
         vtkWriter->write_cells(mesh->connect, mesh->nel, mesh->ndofs);
