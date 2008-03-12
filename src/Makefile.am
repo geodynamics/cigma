@@ -13,8 +13,6 @@ cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLU
 cigma_LDFLAGS = -I$(srcdir)/h5io -I$(srcdir)/ann/include
 cigma_LDADD = $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) libcigma.a libh5io.a libann.a
 
-#vtkls_SOURCES = vtkls.cpp
-
 
 ##############################################################################
 
