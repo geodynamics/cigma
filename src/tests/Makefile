@@ -34,6 +34,7 @@ TESTOBJS = \
 	TestAnn.o \
 	TestAnnLocator.o \
 	TestHdfReader.o \
+	TestZeroFunction.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)
