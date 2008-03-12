@@ -77,6 +77,8 @@ libcigma_a_SOURCES = \
 	CubeMeshPart.h \
 	DofHandler.cpp \
 	DofHandler.h \
+	ExtractCmd.h \
+	ExtractCmd.cpp \
 	FE.cpp \
 	FE_Field.cpp \
 	FE_Field.h \
