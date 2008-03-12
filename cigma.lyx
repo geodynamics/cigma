@@ -199,25 +199,15 @@ The current version of Cigma is intended for the calculation of
  residuals for finite element models.
  This software was designed for performing the following three main tasks:
  (1) error analysis, (2) benchmarking, and (3) code verification.
- 
-\end_layout
-
-\begin_layout Standard
-In error analysis, Cigma can calculate a global measure of the error between
+ In error analysis, Cigma can calculate a global measure of the error between
  two solutions by performing an integration over a discretized version of
  the common domain.
  This comparison can take place even when the underlying discretizations
  do not overlap.
-\end_layout
-
-\begin_layout Standard
-In benchmarking, Cigma can help the geodynamics community agree on a standard
+ In benchmarking, Cigma can help the geodynamics community agree on a standard
  solution to specific problems by facilitating the process of comparing
  different numerical codes against each other.
-\end_layout
-
-\begin_layout Standard
-Lastly, as an automated tool, Cigma can help application developers create
+ Lastly, as an automated tool, Cigma can help application developers create
  regression tests to ensure that software changes do not affect the consistency
  of the results.
 \end_layout
@@ -895,7 +885,6 @@ reference "sub:Comparing-against-a"
 Even if the exact solution is not currently known, this normalized error
  may be used to test the accuracy between two or more numerical solutions,
  defined on successively refined meshes.
- 
 \end_layout
 
 \begin_layout Chapter
@@ -1541,51 +1530,6 @@ Another way of checking the accuracy of a solution is by rerunning the same
 \end_layout
 
 \begin_layout Standard
-To demonstrate the convergence in the FEM method, in this example we will
- compare the error incurred in representing a continuous function by finite
- elements.
- 
-\end_layout
-
-\begin_layout Standard
-You can change the function by modifying the 
-\family typewriter
-TestFunction.cpp
-\family default
- source file.
- Once you recompile cigma, you will be able to refer to it by the name 
-\family typewriter
-\bar under
-test
-\family default
-\bar default
- when using the 
-\family typewriter
-cigma eval
-\family default
- command.
-\end_layout
-
-\begin_layout Standard
-In the test directory you will find a series of successively refined meshes
- that you can use for testing.
- The original mesh files were created with the Gmsh, a three-dimensional
- finite element mesh generator, but you will be accessing the HDF5.
-\end_layout
-
-\begin_layout Standard
-In the figure (TODO: regenerate plot), we show the log of the 
-\begin_inset Formula $L_{2}$
-\end_inset
-
- error norm as a function of the log of the element size 
-\begin_inset Formula $h$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
 As can be seen from these results, the log of the error varies linearly
  with element size and the slope depends on the order of the element.
  Denoting the slope by 
@@ -1632,7 +1576,11 @@ Different Element Types
 \end_layout
 
 \begin_layout Standard
-Different codes
+Here we compare
+\end_layout
+
+\begin_layout Section
+Different FEM Codes
 \end_layout
 
 \begin_layout Chapter
