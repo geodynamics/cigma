@@ -218,16 +218,6 @@ int cigma::ExtractCmd::run()
     }
 
 
-    /*
-    std::cout << "Creating file " << output_filename << std::endl;
-    VtkWriter *writer = new VtkWriter();
-    writer->open(output_filename);
-    writer->write_header();
-    writer->write_points(global_points, nel*nq, nsd);
-    writer->close(); */
-    //delete writer;
-
-
     int ierr;
 
     cout << "Creating file " << output_filename << endl;
