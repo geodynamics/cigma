@@ -8,7 +8,7 @@
 #include "ListCmd.h"
 //#include "ExtractCmd.h"
 //#include "EvalCmd.h"
-//#include "CubeCmd.h"
+#include "CubeCmd.h"
 
 cigma::CommandSet::CommandSet()
 {
@@ -33,8 +33,8 @@ void cigma::CommandSet::initialize()
     addCommand(help);
     addCommand(new CompareCmd());
     addCommand(new ListCmd());
+    addCommand(new CubeCmd());
     //addCommand(new ExtractCmd());
-    //addCommand(new CubeCmd());
     //addCommand(new EvalCmd());
     //addCommand(new SkelCmd());
 

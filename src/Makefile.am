@@ -71,6 +71,8 @@ libcigma_a_SOURCES = \
 	CompareCmd.cpp \
 	CompareCmd.h \
 	convert.h \
+	CubeCmd.h \
+	CubeCmd.cpp \
 	CubeMeshPart.cpp \
 	CubeMeshPart.h \
 	DofHandler.cpp \
@@ -140,8 +142,6 @@ libcigma_a_SOURCES = \
 	VtkReader.h \
 	VtkXmlReader.cpp \
 	VtkXmlReader.h \
-	VtkUgMeshPart.cpp \
-	VtkUgMeshPart.h \
 	VtkWriter.cpp \
 	VtkWriter.h \
 	Writer.cpp \
