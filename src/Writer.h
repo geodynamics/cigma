@@ -29,7 +29,7 @@ public:
 
 public:
     virtual WriterType getType() = 0;
-    virtual void open(std::string filename) = 0;
+    virtual int open(std::string filename) = 0;
     virtual void close() = 0;
 
 public:

@@ -15,11 +15,15 @@ cigma::VtkWriter::~VtkWriter()
 
 // ---------------------------------------------------------------------------
 
-void cigma::VtkWriter::
+int cigma::VtkWriter::
 open(std::string filename)
 {
     fp = fopen(filename.c_str(), "w");
-    assert(fp != NULL);
+    if (fp == NULL)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 void cigma::VtkWriter::

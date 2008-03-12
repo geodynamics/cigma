@@ -20,7 +20,7 @@ public:
 
 public:
     WriterType getType() { return VTK_WRITER; }
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
 
 public:

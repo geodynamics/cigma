@@ -15,7 +15,7 @@ cigma::TextWriter::~TextWriter()
 
 // ---------------------------------------------------------------------------
 
-void cigma::TextWriter::open(std::string filename)
+int cigma::TextWriter::open(std::string filename)
 {
     fp = NULL;
 
@@ -28,7 +28,11 @@ void cigma::TextWriter::open(std::string filename)
         fp = stdout;
     }
 
-    assert(fp != NULL); // XXX: use return value instead of assert
+    if (fp == NULL)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 void cigma::TextWriter::close()

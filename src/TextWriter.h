@@ -21,7 +21,7 @@ public:
 
 public:
     WriterType getType() { return TXT_WRITER; }
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
 
 public:
