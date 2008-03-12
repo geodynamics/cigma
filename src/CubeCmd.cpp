@@ -1,14 +1,24 @@
 #include <iostream>
+#include <string>
 #include <cassert>
+
 #include "CubeCmd.h"
+#include "VtkWriter.h"
+#include "HdfWriter.h"
 #include "StringUtils.h"
-#include "VtkUgSimpleWriter.h"
+
+using namespace std;
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
 cigma::CubeCmd::CubeCmd()
 {
     name = "cube";
+
+    L = M = N = 0;
+    mesh = 0;
+    writer = 0;
 }
 
 cigma::CubeCmd::~CubeCmd()
@@ -26,27 +36,37 @@ void cigma::CubeCmd::setupOptions(AnyOption *opt)
     /* setup usage */
     opt->addUsage("Usage:");
     opt->addUsage("  cigma cube [options]");
-    opt->addUsage("    -L               Partition elements along x-dimension");
-    opt->addUsage("    -M               Partition elements along y-dimension");
-    opt->addUsage("    -N               Partition elements along z-dimension");
-    opt->addUsage("    -o  --output     Filename for mesh output file");
-    opt->addUsage("        --hex        Create hexahedral partition (default)");
-    opt->addUsage("        --tet        Create tetrahedral partition");
+    opt->addUsage("    -x               Number of elements along x-dimension");
+    opt->addUsage("    -y               Number of elements along y-dimension");
+    opt->addUsage("    -z               Number of elements along z-dimension");
+    opt->addUsage("    --hex8           Create hexahedral partition (default)");
+    opt->addUsage("    --tet4           Create tetrahedral partition");
+    opt->addUsage("    --output         Target output file");
+    opt->addUsage("    --coords         Target path for coordinates (.h5 only)");
+    opt->addUsage("    --connect        Target path for connectivity (.h5 only)");
 
     /* setup flags and options */
 
     opt->setFlag("help", 'h');
-    opt->setFlag("hex");
-    opt->setFlag("tet");
-    opt->setOption('L');
-    opt->setOption('M');
-    opt->setOption('N');
-    opt->setOption("output", 'o');
+    opt->setFlag("verbose", 'v');
+    
+    opt->setFlag("hex8");
+    opt->setFlag("tet4");
+    
+    opt->setOption('x');
+    opt->setOption('y');
+    opt->setOption('z');
+
+    opt->setOption("output");
+    opt->setOption("coords-path");
+    opt->setOption("connect-path");
+
 }
+
 
 void cigma::CubeCmd::configure(AnyOption *opt)
 {
-    std::cout << "Calling cigma::CubeCmd::configure()" << std::endl;
+    //std::cout << "Calling cigma::CubeCmd::configure()" << std::endl;
     assert(opt != 0);
 
     if (!opt->hasOptions())
@@ -57,33 +77,33 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     }
 
     char *in;
-    std::string inputstr;
+    string inputstr;
 
     // read L
-    in = opt->getValue('L');
+    in = opt->getValue('x');
     if (in == 0)
     {
-        std::cerr << "cube: Please specify the option -L" << std::endl;
+        cerr << "cube: Please specify the option -x" << endl;
         exit(1);
     }
     inputstr = in;
     string_to_int(inputstr, L);
 
     // read M
-    in = opt->getValue('M');
+    in = opt->getValue('y');
     if (in == 0)
     {
-        std::cerr << "cube: Please specify the option -M" << std::endl;
+        cerr << "cube: Please specify the option -y" << endl;
         exit(1);
     }
     inputstr = in;
     string_to_int(inputstr, M);
 
     // read N
-    in = opt->getValue('N');
+    in = opt->getValue('z');
     if (in == 0)
     {
-        std::cerr << "cube: Please specify the option -N" << std::endl;
+        cerr << "cube: Please specify the option -z" << endl;
         exit(1);
     }
     inputstr = in;
@@ -93,18 +113,72 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     in = opt->getValue("output");
     if (in == 0)
     {
-        std::cerr << "cube: Please specify the option --output" << std::endl;
+        cerr << "cube: Please specify the option --output" << endl;
         exit(1);
     }
     output_filename = in;
 
+
+    // determine the extension and instantiate appropriate writer object
+    string root, ext;
+    path_splitext(output_filename, root, ext);
+    new_writer(&writer, ext);
+    if (writer == 0)
+    {
+        cerr << "cube: File with bad extension (" << ext << ")" << endl;
+        exit(1);
+    }
+
+
+    // read target path for coordinates array
+    in = opt->getValue("coords-path");
+    if (in == 0)
+    {
+        if (writer->getType() == Writer::HDF_WRITER)
+        {
+            coords_path = "/coordinates";
+        }
+    }
+    else
+    {
+        coords_path = in;
+    }
+    if ((coords_path != "") && (writer->getType() != Writer::HDF_WRITER))
+    {
+        cerr << "cube: Can only use --coords-path "
+             << "when writing to an HDF5 (.h5) file" << endl;
+        exit(1);
+
+    }
+
+    // read target path for connectivity array
+    in = opt->getValue("connect-path");
+    if (in == 0)
+    {
+        if (writer->getType() == Writer::HDF_WRITER)
+        {
+            connect_path = "/connectivity";
+        }
+    }
+    else
+    {
+        connect_path = in;
+    }
+    if ((connect_path != "") && (writer->getType() != Writer::HDF_WRITER))
+    {
+        cerr << "cube: Can only use --connect-path "
+             << "when writing to an HDF5 (.h5) file" << endl;
+        exit(1);
+    }
+
+
     // read tet/hex flags
-    bool hexFlag = opt->getFlag("hex");
-    bool tetFlag = opt->getFlag("tet");
+    bool hexFlag = opt->getFlag("hex8");
+    bool tetFlag = opt->getFlag("tet4");
     if (hexFlag && tetFlag)
     {
         std::cerr << "cube: Please specify only one of the flags "
-                  << "--hex or --tet" << std::endl;
+                  << "--hex8 or --tet8" << std::endl;
         exit(1);
     }
     if (!tetFlag)
@@ -114,44 +188,108 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     assert(hexFlag != tetFlag);
 
 
-    // initialize mesh
+    // read verbose flag
+    verbose = opt->getFlag("verbose");
+
+
+    // initialize mesh object
     mesh = new cigma::CubeMeshPart();
     mesh->calc_coordinates(L,M,N);
     if (hexFlag) { mesh->calc_hex8_connectivity(); }
     if (tetFlag) { mesh->calc_tet4_connectivity(); }
 }
 
+
 int cigma::CubeCmd::run()
 {
-    std::cout << "Calling cigma::CubeCmd::run()" << std::endl;
-    std::cout << "L, M, N = (" << L << ", " << M << ", " << N << ")" << std::endl;
-    std::cout << "mesh->nno = " << mesh->nno << std::endl;
-    std::cout << "mesh->nel = " << mesh->nel << std::endl;
-    std::cout << "mesh->ndofs = " << mesh->ndofs << std::endl;
+    //std::cout << "Calling cigma::CubeCmd::run()" << std::endl;
+    assert(mesh != 0);
+    assert(writer != 0);
 
-    int e = 0;
-    double pts[2][3] = {{0.5, 0.5, 0.5},
-                        {1.0, 1.0, 1.0}};
-
-    bool found = mesh->find_cell(pts[0], &e);
-    if (!found)
+    if (verbose)
     {
-        std::cout << "Could not find pts[0] = {0.5,0.5,0.5}!" << std::endl;
+        std::cout << "L, M, N = (" << L << ", " << M << ", " << N << ")" << std::endl;
+        std::cout << "mesh->nno = " << mesh->nno << std::endl;
+        std::cout << "mesh->nel = " << mesh->nel << std::endl;
+        std::cout << "mesh->ndofs = " << mesh->ndofs << std::endl;
+    }
+
+
+    if (verbose)
+    {
+        int e = 0;
+        double pts[2][3] = {{0.5, 0.5, 0.5},
+                            {1.0, 1.0, 1.0}};
+
+        cout << "Looking for centroid..." << endl;
+        bool found = mesh->find_cell(pts[0], &e);
+
+        if (!found)
+        {
+            cerr << "Error: Could not find cell "
+                 << "containing centroid (0.5,0.5,0.5)" << endl;
+            exit(1);
+        }
+        else
+        {
+            cout << "Found centroid in cell " << e << endl;
+        }
+    }
+
+
+    if (writer->getType() == Writer::HDF_WRITER)
+    {
+        cout << "Creating file " << output_filename << endl;
+
+        int ierr;
+
+        HdfWriter *hdfWriter = static_cast<HdfWriter*>(writer);
+        ierr = hdfWriter->open(output_filename);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not open HDF5 file " << output_filename << endl;
+            exit(1);
+        }
+
+        ierr = hdfWriter->write_coordinates(coords_path.c_str(), mesh->coords, mesh->nno, mesh->nsd);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not write dataset " << coords_path << endl;
+            exit(1);
+        }
+
+        ierr = hdfWriter->write_connectivity(connect_path.c_str(), mesh->connect, mesh->nel, mesh->ndofs);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not write dataset " << connect_path << endl;
+            exit(1);
+        }
+
+        hdfWriter->close();
+    }
+    else if (writer->getType() == Writer::VTK_WRITER)
+    {
+        cout << "Creating file " << output_filename << endl;
+
+        VtkWriter *vtkWriter = static_cast<VtkWriter*>(writer);
+        vtkWriter->open(output_filename);
+        vtkWriter->write_header();
+        vtkWriter->write_points(mesh->coords, mesh->nno, mesh->nsd);
+        vtkWriter->write_cells(mesh->connect, mesh->nel, mesh->ndofs);
+        vtkWriter->write_cell_types(mesh->nsd, mesh->nel, mesh->ndofs);
+        vtkWriter->close();
     }
     else
     {
-        std::cout << "Found point in cell " << e << std::endl;
+        cerr << "cube: File with bad extension?" << endl;
+        return 1;
     }
 
-    std::cout << "Creating file " << output_filename << std::endl;
-    VtkUgSimpleWriter *writer = new VtkUgSimpleWriter();
-    writer->open(output_filename);
-    writer->write_header();
-    writer->write_points(mesh->coords, mesh->nno, mesh->nsd);
-    writer->write_cells(mesh->connect, mesh->nel, mesh->ndofs);
-    writer->write_cell_types(mesh->nsd, mesh->nel, mesh->ndofs);
-    writer->close();
-    //delete writer;
+
+    if (writer != 0)
+    {
+        delete writer;
+    }
 
     return 0;
 }

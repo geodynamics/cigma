@@ -3,6 +3,7 @@
 
 #include "Command.h"
 #include "CubeMeshPart.h"
+#include "Writer.h"
 
 namespace cigma
 {
@@ -21,9 +22,16 @@ public:
     int run();
 
 public:
+    bool verbose;
+    std::string output_filename;
+    std::string coords_path;
+    std::string connect_path;
+
+public:
     int L, M, N;
     CubeMeshPart *mesh;
-    std::string output_filename;
+    Writer *writer;
+
 };
 
 #endif
