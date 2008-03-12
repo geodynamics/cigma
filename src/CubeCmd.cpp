@@ -225,18 +225,18 @@ int cigma::CubeCmd::run()
         double pts[2][3] = {{0.5, 0.5, 0.5},
                             {1.0, 1.0, 1.0}};
 
-        cout << "Looking for centroid..." << endl;
+        cout << "cube test: Looking for centroid..." << endl;
         bool found = mesh->find_cell(pts[0], &e);
 
         if (!found)
         {
-            cerr << "Error: Could not find cell "
+            cerr << "cube test error: Could not find cell "
                  << "containing centroid (0.5,0.5,0.5)" << endl;
             exit(1);
         }
         else
         {
-            cout << "Found centroid in cell " << e << endl;
+            cout << "cube test: Found centroid in cell " << e << endl;
         }
     }
 
