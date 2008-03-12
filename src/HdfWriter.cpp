@@ -4,16 +4,17 @@
 #include "h5io.h"
 
 using namespace std;
+using namespace cigma;
 
 
 // ---------------------------------------------------------------------------
 
-cigma::HdfWriter::HdfWriter()
+HdfWriter::HdfWriter()
 {
     file_id = -1;
 }
 
-cigma::HdfWriter::~HdfWriter()
+HdfWriter::~HdfWriter()
 {
     close();
 }
@@ -21,25 +22,43 @@ cigma::HdfWriter::~HdfWriter()
 
 // ---------------------------------------------------------------------------
 
-void cigma::HdfWriter::
-open(std::string filename)
+int HdfWriter::open(string filename)
 {
-    file_id = h5io_file_open(filename.c_str(), "rw");
+    file_id = h5io_file_open(filename.c_str(), "rw+");
+
     if (file_id < 0)
     {
-        // XXX: throw exception
+        return -1;
     }
+    return 0;
 }
 
-void cigma::HdfWriter::
-close()
+void HdfWriter::close()
 {
+    herr_t status;
     if (file_id != -1)
     {
-        H5Fclose(file_id);
+        status = H5Fclose(file_id);
     }
+    file_id = -1;
 }
 
+
+// ---------------------------------------------------------------------------
+
+int HdfWriter::write_coordinates(const char *loc, double *coordinates, int nno, int nsd)
+{
+    int ierr;
+    ierr = h5io_dset_write2(file_id, loc, "coordinates array", H5T_NATIVE_DOUBLE, coordinates, nno, nsd);
+    return ierr;
+}
+
+int HdfWriter::write_connectivity(const char *loc, int *connectivity, int nel, int ndofs)
+{
+    int ierr;
+    ierr = h5io_dset_write2(file_id, loc, "connectivity array", H5T_NATIVE_INT, connectivity, nel, ndofs);
+    return ierr;
+}
 
 // ---------------------------------------------------------------------------
 

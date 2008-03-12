@@ -19,8 +19,12 @@ public:
 
 public:
     WriterType getType() { return HDF_WRITER; }
-    void open(std::string filename);
+    int open(std::string filename);
     void close();
+
+public:
+    int write_coordinates(const char *loc, double *coordinates, int nno, int nsd);
+    int write_connectivity(const char *loc, int *connectivity, int nel, int ndofs);
 
 public:
     void write_field(FE_Field *field);
