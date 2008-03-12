@@ -2,8 +2,13 @@
 #define __EVAL_CMD_H__
 
 #include "Command.h"
-#include "FE_Field.h"
+
+#include "Field.h"
 #include "Points.h"
+
+//#include "FieldIO.h"
+//#include "PointsIO.h"
+
 
 namespace cigma
 {
@@ -27,9 +32,22 @@ public:
     int run();
 
 public:
-    FE_Field *field;
+    FieldIO fieldIO;
+
+    Reader *points_reader;
+    std::string points_loc;
+    std::string points_file;
+
+    Writer *values_writer;
+    std::string values_loc;
+    std::string values_file;
+
+    bool verbose;
+
+public:
+    Field *field;
     Points *points;
-    std::string output_filename;
+    Points *values;
 };
 
 #endif

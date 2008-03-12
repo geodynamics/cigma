@@ -2,19 +2,28 @@
 #include <cassert>
 #include "EvalCmd.h"
 #include "StringUtils.h"
+
+#include "HdfReader.h"
 #include "VtkReader.h"
+#include "TextReader.h"
+
+#include "HdfWriter.h"
 #include "VtkWriter.h"
+#include "TextWriter.h"
+
 #include "MeshPart.h"
-#include "Tet.h"
-#include "Hex.h"
+
+using namespace std;
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
 cigma::EvalCmd::EvalCmd()
 {
     name = "eval";
-    points = 0;
     field = 0;
+    points = 0;
+    values = 0;
 }
 
 cigma::EvalCmd::~EvalCmd()
@@ -25,122 +34,114 @@ cigma::EvalCmd::~EvalCmd()
 
 void cigma::EvalCmd::setupOptions(AnyOption *opt)
 {
-    std::cout << "Calling cigma::EvalCmd::setupOptions()" << std::endl;
+    //cout << "Calling cigma::EvalCmd::setupOptions()" << endl;
     assert(opt != 0);
 
     /* setup usage */
     opt->addUsage("Usage:");
     opt->addUsage("");
     opt->addUsage("   cigma eval [args ...]");
-    opt->addUsage("       --field       Field path");
-    opt->addUsage("       --points      List of points");
-    opt->addUsage("       --output      Output file");
+    opt->addUsage("       --points      Input points to evaluate on");
+    opt->addUsage("       --field       Input field to evaluate");
+    opt->addUsage("       --values      Target path for result of evaluations");
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
+    opt->setFlag("verbose", 'v');
 
     opt->setOption("field");
+    opt->setOption("field-mesh");
+    opt->setOption("field-mesh-coordinates");
+    opt->setOption("field-mesh-connectivity");
+
     opt->setOption("points");
-    opt->setOption("output");
+    opt->setOption("values");
     return;
 }
 
+
 void cigma::EvalCmd::configure(AnyOption *opt)
 {
-    using namespace cigma;
+    //cout << "Calling cigma::EvalCmd::configure()" << endl;
+    assert(opt != 0);
 
-    std::cout << "Calling cigma::EvalCmd::configure()" << std::endl;
-
-    std::string input, location, inputfile, ext;
-    std::string pointsfile;
+    string inputstr;
     char *in;
 
-    in = opt->getValue("field");
+
+    // read verbose flag
+    verbose = opt->getFlag("verbose");
+
+
+    /* determine the output values path */
+    in = opt->getValue("values");
     if (in == 0)
     {
-        std::cerr << "eval: Please specify the option --field" << std::endl;
+        cerr << "eval: Please specify the output option --values" << endl;
         exit(1);
     }
-    input = in;
-    parse_dataset_path(input, location, inputfile, ext);
-    std::cout << "field location = " << location << std::endl;
-    std::cout << "field inputfile = " << inputfile << std::endl;
-    std::cout << "field extension = " << ext << std::endl;
+    inputstr = in;
 
+    // determine the extension and instantiate the appropriate writer object
+    string values_ext;
+    parse_dataset_path(inputstr, values_loc, values_file, values_ext);
+    new_writer(&values_writer, values_ext);
+    if (values_writer == 0)
+    {
+        cerr << "eval: Specified a bad extension (" << values_ext << ") for "
+             << "output file" << values_file << endl;
+        exit(1);
+    }
+    if ((values_loc == "") && (values_writer->getType() == Writer::HDF_WRITER))
+    {
+        values_loc = "/values";
+    }
+
+
+    /* determine the input points path */
     in = opt->getValue("points");
     if (in == 0)
     {
-        std::cerr << "eval: Please specify the option --points" << std::endl;
+        cerr << "eval: Please specify the input option --points" << endl;
         exit(1);
     }
-    pointsfile = in;
+    inputstr = in;
 
-    in = opt->getValue("output");
-    if (in == 0)
+    // determine the extension and instantiate the appropriate reader object
+    string points_ext;
+    parse_dataset_path(inputstr, points_loc, points_file, points_ext);
+    new_reader(&points_reader, points_ext);
+    if (points_reader == 0)
     {
-        std::cerr << "eval: Please specify the option --output" << std::endl;
+        cerr << "eval: Specified a bad extension (" << points_ext << ") for "
+             << "input file" << points_file << endl;
         exit(1);
     }
-    output_filename = in;
-
-    int nno, nsd;
-    int nel, ndofs;
-    double *coords;
-    int *connect;
-    int dofs_nno, dofs_valdim;
-    double *dofs;
-
-    VtkReader *reader = new VtkReader();
-    reader->open(inputfile);
-    reader->get_coordinates(&coords, &nno, &nsd);
-    reader->get_connectivity(&connect, &nel, &ndofs);
-    reader->get_scalar_point_data(location.c_str(), &dofs, &dofs_nno, &dofs_valdim);
-
-    field = new FE_Field();
-    field->dim = nsd;
-    field->rank = dofs_valdim;
-    field->meshPart = new MeshPart();
-    field->meshPart->set_coordinates(coords, nno, nsd);
-    field->meshPart->set_connectivity(connect, nel, ndofs);
-
-    switch (ndofs)
+    if ((points_loc == "") && (points_reader->getType() == Reader::HDF_READER))
     {
-    case 4:
-        field->fe = new FE();
-        field->fe->cell = new Tet();
-        break;
-
-    case 8:
-        field->fe = new FE();
-        field->fe->cell = new Hex();
-        break;
+        points_loc = "/points";
     }
-    assert(field->fe != 0);
-    assert(field->fe->cell != 0);
-    field->meshPart->cell = field->fe->cell;
-
-    field->dofHandler = new DofHandler();
-    field->dofHandler->meshPart = field->meshPart;
-    field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
 
 
-    int pts_nno, pts_nsd;
-    double *pts_coords;
-
-    VtkReader *pointsreader = new VtkReader();
-    pointsreader->open(pointsfile);
-    pointsreader->get_coordinates(&pts_coords, &pts_nno, &pts_nsd);
-    points = new Points();
-    points->set_data(pts_coords, pts_nno, pts_nsd);
+    /* determine the input field */
+    load_args(opt, &fieldIO, "field");
+    validate_args(&fieldIO, "eval");
+    fieldIO.load();
+    field = fieldIO.field;
+    assert(field != 0);
+    cout << "field path = " << fieldIO.field_path << endl;
+    cout << "field rank = " << field->n_rank() << endl;
+    //cout << (*field) << endl;
 
     return;
 }
 
 int cigma::EvalCmd::run()
 {
-    std::cout << "Calling cigma::EvalCmd::run()" << std::endl;
+    //cout << "Calling cigma::EvalCmd::run()" << endl;
     assert(field != 0);
     assert(points != 0);
+    assert(values != 0);
     assert(field->n_dim() == points->n_dim());
 
     // indices
@@ -153,6 +154,16 @@ int cigma::EvalCmd::run()
     // data
     double *phi = new double[npts * valdim];
 
+
+    for (i = 0; i < npts; i++)
+    {
+        double *globalPoint = (*points)[i];
+        field->eval(globalPoint, &phi[valdim*i]);
+    }
+
+
+
+    /*
     for (i = 0; i < npts; i++)
     {
         double *globalPoint = (*points)[i];
@@ -168,6 +179,66 @@ int cigma::EvalCmd::run()
     writer->write_point_data("values", phi, npts, valdim);
     writer->close();
     //delete writer;
+    */
+
+
+
+    int ierr;
+
+    cout << "Creating file " << values_file << endl;
+
+    if (values_writer->getType() == Writer::HDF_WRITER)
+    {
+        HdfWriter *writer = static_cast<HdfWriter*>(values_writer);
+        ierr = writer->open(values_file);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not open (or create) the HDF5 file " << values_file << endl;
+            exit(1);
+        }
+
+        ierr = writer->write_coordinates(values_loc.c_str(), phi, npts, valdim);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not write values dataset " << values_loc << endl;
+            exit(1);
+        }
+        writer->close();
+    }
+    else if (values_writer->getType() == Writer::TXT_WRITER)
+    {
+        TextWriter *writer = static_cast<TextWriter*>(values_writer);
+        ierr = writer->open(values_file);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output text file " << values_file << endl;
+            exit(1);
+        }
+        writer->write_coordinates(phi, npts, valdim);
+    }
+    else if (values_writer->getType() == Writer::VTK_WRITER)
+    {
+        VtkWriter *writer = static_cast<VtkWriter*>(writer);
+        ierr = vtkWriter->open(values_file);
+        if (ierr < 0)
+        {
+            cerr << "Error: Could not create output VTK file " << values_file << endl;
+            exit(1);
+        }
+        writer->write_header();
+        //writer->write_points(...);
+        writer->write_point_data("values", phi, npts, valdim);
+        writer->close();
+    }
+    else
+    {
+        /* this should be unreachable */
+        cerr << "Fatal Error: Unsupported extension in output filename?" << endl;
+        return 1;
+    }
+
+    // XXX: wrap this guy inside an auto_ptr
+    delete [] phi;
 
     return 0;
 }
