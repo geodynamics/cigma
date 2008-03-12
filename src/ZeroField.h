@@ -1,14 +1,18 @@
-#ifndef __ZERO_FUNCTION_H__
-#define __ZERO_FUNCTION_H__
+#ifndef __ZERO_FIELD_H__
+#define __ZERO_FIELD_H__
 
 #include "Field.h"
 
 namespace cigma {
-    class ZeroFunction;
+    class ZeroField;
 }
 
-class cigma::ZeroFunction : Field
+class cigma::ZeroField : Field
 {
+public:
+    ZeroField();
+    ~ZeroField();
+
 public:
     void eval(double *point, double *value);
 

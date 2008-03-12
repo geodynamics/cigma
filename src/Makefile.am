@@ -146,6 +146,6 @@ libcigma_a_SOURCES = \
 	VtkWriter.h \
 	Writer.cpp \
 	Writer.h \
-	ZeroFunction.cpp \
-	ZeroFunction.h
+	ZeroField.cpp \
+	ZeroField.h
 

@@ -1,12 +1,12 @@
 #include <iostream>
-#include "../ZeroFunction.h"
+#include "../ZeroField.h"
 
 using namespace std;
 using namespace cigma;
 
 int main()
 {
-    ZeroFunction *F = new ZeroFunction();
+    ZeroField *F = new ZeroField();
 
     const int n = 10;
     double x[n], y[n];
