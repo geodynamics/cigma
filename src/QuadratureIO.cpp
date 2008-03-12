@@ -111,7 +111,7 @@ QuadratureIO::~QuadratureIO()
 
 void QuadratureIO::load(cigma::Cell *cell)
 {
-    cout << "Calling QuadratureIO::load()" << endl;
+    //cout << "Calling QuadratureIO::load()" << endl;
 
     assert(cell != 0);
 

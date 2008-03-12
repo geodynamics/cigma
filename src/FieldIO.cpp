@@ -87,7 +87,7 @@ FieldIO::~FieldIO()
 
 void FieldIO::load()
 {
-    cout << "Calling FieldIO::load()" << endl;
+    //cout << "Calling FieldIO::load()" << endl;
 
     int dofs_nno, dofs_valdim;
     double *dofs;
