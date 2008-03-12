@@ -30,7 +30,8 @@ void cigma::ListCmd::setupOptions(AnyOption *opt)
 
     /* setup usage */
     opt->addUsage("Usage:");
-    opt->addUsage("   cigma list FILE");
+    opt->addUsage("   cigma list <file>.h5");
+    opt->addUsage("   cigma list <file>.vtk");
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
@@ -53,6 +54,10 @@ void cigma::ListCmd::configure(AnyOption *opt)
         filename = in;
     }
 
+    if (filename == "")
+    {
+        opt->printUsage();
+    }
     return;
 }
 
