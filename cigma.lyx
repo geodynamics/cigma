@@ -1,4 +1,4 @@
-#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -598,8 +598,14 @@ HDFView (optional)
 NCSA HDFView is a graphical user interface tool for accessing data in your
  HDF5 files.
  You can use it for viewing the internal file hierarchy in a tree structure
- (see Figure 2.1 (TODO ref)), adding new datasets, and modifying or deleting
- existing datasets, or altering metadata on groups and datasets.
+ (see Figure 
+\begin_inset LatexCommand ref
+reference "fig:With-HFDFView,-you"
+
+\end_inset
+
+), adding new datasets, and modifying or deleting existing datasets, or
+ altering metadata on groups and datasets.
  You can download it from the 
 \begin_inset LatexCommand htmlurl
 name "HDFView home page"
@@ -617,7 +623,7 @@ target "hdf.ncsa.uiuc.edu/hdf-java-html/hdfview"
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \noindent
@@ -636,6 +642,11 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Standard
+\begin_inset LatexCommand label
+name "fig:With-HFDFView,-you"
+
+\end_inset
+
 With HFDFView, you can view the internal file hierarchy in a tree structure,
  add new datasets, and modify or delete existing datasets
 \end_layout
