@@ -4,11 +4,11 @@
 #include "CommandSet.h"
 #include "SkelCmd.h"
 #include "HelpCmd.h"
-#include "CompareCmd.h"
 #include "ListCmd.h"
-#include "ExtractCmd.h"
-//#include "EvalCmd.h"
 #include "CubeCmd.h"
+//#include "CompareCmd.h"
+//#include "ExtractCmd.h"
+//#include "EvalCmd.h"
 
 cigma::CommandSet::CommandSet()
 {
@@ -31,10 +31,10 @@ void cigma::CommandSet::initialize()
 
     /* assemble set of commands */
     addCommand(help);
-    addCommand(new CompareCmd());
+    //addCommand(new CompareCmd());
     addCommand(new ListCmd());
     addCommand(new CubeCmd());
-    addCommand(new ExtractCmd());
+    //addCommand(new ExtractCmd());
     //addCommand(new EvalCmd());
     //addCommand(new SkelCmd());
 

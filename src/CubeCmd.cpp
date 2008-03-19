@@ -130,7 +130,7 @@ void cigma::CubeCmd::configure(AnyOption *opt)
     // determine the extension and instantiate appropriate writer object
     string root, ext;
     path_splitext(output_filename, root, ext);
-    new_writer(&writer, ext);
+    writer = NewWriter(ext.c_str());
     if (writer == 0)
     {
         cerr << "cube: File with bad extension (" << ext << ")" << endl;
@@ -247,7 +247,7 @@ int cigma::CubeCmd::run()
     if (writer->getType() == Writer::HDF_WRITER)
     {
         HdfWriter *hdfWriter = static_cast<HdfWriter*>(writer);
-        ierr = hdfWriter->open(output_filename);
+        ierr = hdfWriter->open(output_filename.c_str());
         if (ierr < 0)
         {
             cerr << "Error: Could not open (or create) the HDF5 file " << output_filename << endl;
@@ -270,24 +270,24 @@ int cigma::CubeCmd::run()
 
         hdfWriter->close();
     }
-    else if (writer->getType() == Writer::TXT_WRITER)
+    else if (writer->getType() == Writer::TEXT_WRITER)
     {
-        TextWriter *txtWriter = static_cast<TextWriter*>(writer);
-        ierr = txtWriter->open(output_filename);
+        TextWriter *textWriter = static_cast<TextWriter*>(writer);
+        ierr = textWriter->open(output_filename.c_str());
         if (ierr < 0)
         {
             cerr << "Error: Could not create output text file " << output_filename << endl;
             exit(1);
         }
 
-        txtWriter->write_coordinates(mesh->coords, mesh->nno, mesh->nsd);
-        txtWriter->write_connectivity(mesh->connect, mesh->nel, mesh->ndofs);
-        txtWriter->close();
+        textWriter->write_coordinates(mesh->coords, mesh->nno, mesh->nsd);
+        textWriter->write_connectivity(mesh->connect, mesh->nel, mesh->ndofs);
+        textWriter->close();
     }
     else if (writer->getType() == Writer::VTK_WRITER)
     {
         VtkWriter *vtkWriter = static_cast<VtkWriter*>(writer);
-        ierr = vtkWriter->open(output_filename);
+        ierr = vtkWriter->open(output_filename.c_str());
         if (ierr < 0)
         {
             cerr << "Error: Could not create output VTK file " << output_filename << endl;

@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <string>
+
 #include "ListCmd.h"
 #include "VtkList.h"
 #include "StringUtils.h"
@@ -84,13 +85,9 @@ int cigma::ListCmd::run()
         ret = system(cmd.c_str());
         return ret;
     }
-    else if (extension == ".vtk")
+    else if ((extension == ".vtk") || (extension == ".vts"))
     {
-        list_vtk(filename.c_str());
-    }
-    else if (extension == ".vts")
-    {
-        list_vts(filename.c_str());
+        vtk_list(filename.c_str());
     }
     else
     {

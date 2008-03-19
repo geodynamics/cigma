@@ -1,60 +1,19 @@
 #include <cassert>
-#include "VtkList.h"
+#include <cstdlib>
 
-#include "vtkDataSetReader.h"
-#include "vtkXMLStructuredGridReader.h"
+#include "VtkList.h"
+#include "VtkReader.h"
 
 #include "vtkDataSet.h"
-#include "vtkStructuredGrid.h"
-
 #include "vtkPointData.h"
 #include "vtkCellData.h"
-#include "vtkDataArray.h"
-
 
 using namespace std;
-
-
-// ---------------------------------------------------------------------------
-
-/*
-VtkFileType getFileType(vtkDataSetReader *reader)
-{
-    // XXX: are these mutually exclusive?
-    if (reader->IsFilePolyData())
-        return VTK_FILE_POLYDATA;
-    if (reader->IsFileStructuredPoints())
-        return VTK_FILE_STRUCTURED_POINTS;
-    if (reader->IsFileStructuredGrid())
-        return VTK_FILE_STRUCTURED_GRID;
-    if (reader->IsFileUnstructuredGrid())
-        return VTK_FILE_UNSTRUCTURED_GRID;
-    if (reader->IsFileRectilinearGrid())
-        return VTK_FILE_RECTILINEAR_GRID;
-    return VTK_FILE_NONE;
-
-} // */
-
-
-const char *getFileTypeName(VtkFileType fileType)
-{
-    if (fileType == VTK_FILE_POLYDATA)
-        return "polydata";
-    if (fileType == VTK_FILE_STRUCTURED_POINTS)
-        return "structured points";
-    if (fileType == VTK_FILE_STRUCTURED_GRID)
-        return "structured grid";
-    if (fileType == VTK_FILE_UNSTRUCTURED_GRID)
-        return "unstructured grid";
-    if (fileType == VTK_FILE_RECTILINEAR_GRID)
-        return "rectilinear grid";
-    return "none";
-}
-
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-void vtkls(vtkDataSet *dataset)
+static void list_data(vtkDataSet *dataset)
 {
     assert(dataset != 0);
 
@@ -123,128 +82,20 @@ void vtkls(vtkDataSet *dataset)
     return;
 }
 
-
 // ---------------------------------------------------------------------------
 
-void list_vtk(const char *filename)
+void vtk_list(const char *filename)
 {
-    int outputType;
-    vtkDataSetReader *reader = vtkDataSetReader::New();
+    VtkReader vtkreader;
+    vtkreader.open(filename);
 
-    reader->SetFileName(filename);
-    cout << "Reading " << filename << endl;
-
-    int ierr = -1;
-
-    ierr = reader->OpenVTKFile();   // does file exist?
-    if (ierr == 0)
+    if (vtkreader.dataset != 0)
     {
-        cerr << "Could not open " << filename << endl;
-        exit(1);
+        list_data(vtkreader.dataset);
     }
-
-    ierr = reader->ReadHeader();    // is the vtk header present?
-    if (ierr == 0)
-    {
-        cerr << "Unrecognized file " << filename << endl;
-        exit(1);
-    }
-
-    outputType = reader->ReadOutputType();
-    if (outputType < 0)
-    {
-        cerr << "Invalid VTK file? " << filename << endl;
-        exit(1);
-    }
-
-
-    // ---------------------------------------------------
-    reader->Update();
-    //reader->PrintSelf(cout, 0);
-
-    vtkDataSet *dataset = reader->GetOutput();
-    //dataset->PrintSelf(cout, 0);
-
-    const bool group_by_arrays = true;
-    const bool group_by_class = false;
-
-    if (group_by_arrays)
-    {
-        vtkls(dataset);
-    }
-
-    if (group_by_class)
-    {
-        int n, i;
-
-        n = reader->GetNumberOfFieldDataInFile();
-        for (i = 0; i < n; i++)
-        {
-            const char *name = reader->GetFieldDataNameInFile(i);
-            //cout << "Number of field data = " << n << endl;
-            cout << "FieldData[" << i << "] = " << name;
-            cout << endl;
-        }
-
-        n = reader->GetNumberOfScalarsInFile();
-        //cout << "Number of scalars = " << n << endl;
-        for (i = 0; i < n; i++)
-        {
-            const char *name = reader->GetScalarsNameInFile(i);
-            cout << "Scalars[" << i << "] = " << name;
-            cout << endl;
-        }
-
-        n = reader->GetNumberOfVectorsInFile();
-        //cout << "Number of vectors = " << n << endl;
-        for (i = 0; i < n; i++)
-        {
-            const char *name = reader->GetVectorsNameInFile(i);
-            cout << "Vectors[" << i << "] = " << name;
-            cout << endl;
-        }
-
-        n = reader->GetNumberOfTensorsInFile();
-        //cout << "Number of tensors = " << n << endl;
-        for (i = 0; i < n; i++)
-        {
-            const char *name = reader->GetTensorsNameInFile(i);
-            cout << "Tensors[" << i << "] = " << name;
-            cout << endl;
-        }
-    }
-
-    reader->Delete();
-
-    return;
-}
-
-
-void list_vts(const char *filename)
-{
-    vtkXMLStructuredGridReader *reader = vtkXMLStructuredGridReader::New();
-
-    int canReadFile = 0;
-    canReadFile = reader->CanReadFile(filename);
-
-    if (!canReadFile)
+    else
     {
         cerr << "Could not read " << filename << endl;
         exit(1);
     }
-
-    reader->SetFileName(filename);
-    cout << "Reading " << filename << endl;
-
-    reader->Update();
-    //reader->PrintSelf(cout, 0);
-
-    vtkStructuredGrid *sgrid = reader->GetOutput();
-    vtkDataSet *dataset = static_cast<vtkDataSet*>(sgrid);
-
-    vtkls(dataset);
-    
-    reader->Delete();
 }
-
-// ---------------------------------------------------------------------------
