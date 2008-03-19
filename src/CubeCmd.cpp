@@ -58,7 +58,7 @@ void cigma::CubeCmd::setupOptions(AnyOption *opt)
     opt->setOption('y');
     opt->setOption('z');
 
-    opt->setOption("output");
+    opt->setOption("output", 'o');
     opt->setOption("coords-path");
     opt->setOption("connect-path");
 
