@@ -1,13 +1,23 @@
+#include <cassert>
 #include "VtkList.h"
+
+#include "vtkDataSetReader.h"
+#include "vtkXMLStructuredGridReader.h"
+
 #include "vtkDataSet.h"
+#include "vtkStructuredGrid.h"
+
 #include "vtkPointData.h"
 #include "vtkCellData.h"
 #include "vtkDataArray.h"
 
+
 using namespace std;
+
 
 // ---------------------------------------------------------------------------
 
+/*
 VtkFileType getFileType(vtkDataSetReader *reader)
 {
     // XXX: are these mutually exclusive?
@@ -23,7 +33,8 @@ VtkFileType getFileType(vtkDataSetReader *reader)
         return VTK_FILE_RECTILINEAR_GRID;
     return VTK_FILE_NONE;
 
-}
+} // */
+
 
 const char *getFileTypeName(VtkFileType fileType)
 {
@@ -40,38 +51,12 @@ const char *getFileTypeName(VtkFileType fileType)
     return "none";
 }
 
+
 // ---------------------------------------------------------------------------
 
-void vtkls(const char *filename)
+void vtkls(vtkDataSet *dataset)
 {
-    vtkDataSetReader *reader = vtkDataSetReader::New();
-    reader->SetFileName(filename);
-    cout << "Reading " << filename << endl;
-
-    int ierr = -1;
-
-    ierr = reader->OpenVTKFile();   // does file exist?
-    if (ierr == 0)
-    {
-        cerr << "Could not open " << filename << endl;
-        exit(1);
-    }
-
-    ierr = reader->ReadHeader();    // is the vtk header present?
-    if (ierr == 0)
-    {
-        cerr << "Unrecognized file " << filename << endl;
-        exit(1);
-    }
-
-
-    // ---------------------------------------------------
-
-    reader->Update();
-    //reader->PrintSelf(cout, 0);
-
-    vtkDataSet *dataset = reader->GetOutput();
-    //dataset->PrintSelf(cout, 0);
+    assert(dataset != 0);
 
     vtkPointData *pointData = dataset->GetPointData();
     //pointData->PrintSelf(cout, 0);
@@ -103,47 +88,95 @@ void vtkls(const char *filename)
     int numArrays;
     int numTuples, numComponents;
 
+    numArrays = pointData->GetNumberOfArrays();
+    if (numArrays > 0)
+    {
+        for (i = 0; i < numArrays; i++)
+        {
+            vtkDataArray *dataArray = pointData->GetArray(i);
+            const char *name = pointData->GetArrayName(i);
+            numTuples = dataArray->GetNumberOfTuples();
+            numComponents = dataArray->GetNumberOfComponents();
+            cout << "PointDataArray[" << i << "] = " << name << " ";
+            //cout << dataArray->GetClassName() << " ";
+            cout << "(" << numTuples << " x " << numComponents << ")";
+            cout << endl;
+        }
+    }
+
+    numArrays = cellData->GetNumberOfArrays();
+    if (numArrays > 0)
+    {
+        for (i = 0; i < numArrays; i++)
+        {
+            vtkDataArray *dataArray = cellData->GetArray(i);
+            const char *name = cellData->GetArrayName(i);
+            numTuples = dataArray->GetNumberOfTuples();
+            numComponents = dataArray->GetNumberOfComponents();
+            cout << "CellDataArray[" << i << "] = " << name << " ";
+            //cout << dataArray->GetClassName() << " ";
+            cout << "(" << numTuples << " x " << numComponents << ")";
+            cout << endl;
+        }
+    }
+
+    return;
+}
+
+
+// ---------------------------------------------------------------------------
+
+void list_vtk(const char *filename)
+{
+    int outputType;
+    vtkDataSetReader *reader = vtkDataSetReader::New();
+
+    reader->SetFileName(filename);
+    cout << "Reading " << filename << endl;
+
+    int ierr = -1;
+
+    ierr = reader->OpenVTKFile();   // does file exist?
+    if (ierr == 0)
+    {
+        cerr << "Could not open " << filename << endl;
+        exit(1);
+    }
+
+    ierr = reader->ReadHeader();    // is the vtk header present?
+    if (ierr == 0)
+    {
+        cerr << "Unrecognized file " << filename << endl;
+        exit(1);
+    }
+
+    outputType = reader->ReadOutputType();
+    if (outputType < 0)
+    {
+        cerr << "Invalid VTK file? " << filename << endl;
+        exit(1);
+    }
+
+
+    // ---------------------------------------------------
+    reader->Update();
+    //reader->PrintSelf(cout, 0);
+
+    vtkDataSet *dataset = reader->GetOutput();
+    //dataset->PrintSelf(cout, 0);
+
     const bool group_by_arrays = true;
     const bool group_by_class = false;
 
-
     if (group_by_arrays)
     {
-        numArrays = pointData->GetNumberOfArrays();
-        if (numArrays > 0)
-        {
-            for (i = 0; i < numArrays; i++)
-            {
-                vtkDataArray *dataArray = pointData->GetArray(i);
-                const char *name = pointData->GetArrayName(i);
-                numTuples = dataArray->GetNumberOfTuples();
-                numComponents = dataArray->GetNumberOfComponents();
-                cout << "PointDataArray[" << i << "] = " << name << " ";
-                //cout << dataArray->GetClassName() << " ";
-                cout << "(" << numTuples << " x " << numComponents << ")";
-                cout << endl;
-            }
-        }
-
-        numArrays = cellData->GetNumberOfArrays();
-        if (numArrays > 0)
-        {
-            for (i = 0; i < numArrays; i++)
-            {
-                vtkDataArray *dataArray = cellData->GetArray(i);
-                const char *name = cellData->GetArrayName(i);
-                numTuples = dataArray->GetNumberOfTuples();
-                numComponents = dataArray->GetNumberOfComponents();
-                cout << "CellDataArray[" << i << "] = " << name << " ";
-                //cout << dataArray->GetClassName() << " ";
-                cout << "(" << numTuples << " x " << numComponents << ")";
-                cout << endl;
-            }
-        }
+        vtkls(dataset);
     }
 
     if (group_by_class)
     {
+        int n, i;
+
         n = reader->GetNumberOfFieldDataInFile();
         for (i = 0; i < n; i++)
         {
@@ -181,5 +214,37 @@ void vtkls(const char *filename)
         }
     }
 
+    reader->Delete();
+
     return;
 }
+
+
+void list_vts(const char *filename)
+{
+    vtkXMLStructuredGridReader *reader = vtkXMLStructuredGridReader::New();
+
+    int canReadFile = 0;
+    canReadFile = reader->CanReadFile(filename);
+
+    if (!canReadFile)
+    {
+        cerr << "Could not read " << filename << endl;
+        exit(1);
+    }
+
+    reader->SetFileName(filename);
+    cout << "Reading " << filename << endl;
+
+    reader->Update();
+    //reader->PrintSelf(cout, 0);
+
+    vtkStructuredGrid *sgrid = reader->GetOutput();
+    vtkDataSet *dataset = static_cast<vtkDataSet*>(sgrid);
+
+    vtkls(dataset);
+    
+    reader->Delete();
+}
+
+// ---------------------------------------------------------------------------

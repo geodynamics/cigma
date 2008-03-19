@@ -1,7 +1,6 @@
 #ifndef __VTK_LIST_H__
 #define __VTK_LIST_H__
 
-#include "vtkDataSetReader.h"
 
 typedef enum {
     VTK_FILE_NONE,
@@ -12,10 +11,11 @@ typedef enum {
     VTK_FILE_RECTILINEAR_GRID
 } VtkFileType;
 
-VtkFileType getFileType(vtkDataSetReader *reader);
+//VtkFileType getFileType(vtkDataSetReader *reader);
 const char *getFileTypeName(VtkFileType fileType);
 
+void list_vtk(const char *filename);
+void list_vts(const char *filename);
 
-void vtkls(const char *filename);
 
 #endif

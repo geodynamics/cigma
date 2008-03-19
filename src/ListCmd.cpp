@@ -76,11 +76,7 @@ int cigma::ListCmd::run()
 
     path_splitext(filename, fileroot, extension);
     
-    if (extension == ".vtk")
-    {
-        vtkls(filename.c_str());
-    }
-    else if (extension == ".h5")
+    if (extension == ".h5")
     {
         int ret;
         string cmd = "h5ls -r ";
@@ -88,9 +84,17 @@ int cigma::ListCmd::run()
         ret = system(cmd.c_str());
         return ret;
     }
+    else if (extension == ".vtk")
+    {
+        list_vtk(filename.c_str());
+    }
+    else if (extension == ".vts")
+    {
+        list_vts(filename.c_str());
+    }
     else
     {
-        cerr << "list: File extension must be .h5 or .vtk"
+        cerr << "list: File extensions must be HDF5(.h5) or VTK(.vtk, .vts)"
              << " (found '" << extension << "')" << endl;
         return 2;
     }
