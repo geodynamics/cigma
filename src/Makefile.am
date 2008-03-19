@@ -1,33 +1,21 @@
+
 bin_PROGRAMS = cigma
 
-noinst_LIBRARIES = libh5io.a libann.a libcigma.a
-
-libh5io_a_CPPFLAGS = $(HDF5_INCLUDES)
+noinst_LIBRARIES = libann.a libcigma.a
 
 libann_a_CPPFLAGS = -I$(srcdir)/ann/include
 
-libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
-#libcigma_a_LIBADD = libh5io.a libann.a
+libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/ann/include
 
-cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/h5io -I$(srcdir)/ann/include
-cigma_LDFLAGS = -I$(srcdir)/h5io -I$(srcdir)/ann/include
-cigma_LDADD = $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) libcigma.a libh5io.a libann.a
-
+cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/ann/include
+cigma_LDFLAGS = -I$(srcdir)/ann/include
+cigma_LDADD = $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) libcigma.a libann.a
 
 ##############################################################################
 
 cigma_SOURCES = \
 	cigma.cpp
 
-libh5io_a_SOURCES = \
-	h5io/h5array.c \
-	h5io/h5attr.c \
-	h5io/h5dset.c \
-	h5io/h5file.c \
-	h5io/h5group.c \
-	h5io/h5io.h \
-	h5io/split.c \
-	h5io/split.h
 
 libann_a_SOURCES = \
 	ann/include/ANN/ANN.h \
@@ -58,96 +46,72 @@ libann_a_SOURCES = \
 	ann/src/pr_queue_k.h
 
 libcigma_a_SOURCES = \
-	AnnLocator.cpp \
-	AnnLocator.h \
-	AnyOption.cpp \
-	AnyOption.h \
-	Cell.cpp \
+	\
+	Numeric.h \
+	Numeric.cpp \
+	\
 	Cell.h \
-	Command.cpp \
+	Cell.cpp \
+	Hex.h \
+	Hex.cpp \
+	Tet.h \
+	Tet.cpp \
+	Quad.h \
+	Quad.cpp \
+	Tri.h \
+	Tri.cpp \
+	\
+	MeshPart.h \
+	MeshPart.cpp \
+	CubeMeshPart.h \
+	CubeMeshPart.cpp \
+	\
+	HdfFile.h \
+	HdfFile.cpp \
+	HdfAttr.h \
+	HdfAttr.cpp \
+	HdfDataset.h \
+	HdfDataset.cpp \
+	\
+	Reader.h \
+	Reader.cpp \
+	NullReader.h \
+	NullReader.cpp \
+	HdfReader.h \
+	HdfReader.cpp \
+	TextReader.h \
+	TextReader.cpp \
+	VtkReader.h \
+	VtkReader.cpp \
+	VtkList.h \
+	VtkList.cpp \
+	\
+	Writer.h \
+	Writer.cpp \
+	NullWriter.h \
+	NullWriter.cpp \
+	HdfWriter.h \
+	HdfWriter.cpp \
+	TextWriter.h \
+	TextWriter.cpp \
+	VtkWriter.h \
+	VtkWriter.cpp \
+	\
 	Command.h \
-	CommandSet.cpp \
+	Command.cpp \
 	CommandSet.h \
-	CompareCmd.cpp \
-	CompareCmd.h \
-	convert.h \
+	CommandSet.cpp \
+	SkelCmd.h \
+	SkelCmd.cpp \
+	HelpCmd.h \
+	HelpCmd.cpp \
+	ListCmd.h \
+	ListCmd.cpp \
 	CubeCmd.h \
 	CubeCmd.cpp \
-	CubeMeshPart.cpp \
-	CubeMeshPart.h \
-	DofHandler.cpp \
-	DofHandler.h \
-	ExtractCmd.h \
-	ExtractCmd.cpp \
-	FE.cpp \
-	FE_Field.cpp \
-	FE_Field.h \
-	FE.h \
-	FiatProxy.cpp \
-	FiatProxy.h \
-	Field.cpp \
-	Field.h \
-	FieldIO.cpp \
-	FieldIO.h \
-	HdfReader.cpp \
-	HdfReader.h \
-	HdfWriter.cpp \
-	HdfWriter.h \
-	HelpCmd.cpp \
-	HelpCmd.h \
-	Hex.cpp \
-	Hex.h \
-	ListCmd.cpp \
-	ListCmd.h \
-	Locator.cpp \
-	Locator.h \
-	MeshIO.cpp \
-	MeshIO.h \
-	MeshPart.cpp \
-	MeshPart.h \
-	Misc.cpp \
-	Misc.h \
-	Numeric.cpp \
-	Numeric.h \
-	Points.cpp \
-	Points.h \
-	PointField.cpp \
-	PointField.h \
-	Quad.cpp \
-	Quad.h \
-	QuadratureIO.cpp \
-	QuadratureIO.h \
-	QuadraturePoints.cpp \
-	QuadraturePoints.h \
-	QuadratureRule.cpp \
-	QuadratureRule.h \
-	Reader.cpp \
-	Reader.h \
-	ResidualField.cpp \
-	ResidualField.h \
-	SkelCmd.cpp \
-	SkelCmd.h \
-	StringUtils.cpp \
+	\
+	AnyOption.h \
+	AnyOption.cpp \
 	StringUtils.h \
-	Tet.cpp \
-	Tet.h \
-	TextReader.cpp \
-	TextReader.h \
-	TextWriter.cpp \
-	TextWriter.h \
-	Timer.h \
-	Tri.cpp \
-	Tri.h \
-	VtkList.cpp \
-	VtkList.h \
-	VtkReader.cpp \
-	VtkReader.h \
-	VtkXmlReader.cpp \
-	VtkXmlReader.h \
-	VtkWriter.cpp \
-	VtkWriter.h \
-	Writer.cpp \
-	Writer.h \
-	ZeroField.cpp \
-	ZeroField.h
+	StringUtils.cpp
 
