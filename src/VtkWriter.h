@@ -2,7 +2,6 @@
 #define __VTK_WRITER_H__
 
 #include <cstdio>
-
 #include "Writer.h"
 
 
@@ -20,11 +19,10 @@ public:
 
 public:
     WriterType getType() { return VTK_WRITER; }
-    int open(std::string filename);
-    void close();
 
 public:
-    void write_field(FE_Field *field);
+    int open(const char *filename);
+    int close();
 
 public:
     void write_header();
@@ -37,5 +35,6 @@ public:
 public:
     FILE *fp;
 };
+
 
 #endif

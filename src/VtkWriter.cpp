@@ -2,23 +2,27 @@
 #include <cassert>
 #include <cstdlib>
 
+using namespace cigma;
+
+
 // ---------------------------------------------------------------------------
-cigma::VtkWriter::VtkWriter()
+
+VtkWriter::VtkWriter()
 {
     fp = NULL;
 }
 
-cigma::VtkWriter::~VtkWriter()
+VtkWriter::~VtkWriter()
 {
     close();
 }
 
+
 // ---------------------------------------------------------------------------
 
-int cigma::VtkWriter::
-open(std::string filename)
+int VtkWriter::open(const char *filename)
 {
-    fp = fopen(filename.c_str(), "w");
+    fp = fopen(filename, "w");
     if (fp == NULL)
     {
         return -1;
@@ -26,29 +30,20 @@ open(std::string filename)
     return 0;
 }
 
-void cigma::VtkWriter::
-close()
+int VtkWriter::close()
 {
     if (fp != NULL)
     {
         fclose(fp);
         fp = NULL;
     }
+    return 0;
 }
 
 
 // ---------------------------------------------------------------------------
 
-void cigma::VtkWriter::
-write_field(FE_Field *field)
-{
-    assert(field != 0);
-}
-
-// ---------------------------------------------------------------------------
-
-void cigma::VtkWriter::
-write_header()
+void VtkWriter::write_header()
 {
     assert(fp != NULL);
     fprintf(fp, "# vtk DataFile Version 3.0\n");
@@ -58,8 +53,7 @@ write_header()
 }
 
 
-void cigma::VtkWriter::
-write_points(double *points, int npts, int ndim)
+void VtkWriter::write_points(double *points, int npts, int ndim)
 {
     assert(fp != NULL);
     assert(ndim > 1);
@@ -77,8 +71,7 @@ write_points(double *points, int npts, int ndim)
     }
 }
 
-void cigma::VtkWriter::
-write_cells(int *cells, int nel, int ndofs)
+void VtkWriter::write_cells(int *cells, int nel, int ndofs)
 {
     assert(fp != NULL);
 
@@ -95,8 +88,7 @@ write_cells(int *cells, int nel, int ndofs)
 }
 
 
-void cigma::VtkWriter::
-write_cell_types(int nsd, int nel, int ndofs)
+void VtkWriter::write_cell_types(int nsd, int nel, int ndofs)
 {
     assert(fp != NULL);
 
@@ -133,8 +125,7 @@ write_cell_types(int nsd, int nel, int ndofs)
     }
 }
 
-void cigma::VtkWriter::
-write_point_data(const char *name, double *data, int nno, int ndim)
+void VtkWriter::write_point_data(const char *name, double *data, int nno, int ndim)
 {
     assert(fp != NULL);
 
@@ -177,8 +168,7 @@ write_point_data(const char *name, double *data, int nno, int ndim)
     }
 }
 
-void cigma::VtkWriter::
-write_cell_data(const char *name, double *data, int nel, int ndim)
+void VtkWriter::write_cell_data(const char *name, double *data, int nel, int ndim)
 {
     assert(fp != NULL);
 

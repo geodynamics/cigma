@@ -20,17 +20,16 @@ public:
     ~TextWriter();
 
 public:
-    WriterType getType() { return TXT_WRITER; }
-    int open(std::string filename);
-    void close();
+    WriterType getType() { return TEXT_WRITER; }
 
 public:
-    void write_field(FE_Field *field);
+    int open(const char *filename);
+    int close();
 
 public:
-    void write_connectivity(int *connectivity, int nel, int ndofs);
-    void write_coordinates(double *coordinates, int nno, int nsd);
-    void write_dofs(double *dofs, int nno, int ndim);
+    int write_connectivity(int *connectivity, int nel, int ndofs);
+    int write_coordinates(double *coordinates, int nno, int nsd);
+    int write_dataset(double *data, int nno, int ndim);
 
 public:
     FILE *fp;

@@ -2,7 +2,7 @@
 #define __HDF_WRITER_H__
 
 #include "Writer.h"
-#include "hdf5.h"
+#include "HdfFile.h"
 
 
 namespace cigma
@@ -19,18 +19,18 @@ public:
 
 public:
     WriterType getType() { return HDF_WRITER; }
-    int open(std::string filename);
-    void close();
 
 public:
+    int open(const char *filename);
+    int close();
+
+public:
+    int write_dataset(const char *loc, double *data, int nno, int ndim);
     int write_coordinates(const char *loc, double *coordinates, int nno, int nsd);
     int write_connectivity(const char *loc, int *connectivity, int nel, int ndofs);
 
 public:
-    void write_field(FE_Field *field);
-
-public:
-    hid_t file_id;
+    HdfFile h5;
 };
 
 

@@ -1,6 +1,8 @@
 #include <cassert>
 #include <cstdlib>
+
 #include "Writer.h"
+#include "NullWriter.h"
 #include "HdfWriter.h"
 #include "TextWriter.h"
 #include "VtkWriter.h"
@@ -11,26 +13,26 @@ using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-void new_writer(cigma::Writer **writer, std::string ext)
+Writer* NewWriter(const char *fileext)
 {
+    std::string ext = fileext;
+
     if (ext == ".h5")
     {
-        *writer = new HdfWriter();
-        return;
+        return new HdfWriter();
     }
 
     if (ext == ".txt")
     {
-        *writer = new TextWriter();
-        return;
+        return new TextWriter();
     }
 
     if (ext == ".vtk")
     {
-        *writer = new VtkWriter();
-        return;
+        return new VtkWriter();
     }
 
+    return new NullWriter();
 }
 
 // ---------------------------------------------------------------------------
