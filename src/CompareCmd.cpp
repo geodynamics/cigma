@@ -104,7 +104,7 @@ void cigma::CompareCmd::setupOptions(AnyOption *opt)
     opt->setOption("output",'o');
 
     // other options
-    opt->setFlag("verbose");
+    opt->setFlag("verbose",'v');
     opt->setOption("output-frequency",'f');
 }
 
