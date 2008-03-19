@@ -1,48 +1,38 @@
-#include <cassert>
+#include <string>
 #include <cstdlib>
+#include <cassert>
+
 #include "Reader.h"
+#include "NullReader.h"
 #include "HdfReader.h"
 #include "TextReader.h"
 #include "VtkReader.h"
-#include "VtkXmlReader.h"
 
 using namespace cigma;
 
 
 // ---------------------------------------------------------------------------
 
-void new_reader(cigma::Reader **reader, std::string ext)
+cigma::Reader* NewReader(const char *fileext)
 {
+    std::string ext = fileext;
+
     if (ext == ".h5")
     {
-        *reader = new HdfReader();
-        return;
+        return new HdfReader();
     }
 
     if (ext == ".txt")
     {
-        *reader = new TextReader();
-        return;
+        return new TextReader();
     }
 
-    if (ext == ".vtk")
+    if ((ext == ".vtk") || (ext == ".vts") || (ext == ".vtu"))
     {
-        // XXX: instantiate legacy vtk reader
-        *reader = new VtkReader();
-        return;
+        return new VtkReader();
     }
 
-    if ((ext == ".vts") || (ext == ".vtu"))
-    {
-        // XXX instantiate xml vtk reader
-        *reader = new VtkXmlReader();
-        if (ext == ".vtu")
-        {
-            // XXX: unstructured .vtu file reader still needed...so just fail for now
-            assert(false);
-        }
-        return;
-    }
+    return new NullReader(fileext);
 }
 
 // ---------------------------------------------------------------------------
