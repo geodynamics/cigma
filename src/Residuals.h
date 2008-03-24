@@ -1,19 +1,18 @@
-#ifndef __RESIDUAL_FIELD_H__
-#define __RESIDUAL_FIELD_H__
+#ifndef __RESIDUALS_H__
+#define __RESIDUALS_H__
 
-//#include "Field.h"
 #include "MeshPart.h"
 
 namespace cigma
 {
-    class ResidualField;
+    class Residuals;
 }
 
-class cigma::ResidualField
+class cigma::Residuals
 {
 public:
-    ResidualField();
-    ~ResidualField();
+    Residuals();
+    ~Residuals();
 
 public:
     void set_mesh(MeshPart *meshPart);

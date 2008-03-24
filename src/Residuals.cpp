@@ -1,7 +1,8 @@
 #include <iostream>
+#include <cassert>
 #include <string>
 #include <cmath>
-#include "ResidualField.h"
+#include "Residuals.h"
 #include "VtkWriter.h"
 
 using namespace std;
@@ -9,21 +10,21 @@ using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-ResidualField::ResidualField()
+Residuals::Residuals()
 {
     nel = 0;
     epsilon = 0;
     meshPart = 0;
 }
 
-ResidualField::~ResidualField()
+Residuals::~Residuals()
 {
     if (epsilon != 0) delete [] epsilon;
 }
 
 // ---------------------------------------------------------------------------
 
-void ResidualField::set_mesh(MeshPart *meshPart)
+void Residuals::set_mesh(MeshPart *meshPart)
 {
     assert(meshPart != 0);
     this->meshPart = meshPart;
@@ -33,7 +34,7 @@ void ResidualField::set_mesh(MeshPart *meshPart)
 
 // ---------------------------------------------------------------------------
 
-void ResidualField::zero_out()
+void Residuals::zero_out()
 {
     assert(nel > 0);
     assert(epsilon != 0);
@@ -46,7 +47,7 @@ void ResidualField::zero_out()
     }
 }
 
-void ResidualField::update(int e, double cell_residual)
+void Residuals::update(int e, double cell_residual)
 {
     // remember residual on this cell
     epsilon[e] = cell_residual;
@@ -56,14 +57,14 @@ void ResidualField::update(int e, double cell_residual)
 
 }
 
-double ResidualField::L2()
+double Residuals::L2()
 {
     return sqrt(global_error); // XXX: generalize to norm_pow(global_error)
 }
 
 // ---------------------------------------------------------------------------
 
-void ResidualField::write_vtk(const char *filename)
+void Residuals::write_vtk(const char *filename)
 {
     assert(meshPart != 0); // XXX: add support for dumping residuals w/o mesh
     assert(meshPart->nel == nel);
@@ -72,7 +73,7 @@ void ResidualField::write_vtk(const char *filename)
     cout << "Creating file " << output_filename << endl;
 
     VtkWriter writer;
-    writer.open(output_filename); // XXX: change signature to 'const char *'
+    writer.open(output_filename.c_str());
     //writer.write_header();
     writer.write_points(meshPart->coords, meshPart->nno, meshPart->nsd);
     writer.write_cells(meshPart->connect, meshPart->nel, meshPart->ndofs);
