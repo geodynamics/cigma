@@ -39,12 +39,13 @@ void cigma::CommandSet::initialize()
     //addCommand(new SkelCmd());
 
     /* once assembled, pass set of commands to help command */
-    help->setCmdMap(&commands);
+    help->setCommandSet(this);
 }
 
 void cigma::CommandSet::addCommand(Command *cmd)
 {
     assert(cmd != 0);
+    names.push_back(cmd->name);
     commands[cmd->name] = cmd;
 }
 

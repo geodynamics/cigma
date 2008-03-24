@@ -3,6 +3,7 @@
 #include "HelpCmd.h"
 #include "CommandSet.h"
 
+using namespace std;
 using namespace cigma;
 
 // ---------------------------------------------------------------------------
@@ -10,7 +11,7 @@ using namespace cigma;
 HelpCmd::HelpCmd()
 {
     name = "help";
-    commands = 0;
+    cmdset = 0;
 }
 
 
@@ -19,19 +20,18 @@ HelpCmd::~HelpCmd()
 }
 
 
-void HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
+void HelpCmd::setCommandSet(CommandSet *cmdset)
 {
-    /* pointer to set of commands */
-    this->commands = cmds;
+    this->cmdset = cmdset;
 
     /* prepare usage list from current set of commands */
     usageList.clear();
     std::string prefix = "   ";
-    CommandSet::CmdMap::iterator it;
-    for (it = commands->begin(); it != commands->end(); ++it)
+
+    CommandSet::CmdNames::iterator it;
+    for (it = cmdset->names.begin(); it != cmdset->names.end(); ++it)
     {
-        Command *cmd = it->second;
-        usageList.push_back(prefix + (cmd->name));
+        usageList.push_back(prefix + (*it));
     }
 }
 
@@ -94,9 +94,11 @@ int HelpCmd::run()
 {
     //std::cout << "Calling cigma::HelpCmd::run()" << std::endl;
 
-    CommandSet::CmdMap::iterator it = commands->find(subcommand);
 
-    if (it != commands->end())
+    /* display help for appropriate subcommand */
+    CommandSet::CmdMap::iterator it = cmdset->commands.find(subcommand);
+
+    if (it != cmdset->commands.end())
     {
         AnyOption opt;
         Command *cmd = it->second;
@@ -106,9 +108,7 @@ int HelpCmd::run()
     }
     else
     {
-        std::cerr << "Unknown command: '"
-                  << subcommand
-                  << "'" << std::endl;
+        cerr << "Unknown command: '" << subcommand << "'" << endl;
     }
 
     return 1;

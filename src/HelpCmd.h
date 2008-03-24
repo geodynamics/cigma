@@ -29,10 +29,10 @@ public:
     int run();
 
 public:
-    void setCmdMap(CommandSet::CmdMap *cmds);
+    void setCommandSet(CommandSet *cmdset);
 
 public:
-    CommandSet::CmdMap *commands;
+    CommandSet *cmdset;
     std::string subcommand;
     std::vector<std::string> usageList;
 };
