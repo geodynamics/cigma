@@ -16,8 +16,20 @@ namespace cigma
 class cigma::Field
 {
 public:
+    typedef enum {
+        NULL_FIELD,
+        FE_FIELD,
+        POINT_FIELD,
+        EXT_FIELD,
+        USER_FIELD
+    } FieldType;
+
+public:
     virtual int n_dim() = 0;
     virtual int n_rank() = 0;
+    virtual FieldType getType() = 0;
+
+public:
     virtual void eval(double *point, double *value) = 0;
     virtual void eval(Points &domain, Points &range);
     virtual ~Field();
