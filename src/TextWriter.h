@@ -27,9 +27,9 @@ public:
     int close();
 
 public:
-    int write_connectivity(int *connectivity, int nel, int ndofs);
-    int write_coordinates(double *coordinates, int nno, int nsd);
-    int write_dataset(double *data, int nno, int ndim);
+    int write_connectivity(const char *loc, int *connectivity, int nel, int ndofs);
+    int write_coordinates(const char *loc, double *coordinates, int nno, int nsd);
+    int write_dataset(const char *loc, double *data, int nno, int ndim);
 
 public:
     FILE *fp;

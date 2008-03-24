@@ -95,17 +95,17 @@ static bool write_imat(FILE *fp, int *mat, int rows, int cols)
 
 // ---------------------------------------------------------------------------
 
-int TextWriter::write_connectivity(int *connectivity, int nel, int ndofs)
+int TextWriter::write_connectivity(const char *loc, int *connectivity, int nel, int ndofs)
 {
     write_imat(fp, connectivity, nel, ndofs);
 }
 
-int TextWriter::write_coordinates(double *coordinates, int nno, int nsd)
+int TextWriter::write_coordinates(const char *loc, double *coordinates, int nno, int nsd)
 {
     write_dmat(fp, coordinates, nno, nsd);
 }
 
-int TextWriter::write_dataset(double *data, int num, int ndim)
+int TextWriter::write_dataset(const char *loc, double *data, int num, int ndim)
 {
     write_dmat(fp, data, num, ndim);
 }
