@@ -33,6 +33,10 @@ public:
     void write_cell_data(const char *name, double *data, int nel, int ndim);
 
 public:
+    int write_dataset(const char *loc, double *data, int nno, int ndim);
+    int write_coordinates(const char *loc, double *data, int nno, int ndim);
+
+public:
     FILE *fp;
 };
 

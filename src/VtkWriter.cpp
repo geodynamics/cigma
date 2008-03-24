@@ -27,6 +27,9 @@ int VtkWriter::open(const char *filename)
     {
         return -1;
     }
+
+    this->write_header();
+
     return 0;
 }
 
@@ -206,6 +209,18 @@ void VtkWriter::write_cell_data(const char *name, double *data, int nel, int ndi
             fprintf(fp, "\n");
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+
+int VtkWriter::write_coordinates(const char *loc, double *data, int nno, int ndim)
+{
+    this->write_points(data, nno, ndim);
+}
+
+int VtkWriter::write_dataset(const char *loc, double *data, int nno, int ndim)
+{
+    this->write_point_data(loc, data, nno, ndim);
 }
 
 // ---------------------------------------------------------------------------
