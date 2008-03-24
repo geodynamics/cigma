@@ -280,8 +280,8 @@ int cigma::CubeCmd::run()
             exit(1);
         }
 
-        textWriter->write_coordinates(mesh->coords, mesh->nno, mesh->nsd);
-        textWriter->write_connectivity(mesh->connect, mesh->nel, mesh->ndofs);
+        textWriter->write_coordinates(coords_path.c_str(), mesh->coords, mesh->nno, mesh->nsd);
+        textWriter->write_connectivity(connect_path.c_str(), mesh->connect, mesh->nel, mesh->ndofs);
         textWriter->close();
     }
     else if (writer->getType() == Writer::VTK_WRITER)
@@ -294,7 +294,7 @@ int cigma::CubeCmd::run()
             exit(1);
         }
 
-        vtkWriter->write_header();
+        //vtkWriter->write_header();
         vtkWriter->write_points(mesh->coords, mesh->nno, mesh->nsd);
         vtkWriter->write_cells(mesh->connect, mesh->nel, mesh->ndofs);
         vtkWriter->write_cell_types(mesh->nsd, mesh->nel, mesh->ndofs);
