@@ -5,24 +5,25 @@
 #include "VtkWriter.h"
 
 using namespace std;
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::ResidualField::ResidualField()
+ResidualField::ResidualField()
 {
     nel = 0;
     epsilon = 0;
     meshPart = 0;
 }
 
-cigma::ResidualField::~ResidualField()
+ResidualField::~ResidualField()
 {
     if (epsilon != 0) delete [] epsilon;
 }
 
 // ---------------------------------------------------------------------------
 
-void cigma::ResidualField::set_mesh(MeshPart *meshPart)
+void ResidualField::set_mesh(MeshPart *meshPart)
 {
     assert(meshPart != 0);
     this->meshPart = meshPart;
@@ -32,7 +33,7 @@ void cigma::ResidualField::set_mesh(MeshPart *meshPart)
 
 // ---------------------------------------------------------------------------
 
-void cigma::ResidualField::zero_out()
+void ResidualField::zero_out()
 {
     assert(nel > 0);
     assert(epsilon != 0);
@@ -45,7 +46,7 @@ void cigma::ResidualField::zero_out()
     }
 }
 
-void cigma::ResidualField::update(int e, double cell_residual)
+void ResidualField::update(int e, double cell_residual)
 {
     // remember residual on this cell
     epsilon[e] = cell_residual;
@@ -55,14 +56,14 @@ void cigma::ResidualField::update(int e, double cell_residual)
 
 }
 
-double cigma::ResidualField::L2()
+double ResidualField::L2()
 {
     return sqrt(global_error); // XXX: generalize to norm_pow(global_error)
 }
 
 // ---------------------------------------------------------------------------
 
-void cigma::ResidualField::write_vtk(const char *filename)
+void ResidualField::write_vtk(const char *filename)
 {
     assert(meshPart != 0); // XXX: add support for dumping residuals w/o mesh
     assert(meshPart->nel == nel);
@@ -72,7 +73,7 @@ void cigma::ResidualField::write_vtk(const char *filename)
 
     VtkWriter writer;
     writer.open(output_filename); // XXX: change signature to 'const char *'
-    writer.write_header();
+    //writer.write_header();
     writer.write_points(meshPart->coords, meshPart->nno, meshPart->nsd);
     writer.write_cells(meshPart->connect, meshPart->nel, meshPart->ndofs);
     writer.write_cell_types(meshPart->nsd, meshPart->nel, meshPart->ndofs); // XXX: call from w/i write_cells()

@@ -9,9 +9,6 @@ namespace cigma
     class ResidualField;
 }
 
-//
-// XXX: do we need to derive from cigma::Field?
-//
 class cigma::ResidualField
 {
 public:
