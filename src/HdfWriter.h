@@ -30,6 +30,9 @@ public:
     int write_connectivity(const char *loc, int *connectivity, int nel, int ndofs);
 
 public:
+    int write_int_dataset(const char *loc, int *data, int rows, int cols);
+
+public:
     HdfFile h5;
 };
 

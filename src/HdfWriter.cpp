@@ -64,3 +64,13 @@ int HdfWriter::write_connectivity(const char *loc, int *connectivity, int nel, i
 
 
 // ---------------------------------------------------------------------------
+
+int HdfWriter::write_int_dataset(const char *loc, int *data, int rows, int cols)
+{
+    int ierr;
+    ierr = HdfDataset::write2(h5.file_id, loc, "", H5T_NATIVE_INT, data, rows, cols);
+    return ierr;
+}
+
+
+// ---------------------------------------------------------------------------
