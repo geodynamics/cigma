@@ -26,6 +26,10 @@ public:
     virtual WriterType getType() = 0;
     virtual int open(const char *filename) = 0;
     virtual int close() = 0;
+
+public:
+    virtual int write_dataset(const char *loc, double *data, int nno, int ndim) = 0;
+    virtual int write_coordinates(const char *loc, double *coordinates, int nno, int nsd) = 0;
 };
 
 
