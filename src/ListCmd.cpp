@@ -83,6 +83,10 @@ int cigma::ListCmd::run()
         string cmd = "h5ls -r ";
         cmd += filename;
         ret = system(cmd.c_str());
+        if (ret < 0)
+        {
+            cerr << "list: Could not find h5ls in your PATH" << endl;
+        }
         return ret;
     }
     else if ((extension == ".vtk") || (extension == ".vts"))
