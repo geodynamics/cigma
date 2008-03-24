@@ -61,10 +61,39 @@ libcigma_a_SOURCES = \
 	Tri.h \
 	Tri.cpp \
 	\
+	Locator.h \
+	Locator.cpp \
+	AnnLocator.h \
+	AnnLocator.cpp \
+	\
+	Points.h \
+	Points.cpp \
+	QuadraturePoints.h \
+	QuadraturePoints.cpp \
+	QuadratureRule.h \
+	QuadratureRule.cpp \
+	FE.h \
+	FE.cpp \
+	\
 	MeshPart.h \
 	MeshPart.cpp \
 	CubeMeshPart.h \
 	CubeMeshPart.cpp \
+	\
+	DofHandler.h \
+	DofHandler.cpp \
+	\
+	Field.h \
+	Field.cpp \
+	FE_Field.h \
+	FE_Field.cpp \
+	PointField.h \
+	PointField.cpp \
+	ExtField.h \
+	ExtField.cpp \
+	\
+	Residuals.h \
+	Residuals.cpp \
 	\
 	HdfFile.h \
 	HdfFile.cpp \
@@ -85,6 +114,15 @@ libcigma_a_SOURCES = \
 	VtkReader.cpp \
 	VtkList.h \
 	VtkList.cpp \
+	\
+	MeshPartReader.h \
+	MeshPartReader.cpp \
+	QuadratureReader.h \
+	QuadratureReader.cpp \
+	PointsReader.h \
+	PointsReader.cpp \
+	FieldReader.h \
+	FieldReader.cpp \
 	\
 	Writer.h \
 	Writer.cpp \
@@ -109,9 +147,20 @@ libcigma_a_SOURCES = \
 	ListCmd.cpp \
 	CubeCmd.h \
 	CubeCmd.cpp \
+	ExtractCmd.h \
+	ExtractCmd.cpp \
+	SearchCmd.h \
+	SearchCmd.cpp \
+	EvalCmd.h \
+	EvalCmd.cpp \
+	CompareCmd.h \
+	CompareCmd.cpp \
 	\
 	AnyOption.h \
 	AnyOption.cpp \
+	convert.h \
 	StringUtils.h \
-	StringUtils.cpp
+	StringUtils.cpp \
+	Timer.h \
+	Timer.cpp
 
