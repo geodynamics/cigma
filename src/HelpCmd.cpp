@@ -3,21 +3,23 @@
 #include "HelpCmd.h"
 #include "CommandSet.h"
 
+using namespace cigma;
+
 // ---------------------------------------------------------------------------
 
-cigma::HelpCmd::HelpCmd()
+HelpCmd::HelpCmd()
 {
     name = "help";
     commands = 0;
 }
 
 
-cigma::HelpCmd::~HelpCmd()
+HelpCmd::~HelpCmd()
 {
 }
 
 
-void cigma::HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
+void HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
 {
     /* pointer to set of commands */
     this->commands = cmds;
@@ -36,7 +38,7 @@ void cigma::HelpCmd::setCmdMap(CommandSet::CmdMap *cmds)
 
 // ---------------------------------------------------------------------------
 
-void cigma::HelpCmd::setupOptions(AnyOption *opt)
+void HelpCmd::setupOptions(AnyOption *opt)
 {
     //std::cout << "Calling cigma::HelpCmd::setupOptions()" << std::endl;
 
@@ -60,7 +62,7 @@ void cigma::HelpCmd::setupOptions(AnyOption *opt)
 }
 
 
-void cigma::HelpCmd::configure(AnyOption *opt)
+void HelpCmd::configure(AnyOption *opt)
 {
     //std::cout << "Calling cigma::HelpCmd::configure()" << std::endl;
 
@@ -88,7 +90,7 @@ void cigma::HelpCmd::configure(AnyOption *opt)
 }
 
 
-int cigma::HelpCmd::run()
+int HelpCmd::run()
 {
     //std::cout << "Calling cigma::HelpCmd::run()" << std::endl;
 
