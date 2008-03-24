@@ -21,6 +21,11 @@ public:
     ~PointField();
 
 public:
+    int n_dim() { return points->n_dim(); }
+    int n_rank() { return values->n_dim(); }
+    FieldType getType() { return POINT_FIELD; }
+
+public:
     void set_points(double *pts, int npts, int nsd);
     void set_values(double *vals, int nvals, int rank);
     void set_locator(Locator *locator);
