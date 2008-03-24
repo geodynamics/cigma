@@ -2,6 +2,7 @@
 #define __TIMER_H__
 
 #include <iostream>
+#include <cassert>
 #include <ctime>
 
 class Timer
@@ -60,19 +61,7 @@ public:
 };
 
 
-std::ostream &operator<<(std::ostream &os, const Timer &T)
-{
-    os << T.current << " "
-       << T.num_per_sec << " "
-       << T.elapsed_mins << " "
-       << T.remaining_mins << " "
-       << T.total_mins << " "
-       << T.progress << "%"
-       << "          "
-          "          "
-          "\r"
-       << std::flush;
-}
+std::ostream &operator<<(std::ostream &os, const Timer &T);
 
 
 #endif
