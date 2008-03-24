@@ -23,9 +23,11 @@ VtkReader::VtkReader()
     ugrid = 0;
     sgrid = 0;
 
-    reader = 0;
-    xml_ug_reader = 0;
-    xml_sg_reader = 0;
+    vtk_reader = 0;
+    vts_reader = 0;
+    vtu_reader = 0;
+    pvts_reader = 0;
+    pvtu_reader = 0;
 }
 
 VtkReader::~VtkReader()
@@ -48,21 +50,21 @@ int VtkReader::open(const char *filename)
     {
         int outputType;
 
-        reader = vtkDataSetReader::New();
-        reader->SetFileName(filename);
-        reader->Update();
+        vtk_reader = vtkDataSetReader::New();
+        vtk_reader->SetFileName(filename);
+        vtk_reader->Update();
 
-        outputType = reader->ReadOutputType();
+        outputType = vtk_reader->ReadOutputType();
 
         if (outputType == VTK_STRUCTURED_GRID)
         {
-            sgrid = reader->GetStructuredGridOutput();
+            sgrid = vtk_reader->GetStructuredGridOutput();
             dataset = sgrid;
             pointset = sgrid;
         }
         else if (outputType == VTK_UNSTRUCTURED_GRID)
         {
-            ugrid = reader->GetUnstructuredGridOutput();
+            ugrid = vtk_reader->GetUnstructuredGridOutput();
             dataset = ugrid;
             pointset = ugrid;
         }
@@ -76,20 +78,20 @@ int VtkReader::open(const char *filename)
     }
     else if (ext == ".vts")
     {
-        xml_sg_reader = vtkXMLStructuredGridReader::New();
-        xml_sg_reader->SetFileName(filename);
-        xml_sg_reader->Update();
+        vts_reader = vtkXMLStructuredGridReader::New();
+        vts_reader->SetFileName(filename);
+        vts_reader->Update();
 
-        dataset = xml_sg_reader->GetOutputAsDataSet();
+        dataset = vts_reader->GetOutputAsDataSet();
         sgrid = vtkStructuredGrid::SafeDownCast(dataset);
     }
     else if (ext == ".vtu")
     {
-        xml_ug_reader = vtkXMLUnstructuredGridReader::New();
-        xml_ug_reader->SetFileName(filename);
-        xml_ug_reader->Update();
+        vtu_reader = vtkXMLUnstructuredGridReader::New();
+        vtu_reader->SetFileName(filename);
+        vtu_reader->Update();
 
-        dataset = xml_ug_reader->GetOutputAsDataSet();
+        dataset = vtu_reader->GetOutputAsDataSet();
         pointset = vtkPointSet::SafeDownCast(dataset);
         ugrid = vtkUnstructuredGrid::SafeDownCast(dataset);
     }
@@ -106,22 +108,22 @@ int VtkReader::open(const char *filename)
 
 int VtkReader::close()
 {
-    if (this->reader)
+    if (this->vtk_reader)
     {
-        this->reader->Delete();
-        this->reader = 0;
+        this->vtk_reader->Delete();
+        this->vtk_reader = 0;
     }
     
-    if (this->xml_sg_reader)
+    if (this->vts_reader)
     {
-        this->xml_sg_reader->Delete();
-        this->xml_sg_reader = 0;
+        this->vts_reader->Delete();
+        this->vts_reader = 0;
     }
 
-    if (this->xml_ug_reader)
+    if (this->vtu_reader)
     {
-        this->xml_ug_reader->Delete();
-        this->xml_ug_reader = 0;
+        this->vtu_reader->Delete();
+        this->vtu_reader = 0;
     }
 
     return 0;

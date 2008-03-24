@@ -6,6 +6,8 @@
 #include "vtkDataSetReader.h"
 #include "vtkXMLStructuredGridReader.h"
 #include "vtkXMLUnstructuredGridReader.h"
+#include "vtkXMLPStructuredGridReader.h"
+#include "vtkXMLPUnstructuredGridReader.h"
 
 #include "vtkDataSet.h"
 #include "vtkPointSet.h"
@@ -45,9 +47,11 @@ public:
     vtkStructuredGrid *sgrid;
 
 public:
-    vtkDataSetReader *reader;
-    vtkXMLStructuredGridReader *xml_sg_reader;
-    vtkXMLUnstructuredGridReader *xml_ug_reader;
+    vtkDataSetReader *vtk_reader;
+    vtkXMLStructuredGridReader *vts_reader;
+    vtkXMLUnstructuredGridReader *vtu_reader;
+    vtkXMLPStructuredGridReader *pvts_reader;
+    vtkXMLPUnstructuredGridReader *pvtu_reader;
 
 };
 
