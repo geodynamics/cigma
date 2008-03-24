@@ -1,5 +1,5 @@
-#ifndef __EXTERNAL_FIELD_H__
-#define __EXTERNAL_FIELD_H__
+#ifndef __EXT_FIELD_H__
+#define __EXT_FIELD_H__
 
 #include <string>
 #include "Points.h"
@@ -8,7 +8,7 @@
 
 namespace cigma
 {
-    class ExternalField;
+    class ExtField;
 }
 
 
@@ -16,7 +16,7 @@ namespace cigma
  * @brief External Field object
  *
  */
-class cigma::ExternalField : public Field
+class cigma::ExtField : public Field
 {
 public:
     typedef void (*get_int_fn)(int*);
@@ -24,12 +24,13 @@ public:
     typedef void (*eval_from_points_fn)(int,double*,double*);
 
 public:
-    ExternalField();
-    ~ExternalField();
+    ExtField();
+    ~ExtField();
 
 public:
     int n_dim() { return dim; }
     int n_rank() { return rank; }
+    FieldType getType() { return EXT_FIELD; }
 
 public:
     void load_library(std::string filename, std::string prefix);

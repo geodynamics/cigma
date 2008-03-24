@@ -2,23 +2,25 @@
 #include <cstdlib>
 #include <dlfcn.h>
 #include <cassert>
-#include "ExternalField.h"
+#include "ExtField.h"
+
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::ExternalField::ExternalField()
+ExtField::ExtField()
 {
     handle = 0;
 }
 
-cigma::ExternalField::~ExternalField()
+ExtField::~ExtField()
 {
     close_library();
 }
 
 // ---------------------------------------------------------------------------
 
-void cigma::ExternalField::load_library(std::string filename, std::string prefix)
+void ExtField::load_library(std::string filename, std::string prefix)
 {
     std::string function_name;
     char *error;
@@ -78,11 +80,12 @@ void cigma::ExternalField::load_library(std::string filename, std::string prefix
     }
 }
 
-void cigma::ExternalField::close_library()
+void ExtField::close_library()
 {
     if (handle != 0)
     {
         dlclose(handle);
+        handle = 0;
     }
 }
 
