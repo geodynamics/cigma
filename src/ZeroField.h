@@ -19,6 +19,7 @@ public:
 public:
     int n_dim() { return dim; }
     int n_rank() { return rank; }
+    FieldType getType() { return USER_FIELD; }
 
 public:
     void set_shape(int dim, int rank)
