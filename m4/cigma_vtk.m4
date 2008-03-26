@@ -44,7 +44,7 @@ AC_DEFUN([AM_PATH_VTK],[
     dnl do we want to check for VTK?
     if [[ $with_vtk = "yes" ]]; then
         dnl in case user wrote --with-vtk=yes
-        with_vtk="/usr/local"
+        with_vtk="/usr"
     fi
 
     if [[ $with_vtk != "no" ]]; then
