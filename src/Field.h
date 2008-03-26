@@ -35,5 +35,7 @@ public:
     virtual ~Field();
 };
 
+cigma::Field *NewField(const char *src);
+
 
 #endif
