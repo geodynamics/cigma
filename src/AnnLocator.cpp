@@ -10,7 +10,7 @@ cigma::AnnLocator::AnnLocator()
     epsilon = 0;
 
     npts = 0;
-    dim = 0;
+    ndim2 = 0;
 
     dataPoints = 0;
     kdtree = 0;
@@ -45,35 +45,35 @@ void cigma::AnnLocator::initialize(MeshPart *meshPart)
     assert(nnk > 0);
 
     npts = meshPart->nel;
-    nsd = meshPart->nsd;
-    dim = 2 * nsd;
+    ndim = meshPart->nsd;
+    ndim2 = ndim * 2;
     
     assert(npts > 0);
-    assert(nsd > 0);
+    assert(ndim > 0);
 
-    dataPoints = annAllocPts(npts, dim);
-    queryPoint = annAllocPt(dim);
+    dataPoints = annAllocPts(npts, ndim);
+    queryPoint = annAllocPt(ndim2);
 
     nnIdx = new ANNidx[nnk];
     nnDists = new ANNdist[nnk];
 
     int i,j;
-    double minpt[nsd];
-    double maxpt[nsd];
+    double minpt[ndim];
+    double maxpt[ndim];
 
     for (i = 0; i < npts; i++)
     {
         ANNpoint pt = dataPoints[i];
         meshPart->select_cell(i);
         meshPart->cell->bbox(minpt, maxpt);
-        for (j = 0; j < nsd; j++)
+        for (j = 0; j < ndim; j++)
         {
-            pt[nsd*0 + j] = minpt[j];
-            pt[nsd*1 + j] = maxpt[j];
+            pt[ndim*0 + j] = minpt[j];
+            pt[ndim*1 + j] = maxpt[j];
         }
     }
 
-    kdtree = new ANNkd_tree(dataPoints, npts, dim);
+    kdtree = new ANNkd_tree(dataPoints, npts, ndim2);
 
     locatorType = CELL_LOCATOR;
 }
@@ -86,21 +86,21 @@ void cigma::AnnLocator::initialize(Points *points)
     assert(nnk > 0);
 
     npts = points->n_points();
-    dim  = points->n_dim();
+    ndim = points->n_dim();
 
     assert(npts > 0);
-    assert(nsd > 0);
+    assert(ndim > 0);
 
     // XXX watch out for when you change the ANNpoint type to float
     assert(sizeof(ANNpoint) == sizeof(double));
 
     dataPoints = (ANNpointArray)(points->data);
-    queryPoint = annAllocPt(dim);
+    queryPoint = annAllocPt(ndim);
 
     nnIdx = new ANNidx[nnk];
     nnDists = new ANNdist[nnk];
 
-    kdtree = new ANNkd_tree(dataPoints, npts, dim);
+    kdtree = new ANNkd_tree(dataPoints, npts, ndim);
 
     locatorType = POINT_LOCATOR;
 }
@@ -108,12 +108,12 @@ void cigma::AnnLocator::initialize(Points *points)
 
 // ---------------------------------------------------------------------------
 
-void cigma::AnnLocator::search(double *globalPoint)
+void cigma::AnnLocator::search(double *point)
 {
-    for (int i = 0; i < nsd; i++)
+    for (int i = 0; i < ndim; i++)
     {
-        queryPoint[nsd*0 + i] = globalPoint[i];
-        queryPoint[nsd*1 + i] = globalPoint[i];
+        queryPoint[ndim*0 + i] = point[i];
+        queryPoint[ndim*1 + i] = point[i];
     }
 
     kdtree->annkSearch(queryPoint, nnk, nnIdx, nnDists, epsilon);

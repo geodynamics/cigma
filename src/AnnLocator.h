@@ -23,7 +23,7 @@ public:
     void initialize(Points *points);
 
 public:
-    void search(double *globalPoint);
+    void search(double *point);
 
 public:
     int n_idx();
@@ -33,7 +33,7 @@ public:
 public:
     int nnk;            // number of nearest neighbors
     int npts;           // number of points (bounding boxes)
-    int dim;            // dimension of bounding box (2 * nsd)
+    int ndim2;          // dimension of bounding box (ndim * 2)
     double epsilon;     // tolerance (in bbox space)
 
 public:
