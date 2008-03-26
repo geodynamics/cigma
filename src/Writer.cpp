@@ -6,28 +6,31 @@
 #include "HdfWriter.h"
 #include "TextWriter.h"
 #include "VtkWriter.h"
-
+#include "PathUtils.h"
 
 using namespace cigma;
-
 
 // ---------------------------------------------------------------------------
 
 Writer* NewWriter(const char *fileext)
 {
-    std::string ext = fileext;
+    // 
+    // XXX: This factory function also needs to accept a flag indicating
+    // whether we wish to overwrite the file if it exists. Thus, we need
+    // the full filename, not just the extension part.
+    //
 
-    if (ext == ".h5")
+    if (HdfExtension(fileext))
     {
         return new HdfWriter();
     }
 
-    if (ext == ".txt")
+    if (TextExtension(fileext))
     {
         return new TextWriter();
     }
 
-    if (ext == ".vtk")
+    if (VtkExtension(fileext))
     {
         return new VtkWriter();
     }
@@ -37,11 +40,11 @@ Writer* NewWriter(const char *fileext)
 
 // ---------------------------------------------------------------------------
 
-cigma::Writer::Writer()
+Writer::Writer()
 {
 }
 
-cigma::Writer::~Writer()
+Writer::~Writer()
 {
 }
 
