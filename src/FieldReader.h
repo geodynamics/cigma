@@ -4,7 +4,7 @@
 #include <string>
 #include "AnyOption.h"
 #include "MeshPartReader.h"
-#include "QuadratureReader.h"
+#include "PointsReader.h"
 #include "Reader.h"
 #include "Field.h"
 
@@ -27,7 +27,8 @@ public:
 
 public:
     MeshPartReader meshPartReader;
-    QuadratureReader qptsReader;
+    PointsReader pointsReader;
+    PointsReader valuesReader;
     cigma::Reader *dofsReader;
 
 public:
