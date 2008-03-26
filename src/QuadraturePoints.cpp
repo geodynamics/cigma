@@ -1,8 +1,10 @@
 #include "QuadraturePoints.h"
 
+using namespace cigma;
+
 // ---------------------------------------------------------------------------
 
-cigma::QuadraturePoints::QuadraturePoints()
+QuadraturePoints::QuadraturePoints()
 {
     qdim = 0;
     qpts = 0;
@@ -10,72 +12,91 @@ cigma::QuadraturePoints::QuadraturePoints()
 }
 
 
-cigma::QuadraturePoints::~QuadraturePoints()
+QuadraturePoints::~QuadraturePoints()
 {
-    if (qpts != 0) delete [] qpts;
-    if (qwts != 0) delete [] qwts;
+    clear();
 }
 
+void QuadraturePoints::clear()
+{
+    if (data != 0)
+    {
+        delete [] data;
+        data = 0;
+    }
+    if (qpts != 0)
+    {
+        delete [] qpts;
+        qpts = 0;
+    }
+    if (qwts != 0)
+    {
+        delete [] qwts;
+        qwts = 0;
+    }
+}
 
 // ---------------------------------------------------------------------------
 
-void cigma::QuadraturePoints::set_quadrature(double *quadpts, double *quadwts, int npts, int qdim)
+void QuadraturePoints::set_quadrature(double *qpts, double *qwts, int npts, int qdim)
 {
     /* some basic assertions */
-    assert(quadpts != 0);
-    assert(quadwts != 0);
+    assert(qpts != 0);
+    assert(qwts != 0);
     assert(npts > 0);
     assert(qdim > 0);
 
     /* clear existing data */
-    if (qpts != 0) delete [] qpts;
-    if (qwts != 0) delete [] qwts;
+    this->clear();
 
     /* set dimensions */
-    this->num = npts;
+    this->npts = npts;
     this->qdim = qdim;
 
     /* allocate new data arrays */
-    qpts = new double[num * qdim];
-    qwts = new double[num];
+    this->qpts = new double[npts * qdim];
+    this->qwts = new double[npts];
 
     /* copy from quadpts & quadwts */
     int i,j;
-    for (i = 0; i < num; i++)
+    for (i = 0; i < npts; i++)
     {
-        qwts[i] = quadwts[i];
+        this->qwts[i] = qwts[i];
         for (j = 0; j < qdim; j++)
         {
             int n = qdim*i + j;
-            qpts[n] = quadpts[n];
+            this->qpts[n] = qpts[n];
         }
     }
-}
 
-void cigma::QuadraturePoints::set_globaldim(int dim)
-{
-    assert(num > 0);
-    this->dim = dim;
-    this->data = new double[num * dim];
-    for (int i = 0; i < num; i++)
+    /* global quadrature points */
+    ndim = 3;
+    data = new double[npts * ndim];
+    for (i = 0; i < npts; i++)
     {
-        for (int j = 0; j < dim; j++)
+        for (j = 0; j < ndim; j++)
         {
-            data[dim*i+j] = 0.0;
+            data[ndim*i + j] = 0.0;
         }
     }
 }
 
-
-void cigma::QuadraturePoints::apply_refmap(Cell *cell)
+void QuadraturePoints::apply_refmap(Cell *cell)
 {
     assert(cell != 0);
     assert(data != 0);
 
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < npts; i++)
     {
-        double *uvw = &qpts[qdim*i];
-        double *xyz = &data[dim*i];
+        double uvw[3] = {0,0,0};
+
+        for (int j = 0; j < qdim; j++)
+        {
+            uvw[j] = qpts[qdim*i + j];
+        }
+        
+        double *xyz = &data[ndim*i];
+
         cell->uvw2xyz(uvw, xyz);
     }
 }
