@@ -36,7 +36,7 @@ void ExtractCmd::setupOptions(AnyOption *opt)
     opt->addUsage("     --mesh                  Input mesh file");
     opt->addUsage("     --mesh-coordinates      Path to mesh coordinates");
     opt->addUsage("     --mesh-connectivity     Path to mesh connectivity");
-    opt->addUsage("     --rule                  Quadrature rule");
+    opt->addUsage("     --quadrature-rule       Quadrature rule");
     opt->addUsage("     --output                Output file");
 
     /* setup flags and options */
@@ -48,10 +48,10 @@ void ExtractCmd::setupOptions(AnyOption *opt)
     opt->setOption("mesh-coordinates");
     opt->setOption("mesh-connectivity");
 
-    opt->setOption("rule", 'r');
-    opt->setOption("rule-order");
-    opt->setOption("rule-points");
-    opt->setOption("rule-weights");
+    opt->setOption("quadrature-rule", 'q');
+    opt->setOption("quadrature-rule-order");
+    opt->setOption("quadrature-rule-points");
+    opt->setOption("quadrature-rule-weights");
 
     opt->setOption("output", 'o');
 }
@@ -92,7 +92,7 @@ void ExtractCmd::configure(AnyOption *opt)
 
     /* gather up expected command line arguments */
     meshPartReader.load_args(opt, "mesh");
-    quadratureReader.load_args(opt, "rule");
+    quadratureReader.load_args(opt, "quadrature-rule");
 
     /* validate these arguments and complain about missing ones */
     meshPartReader.validate_args("extract");
@@ -118,6 +118,7 @@ void ExtractCmd::configure(AnyOption *opt)
     coordsField->meshPart = meshPartReader.meshPart;
     coordsField->meshPart->set_cell();
 
+
     /* now, load quadrature rule */
     quadratureReader.load_quadrature(coordsField->meshPart->cell);
     if (quadratureReader.quadrature == 0)
@@ -125,6 +126,7 @@ void ExtractCmd::configure(AnyOption *opt)
         cerr << "extract: Invalid quadrature rule options!" << endl;
         exit(1);
     }
+
 
     /* set up interpolator on mesh coordinates */
     coordsField->fe = new FE();
@@ -151,18 +153,21 @@ int ExtractCmd::run()
 
     MeshPart *meshPart = coordsField->meshPart;
     assert(meshPart != 0);
+    assert(meshPart == fe->meshPart);
 
     QuadraturePoints *qpts = fe->points;
     assert(qpts != 0);
 
     Cell *cell = fe->meshPart->cell;
     assert(cell != 0);
+    assert(meshPart->cell == fe->meshPart->cell);
 
 
     //
     // indices
     //
     int e,q;
+    int i,n;
 
     //
     // dimensions
@@ -171,28 +176,36 @@ int ExtractCmd::run()
     int nsd = meshPart->nsd;
     int nq  = qpts->n_points();
 
-    const int cell_nno = cell->n_nodes();
-
-    double *globalPoints = new double[(nq*nel) * nsd]; // XXX: handle OOM
+    double *points = new double[nel * nq * nsd]; // XXX: handle OOM
 
     if (verbose)
     {
-        cout << "Extracting " << (nq * nel) << " points from input mesh..." << endl;
+        cout << "Extracting " << (nel * nq) << " points from input mesh..." << endl;
     }
 
     for (e = 0; e < nel; e++)
     {
-        double globalCellCoords[cell_nno * 3];
-        meshPart->get_cell_coords(e, globalCellCoords);
-        cell->set_global_vertices(globalCellCoords, cell_nno, 3);
+        meshPart->select_cell(e);
+        /*
+        cout << "e = " << e << endl;
+        for (int a = 0; a < cell->n_nodes(); a++)
+        {
+            cout << "\t";
+            for (int b = 0; b < 3; b++)
+            {
+                cout << cell->globverts[3*a+b] << " ";
+            }
+            cout << endl;
+        } // */
+
         qpts->apply_refmap(cell);
 
         for (q = 0; q < nq; q++)
         {
-            for (int i = 0; i < nsd; i++)
+            for (i = 0; i < nsd; i++)
             {
-                int n = (nq*nsd)*e + nsd*q + i;
-                globalPoints[n] = (*qpts)(q,i);
+                n = (nq*nsd)*e + nsd*q + i;
+                points[n] = qpts->data[nsd*q + i];
             }
         }
     }
@@ -208,7 +221,7 @@ int ExtractCmd::run()
         exit(1);
     }
 
-    ierr = pointsWriter->write_coordinates(pointsPath.c_str(), globalPoints, nq*nel, nsd);
+    ierr = pointsWriter->write_coordinates(pointsPath.c_str(), points, nq*nel, nsd);
     if (ierr < 0)
     {
         cerr << "extract: Could not write points dataset " << pointsPath << endl;
@@ -217,7 +230,7 @@ int ExtractCmd::run()
     
     ierr = pointsWriter->close();
 
-    delete [] globalPoints;    // XXX: use auto_ptr?
+    delete [] points;    // XXX: use auto_ptr?
 
     return 0;
 }
