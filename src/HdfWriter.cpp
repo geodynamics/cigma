@@ -23,7 +23,8 @@ HdfWriter::~HdfWriter()
 
 int HdfWriter::open(const char *filename)
 {
-    h5.open(filename, "rw+");
+    //h5.open(filename, "rw+");
+    h5.create(filename, "w");
 
     if (h5.file_id < 0)
     {
