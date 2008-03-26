@@ -3,7 +3,7 @@
 
 cigma::Locator::Locator()
 {
-    nsd = 0;
+    ndim = 0;
 }
 
 

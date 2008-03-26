@@ -22,14 +22,14 @@ public:
     virtual void initialize(Points *points) = 0;
 
 public:
-    virtual void search(double *globalPoint) = 0;
+    virtual void search(double *point) = 0;
 
 public:
     virtual int n_idx() = 0;
     virtual int idx(int i) = 0;
 
 public:
-    int nsd;    // spatial dimensions
+    int ndim;   // dimensions of point
 };
 
 
