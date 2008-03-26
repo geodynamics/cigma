@@ -19,7 +19,7 @@ CompareCmd::CompareCmd()
 
     // integrating mesh
     meshPart = 0;
-    qpoints = 0;
+    quadrature = 0;
     qr = 0;
 
     // fields
@@ -254,8 +254,8 @@ void CompareCmd::configure(AnyOption *opt)
     {
         if (field_a->getType() == Field::FE_FIELD)
         {
-            FE_Field *fa = static_cast<FE_Field*>(field_a);
-            meshPart = fa->meshPart;
+            FE_Field *a = static_cast<FE_Field*>(field_a);
+            meshPart = a->meshPart;
         }
     }
     if (meshPart == 0)
@@ -265,16 +265,59 @@ void CompareCmd::configure(AnyOption *opt)
     }
     
     /* Load the quadrature rule */
-
+    //quadratureReader.verbose = true;
     quadratureReader.load_quadrature(meshPart->cell);
-    qpoints = quadratureReader.quadrature;
-    if (qpoints == 0)
+    quadrature = quadratureReader.quadrature;
+    if (quadrature == 0)
     {
         cerr << "compare: Could not load quadrature points" << endl;
         exit(1);
     }
 
-    // qr = ...; // XXX
+    //qr = ...; // XXX:
+
+    if (field_a->getType() == Field::FE_FIELD)
+    {
+        FE_Field *a = static_cast<FE_Field*>(field_a);
+        a->fe = new FE();
+        a->fe->set_mesh(a->meshPart);
+
+        qr = a->fe; // XXX
+    }
+
+    if (field_b->getType() == Field::FE_FIELD)
+    {
+        FE_Field *b = static_cast<FE_Field*>(field_b);
+        b->fe = new FE();
+        b->fe->set_mesh(b->meshPart);
+    }
+
+    /* this allocates residuals->epsilon[] array */
+    residuals->set_mesh(meshPart);
+}
+
+
+// ---------------------------------------------------------------------------
+
+void CompareCmd::start_timer()
+{
+    if (verbose)
+    {
+        cout << setprecision(5);
+        timer.print_header(cout, "elts");
+        timer.start(meshPart->nel);
+        timer.update(0);
+        cout << timer;
+    }
+}
+
+void CompareCmd::end_timer()
+{
+    if (verbose)
+    {
+        timer.update(meshPart->nel);
+        cout << timer << endl;
+    }
 }
 
 
@@ -286,6 +329,9 @@ void compare(CompareCmd *env, PointField *field_a, FE_Field *field_b)
     {
         cout << "Comparing PointField with FE_Field" << endl;
     }
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
@@ -294,6 +340,9 @@ void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
     {
         cout << "Comparing FE_Field with FE_Field" << endl;
     }
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
@@ -302,6 +351,9 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
     {
         cout << "Comparing FE_Field with PointField" << endl;
     }
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 void compare(CompareCmd *env, FE_Field *field_a, ExtField *field_b)
@@ -310,7 +362,9 @@ void compare(CompareCmd *env, FE_Field *field_a, ExtField *field_b)
     {
         cout << "Comparing FE_Field with ExtField" << endl;
     }
-
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 void compare(CompareCmd *env, FE_Field *field_a, Field *field_b)
@@ -319,7 +373,9 @@ void compare(CompareCmd *env, FE_Field *field_a, Field *field_b)
     {
         cout << "Comparing FE_Field with Field" << endl;
     }
-
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 void compare(CompareCmd *env, Field *field_a, Field *field_b)
@@ -328,72 +384,61 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
     {
         cout << "Comparing Field with Field" << endl;
     }
+    assert(false);
+    env->start_timer();
+    env->end_timer();
 }
 
 int CompareCmd::run()
 {
-    // start with basic checks
+    // some basic checks before we begin
     assert(meshPart != 0);
-    assert(qpoints != 0);
+    assert(quadrature != 0);
     assert(qr != 0);
     assert(field_a != 0);
     assert(field_b != 0);
 
+    int status;
 
-    // start timer
-    if (verbose)
-    {
-        cout << setprecision(5);
-        timer.print_header(cout, "elts");
-        timer.start(meshPart->nel);
-        timer.update(0);
-        cout << timer;
-    }
 
-    Field::FieldType a = field_a->getType();
-    Field::FieldType b = field_b->getType();
+    Field::FieldType ta = field_a->getType();
+    Field::FieldType tb = field_b->getType();
     
-    if ((a == Field::POINT_FIELD) && (b == Field::FE_FIELD))
+    if ((ta == Field::POINT_FIELD) && (tb == Field::FE_FIELD))
     {
         PointField *fa = static_cast<PointField*>(field_a);
         FE_Field *fb = static_cast<FE_Field*>(field_b);
         compare(this, fa, fb);
     }
-    else if ((a == Field::FE_FIELD) && (b == Field::FE_FIELD))
+    else if ((ta == Field::FE_FIELD) && (tb == Field::FE_FIELD))
     {
-        FE_Field *fa = static_cast<FE_Field*>(field_a);
-        FE_Field *fb = static_cast<FE_Field*>(field_b);
-        compare(this, fa, fb);
-
+        FE_Field *a = static_cast<FE_Field*>(field_a);
+        FE_Field *b = static_cast<FE_Field*>(field_b);
+        compare(this, a, b);
     }
-    else if ((a == Field::FE_FIELD) && (b == Field::POINT_FIELD))
+    else if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
     {
-        FE_Field *fa = static_cast<FE_Field*>(field_a);
-        PointField *fb = static_cast<PointField*>(field_b);
-        compare(this, fa, fb);
+        FE_Field *a = static_cast<FE_Field*>(field_a);
+        PointField *b = static_cast<PointField*>(field_b);
+        compare(this, a, b);
     }
-    else if ((a == Field::FE_FIELD) && (b == Field::EXT_FIELD))
+    else if ((ta == Field::FE_FIELD) && (tb == Field::EXT_FIELD))
     {
-        FE_Field *fa = static_cast<FE_Field*>(field_a);
-        ExtField *fb = static_cast<ExtField*>(field_b);
-        compare(this, fa, fb);
+        FE_Field *a = static_cast<FE_Field*>(field_a);
+        ExtField *b = static_cast<ExtField*>(field_b);
+        compare(this, a, b);
     }
-    else if ((a == Field::FE_FIELD) && (b == Field::USER_FIELD))
+    else if ((ta == Field::FE_FIELD) && (tb == Field::USER_FIELD))
     {
-        FE_Field *fa = static_cast<FE_Field*>(field_a);
-        Field *fb = field_b;
-        compare(this, fa, fb);
+        FE_Field *a = static_cast<FE_Field*>(field_a);
+        Field *b = field_b;
+        compare(this, a, b);
     }
     else
     {
         compare(this, field_a, field_b);
     }
 
-    if (verbose)
-    {
-        timer.update(meshPart->nel);
-        cout << timer << endl;
-    }
 
     // report global error
     double L2 = residuals->L2();

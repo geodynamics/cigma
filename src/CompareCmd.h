@@ -37,7 +37,11 @@ public:
     int run();
 
 public:
-    QuadraturePoints *qpoints;
+    void start_timer();
+    void end_timer();
+
+public:
+    QuadraturePoints *quadrature;
     MeshPart *meshPart;
     QuadratureRule *qr;
     Field *field_a;
@@ -50,14 +54,13 @@ public:
     FieldReader firstReader;
     FieldReader secondReader;
 
-public:
-    Timer timer;
     Writer *writer;
     std::string outputPath;
 
 public:
-    bool verbose;
+    Timer timer;
     int outputFrequency;
+    bool verbose;
 };
 
 #endif
