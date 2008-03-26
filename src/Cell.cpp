@@ -44,11 +44,10 @@ void cigma::Cell::set_reference_vertices(double *vertices, int num_vertices)
     // copy data from vertices
     for (i = 0; i < nno; i++)
     {
-        //*
         for (j = 0; j < nsd; j++)
         {
             globverts[nsd*i + j] = 0.0;
-        } // */
+        }
         for (j = 0; j < celldim; j++)
         {
             int n = celldim*i + j;

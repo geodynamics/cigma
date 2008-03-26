@@ -17,6 +17,11 @@ ANNLIB = ../libann.a
 CIGMALIB = ../libcigma.a
 
 TESTOBJS = \
+	TestTri.o \
+	TestQuad.o \
+	TestTet.o \
+	TestHex.o \
+	TestPoints.o \
 	TestZeroField.o \
 
 
