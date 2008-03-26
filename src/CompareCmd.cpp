@@ -214,6 +214,7 @@ void CompareCmd::configure(AnyOption *opt)
 
     /* Load the fields */
 
+    firstReader.verbose = true;
     firstReader.load_field();
     field_a = firstReader.field;
     if (field_a == 0)
@@ -222,6 +223,7 @@ void CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
 
+    secondReader.verbose = true;
     secondReader.load_field();
     field_b = secondReader.field;
     if (field_b == 0)
@@ -281,6 +283,7 @@ void CompareCmd::configure(AnyOption *opt)
         FE_Field *a = static_cast<FE_Field*>(field_a);
         a->fe = new FE();
         a->fe->set_mesh(a->meshPart);
+        a->fe->set_quadrature_points(quadrature);
 
         qr = a->fe; // XXX
     }
@@ -290,6 +293,7 @@ void CompareCmd::configure(AnyOption *opt)
         FE_Field *b = static_cast<FE_Field*>(field_b);
         b->fe = new FE();
         b->fe->set_mesh(b->meshPart);
+        //b->fe->set_quadrature_points(quadrature);
     }
 
     /* this allocates residuals->epsilon[] array */
@@ -307,6 +311,15 @@ void CompareCmd::start_timer()
         timer.print_header(cout, "elts");
         timer.start(meshPart->nel);
         timer.update(0);
+        cout << timer;
+    }
+}
+
+void CompareCmd::update_timer(int e)
+{
+    if (verbose && ((e+1) % outputFrequency == 0))
+    {
+        timer.update(e+1);
         cout << timer;
     }
 }
@@ -340,9 +353,41 @@ void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
     {
         cout << "Comparing FE_Field with FE_Field" << endl;
     }
-    assert(false);
+
+    Residuals *residuals = env->residuals;
+    QuadratureRule *qr = env->qr;
+    assert(qr != 0);
+    assert(qr->points != 0);
+
+    // dimensions
+    int nel = qr->meshPart->nel;
+    int nq = qr->points->n_points();
+    int valdim = field_a->n_rank();
+
+    // field values at quadrature points
+    Points phi_a, phi_b;
+    double *values_a = new double[nq * valdim];
+    double *values_b = new double[nq * valdim];
+    phi_a.set_data(values_a, nq, valdim);
+    phi_b.set_data(values_b, nq, valdim);
+
+    residuals->reset_accumulator();
     env->start_timer();
+    for (int e = 0; e < nel; e++)
+    {
+        qr->select_cell(e);
+        field_a->tabulate_element(e, phi_a.data);
+        field_b->Field::eval(*(qr->points), phi_b);
+        double err = qr->L2(phi_a, phi_b);
+        residuals->update(e, err);
+        env->update_timer(e);
+    }
     env->end_timer();
+
+    // clean up
+    delete [] values_a;
+    delete [] values_b;
+
 }
 
 void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)

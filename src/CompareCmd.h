@@ -38,6 +38,7 @@ public:
 
 public:
     void start_timer();
+    void update_timer(int e);
     void end_timer();
 
 public:
