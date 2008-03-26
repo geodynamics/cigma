@@ -7,11 +7,11 @@
 #include "Tri.h"
 #include "Quad.h"
 
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::MeshPart::
-MeshPart()
+MeshPart::MeshPart()
 {
     nno = 0;
     nsd = 0;
@@ -26,20 +26,17 @@ MeshPart()
 }
 
 
-cigma::MeshPart::
-~MeshPart()
+MeshPart::~MeshPart()
 {
-    //* // XXX: don't delete if we copied the pointers
+    // XXX: don't delete if we copied the pointers
     if (coords) delete [] coords;
     if (connect) delete [] connect;
-    // */
 }
 
 
 // ---------------------------------------------------------------------------
 
-void cigma::MeshPart::
-set_coordinates(double *coordinates, int nno, int nsd)
+void MeshPart::set_coordinates(double *coordinates, int nno, int nsd)
 {
     assert(nno > 0);
     assert(nsd > 0);
@@ -64,8 +61,7 @@ set_coordinates(double *coordinates, int nno, int nsd)
 }
 
 
-void cigma::MeshPart::
-set_connectivity(int *connectivity, int nel, int ndofs)
+void MeshPart::set_connectivity(int *connectivity, int nel, int ndofs)
 {
     assert(nel > 0);
     assert(ndofs > 0);
@@ -90,16 +86,14 @@ set_connectivity(int *connectivity, int nel, int ndofs)
 }
 
 
-void cigma::MeshPart::
-set_locator(Locator *locator)
+void MeshPart::set_locator(Locator *locator)
 {
     this->locator = locator;
     locator->initialize(this);
 }
 
 
-void cigma::MeshPart::
-set_cell()
+void MeshPart::set_cell()
 {
     assert(nsd > 0);
     assert(ndofs > 0);
@@ -136,44 +130,46 @@ set_cell()
 
 // ---------------------------------------------------------------------------
 
-void cigma::MeshPart::
-get_bbox(double *minpt, double *maxpt)
+void MeshPart::get_bbox(double *minpt, double *maxpt)
 {
     cigma::minmax(coords, nno, nsd, minpt, maxpt);
 }
 
 
-void cigma::MeshPart::
-get_cell_coords(int cellIndex, double *globalCellCoords)
+void MeshPart::get_cell_coords(int cellIndex, double *globalCellCoords)
 {
-    //assert(nsd > 0);
-    //assert(ndofs > 0);
-
     assert(0 <= cellIndex);
     assert(cellIndex < nel);
 
-    int *conn = &connect[ndofs * cellIndex];
+    //
+    // Note that the connectivity array is assumed
+    // to be zero-based.
+    //
 
-    for (int i = 0; i < ndofs; i++)
+    int i,j;
+    int *conn = &connect[ndofs * cellIndex];
+    for (i = 0; i < ndofs; i++)
     {
         double *pt = &coords[nsd * conn[i]];
-        for (int j = 0; j < nsd; j++)
+        for (j = 0; j < 3; j++)
         {
-            globalCellCoords[nsd*i + j] = pt[j];
+            globalCellCoords[3*i + j] = 0.0;
+        }
+        for (j = 0; j < nsd; j++)
+        {
+            globalCellCoords[3*i + j] = pt[j];
         }
     }
 }
 
 
-void cigma::MeshPart::
-select_cell(int e)
+void MeshPart::select_cell(int e)
 {
     get_cell_coords(e, cell->globverts);
 }
 
 
-bool cigma::MeshPart::
-find_cell(double *globalPoint, int *cellIndex)
+bool MeshPart::find_cell(double globalPoint[3], int *cellIndex)
 {
     int i;
     int e;
@@ -196,7 +192,9 @@ find_cell(double *globalPoint, int *cellIndex)
                 return true;
             }
         }
-        return false;   // XXX: give up here? 
+
+        // XXX: give up here? 
+        //return false;
     }
 
 
@@ -207,7 +205,6 @@ find_cell(double *globalPoint, int *cellIndex)
      */
     static int last_cell = -1;
 
-    //*
     if ((0 <= last_cell) && (last_cell < nel))
     {
         select_cell(last_cell);

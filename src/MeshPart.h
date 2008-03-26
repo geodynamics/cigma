@@ -27,7 +27,7 @@ public:
 public:
     void get_bbox(double *minpt, double *maxpt);
     void get_cell_coords(int cellIndex, double *globalCoords);
-    bool find_cell(double *globalPoint, int *cellIndex);
+    bool find_cell(double globalPoint[3], int *cellIndex);
 
 public:
     int nno, nsd;
