@@ -26,10 +26,20 @@ void PointsReader::load_args(AnyOption *opt, const char *opt_prefix)
 {
     assert(opt != 0);
 
-    char *in;
-    string optstr;
+    // remember the original option prefix
+    this->pointsOption = "--";
+    this->pointsOption += opt_prefix;
 
-    in = opt->getValue("points");
+    // 
+    // Note that in this case, the name of key to be read
+    // is the whole prefix. The caller needs to determine
+    // the appropriate name, which will typically correspond
+    // to an option called --{first,second}-{points,values}
+    //
+    char *in;
+    string optstr = opt_prefix;
+
+    in = opt->getValue(optstr.c_str());
     if (in != 0)
     {
         this->pointsPath = in;
@@ -38,10 +48,15 @@ void PointsReader::load_args(AnyOption *opt, const char *opt_prefix)
 
 void PointsReader::validate_args(const char *cmd_name)
 {
+    // 
+    // Check for missing options
+    //
+
     if (pointsPath == "")
     {
         cerr << cmd_name << ": "
-             << "Missing option --points"
+             << "Missing option "
+             << pointsOption
              << endl;
         exit(1);
     }

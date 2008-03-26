@@ -20,6 +20,7 @@ public:
     void load_points();
 
 public:
+    std::string pointsOption;
     std::string pointsPath;
     std::string pointsLoc;
     std::string pointsFile;
