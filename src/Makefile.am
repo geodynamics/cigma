@@ -85,6 +85,8 @@ libcigma_a_SOURCES = \
 	\
 	Field.h \
 	Field.cpp \
+	NullField.h \
+	NullField.cpp \
 	FE_Field.h \
 	FE_Field.cpp \
 	PointField.h \
@@ -163,6 +165,8 @@ libcigma_a_SOURCES = \
 	convert.h \
 	StringUtils.h \
 	StringUtils.cpp \
+	PathUtils.h \
+	PathUtils.cpp \
 	Timer.h \
 	Timer.cpp
 
