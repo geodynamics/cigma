@@ -78,14 +78,14 @@ void MeshPartReader::validate_args(const char *cmd_name)
             if (coordsPath == "")
             {
                 cerr << cmd_name
-                     << ": Detected missing option --mesh-coordinates"
+                     << ": Missing mesh coordinates option"
                      << endl;
                 exit(1);
             }
             if (connectPath == "")
             {
                 cerr << cmd_name
-                     << ": Detected missing option --mesh-connectivity"
+                     << ": Missing mesh connectivity option"
                      << endl;
                 exit(1);
             }
