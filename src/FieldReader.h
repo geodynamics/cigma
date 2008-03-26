@@ -24,6 +24,7 @@ public:
 public:
     std::string fieldOption;
     std::string fieldPath;
+    bool verbose;
 
 public:
     MeshPartReader meshPartReader;

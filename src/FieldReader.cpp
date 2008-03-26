@@ -19,6 +19,7 @@ using namespace cigma;
 FieldReader::FieldReader()
 {
     field = 0;
+    verbose = false;
 }
 
 FieldReader::~FieldReader()
@@ -36,8 +37,7 @@ void FieldReader::load_args(AnyOption *opt, const char *opt_prefix)
     assert(opt != 0);
 
     // remember the original option name
-    this->fieldOption = "--";
-    this->fieldOption += opt_prefix;
+    this->fieldOption = opt_prefix;
 
     // deduce all implied command line options
     char *in;
@@ -82,7 +82,7 @@ void FieldReader::validate_args(const char *cmd_name)
         {
             cerr << cmd_name << ": "
                  << "Please specify the option "
-                 << fieldOption
+                 << "--" << fieldOption
                  << endl;
             exit(1);
         }
@@ -92,7 +92,8 @@ void FieldReader::validate_args(const char *cmd_name)
             string o2 = fieldOption + "-values";
             cerr << cmd_name << ": "
                  << "Please provide the options "
-                 << o1 << " and " << o2
+                 << "--" << o1 << " and "
+                 << "--" << o2
                  << endl;
             exit(1);
         }
@@ -103,16 +104,20 @@ void FieldReader::validate_args(const char *cmd_name)
         {
             string optstr = fieldOption + "-points";
             cerr << cmd_name << ": "
-                 << "Can't specify both " << fieldOption
-                 << " and " << optstr << endl;
+                 << "Can't specify both "
+                 << "--" << fieldOption
+                 << " and "
+                 << "--" << optstr << endl;
             exit(1);
         }
         if (valuesReader.pointsPath != "")
         {
             string optstr = fieldOption + "-values";
             cerr << cmd_name << ": "
-                 << "Can't specify both " << fieldOption
-                 << " and " << optstr << endl;
+                 << "Can't specify both "
+                 << "--" << fieldOption
+                 << " and "
+                 << "--" << optstr << endl;
             exit(1);
         }
     }
@@ -188,6 +193,21 @@ void FieldReader::load_field()
 
         fe_field->dofHandler = new DofHandler();
         fe_field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
+
+
+        if (verbose)
+        {
+            cout << fieldOption << " field path = "
+                 << fieldPath
+                 << endl;
+
+            cout << fieldOption << " field dimensions = "
+                 << "rank " << fe_field->n_rank() << ", "
+                 << fe_field->meshPart->nel << " cells, "
+                 << fe_field->meshPart->nno << " nodes, "
+                 << fe_field->meshPart->cell->n_nodes() << " dofs/cell"
+                 << endl;
+        }
     }
     else if (field->getType() == Field::POINT_FIELD)
     {
