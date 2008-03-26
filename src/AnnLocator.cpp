@@ -1,10 +1,11 @@
 #include <cassert>
 #include "AnnLocator.h"
 
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::AnnLocator::AnnLocator()
+AnnLocator::AnnLocator()
 {
     nnk = 8;
     epsilon = 0;
@@ -21,7 +22,7 @@ cigma::AnnLocator::AnnLocator()
     locatorType = NULL_LOCATOR;
 }
 
-cigma::AnnLocator::~AnnLocator()
+AnnLocator::~AnnLocator()
 {
     if (kdtree != 0) delete kdtree;
 
@@ -40,7 +41,7 @@ cigma::AnnLocator::~AnnLocator()
 
 // ---------------------------------------------------------------------------
 
-void cigma::AnnLocator::initialize(MeshPart *meshPart)
+void AnnLocator::initialize(MeshPart *meshPart)
 {
     assert(nnk > 0);
 
@@ -81,7 +82,7 @@ void cigma::AnnLocator::initialize(MeshPart *meshPart)
 
 // ---------------------------------------------------------------------------
 
-void cigma::AnnLocator::initialize(Points *points)
+void AnnLocator::initialize(Points *points)
 {
     assert(nnk > 0);
 
@@ -108,7 +109,7 @@ void cigma::AnnLocator::initialize(Points *points)
 
 // ---------------------------------------------------------------------------
 
-void cigma::AnnLocator::search(double *point)
+void AnnLocator::search(double *point)
 {
     for (int i = 0; i < ndim; i++)
     {
