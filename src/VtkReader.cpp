@@ -40,7 +40,7 @@ VtkReader::~VtkReader()
 
 int VtkReader::open(const char *filename)
 {
-    cout << "Reading " << filename << endl;
+    //cout << "Reading " << filename << endl;
 
     string filepath = filename;
     string fileroot, ext;
