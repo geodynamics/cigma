@@ -127,13 +127,12 @@ void SearchCmd::configure(AnyOption *opt)
     coordsField->meshPart = meshPart;
     coordsField->meshPart->set_cell();
 
-    /*
-    if (coordsField->meshPart->nsd == 3)
+    if ((coordsField->meshPart->nsd == 3) && (coordsField->meshPart->nno > 1000))
     {
         AnnLocator *locator = new AnnLocator();
+        locator->nnk = 10;
         coordsField->meshPart->set_locator(locator);
     }
-    // */
 
     return;
 }
@@ -167,13 +166,27 @@ int SearchCmd::run()
         pointCellCount[i] = 0;
     }
 
+
+    time_t t0,t1;
+    time(&t0);
+
+    int hitCount = 0;
+
     if (meshPart->locator != 0)
     {
         for (i = 0; i < points->n_points(); i++)
         {
-            double *pt = (*points)[nsd*i];
+            //double *pt = (*points)[i];
+            double pt[3] = {0,0,0};
+            for (j = 0; j < points->n_dim(); j++)
+            {
+                pt[j] = (*points)(i,j);
+            }
+
             //bool found = meshPart->find_cell(pt, &parentCell);
+
             bool found = false;
+
             meshPart->locator->search(pt);
             for (j = 0; j < meshPart->locator->n_idx(); j++)
             {
@@ -191,20 +204,34 @@ int SearchCmd::run()
                     break;
                 }
             }
+            //*
+            if (!found)
+            {
+                hitCount++;
+                cout << i << endl;
+                for (e = 0; e < nel; e++)
+                {
+                    meshPart->select_cell(e);
+                    if (meshPart->cell->global_interior(pt))
+                    {
+                        found = true;
+                        cellPointCount[e]++;
+                        pointCellCount[i] = e+1;
+                        break;
+                    }
+                }
+                assert(found);
+            } // */
         }
+        cout << "Locator missed " << hitCount << " "
+             << "(" << ((100.0*hitCount)/npts) << "%)"
+             << endl;
     }
     else
     {
-        time_t t0,t1;
-        time(&t0);
-        if (verbose)
-        {
-            cout << "starting...";
-        }
-
         for (i = 0; i < points->n_points(); i++)
         {
-            double *pt = (*points)[nsd*i];
+            double *pt = (*points)[i];
             bool found = false;
             for (e = 0; e < nel; e++)
             {
@@ -218,15 +245,11 @@ int SearchCmd::run()
                 }
             }
         }
-
-        time(&t1);
-        double total_time = t1 - t0;
-        if (verbose)
-        {
-            cout << "done!" << endl;
-            cout << "total time: " << total_time << endl;
-        }
     }
+
+    time(&t1);
+    double total_time = t1 - t0;
+    cout << "Total time = " << total_time << endl;
 
 
     int ierr;
