@@ -6,14 +6,14 @@ using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::QuadratureRule::QuadratureRule()
+QuadratureRule::QuadratureRule()
 {
     meshPart = 0;
     points = 0;
     jxw = 0;
 }
 
-cigma::QuadratureRule::~QuadratureRule()
+QuadratureRule::~QuadratureRule()
 {
     if (jxw != 0) delete [] jxw;
 }
@@ -21,15 +21,13 @@ cigma::QuadratureRule::~QuadratureRule()
 
 // ---------------------------------------------------------------------------
 
-void cigma::QuadratureRule::
-set_mesh(MeshPart *mesh)
+void QuadratureRule::set_mesh(MeshPart *mesh)
 {
     assert(mesh != 0);
     this->meshPart = mesh;
 }
 
-void cigma::QuadratureRule::
-set_quadrature_points(QuadraturePoints *points)
+void QuadratureRule::set_quadrature_points(QuadraturePoints *points)
 {
     assert(meshPart != 0);
     assert(meshPart->cell != 0);
@@ -37,15 +35,14 @@ set_quadrature_points(QuadraturePoints *points)
     this->points = points;
     assert(points != 0);
     assert(points->n_points() > 0);
-    assert(points->n_dim() == meshPart->cell->n_celldim());
+    assert(points->n_refdim() == meshPart->cell->n_celldim());
 
     jxw = new double[points->n_points()];
 }
 
 // ---------------------------------------------------------------------------
 
-void cigma::QuadratureRule::
-update_jxw()
+void QuadratureRule::update_jxw()
 {
     Cell *cell = meshPart->cell;
     const int nq = points->n_points();
@@ -56,8 +53,7 @@ update_jxw()
     }
 }
 
-void cigma::QuadratureRule::
-select_cell(int e)
+void QuadratureRule::select_cell(int e)
 {
     // change active cell in meshPart (loads new cell vertices)
     meshPart->select_cell(e);
@@ -72,8 +68,7 @@ select_cell(int e)
 
 // ---------------------------------------------------------------------------
 
-double cigma::QuadratureRule::
-apply(Points &f)
+double QuadratureRule::apply(Points &f)
 {
     // assert(f.n_points() == points->n_points());
     
@@ -90,8 +85,7 @@ apply(Points &f)
     return cell_total;
 }
 
-double cigma::QuadratureRule::
-L2(Points &f, Points &g)
+double QuadratureRule::L2(Points &f, Points &g)
 {
     // XXX: this function would easily generalize into norm(f,g):
     // XXX: would need to change SQR(f_qi - g_qi) into norm_pow(norm_diff(f_qi,g_qi))
