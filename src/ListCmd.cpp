@@ -6,24 +6,26 @@
 #include "ListCmd.h"
 #include "VtkList.h"
 #include "StringUtils.h"
+#include "PathUtils.h"
 
 using namespace std;
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
-cigma::ListCmd::ListCmd()
+ListCmd::ListCmd()
 {
     name = "list";
 }
 
-cigma::ListCmd::~ListCmd()
+ListCmd::~ListCmd()
 {
 }
 
 // ---------------------------------------------------------------------------
 
 
-void cigma::ListCmd::setupOptions(AnyOption *opt)
+void ListCmd::setupOptions(AnyOption *opt)
 {
     //cout << "Calling cigma::ListCmd::setupOptions()" << endl;
 
@@ -41,7 +43,7 @@ void cigma::ListCmd::setupOptions(AnyOption *opt)
 }
 
 
-void cigma::ListCmd::configure(AnyOption *opt)
+void ListCmd::configure(AnyOption *opt)
 {
     //cout << "Calling cigma::ListCmd::configure()" << endl;
 
@@ -63,7 +65,7 @@ void cigma::ListCmd::configure(AnyOption *opt)
 }
 
 
-int cigma::ListCmd::run()
+int ListCmd::run()
 {
     //cout << "Calling cigma::ListCmd::run()" << endl;
 
@@ -77,7 +79,7 @@ int cigma::ListCmd::run()
 
     path_splitext(filename, fileroot, extension);
     
-    if (extension == ".h5")
+    if (HdfExtension(extension.c_str()))
     {
         int ret;
         string cmd = "h5ls -r ";
@@ -89,13 +91,13 @@ int cigma::ListCmd::run()
         }
         return ret;
     }
-    else if ((extension == ".vtk") || (extension == ".vts"))
+    else if (VtkExtension(extension.c_str()))
     {
         vtk_list(filename.c_str());
     }
     else
     {
-        cerr << "list: File extensions must be HDF5(.h5) or VTK(.vtk, .vts)"
+        cerr << "list: Unsupported file extension "
              << " (found '" << extension << "')" << endl;
         return 2;
     }
