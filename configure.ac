@@ -93,7 +93,8 @@ AC_SUBST(PYTHON_INCLUDES)
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_LDFLAGS)
 
-AC_CONFIG_FILES([Makefile
+AC_CONFIG_FILES([variables
+                 Makefile
                  src/Makefile
                  ])
 
