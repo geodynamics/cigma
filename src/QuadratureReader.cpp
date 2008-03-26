@@ -29,27 +29,33 @@ void QuadratureReader::load_args(AnyOption *opt, const char *opt_prefix)
 {
     assert(opt != 0);
 
+    string prefix = opt_prefix;
+    string opt_name;
     char *in;
 
-    in = opt->getValue("rule-order");
+    opt_name = prefix + "-order";
+    in = opt->getValue(opt_name.c_str());
     if (in != 0)
     {
         this->quadratureOrder = in;
     }
 
-    in = opt->getValue("rule");
+    opt_name = prefix;
+    in = opt->getValue(opt_name.c_str());
     if (in != 0)
     {
         this->quadraturePath = in;
     }
 
-    in = opt->getValue("rule-points");
+    opt_name = prefix + "-points";
+    in = opt->getValue(opt_name.c_str());
     if (in != 0)
     {
         this->pointsPath = in;
     }
 
-    in = opt->getValue("rule-weights");
+    opt_name = prefix + "-weights";
+    in = opt->getValue(opt_name.c_str());
     if (in != 0)
     {
         this->weightsPath = in;
@@ -65,7 +71,7 @@ void QuadratureReader::validate_args(const char *cmd_name)
     if ((pointsPath == "") && (weightsPath != ""))
     {
         cerr << cmd_name << ": "
-             << "When using --rule-weights, you also need to specify --rule-points"
+             << "Quadrature weights specified, but missing the quadrature points"
              << endl;
         exit(1);
     }
@@ -73,7 +79,7 @@ void QuadratureReader::validate_args(const char *cmd_name)
     if ((weightsPath == "") && (pointsPath != ""))
     {
         cerr << cmd_name << ": "
-             << "When using --rule-points, you also need to specify --rule-weights"
+             << "Quadrature points specified, but missing the quadrature weights"
              << endl;
         exit(1);
     }
@@ -83,8 +89,8 @@ void QuadratureReader::validate_args(const char *cmd_name)
         if (quadraturePath != "")
         {
             cerr << cmd_name << ": "
-                 << "Already specified points and weights (don't need --rule)"
-                 << endl;
+                 << "Quadrature points and weights already specified "
+                 << "(don't need " << quadraturePath << ")" << endl;
             exit(1);
         }
     }
@@ -94,7 +100,7 @@ void QuadratureReader::validate_args(const char *cmd_name)
             || ((pointsPath != "") && (weightsPath != ""))))
     {
         cerr << cmd_name << ": "
-             << "Cannot specify --rule-order with explicit quadrature rule"
+             << "No need to specify quadrature order (already provided points and weights)"
              << endl;
         exit(1);
     }
@@ -118,7 +124,6 @@ void QuadratureReader::load_quadrature(Cell *cell)
     // tri_qr(5)
     const int tri_nno = 9;
     const int tri_celldim = 2;
-    const int tri_nsd = 2; //XXX
     double tri_qpts[tri_nno * tri_celldim] = {
         -0.79456469, -0.82282408,
         -0.86689186, -0.18106627,
@@ -147,7 +152,6 @@ void QuadratureReader::load_quadrature(Cell *cell)
     // quad_qr(7)
     const int quad_nno = 16;
     const int quad_celldim = 2;
-    const int quad_nsd = 2; //XXX
     double quad_qpts[quad_nno * quad_celldim] = {
         -0.86113631, -0.86113631,
         -0.33998104, -0.86113631,
@@ -177,7 +181,6 @@ void QuadratureReader::load_quadrature(Cell *cell)
     // tet_qr(3)
     const int tet_nno = 8;
     const int tet_celldim = 3;
-    const int tet_nsd = 3;
     double tet_qpts[tet_nno * tet_celldim] = {
         -0.68663473, -0.72789005, -0.75497035,
         -0.83720867, -0.85864055,  0.08830369,
@@ -205,7 +208,6 @@ void QuadratureReader::load_quadrature(Cell *cell)
     // hex_qr(3)
     const int hex_nno = 8;
     const int hex_celldim = 3;
-    const int hex_nsd = 3;
     double hex_qpts[hex_nno * hex_celldim] = {
         -0.57735027, -0.57735027, -0.57735027,
          0.57735027, -0.57735027, -0.57735027,
@@ -359,22 +361,18 @@ void QuadratureReader::load_quadrature(Cell *cell)
         case Cell::TRIANGLE:
             quadrature = new QuadraturePoints();
             quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_celldim);
-            quadrature->set_globaldim(tri_nsd);
             break;
         case Cell::QUADRANGLE:
             quadrature = new QuadraturePoints();
             quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_celldim);
-            quadrature->set_globaldim(quad_nsd);
             break;
         case Cell::TETRAHEDRON:
             quadrature = new QuadraturePoints();
             quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_celldim);
-            quadrature->set_globaldim(tet_nsd);
             break;
         case Cell::HEXAHEDRON:
             quadrature = new QuadraturePoints();
             quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_celldim);
-            quadrature->set_globaldim(hex_nsd);
             break;
         default:
             break;
@@ -385,18 +383,16 @@ void QuadratureReader::load_quadrature(Cell *cell)
     {
         quadrature = new QuadraturePoints();
         quadrature->set_quadrature(qx, qw, nq, nd);
-        quadrature->set_globaldim(3);   // XXX: how to treat 2D case?
     }
 
     assert(quadrature != 0);
     assert(quadrature->n_points() > 0);
-    assert(quadrature->n_refdim() > 0);
-    assert(quadrature->n_globaldim() > 0);
+    assert(quadrature->n_dim() > 0);
 
     cout << "quadrature rule = "
-         << quadrature->n_points() << " points, "
-         << "celldim " << quadrature->n_refdim() << ", "
-         << "dim " << quadrature->n_globaldim()
+         << quadrature->n_points()
+         << " points with cell dimension "
+         << quadrature->n_dim()
          << endl;
 
     // 
@@ -407,9 +403,9 @@ void QuadratureReader::load_quadrature(Cell *cell)
     for (i = 0; i < quadrature->n_points(); i++)
     {
         double refpt[3] = {0,0,0};
-        for (j = 0; j < quadrature->n_refdim(); j++)
+        for (j = 0; j < quadrature->n_dim(); j++)
         {
-            refpt[j] = quadrature->point(i,j);
+            refpt[j] = quadrature->refpoint(i,j);
         }
         if (!cell->interior(refpt[0], refpt[1], refpt[2]))
         {
@@ -422,7 +418,7 @@ void QuadratureReader::load_quadrature(Cell *cell)
         // XXX: add more information here (e.g., actual reference cell used,
         // such as tri3, quad4, tet4, hex8, ...)
         cerr << "QuadratureReader error: "
-             << "Not all points provided lie inside required reference cell"
+             << "Some quadrature points lie outside required reference cell"
              << endl;
         exit(1);
     }
