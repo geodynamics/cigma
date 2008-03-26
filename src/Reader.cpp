@@ -8,26 +8,34 @@
 #include "TextReader.h"
 #include "VtkReader.h"
 
+#include "PathUtils.h"
+
+
 using namespace cigma;
 
 
 // ---------------------------------------------------------------------------
 
-cigma::Reader* NewReader(const char *fileext)
+Reader* NewReader(const char *fileext)
 {
-    std::string ext = fileext;
+    // 
+    // XXX: Need to pass filename to this function, not just the extension.
+    // This way, we could use the IsHdfFile() and IsVtkFile() functions
+    // which can read the corresponding file headers to verify.
+    // Another thing to verify here is whether the file exists or not.
+    //
 
-    if (ext == ".h5")
+    if (HdfExtension(fileext))
     {
         return new HdfReader();
     }
 
-    if (ext == ".txt")
+    if (TextExtension(fileext))
     {
         return new TextReader();
     }
 
-    if ((ext == ".vtk") || (ext == ".vts") || (ext == ".vtu"))
+    if (VtkExtension(fileext))
     {
         return new VtkReader();
     }
@@ -37,11 +45,11 @@ cigma::Reader* NewReader(const char *fileext)
 
 // ---------------------------------------------------------------------------
 
-cigma::Reader::Reader()
+Reader::Reader()
 {
 }
 
-cigma::Reader::~Reader()
+Reader::~Reader()
 {
 }
 
