@@ -1,6 +1,8 @@
 #ifndef __NUMERIC_H__
 #define __NUMERIC_H__
 
+// XXX: rename to NumericUtils.h
+
 #include <cmath>
 
 #define MIN(a,b)    (((a) < (b)) ? (a) : (b))
