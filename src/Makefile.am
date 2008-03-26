@@ -91,6 +91,8 @@ libcigma_a_SOURCES = \
 	PointField.cpp \
 	ExtField.h \
 	ExtField.cpp \
+	ZeroField.h \
+	ZeroField.cpp \
 	\
 	Residuals.h \
 	Residuals.cpp \
