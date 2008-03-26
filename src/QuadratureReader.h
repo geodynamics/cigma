@@ -25,6 +25,7 @@ public:
     std::string quadraturePath;
     std::string pointsPath;
     std::string weightsPath;
+    bool verbose;
 
 public:
     cigma::Reader *reader;

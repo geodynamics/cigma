@@ -11,6 +11,7 @@ using namespace cigma;
 
 QuadratureReader::QuadratureReader()
 {
+    verbose = false;
     quadrature = 0;
 }
 
@@ -391,9 +392,25 @@ void QuadratureReader::load_quadrature(Cell *cell)
 
     cout << "quadrature rule = "
          << quadrature->n_points()
-         << " points with cell dimension "
+         << " points on a "
          << quadrature->n_dim()
+         << "-d cell"
          << endl;
+
+    if (verbose)
+    {
+        for (i = 0; i < quadrature->n_points(); i++)
+        {
+            cout << "\t";
+            cout << quadrature->weight(i);
+            cout << "\t";
+            for (j = 0; j < quadrature->n_dim(); j++)
+            {
+                cout << quadrature->refpoint(i,j) << " ";
+            }
+            cout << endl;
+        }
+    }
 
     // 
     // now we need to ensure that every point in our
