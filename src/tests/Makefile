@@ -23,6 +23,7 @@ TESTOBJS = \
 	TestHex.o \
 	TestPoints.o \
 	TestZeroField.o \
+	TestStringUtils.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)
