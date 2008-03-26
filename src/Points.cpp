@@ -5,8 +5,8 @@
 
 cigma::Points::Points()
 {
-    num = 0;
-    dim = 0;
+    npts = 0;
+    ndim = 0;
     data = 0;
 }
 
@@ -17,11 +17,11 @@ cigma::Points::~Points()
 // ---------------------------------------------------------------------------
 
 
-void cigma::Points::set_data(double *data, int num, int dim)
+void cigma::Points::set_data(double *data, int npts, int ndim)
 {
     this->data = data;
-    this->num = num;
-    this->dim = dim;
+    this->npts = npts;
+    this->ndim = ndim;
 }
 
 void cigma::Points::set_locator(Locator *locator)
@@ -33,14 +33,14 @@ void cigma::Points::set_locator(Locator *locator)
 
 // ---------------------------------------------------------------------------
 
-bool cigma::Points::find_ann_index(double *globalPoint, int *annIndex)
+bool cigma::Points::find_ann_index(double *point, int *annIndex)
 {
 
     *annIndex = -1;
 
     if (locator != 0)
     {
-        locator->search(globalPoint);
+        locator->search(point);
         *annIndex = locator->idx(0);
         return true;
     }
@@ -54,15 +54,15 @@ bool cigma::Points::find_ann_index(double *globalPoint, int *annIndex)
 
     i_min = -1;
     r2_min = std::numeric_limits<double>::infinity();
-    for (i = 0; i < num; i++)
+    for (i = 0; i < npts; i++)
     {
-        double *pt = &data[dim*i];
+        double *pt = &data[ndim*i];
 
         r2 = 0;
-        for (j = 0; j < dim; j++)
+        for (j = 0; j < ndim; j++)
         {
-            double dx[dim];
-            dx[j] = globalPoint[j] - pt[j];
+            double dx[ndim];
+            dx[j] = point[j] - pt[j];
             r2 += dx[j] * dx[j];
         }
 

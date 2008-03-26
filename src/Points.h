@@ -21,7 +21,7 @@ public:
     ~Points();
 
 public:
-    void set_data(double *data, int num, int dim);
+    void set_data(double *data, int npts, int ndim);
     void set_locator(Locator *locator);
 
 public:
@@ -34,45 +34,45 @@ public:
     int index(int i, int j) const;
 
 public:
-    int num;
-    int dim;
+    int npts;
+    int ndim;
     double *data;
 
 public:
     Locator *locator;
-    bool find_ann_index(double *globalPoint, int *annIndex);
+    bool find_ann_index(double *point, int *annIndex);
 };
 
 // ---------------------------------------------------------------------------
 
 inline double cigma::Points::operator()(int i, int j)
 {
-    //assert(0 <= i); assert(i < num);
+    //assert(0 <= i); assert(i < npts);
     //assert(0 <= j); assert(j < dim);
     return data[index(i,j)];
 }
 
 inline double *cigma::Points::operator[](int i)
 {
-    //assert(0 <= i); assert(i < num);
-    return &data[dim*i];
+    //assert(0 <= i); assert(i < npts);
+    return &data[ndim*i];
 }
 
 inline int cigma::Points::n_points() const
 {
-    return num;
+    return npts;
 }
 
 inline int cigma::Points::n_dim() const
 {
-    return dim;
+    return ndim;
 }
 
 inline int cigma::Points::index(int i, int j) const
 {
-    //assert(0 <= i); assert(i < num);
-    //assert(0 <= j); assert(j < dim);
-    return dim*i + j;
+    //assert(0 <= i); assert(i < npts);
+    //assert(0 <= j); assert(j < ndim);
+    return ndim*i + j;
 }
 
 // ---------------------------------------------------------------------------
