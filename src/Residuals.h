@@ -18,7 +18,7 @@ public:
     void set_mesh(MeshPart *meshPart);
 
 public:
-    void zero_out();
+    void reset_accumulator();
     void update(int e, double cell_residual);
     double L2();
 

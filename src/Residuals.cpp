@@ -34,7 +34,7 @@ void Residuals::set_mesh(MeshPart *meshPart)
 
 // ---------------------------------------------------------------------------
 
-void Residuals::zero_out()
+void Residuals::reset_accumulator()
 {
     assert(nel > 0);
     assert(epsilon != 0);
