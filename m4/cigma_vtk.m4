@@ -73,7 +73,7 @@ AC_DEFUN([AM_PATH_VTK],[
             VTK_CFLAGS="-I$VTK_PREFIX/include/vtk$vtk_suffix"
             VTK_CXXFLAGS="$VTK_CFLAGS"
             VTK_INCLUDES="-I$VTK_PREFIX/include/vtk$vtk_suffix"
-            VTK_LDFLAGS="-L$VTK_PREFIX/lib/vtk $VTK_LIBS"
+            VTK_LDFLAGS="-L$VTK_PREFIX/lib/vtk$vtk_suffix -L$VTK_PREFIX/lib64/vtk$vtk_suffix $VTK_LIBS"
 
             dnl now, eventually check version
             if [[ -n "$1" ]]; then
