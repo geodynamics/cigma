@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include <cstdlib>
 #include <cassert>
 #include "CompareCmd.h"
@@ -388,8 +389,9 @@ void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
         qr->select_cell(e);
         field_a->tabulate_element(e, phi_a.data);
         field_b->Field::eval(*(qr->points), phi_b);
-        double err = qr->L2(phi_a, phi_b);
-        residuals->update(e, err);
+        double err2 = qr->L2(phi_a, phi_b);
+        double vol = qr->meshPart->cell->volume();
+        residuals->update(e, sqrt(err2/vol));
         env->update_timer(e);
     }
     env->end_timer();
@@ -433,10 +435,11 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
             double *globalPoint = (*(qr->points))[q];
             bool ca = field_a->eval(globalPoint, &values_a[q*valdim]);
             bool cb = field_b->eval(globalPoint, &values_b[q*valdim]);
+            //*
             if (cb)
             {
                 cout << globalPoint[0] << " " << globalPoint[1] << " " << globalPoint[2] << endl;
-            }
+            } // */
         }
         double err = qr->L2(phi_a, phi_b);
         residuals->update(e, err);
@@ -544,8 +547,9 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
             field_a->eval(globalPoint, &values_a[q*valdim]);
             field_b->eval(globalPoint, &values_b[q*valdim]);
         }
-        double err = qr->L2(phi_a, phi_b);
-        residuals->update(e, err);
+        double err2 = qr->L2(phi_a, phi_b);
+        double vol = qr->meshPart->cell->volume();
+        residuals->update(e, sqrt(err2/vol));
         env->update_timer(e);
     }
     env->end_timer();
