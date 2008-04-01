@@ -49,7 +49,7 @@ void EvalCmd::setupOptions(AnyOption *opt)
     opt->setOption("field-function");
 
     opt->setOption("points"); // XXX: -p short option?
-    opt->setOption("output");
+    opt->setOption("output",'o');
 }
 
 void EvalCmd::configure(AnyOption *opt)
