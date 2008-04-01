@@ -25,6 +25,7 @@ public:
     void grad_shape(int num, double *points, double *values);
     //void xyz2uvw(double xyz[3], double uvw[3]);
     bool interior(double u, double v, double w);
+    double volume();
 };
 
 #endif

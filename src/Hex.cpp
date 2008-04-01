@@ -1,3 +1,5 @@
+//#include <iostream>
+#include <cmath>
 #include "Hex.h"
 
 using namespace cigma;
@@ -137,3 +139,174 @@ bool Hex::interior(double u, double v, double w)
 #undef ONE
 #undef ZERO
 
+
+double Hex::volume()
+{
+    //using namespace std;
+
+
+    /*
+    // 
+    // 6V = [(x7-x0),(x1-x0),(x3-x5)]
+    //    + [(x7-x0),(x4-x0),(x5-x6)]
+    //    + [(x7-x0),(x2-x0),(x6-x3)]
+    // 
+    // where
+    //
+    //  xn = (globverts[3*n+0],globverts[3*n+1],globverts[3*n+2])
+    //
+    //            | A_x B_x C_x |
+    //  [A,B,C] = | A_y B_y C_y |
+    //            | A_z B_z C_z |
+    //
+    double x70[3],x10[3],x35[3],x40[3],x56[3],x20[3],x63[3];
+    #define X(j)    globverts[3*(j)+i]
+    for (int i = 0; i < 3; i++)
+    {
+        x70[i] = X(7) - X(0);
+        x10[i] = X(1) - X(0);
+        x35[i] = X(3) - X(5);
+        x40[i] = X(4) - X(0);
+        x56[i] = X(5) - X(6);
+        x20[i] = X(2) - X(0);
+        x63[i] = X(6) - X(3);
+    }
+    #undef X
+    return (
+          x70[0] * x10[1] * x35[2]
+        - x70[0] * x35[1] * x10[2] 
+        - x70[1] * x10[0] * x35[2] 
+        + x70[1] * x35[0] * x10[2] 
+        + x70[2] * x10[0] * x35[1] 
+        - x70[2] * x35[0] * x10[1] 
+        + x70[0] * x40[1] * x56[2] 
+        - x70[0] * x56[1] * x40[2] 
+        - x70[1] * x40[0] * x56[2] 
+        + x70[1] * x56[0] * x40[2] 
+        + x70[2] * x40[0] * x56[1] 
+        - x70[2] * x56[0] * x40[1] 
+        + x70[0] * x20[1] * x63[2] 
+        - x70[0] * x63[1] * x20[2] 
+        - x70[1] * x20[0] * x63[2] 
+        + x70[1] * x63[0] * x20[2] 
+        + x70[2] * x20[0] * x63[1] 
+        - x70[2] * x63[0] * x20[1]
+    ) / 6.0;*/
+
+
+    /*
+    #define X(n) globverts[3*(n) + i]
+    #define TRIPLE (A[0] * B[1] * C[2] - A[0] * C[1] * B[2] - A[1] * B[0] * C[2] + A[1] * C[0] * B[2] + A[2] * B[0] * C[1] - A[2] * C[0] * B[1])
+
+    int i;
+    double vol = 0;
+    double A[3],B[3],C[3];
+
+    vol = 0.0;
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] =  (X(7) - X(0));
+        B[i] =  (X(1) + X(6)) - (X(4) + X(5));
+        C[i] = -(X(1) - X(6)) + (X(4) - X(5));
+    }
+
+    vol += TRIPLE;
+
+    for (i = 0; i < 3; i++)
+    {
+        B[i] = (X(1) + X(6)) - (X(3) + X(2));
+        C[i] = (X(1) - X(6)) + (X(3) - X(2));
+    }
+
+    vol += TRIPLE;
+
+    return vol/12.0;
+
+    #undef X
+    #undef TRIPLE
+    */
+
+
+    /*
+    #define X(n)   (globverts[3*(n) + i])
+    #define TRIPLE (A[0] * B[1] * C[2] - A[0] * C[1] * B[2] - A[1] * B[0] * C[2] + A[1] * C[0] * B[2] + A[2] * B[0] * C[1] - A[2] * C[0] * B[1])
+
+    int i;
+    double vol = 0;
+    double A[3], B[3], C[3];
+
+    for (int n = 0; n < 8; n++){for (i = 0; i < 3; i++){std::cerr << X(n) << " ";}std::cerr << std::endl;}
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(7) - X(1)) + (X(6) - X(0));
+        B[i] = (X(7) - X(2));
+        C[i] = (X(3) - X(0));
+    }
+    vol += (TRIPLE);
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(6) - X(0));
+        B[i] = (X(7) - X(2)) + (X(5) - X(0));
+        C[i] = (X(7) - X(4));
+    }
+    vol += (TRIPLE);
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(7) - X(1));
+        B[i] = (X(5) - X(0));
+        C[i] = (X(7) - X(4)) + (X(3) - X(0));
+    }
+    vol += (TRIPLE);
+
+    return vol / 12.0;
+
+    #undef TRIPLE
+    #undef X
+    */
+
+
+    /*
+     * Permutation of vertices: (2 3)(6 7)
+     */
+    #define X(n)   (globverts[3*(n) + i])
+    #define TRIPLE (A[0] * B[1] * C[2] - A[0] * C[1] * B[2] - A[1] * B[0] * C[2] + A[1] * C[0] * B[2] + A[2] * B[0] * C[1] - A[2] * C[0] * B[1])
+
+    int i;
+    double vol = 0;
+    double A[3], B[3], C[3];
+
+    //for (int n = 0; n < 8; n++){for (i = 0; i < 3; i++){std::cerr << X(n) << " ";}std::cerr << std::endl;}
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(6) - X(1)) + (X(7) - X(0));
+        B[i] = (X(6) - X(3));
+        C[i] = (X(2) - X(0));
+    }
+    vol += (TRIPLE);
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(7) - X(0));
+        B[i] = (X(6) - X(3)) + (X(5) - X(0));
+        C[i] = (X(6) - X(4));
+    }
+    vol += (TRIPLE);
+
+    for (i = 0; i < 3; i++)
+    {
+        A[i] = (X(6) - X(1));
+        B[i] = (X(5) - X(0));
+        C[i] = (X(6) - X(4)) + (X(2) - X(0));
+    }
+    vol += (TRIPLE);
+
+    return vol / 12.0;
+
+    #undef TRIPLE
+    #undef X
+}

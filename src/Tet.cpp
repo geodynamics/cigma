@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Tet.h"
 #include "Numeric.h"
 
@@ -144,3 +146,37 @@ bool Tet::interior(double u, double v, double w)
     #undef ZERO
 }
 
+double Tet::volume()
+{
+    //      
+    //      | x0 y0 z0 1 |
+    // 6V = | x1 y1 z1 1 |
+    //      | x2 y2 z2 1 |
+    //      | x3 y3 z3 1 |
+    //
+    double *a = globverts;
+    return fabs(a[0] * a[4] * a[8]
+        - a[0] * a[4] * a[11] 
+        + a[0] * a[7] * a[11]
+        - a[0] * a[7] * a[5] 
+        + a[0] * a[10] * a[5] 
+        - a[0] * a[10] * a[8] 
+        - a[3] * a[1] * a[8] 
+        + a[3] * a[1] * a[11] 
+        - a[3] * a[7] * a[11] 
+        + a[3] * a[7] * a[2] 
+        - a[3] * a[10] * a[2] 
+        + a[3] * a[10] * a[8] 
+        + a[6] * a[1] * a[5] 
+        - a[6] * a[1] * a[11] 
+        + a[6] * a[4] * a[11] 
+        - a[6] * a[4] * a[2] 
+        + a[6] * a[10] * a[2] 
+        - a[6] * a[10] * a[5] 
+        - a[9] * a[1] * a[5] 
+        + a[9] * a[1] * a[8] 
+        - a[9] * a[4] * a[8] 
+        + a[9] * a[4] * a[2] 
+        - a[9] * a[7] * a[2] 
+        + a[9] * a[7] * a[5]) / 6.0;
+}

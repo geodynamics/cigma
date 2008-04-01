@@ -93,4 +93,13 @@ bool Tri::interior(double u, double v, double w)
 #undef ONE
 
 
+double Tri::volume()
+{
+    #define X(n) globverts[3*(n)+0]
+    #define Y(n) globverts[3*(n)+1]
+    return 0.5*(X(0) * Y(1) - X(0) * Y(2) - X(1) * Y(0) + X(1) * Y(2) + X(2) * Y(0) - X(2) * Y(1));
+    #undef X
+    #undef Y
+}
+
 // ---------------------------------------------------------------------------
