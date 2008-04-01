@@ -51,7 +51,7 @@ public:
 
     virtual Geometry geometry() = 0;
 
-    //virtual double volume() = 0;
+    virtual double volume() = 0;
 
 public:
     void bbox(double *min, double *max);
