@@ -25,6 +25,7 @@ TESTOBJS = \
 	TestZeroField.o \
 	TestTimer.o \
 	TestStringUtils.o \
+	TestCellVolume.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)
@@ -35,7 +36,7 @@ Test%.o: Test%.cpp
 	$(CXX) $(FLAGS) -c $^
 
 Test%.out: Test%.o
-	$(CXX) $(LDFLAGS) $^ $(CIGMALIB) $(ANNLIB) -o $@
+	$(CXX) -g $(LDFLAGS) $^ $(CIGMALIB) $(ANNLIB) -o $@
 
 clean:
 	rm -f $(TESTOBJS)
