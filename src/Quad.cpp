@@ -1,5 +1,6 @@
 #include "Quad.h"
-#include <cassert>
+
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ static void quad_grad_shape(double u, double v, double s[4*2])
 
 // ---------------------------------------------------------------------------
 
-cigma::Quad::Quad()
+Quad::Quad()
 {
     const int quad_nno = 4;
     const int quad_celldim = 2;
@@ -45,7 +46,7 @@ cigma::Quad::Quad()
     set_reference_vertices(verts, quad_nno);
 }
 
-cigma::Quad::~Quad()
+Quad::~Quad()
 {
 }
 
@@ -57,7 +58,7 @@ cigma::Quad::~Quad()
  * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs] array (out)
  */
-void cigma::Quad::shape(int num, double *points, double *values)
+void Quad::shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     for (int i = 0; i < num; i++)
@@ -73,7 +74,7 @@ void cigma::Quad::shape(int num, double *points, double *values)
  * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs x celldim] array (out)
  */
-void cigma::Quad::grad_shape(int num, double *points, double *values)
+void Quad::grad_shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     const int celldim = n_celldim();
@@ -94,7 +95,7 @@ void cigma::Quad::grad_shape(int num, double *points, double *values)
 #define ZERO    (-1.0e-6)
 #define ONE     (1-ZERO)
 
-bool cigma::Quad::interior(double u, double v, double w)
+bool Quad::interior(double u, double v, double w)
 {
     if ((u < -ONE) || (v < -ONE) ||
         (u > +ONE) || (v > +ONE))

@@ -1,5 +1,6 @@
 #include "Tri.h"
-#include <cassert>
+
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ static void tri_grad_shape(double u, double v, double s[3*2])
 
 // ---------------------------------------------------------------------------
 
-cigma::Tri::Tri()
+Tri::Tri()
 {
     const int tri_nno = 3;
     const int tri_celldim = 2; // XXX
@@ -47,7 +48,7 @@ cigma::Tri::~Tri()
 
 // ---------------------------------------------------------------------------
 
-void cigma::Tri::shape(int num, double *points, double *values)
+void Tri::shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     for (int i = 0; i < num; i++)
@@ -58,7 +59,7 @@ void cigma::Tri::shape(int num, double *points, double *values)
     }
 }
 
-void cigma::Tri::grad_shape(int num, double *points, double *values)
+void Tri::grad_shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     const int celldim = n_celldim();
@@ -72,13 +73,13 @@ void cigma::Tri::grad_shape(int num, double *points, double *values)
 }
 
 
-//void cigma::Tri::xyz2uvw(double xyz[3], double uvw[3]) {}
+//void Tri::xyz2uvw(double xyz[3], double uvw[3]) {}
 
 
 #define ZERO    (-1.0e-6)
 #define ONE     (1 - ZERO)
 
-bool cigma::Tri::interior(double u, double v, double w)
+bool Tri::interior(double u, double v, double w)
 {
 
     if ((u < ZERO) || (v < ZERO) || (u > (ONE - v)))

@@ -1,7 +1,7 @@
-//#include <iostream>
-#include <cassert>
 #include "Tet.h"
 #include "Numeric.h"
+
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
@@ -39,9 +39,8 @@ static void tet_grad_shape(double u, double v, double w, double s[4*3])
 
 // ---------------------------------------------------------------------------
 
-cigma::Tet::Tet()
+Tet::Tet()
 {
-    //std::cout << "Calling cigma::Tet::Tet()\n";
     const int tet_nno = 4;
     const int tet_celldim = 3;
     double verts[tet_nno * tet_celldim] = {
@@ -53,12 +52,11 @@ cigma::Tet::Tet()
     set_reference_vertices(verts, tet_nno);
 }
 
-cigma::Tet::~Tet()
+Tet::~Tet()
 {
-    //std::cout << "Calling cigma::Tet::~Tet()\n";
 }
 
-void cigma::Tet::shape(int num, double *points, double *values)
+void Tet::shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     for (int i = 0; i < num; i++)
@@ -70,7 +68,7 @@ void cigma::Tet::shape(int num, double *points, double *values)
     }
 }
 
-void cigma::Tet::grad_shape(int num, double *points, double *values)
+void Tet::grad_shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     const int celldim = n_celldim();
@@ -84,7 +82,7 @@ void cigma::Tet::grad_shape(int num, double *points, double *values)
     }
 }
 
-void cigma::Tet::xyz2uvw(double xyz[3], double uvw[3])
+void Tet::xyz2uvw(double xyz[3], double uvw[3])
 {
     double det;
     double mat[3][3], b[3];
@@ -133,7 +131,7 @@ void cigma::Tet::xyz2uvw(double xyz[3], double uvw[3])
 
 }
 
-bool cigma::Tet::interior(double u, double v, double w)
+bool Tet::interior(double u, double v, double w)
 {
     #define ZERO  (-1.0e-6)
     #define ONE   (1 - ZERO)

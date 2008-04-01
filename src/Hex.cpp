@@ -1,5 +1,6 @@
 #include "Hex.h"
-#include <cassert>
+
+using namespace cigma;
 
 // ---------------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ static void hex_grad_shape(double u, double v, double w, double s[8*3])
 
 // ---------------------------------------------------------------------------
 
-cigma::Hex::Hex()
+Hex::Hex()
 {
     const int hex_nno = 8;
     const int hex_celldim = 3;
@@ -74,7 +75,7 @@ cigma::Hex::Hex()
     set_reference_vertices(verts, hex_nno);
 }
 
-cigma::Hex::~Hex()
+Hex::~Hex()
 {
 }
 
@@ -84,7 +85,7 @@ cigma::Hex::~Hex()
  * @param values values is an [num x ndofs] array (out)
  *
  */
-void cigma::Hex::shape(int num, double *points, double *values)
+void Hex::shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     for (int i = 0; i < num; i++)
@@ -101,7 +102,7 @@ void cigma::Hex::shape(int num, double *points, double *values)
  * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs x celldim] array (out)
  */
-void cigma::Hex::grad_shape(int num, double *points, double *values)
+void Hex::grad_shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();
     const int celldim = n_celldim();
@@ -121,7 +122,7 @@ void cigma::Hex::grad_shape(int num, double *points, double *values)
 #define ZERO    (-1.0e-6)
 #define ONE     (1-ZERO)
 
-bool cigma::Hex::interior(double u, double v, double w)
+bool Hex::interior(double u, double v, double w)
 {
 
     if ((u < -ONE) || (v < -ONE) || (w < -ONE) ||
@@ -135,3 +136,4 @@ bool cigma::Hex::interior(double u, double v, double w)
 
 #undef ONE
 #undef ZERO
+
