@@ -11,11 +11,16 @@
 #include "EvalCmd.h"
 #include "CompareCmd.h"
 
-cigma::CommandSet::CommandSet()
+using namespace cigma;
+
+
+// ---------------------------------------------------------------------------
+
+CommandSet::CommandSet()
 {
 }
 
-cigma::CommandSet::~CommandSet()
+CommandSet::~CommandSet()
 {
     for(CmdMap::iterator i = commands.begin(); i != commands.end(); ++i)
     {
@@ -25,7 +30,7 @@ cigma::CommandSet::~CommandSet()
     }
 }
 
-void cigma::CommandSet::initialize()
+void CommandSet::initialize()
 {
     /* create help command separately */
     HelpCmd *help = new HelpCmd();
@@ -44,15 +49,15 @@ void cigma::CommandSet::initialize()
     help->setCommandSet(this);
 }
 
-void cigma::CommandSet::addCommand(Command *cmd)
+void CommandSet::addCommand(Command *cmd)
 {
     assert(cmd != 0);
     names.push_back(cmd->name);
     commands[cmd->name] = cmd;
 }
 
-cigma::Command *
-cigma::CommandSet::getCommand(std::string name)
+Command *
+CommandSet::getCommand(std::string name)
 {
     Command *cmd = 0;
     CmdMap::iterator it = commands.find(name);
@@ -63,7 +68,7 @@ cigma::CommandSet::getCommand(std::string name)
     return cmd;
 }
 
-int cigma::CommandSet::main(int argc, char *argv[])
+int CommandSet::main(int argc, char *argv[])
 {
     AnyOption *opt = new AnyOption();
     Command *cmd = 0;
@@ -124,3 +129,5 @@ int cigma::CommandSet::main(int argc, char *argv[])
 
     return status;
 }
+
+// ---------------------------------------------------------------------------
