@@ -28,14 +28,20 @@ AnnLocator::~AnnLocator()
 
     if (dataPoints != 0)
     {
-        if (locatorType == CELL_LOCATOR)
-        {
-            annDeallocPts(dataPoints);
-        }
+        annDeallocPts(dataPoints);
+        dataPoints = 0;
     }
 
-    if (nnIdx != 0) delete [] nnIdx;
-    if (nnDists != 0) delete [] nnDists;
+    if (nnIdx != 0)
+    {
+        delete [] nnIdx;
+        nnIdx = 0;
+    }
+    if (nnDists != 0)
+    {
+        delete [] nnDists;
+        nnDists = 0;
+    }
 }
 
 
@@ -92,11 +98,23 @@ void AnnLocator::initialize(Points *points)
     assert(npts > 0);
     assert(ndim > 0);
 
-    // XXX watch out for when you change the ANNpoint type to float
-    assert(sizeof(ANNpoint) == sizeof(double));
+    // XXX watch out for when you change the ANNpoint type to floaT
+    assert(sizeof(ANNcoord) == sizeof(double));
 
-    dataPoints = (ANNpointArray)(points->data);
+    //dataPoints = (ANNpointArray)(points->data); // questionable cast..
+
+    dataPoints = annAllocPts(npts, ndim);
     queryPoint = annAllocPt(ndim);
+
+    int i,j;
+    for (i = 0; i < npts; i++)
+    {
+        ANNpoint pt = dataPoints[i];
+        for (j = 0; j < ndim; j++)
+        {
+            pt[j] = points->data[ndim*i + j];
+        }
+    }
 
     nnIdx = new ANNidx[nnk];
     nnDists = new ANNdist[nnk];
