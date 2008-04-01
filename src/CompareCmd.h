@@ -37,7 +37,7 @@ public:
     int run();
 
 public:
-    void start_timer();
+    void start_timer(int nel, const char *firstcol);
     void update_timer(int e);
     void end_timer();
 
