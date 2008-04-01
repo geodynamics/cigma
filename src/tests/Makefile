@@ -23,6 +23,7 @@ TESTOBJS = \
 	TestHex.o \
 	TestPoints.o \
 	TestZeroField.o \
+	TestTimer.o \
 	TestStringUtils.o \
 
 
