@@ -27,14 +27,13 @@ void PointsReader::load_args(AnyOption *opt, const char *opt_prefix)
     assert(opt != 0);
 
     // remember the original option prefix
-    this->pointsOption = "--";
-    this->pointsOption += opt_prefix;
+    pointsOption = opt_prefix;
 
     // 
     // Note that in this case, the name of key to be read
     // is the whole prefix. The caller needs to determine
     // the appropriate name, which will typically correspond
-    // to an option called --{first,second}-{points,values}
+    // to an option called {first,second}-{points,values}
     //
     char *in;
     string optstr = opt_prefix;
@@ -56,7 +55,7 @@ void PointsReader::validate_args(const char *cmd_name)
     {
         cerr << cmd_name << ": "
              << "Missing option "
-             << pointsOption
+             << "--" << pointsOption
              << endl;
         exit(1);
     }
@@ -93,14 +92,14 @@ void PointsReader::load_points()
     ierr = pointsReader->open(pointsFile.c_str());
     if (ierr < 0)
     {
-        cerr << "Could not open points file " << pointsFile << endl;
+        cerr << "Error: Could not open " << pointsOption << " file " << pointsFile << endl;
         exit(1);
     }
 
     ierr = pointsReader->get_dataset(pointsLoc.c_str(), &pts, &m, &n);
     if (ierr < 0)
     {
-        cerr << "Error: Could not open points dataset " << pointsLoc << endl;
+        cerr << "Error: Could not open " << pointsOption << " dataset " << pointsLoc << endl;
         exit(1);
     }
 
