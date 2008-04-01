@@ -37,8 +37,8 @@ public:
     void close_library();
 
 public:
-    void eval(double *x, double *y);
-    void eval(Points &domain, Points &range);
+    bool eval(double *x, double *y);
+    bool eval(Points &domain, Points &range);
 
 public:
     int dim;

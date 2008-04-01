@@ -1,9 +1,11 @@
 #include <cassert>
 #include "FE_Field.h"
 
+using namespace cigma;
+
 // ---------------------------------------------------------------------------
 
-cigma::FE_Field::FE_Field()
+FE_Field::FE_Field()
 {
     dim = 0;
     rank = 0;
@@ -12,13 +14,13 @@ cigma::FE_Field::FE_Field()
     dofHandler = 0;
 }
 
-cigma::FE_Field::~FE_Field()
+FE_Field::~FE_Field()
 {
 }
 
 // ---------------------------------------------------------------------------
 
-void cigma::FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
+void FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
 {
     assert(dofHandler != 0);
     assert(meshPart != 0);
@@ -41,7 +43,7 @@ void cigma::FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
 
 // ---------------------------------------------------------------------------
 
-void cigma::FE_Field::eval(double *point, double *value)
+bool FE_Field::eval(double *point, double *value)
 {
     assert(fe != 0);
     assert(meshPart != 0);
@@ -54,7 +56,8 @@ void cigma::FE_Field::eval(double *point, double *value)
     int e;
     bool found_cell = false;
     found_cell = meshPart->find_cell(point, &e);
-    assert(found_cell); // XXX: how to handle... throw exception?
+    if (!found_cell)
+        return false;
 
     // use dofs as weights on the shape function values
     const int ndofs = cell->n_nodes();
@@ -66,9 +69,11 @@ void cigma::FE_Field::eval(double *point, double *value)
     double uvw[3];
     cell->xyz2uvw(point,uvw);
     cell->interpolate(field_dofs, uvw, value, valdim);
+
+    return true;
 }
 
-void cigma::FE_Field::tabulate_element(int e, double *values)
+void FE_Field::tabulate_element(int e, double *values)
 {
     assert(fe != 0);
     assert(meshPart != 0);

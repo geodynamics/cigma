@@ -20,7 +20,7 @@ public:
     FieldType getType() { return NULL_FIELD; }
 
 public:
-    void eval(double *point, double *value);
+    bool eval(double *point, double *value);
 
 };
 

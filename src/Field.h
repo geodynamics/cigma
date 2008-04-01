@@ -30,8 +30,8 @@ public:
     virtual FieldType getType() = 0;
 
 public:
-    virtual void eval(double *point, double *value) = 0;
-    virtual void eval(Points &domain, Points &range);
+    virtual bool eval(double *point, double *value) = 0;
+    virtual bool eval(Points &domain, Points &range);
     virtual ~Field();
 };
 

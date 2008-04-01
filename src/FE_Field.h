@@ -29,7 +29,7 @@ public:
     FieldType getType() { return FE_FIELD; }
 
 public:
-    void eval(double *point, double *value);
+    bool eval(double *point, double *value);
 
 public:
     void set_quadrature_rule(QuadratureRule *rule);

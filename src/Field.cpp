@@ -31,11 +31,16 @@ Field *NewField(const char *src)
     //
     if (HdfExtension(fieldExt.c_str()))
     {
-        // make sure that fieldFile is an HDF5 file (use IsHdfFile())
+        // 
+        // Make sure that fieldFile is an HDF5 file (use IsHdfFile())
         // read attribute from fieldLoc to distinguish between FE_Field and PointField
         // (use HdfAttr::get_string())
+        //
+        if (fieldExt == ".hdf5") // XXX: temporary hack for choosing PointField
+        {
+            return new PointField();
+        }
         return new FE_Field();
-        //return new PointField();
     }
 
     if (VtkExtension(fieldExt.c_str()))
@@ -61,15 +66,19 @@ Field::~Field() {};
 
 // ---------------------------------------------------------------------------
 
-void Field::eval(Points &domain, Points &range)
+bool Field::eval(Points &domain, Points &range)
 {
     assert(domain.n_points() == range.n_points());
     for (int i = 0; i < domain.n_points(); i++)
     {
+        bool ret;
         double *x = domain[i];
         double *y = range[i];
-        eval(x,y);
+        ret = eval(x,y);
+        if (ret)
+            return false;
     }
+    return true;
 }
 
 // ---------------------------------------------------------------------------

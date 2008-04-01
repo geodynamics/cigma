@@ -14,11 +14,12 @@ ZeroField::~ZeroField()
 }
 
 
-void ZeroField::eval(double *x, double *y)
+bool ZeroField::eval(double *x, double *y)
 {
     for (int i = 0; i < rank; i++)
     {
         y[i] = 0.0;
     }
+    return true;
 }
 

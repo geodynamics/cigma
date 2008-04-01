@@ -28,10 +28,9 @@ public:
 public:
     void set_points(double *pts, int npts, int nsd);
     void set_values(double *vals, int nvals, int rank);
-    void set_locator(Locator *locator);
 
 public:
-    void eval(double *point, double *value);
+    bool eval(double *point, double *value);
 
 public:
     Points *points;

@@ -14,7 +14,7 @@ public:
     ~ZeroField();
 
 public:
-    void eval(double *point, double *value);
+    bool eval(double *point, double *value);
 
 public:
     int n_dim() { return dim; }

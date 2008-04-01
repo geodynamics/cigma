@@ -1,15 +1,17 @@
 #include <cassert>
 #include "PointField.h"
 
+using namespace cigma;
+
 // ---------------------------------------------------------------------------
 
-cigma::PointField::PointField()
+PointField::PointField()
 {
     points = new Points();
     values = new Points();
 }
 
-cigma::PointField::~PointField()
+PointField::~PointField()
 {
     delete points;
     delete values;
@@ -17,22 +19,20 @@ cigma::PointField::~PointField()
 
 // ---------------------------------------------------------------------------
 
-void cigma::PointField::
-set_points(double *pts, int npts, int nsd)
+void PointField::set_points(double *pts, int npts, int nsd)
 {
     points->set_data(pts, npts, nsd);
 }
 
-void cigma::PointField::
-set_values(double *vals, int nvals, int rank)
+void PointField::set_values(double *vals, int nvals, int rank)
 {
     values->set_data(vals, nvals, rank);
 }
 
+
 // ---------------------------------------------------------------------------
 
-void cigma::PointField::
-eval(double *point, double *value)
+bool PointField::eval(double *point, double *value)
 {
     //* XXX: quick sanity check
     static int checked = 0;
@@ -49,11 +49,18 @@ eval(double *point, double *value)
     // Find index of closest point
     int n;
     points->find_ann_index(point, &n);
-    assert(0 <= n);
-    assert(n < points->n_points());
+    
+    //assert(0 <= n);
+    //assert(n < points->n_points());
+    if ((0 <= n) || (n < points->n_points()))
+    {
+        return false;
+    }
 
     // Retrieve corresponding value
     value = (*values)[n];
+
+    return true;
 }
 
 // ---------------------------------------------------------------------------

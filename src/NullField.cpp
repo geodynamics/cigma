@@ -4,5 +4,5 @@ using namespace cigma;
 
 NullField::NullField() {}
 NullField::~NullField() {}
-void NullField::eval(double *point, double *value) {}
+bool NullField::eval(double *point, double *value) { return false; }
 
