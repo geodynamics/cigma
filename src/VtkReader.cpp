@@ -381,6 +381,8 @@ int VtkReader::get_connectivity(const char *loc, int **connectivity, int *nel, i
         *connectivity = connect;
         *nel = num_cells;
         *ndofs = ndofs_per_cell;
+
+        return 0;
     }
 
     assert(false); // XXX: throw own exception
