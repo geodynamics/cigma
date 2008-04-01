@@ -86,12 +86,13 @@ void FieldReader::validate_args(const char *cmd_name)
                  << endl;
             exit(1);
         }
-        else if ((pointsReader.pointsPath != "") || (valuesReader.pointsPath != ""))
+        else if (((pointsReader.pointsPath == "") && (valuesReader.pointsPath != ""))
+               ||((pointsReader.pointsPath != "") && (valuesReader.pointsPath == "")))
         {
             string o1 = fieldOption + "-points";
             string o2 = fieldOption + "-values";
             cerr << cmd_name << ": "
-                 << "Please provide the options "
+                 << "Please provide both options "
                  << "--" << o1 << " and "
                  << "--" << o2
                  << endl;
@@ -126,7 +127,8 @@ void FieldReader::validate_args(const char *cmd_name)
 
     // 
     // Note that we don't need to call validate_args on either
-    // pointsReader or valuesReader
+    // pointsReader or valuesReader, as the equivalent checks
+    // have been performed above.
     //
 
 }
@@ -136,34 +138,36 @@ void FieldReader::validate_args(const char *cmd_name)
 
 void FieldReader::load_field()
 {
+    //field = NewField(fieldPath.c_str());
 
-    if (fieldPath == "")
+    if (fieldPath != "") // for now, assume fieldPath is for setting an FE_Field()
     {
-        return;
-    }
+        //field = NewField(fieldPath.c_str());
+        field = new FE_Field();
 
-    string fieldLoc, fieldFile, fieldExt;
-    parse_dataset_path(fieldPath, fieldLoc, fieldFile, fieldExt);
+        string fieldLoc, fieldFile, fieldExt;
+        parse_dataset_path(fieldPath, fieldLoc, fieldFile, fieldExt);
 
-
-    field = NewField(fieldPath.c_str());
-
-
-    if (field->getType() == Field::NULL_FIELD)
-    {
-        cerr << "Error: Could not create a field dataset for " << fieldPath << endl;
-        exit(1);
-    }
-    else if (field->getType() == Field::FE_FIELD)
-    {
         double *dofs;
         int dofs_nno, dofs_valdim;
 
         FE_Field *fe_field = static_cast<FE_Field*>(field);
 
+        int ierr;
         dofsReader = NewReader(fieldExt.c_str());
-        dofsReader->open(fieldFile.c_str());
-        dofsReader->get_dataset(fieldLoc.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        ierr = dofsReader->open(fieldFile.c_str());
+        if (ierr < 0)
+        {
+            cerr << "Could not open " << fieldOption << " file " << fieldFile << endl;
+            exit(1);
+        }
+
+        ierr = dofsReader->get_dataset(fieldLoc.c_str(), &dofs, &dofs_nno, &dofs_valdim);
+        if (ierr < 0)
+        {
+            cerr << "Could not open " << fieldOption << " dataset from " << fieldPath << endl;
+            exit(1);
+        }
         dofsReader->close();
 
         if (meshPartReader.meshPath == "")
@@ -181,15 +185,14 @@ void FieldReader::load_field()
         fe_field->meshPart->set_cell();
         assert(fe_field->meshPart->cell != 0);
 
-        /*
-        if (fe_field->meshPart->nel > 1000)
+        
+        //*
+        if ((fieldOption == "first") && (fe_field->meshPart->nel > 1000))
         {
-            if (fe_field->meshPart->nsd == 3)
-            {
-                AnnLocator *locator = new AnnLocator();
-                fe_field->meshPart->set_locator(locator);
-            }
-        } */
+            AnnLocator *locator = new AnnLocator();
+            fe_field->meshPart->set_locator(locator);
+        } // */
+
 
         fe_field->dofHandler = new DofHandler();
         fe_field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
@@ -209,16 +212,68 @@ void FieldReader::load_field()
                  << endl;
         }
     }
-    else if (field->getType() == Field::POINT_FIELD)
+    else if ((pointsReader.pointsPath != "") && (valuesReader.pointsPath != ""))
     {
-        double *pts;
-        int npts, nsd;
+        Points *points = 0;
+        Points *values = 0;
 
-        double *vals;
-        int nvals,rank;
+        pointsReader.load_points();
+        valuesReader.load_points();
 
-        assert(false);
+        points = pointsReader.points;
+        values = valuesReader.points;
+
+        if ((points != 0) && (values != 0))
+        {
+            field = new PointField();
+
+            PointField *f = static_cast<PointField*>(field);
+            f->set_points(points->data, points->n_points(), points->n_dim());
+            f->set_values(values->data, values->n_points(), values->n_dim());
+
+            if (points->n_points() > 1000)
+            {
+                AnnLocator *locator = new AnnLocator();
+                locator->nnk = 20;
+                f->points->set_locator(locator);
+            }
+
+            if (verbose)
+            {
+                cout << fieldOption << " field points = "
+                     << points->n_points() << " points, "
+                     << points->n_dim() << " dim"
+                     << endl;
+
+                cout << fieldOption << " field values = "
+                     << values->n_points() << " values, "
+                     << values->n_dim() << " dim"
+                     << endl;
+            }
+        }
+        else
+        {
+            if (points == 0)
+            {
+                cerr << "Error: Could not load points from "
+                     << pointsReader.pointsPath
+                     << endl;
+            }
+            if (values == 0)
+            {
+                cerr << "Error: Could not load values from "
+                     << valuesReader.pointsPath
+                     << endl;
+            }
+            exit(1);
+        }
     }
+    /*
+    if (field->getType == Field::NULL_FIELD)
+    {
+        cerr << "Error: Could not create a field dataset for " << fieldPath << endl;
+        exit(1);
+    }*/
 }
 
 // ---------------------------------------------------------------------------
