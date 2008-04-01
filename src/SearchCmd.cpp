@@ -208,7 +208,7 @@ int SearchCmd::run()
             if (!found)
             {
                 hitCount++;
-                cout << i << endl;
+                //cout << i << endl;
                 for (e = 0; e < nel; e++)
                 {
                     meshPart->select_cell(e);
@@ -223,7 +223,7 @@ int SearchCmd::run()
                 assert(found);
             } // */
         }
-        cout << "Locator missed " << hitCount << " "
+        cout << "Locator missed " << hitCount << " points "
              << "(" << ((100.0*hitCount)/npts) << "%)"
              << endl;
     }
