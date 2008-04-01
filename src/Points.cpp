@@ -66,7 +66,7 @@ bool cigma::Points::find_ann_index(double *point, int *annIndex)
             r2 += dx[j] * dx[j];
         }
 
-        if (r2 < r2_min)
+        if (r2 <= r2_min)
         {
             i_min = i;
             r2_min = r2;
