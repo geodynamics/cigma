@@ -86,6 +86,8 @@ void MeshPart::set_connectivity(int *connectivity, int nel, int ndofs)
 }
 
 
+// ---------------------------------------------------------------------------
+
 void MeshPart::set_locator(Locator *locator)
 {
     this->locator = locator;
@@ -178,7 +180,7 @@ bool MeshPart::find_cell(double globalPoint[3], int *cellIndex)
 
     if (locator != 0)
     {
-        locator->search(globalPoint);
+        locator->search_bbox(globalPoint);
 
         for (i = 0; i < locator->n_idx(); i++)
         {
