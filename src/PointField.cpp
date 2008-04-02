@@ -34,7 +34,7 @@ void PointField::set_values(double *vals, int nvals, int rank)
 
 bool PointField::eval(double *point, double *value)
 {
-    //* XXX: quick sanity check
+    /* XXX: quick sanity check
     static int checked = 0;
     if (!checked)
     {
@@ -48,19 +48,16 @@ bool PointField::eval(double *point, double *value)
 
     // Find index of closest point
     int n;
-    points->find_ann_index(point, &n);
-    
-    //assert(0 <= n);
-    //assert(n < points->n_points());
-    if ((0 <= n) || (n < points->n_points()))
+    bool found = points->find_ann_index(point, &n);
+
+    if (found && (0 <= n) && (n < points->n_points()))
     {
-        return false;
+        // Retrieve corresponding value
+        value = (*values)[n];
+        return true;
     }
 
-    // Retrieve corresponding value
-    value = (*values)[n];
-
-    return true;
+    return false;
 }
 
 // ---------------------------------------------------------------------------
