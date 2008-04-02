@@ -187,7 +187,7 @@ int SearchCmd::run()
 
             bool found = false;
 
-            meshPart->locator->search(pt);
+            meshPart->locator->search_point(pt);
             for (j = 0; j < meshPart->locator->n_idx(); j++)
             {
                 e = meshPart->locator->idx(j);
