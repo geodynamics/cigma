@@ -23,7 +23,8 @@ public:
     void initialize(Points *points);
 
 public:
-    void search(double *point);
+    void search_bbox(double *point);
+    void search_point(double *point);
 
 public:
     int n_idx();

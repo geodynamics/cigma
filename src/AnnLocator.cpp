@@ -98,7 +98,7 @@ void AnnLocator::initialize(Points *points)
     assert(npts > 0);
     assert(ndim > 0);
 
-    // XXX watch out for when you change the ANNpoint type to floaT
+    // XXX: watch out for when you change the ANNpoint type to float
     assert(sizeof(ANNcoord) == sizeof(double));
 
     //dataPoints = (ANNpointArray)(points->data); // questionable cast..
@@ -127,7 +127,7 @@ void AnnLocator::initialize(Points *points)
 
 // ---------------------------------------------------------------------------
 
-void AnnLocator::search(double *point)
+void AnnLocator::search_bbox(double *point)
 {
     for (int i = 0; i < ndim; i++)
     {
@@ -138,5 +138,14 @@ void AnnLocator::search(double *point)
     kdtree->annkSearch(queryPoint, nnk, nnIdx, nnDists, epsilon);
 }
 
+void AnnLocator::search_point(double *point)
+{
+    for (int i = 0; i < ndim; i++)
+    {
+        queryPoint[i] = point[i];
+    }
+
+    kdtree->annkSearch(queryPoint, nnk, nnIdx, nnDists, epsilon);
+}
 
 // ---------------------------------------------------------------------------

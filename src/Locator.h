@@ -22,7 +22,8 @@ public:
     virtual void initialize(Points *points) = 0;
 
 public:
-    virtual void search(double *point) = 0;
+    virtual void search_bbox(double *point) = 0;
+    virtual void search_point(double *point) = 0;
 
 public:
     virtual int n_idx() = 0;
