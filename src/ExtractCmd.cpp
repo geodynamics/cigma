@@ -183,23 +183,11 @@ int ExtractCmd::run()
         cout << "Extracting " << (nel * nq) << " points from input mesh..." << endl;
     }
 
+
     for (e = 0; e < nel; e++)
     {
         meshPart->select_cell(e);
-        /*
-        cout << "e = " << e << endl;
-        for (int a = 0; a < cell->n_nodes(); a++)
-        {
-            cout << "\t";
-            for (int b = 0; b < 3; b++)
-            {
-                cout << cell->globverts[3*a+b] << " ";
-            }
-            cout << endl;
-        } // */
-
         qpts->apply_refmap(cell);
-
         for (q = 0; q < nq; q++)
         {
             for (i = 0; i < nsd; i++)
@@ -210,25 +198,26 @@ int ExtractCmd::run()
         }
     }
 
-    int ierr;
+
+    int status;
 
     cout << "Creating file " << outputFilename << endl;
 
-    ierr = pointsWriter->open(outputFilename.c_str());
-    if (ierr < 0)
+    status = pointsWriter->open(outputFilename.c_str());
+    if (status < 0)
     {
         cerr << "extract: Could not open (or create) the output file " << outputFilename << endl;
         exit(1);
     }
 
-    ierr = pointsWriter->write_coordinates(pointsPath.c_str(), points, nq*nel, nsd);
-    if (ierr < 0)
+    status = pointsWriter->write_coordinates(pointsPath.c_str(), points, nq*nel, nsd);
+    if (status < 0)
     {
         cerr << "extract: Could not write points dataset " << pointsPath << endl;
         exit(1);
     }
     
-    ierr = pointsWriter->close();
+    status = pointsWriter->close();
 
     delete [] points;    // XXX: use auto_ptr?
 
