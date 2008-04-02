@@ -7,14 +7,12 @@ namespace cigma {
     class ZeroField;
 }
 
-class cigma::ZeroField : Field
+class cigma::ZeroField : public cigma::Field
 {
 public:
     ZeroField();
     ~ZeroField();
-
-public:
-    bool eval(double *point, double *value);
+    void set_shape(int dim, int rank);
 
 public:
     int n_dim() { return dim; }
@@ -22,11 +20,7 @@ public:
     FieldType getType() { return USER_FIELD; }
 
 public:
-    void set_shape(int dim, int rank)
-    {
-        this->dim = dim;
-        this->rank = rank;
-    }
+    bool eval(double *point, double *value);
 
 public:
     int dim;

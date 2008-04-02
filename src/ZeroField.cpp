@@ -13,6 +13,11 @@ ZeroField::~ZeroField()
 {
 }
 
+void ZeroField::set_shape(int dim, int rank)
+{
+    this->dim = dim;
+    this->rank = rank;
+}
 
 bool ZeroField::eval(double *x, double *y)
 {
