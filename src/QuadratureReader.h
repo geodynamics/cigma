@@ -3,9 +3,10 @@
 
 #include <string>
 #include "AnyOption.h"
-#include "Reader.h"
-#include "QuadraturePoints.h"
-#include "Cell.h"
+//#include "Cell.h"
+#include "MeshPartReader.h"
+#include "QuadratureRule.h"
+
 
 class QuadratureReader
 {
@@ -18,7 +19,13 @@ public:
     void validate_args(const char *cmd_name);
 
 public:
-    void load_quadrature(cigma::Cell *cell);
+    void set_mesh(cigma::MeshPart *meshPart);
+    void load_mesh();
+
+public:
+    void load_quadrature();
+    void check_interior();
+    void warn_on_negative_weights();
 
 public:
     std::string quadratureOrder;
@@ -28,8 +35,10 @@ public:
     bool verbose;
 
 public:
-    cigma::Reader *reader;
-    cigma::QuadraturePoints *quadrature;
+    cigma::QuadratureRule *quadrature;
+    cigma::MeshPart *meshPart;
+    MeshPartReader meshPartReader;
 };
+
 
 #endif
