@@ -58,7 +58,7 @@ void AnnLocator::initialize(MeshPart *meshPart)
     assert(npts > 0);
     assert(ndim > 0);
 
-    dataPoints = annAllocPts(npts, ndim);
+    dataPoints = annAllocPts(npts, ndim2);
     queryPoint = annAllocPt(ndim2);
 
     nnIdx = new ANNidx[nnk];
