@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Command.h"
+#include "MeshPart.h"
 #include "FE_Field.h"
 #include "MeshPartReader.h"
 #include "QuadratureReader.h"
@@ -35,9 +36,10 @@ public:
     bool verbose;
 
 public:
+    MeshPart *meshPart;
+    QuadratureRule *quadrature;
     FE_Field *coordsField;
     Writer *pointsWriter;
-
 };
 
 

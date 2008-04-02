@@ -36,7 +36,7 @@ void ExtractCmd::setupOptions(AnyOption *opt)
     opt->addUsage("     --mesh                  Input mesh file");
     opt->addUsage("     --mesh-coordinates      Path to mesh coordinates");
     opt->addUsage("     --mesh-connectivity     Path to mesh connectivity");
-    opt->addUsage("     --quadrature-rule       Quadrature rule");
+    opt->addUsage("     --quadrature            Quadrature rule");
     opt->addUsage("     --output                Output file");
 
     /* setup flags and options */
@@ -48,10 +48,10 @@ void ExtractCmd::setupOptions(AnyOption *opt)
     opt->setOption("mesh-coordinates");
     opt->setOption("mesh-connectivity");
 
-    opt->setOption("quadrature-rule", 'q');
-    opt->setOption("quadrature-rule-order");
-    opt->setOption("quadrature-rule-points");
-    opt->setOption("quadrature-rule-weights");
+    opt->setOption("quadrature", 'q');
+    opt->setOption("quadrature-order");
+    opt->setOption("quadrature-points");
+    opt->setOption("quadrature-weights");
 
     opt->setOption("output", 'o');
 }
@@ -69,7 +69,6 @@ void ExtractCmd::configure(AnyOption *opt)
     verbose = opt->getFlag("verbose");
 
     /* determine the output option */
-
     in = opt->getValue("output");
     if (in == 0)
     {
@@ -92,11 +91,12 @@ void ExtractCmd::configure(AnyOption *opt)
 
     /* gather up expected command line arguments */
     meshPartReader.load_args(opt, "mesh");
-    quadratureReader.load_args(opt, "quadrature-rule");
+    quadratureReader.load_args(opt, "quadrature");
 
     /* validate these arguments and complain about missing ones */
     meshPartReader.validate_args("extract");
     quadratureReader.validate_args("extract");
+
 
     /* load mesh into memory */
     meshPartReader.load_mesh();
@@ -113,27 +113,28 @@ void ExtractCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
-
-    coordsField = new FE_Field();
-    coordsField->meshPart = meshPartReader.meshPart;
-    coordsField->meshPart->set_cell();
+    meshPart = meshPartReader.meshPart;
+    assert(meshPart != 0);
 
 
     /* now, load quadrature rule */
-    quadratureReader.load_quadrature(coordsField->meshPart->cell);
+    quadratureReader.verbose = true;
+    quadratureReader.set_mesh(meshPart);
+    quadratureReader.load_quadrature();
     if (quadratureReader.quadrature == 0)
     {
         cerr << "extract: Invalid quadrature rule options!" << endl;
         exit(1);
     }
+    quadrature = quadratureReader.quadrature;
+    assert(quadrature != 0);
 
 
-    /* set up interpolator on mesh coordinates */
-    coordsField->fe = new FE();
-    coordsField->fe->set_mesh(meshPartReader.meshPart);
-    coordsField->fe->set_quadrature_points(quadratureReader.quadrature);
+    /* finally, create field over the coordinates */
+    coordsField = new FE_Field();
+    coordsField->set_fe(quadrature);
 
-
+    /* done with configure() step */
     return;
 }
 
@@ -148,19 +149,17 @@ int ExtractCmd::run()
     // local data -- destructure field object
     //
 
-    FE *fe = coordsField->fe;
+    QuadratureRule *fe = coordsField->fe;
     assert(fe != 0);
-
-    MeshPart *meshPart = coordsField->meshPart;
-    assert(meshPart != 0);
-    assert(meshPart == fe->meshPart);
 
     QuadraturePoints *qpts = fe->points;
     assert(qpts != 0);
 
+    MeshPart *meshPart = fe->meshPart;
+    assert(meshPart != 0);
+
     Cell *cell = fe->meshPart->cell;
     assert(cell != 0);
-    assert(meshPart->cell == fe->meshPart->cell);
 
 
     //
