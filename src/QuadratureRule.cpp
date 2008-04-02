@@ -11,11 +11,16 @@ QuadratureRule::QuadratureRule()
     meshPart = 0;
     points = 0;
     jxw = 0;
+    basis_tab = 0;
+    basis_jet = 0;
 }
 
 QuadratureRule::~QuadratureRule()
 {
+    if (points != 0) delete points;
     if (jxw != 0) delete [] jxw;
+    if (basis_tab != 0) delete [] basis_tab;
+    if (basis_jet != 0) delete [] basis_jet;
 }
 
 
@@ -24,11 +29,13 @@ QuadratureRule::~QuadratureRule()
 void QuadratureRule::set_mesh(MeshPart *mesh)
 {
     assert(mesh != 0);
+    assert(mesh->cell != 0);
     this->meshPart = mesh;
 }
 
-void QuadratureRule::set_quadrature_points(QuadraturePoints *points)
+void QuadratureRule::set_quadrature(double *wts, double *pts, int npts, int ndim)
 {
+    /*
     assert(meshPart != 0);
     assert(meshPart->cell != 0);
 
@@ -36,8 +43,43 @@ void QuadratureRule::set_quadrature_points(QuadraturePoints *points)
     assert(points != 0);
     assert(points->n_points() > 0);
     assert(points->n_refdim() == meshPart->cell->n_celldim());
+    */
 
-    jxw = new double[points->n_points()];
+    points = new QuadraturePoints();
+    points->set_quadrature(wts, pts, npts, ndim);
+
+    jxw = new double[npts];
+}
+
+void QuadratureRule::initialize_basis_tab()
+{
+    assert(meshPart != 0);
+    assert(meshPart->cell != 0);
+    assert(points != 0);
+    assert(points->n_refdim() == meshPart->cell->n_celldim());
+    
+    const int nq = points->n_points();
+    const int ndofs = meshPart->cell->n_nodes();
+
+    // get shape function values at known quadrature points
+    basis_tab = new double[nq * ndofs];
+    meshPart->cell->shape(nq, points->qpts, basis_tab);
+}
+
+void QuadratureRule::initialize_basis_jet()
+{
+    assert(meshPart != 0);
+    assert(meshPart->cell != 0);
+    assert(points != 0);
+    assert(points->n_refdim() == meshPart->cell->n_celldim());
+    
+    const int nq = points->n_points();
+    const int ndofs = meshPart->cell->n_nodes();
+    const int ndim = points->n_dim();
+
+    // get shape function derivatives at known quadrature points
+    basis_jet = new double[nq * ndofs * ndim];
+    meshPart->cell->grad_shape(nq, points->qpts, basis_jet);
 }
 
 // ---------------------------------------------------------------------------

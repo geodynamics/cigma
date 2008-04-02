@@ -20,7 +20,9 @@ public:
 
 public:
     void set_mesh(MeshPart *mesh);
-    virtual void set_quadrature_points(QuadraturePoints *pts);
+    void set_quadrature(double *wts, double *pts, int npts, int ndim);
+    void initialize_basis_tab();
+    void initialize_basis_jet();
 
 public:
     void select_cell(int e);
@@ -33,7 +35,9 @@ public:
 public:
     MeshPart *meshPart;
     QuadraturePoints *points;
-    double *jxw;
+    double *jxw;        // [nq x 1]
+    double *basis_tab;  // [nq x ndofs]
+    double *basis_jet;  // [nq x ndofs x celldim]
 };
 
 
