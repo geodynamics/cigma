@@ -2,11 +2,10 @@
 #include <cstdlib>
 #include <cassert>
 #include "FieldReader.h"
-
 #include "FE_Field.h"
 #include "PointField.h"
+#include "NullField.h"
 #include "AnnLocator.h"
-
 #include "StringUtils.h"
 
 
@@ -19,6 +18,7 @@ using namespace cigma;
 FieldReader::FieldReader()
 {
     field = 0;
+    fieldSet = 0;
     verbose = false;
 }
 
@@ -26,9 +26,15 @@ FieldReader::~FieldReader()
 {
     if (field != 0)
     {
-        // XXX:
+        // XXX
     }
 }
+
+void FieldReader::setFieldSet(FieldSet *fs)
+{
+    this->fieldSet = fs;
+}
+
 
 // ---------------------------------------------------------------------------
 
@@ -133,14 +139,49 @@ void FieldReader::validate_args(const char *cmd_name)
 
 }
 
+bool FieldReader::fieldPathIsZero()
+{
+    return (fieldPath == "zero");
+}
 
 // ---------------------------------------------------------------------------
 
 void FieldReader::load_field()
 {
-    //field = NewField(fieldPath.c_str());
+    //
+    // First thing to do is look up fieldPath in the fieldSet.
+    //
+    if (fieldSet != 0)
+    {
+        field = fieldSet->getField(fieldPath);
+        if (field != 0)
+        {
+            if (verbose)
+            {
+                cout << endl;
 
-    if (fieldPath != "") // for now, assume fieldPath is for setting an FE_Field()
+                cout << fieldOption << " field path = "
+                     << fieldPath
+                     << endl;
+
+                if ((field->n_dim() > 0) && (field->n_rank() > 0))
+                {
+                    cout << "rank " << field->n_rank()
+                         << " on a " << field->n_dim() << "-d domain"
+                         << endl;
+                }
+            }
+            return;
+        }
+    }
+    
+
+    // 
+    // XXX: for now, assume fieldPath is for setting an FE_Field()
+    // To specify points, use the --{first,second}-{points,values} options.
+    //
+    //field = NewField(fieldPath.c_str());
+    if (fieldPath != "")
     {
         //field = NewField(fieldPath.c_str());
         field = new FE_Field();
@@ -153,23 +194,36 @@ void FieldReader::load_field()
 
         FE_Field *fe_field = static_cast<FE_Field*>(field);
 
+
+        /* Read dofs from file */
         int ierr;
         dofsReader = NewReader(fieldExt.c_str());
         ierr = dofsReader->open(fieldFile.c_str());
         if (ierr < 0)
         {
-            cerr << "Could not open " << fieldOption << " file " << fieldFile << endl;
+            cerr << "Error: Could not open " << fieldOption
+                 << " field path '" << fieldFile << "'"
+                 << endl;
             exit(1);
         }
 
         ierr = dofsReader->get_dataset(fieldLoc.c_str(), &dofs, &dofs_nno, &dofs_valdim);
         if (ierr < 0)
         {
-            cerr << "Could not open " << fieldOption << " dataset from " << fieldPath << endl;
+            cerr << "Error: Could not open " << fieldOption
+                 << " dataset '" << fieldLoc
+                 << "' from " << fieldPath
+                 << endl;
             exit(1);
         }
         dofsReader->close();
 
+        /* Assign a dof handler */
+        fe_field->dofHandler = new DofHandler();
+        fe_field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
+
+
+        /* Read mesh from appropriate path */
         if (meshPartReader.meshPath == "")
         {
             meshPartReader.meshPath = fieldFile;
@@ -178,28 +232,36 @@ void FieldReader::load_field()
         meshPartReader.load_mesh();
         assert(meshPartReader.meshPart != 0);
 
+
+        /* Assign shape */
         fe_field->dim = meshPartReader.meshPart->nsd;
         fe_field->rank = dofs_valdim;
 
-        fe_field->meshPart = meshPartReader.meshPart;
-        fe_field->meshPart->set_cell();
+        /* Assign a mesh */
+        fe_field->set_mesh(meshPartReader.meshPart);
         assert(fe_field->meshPart->cell != 0);
-
         
-        //*
-        if ((fieldOption == "first") && (fe_field->meshPart->nel > 1000))
+        /* Assign a locator */
+        if (fe_field->meshPart->nel > 1000)
         {
+            // Why was I testing for (fieldOption == "first")?
             AnnLocator *locator = new AnnLocator();
             fe_field->meshPart->set_locator(locator);
-        } // */
+        }
 
 
-        fe_field->dofHandler = new DofHandler();
-        fe_field->dofHandler->set_data(dofs, dofs_nno, dofs_valdim);
+        /* 
+         * Next item to set must be fe_field->fe, but this can be deferred.
+         * The caller is responsible for setting this field using the
+         * appropriate set_fe() method.
+         */
 
 
+        /* Verbose output */
         if (verbose)
         {
+            cout << endl;
+
             cout << fieldOption << " field path = "
                  << fieldPath
                  << endl;
@@ -227,19 +289,21 @@ void FieldReader::load_field()
         {
             field = new PointField();
 
-            PointField *f = static_cast<PointField*>(field);
-            f->set_points(points->data, points->n_points(), points->n_dim());
-            f->set_values(values->data, values->n_points(), values->n_dim());
+            PointField *pf = static_cast<PointField*>(field);
+            pf->set_points(points->data, points->n_points(), points->n_dim());
+            pf->set_values(values->data, values->n_points(), values->n_dim());
 
             if (points->n_points() > 1000)
             {
                 AnnLocator *locator = new AnnLocator();
                 locator->nnk = 20;
-                f->points->set_locator(locator);
+                pf->points->set_locator(locator);
             }
 
             if (verbose)
             {
+                cout << endl;
+
                 cout << fieldOption << " field points = "
                      << points->n_points() << " points, "
                      << points->n_dim() << " dim"
@@ -268,12 +332,11 @@ void FieldReader::load_field()
             exit(1);
         }
     }
-    /*
-    if (field->getType == Field::NULL_FIELD)
+    else
     {
-        cerr << "Error: Could not create a field dataset for " << fieldPath << endl;
-        exit(1);
-    }*/
+        // XXX: until we improve the factory method
+        field = new NullField();
+    }
 }
 
 // ---------------------------------------------------------------------------

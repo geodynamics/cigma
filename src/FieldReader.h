@@ -7,16 +7,19 @@
 #include "PointsReader.h"
 #include "Reader.h"
 #include "Field.h"
+#include "FieldSet.h"
 
 class FieldReader
 {
 public:
     FieldReader();
     ~FieldReader();
+    void setFieldSet(cigma::FieldSet *fs);
 
 public:
     void load_args(AnyOption *opt, const char *opt_prefix);
     void validate_args(const char *cmd_name);
+    bool fieldPathIsZero();
 
 public:
     void load_field();
@@ -34,7 +37,7 @@ public:
 
 public:
     cigma::Field *field;
-
+    cigma::FieldSet *fieldSet;
 };
 
 #endif
