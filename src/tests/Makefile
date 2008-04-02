@@ -21,11 +21,12 @@ TESTOBJS = \
 	TestQuad.o \
 	TestTet.o \
 	TestHex.o \
-	TestPoints.o \
-	TestZeroField.o \
-	TestTimer.o \
-	TestStringUtils.o \
 	TestCellVolume.o \
+	TestPoints.o \
+	TestTimer.o \
+	TestZeroField.o \
+	TestFieldSet.o \
+	TestStringUtils.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)
