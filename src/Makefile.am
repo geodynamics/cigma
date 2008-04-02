@@ -72,8 +72,6 @@ libcigma_a_SOURCES = \
 	QuadraturePoints.cpp \
 	QuadratureRule.h \
 	QuadratureRule.cpp \
-	FE.h \
-	FE.cpp \
 	\
 	MeshPart.h \
 	MeshPart.cpp \
@@ -85,6 +83,8 @@ libcigma_a_SOURCES = \
 	\
 	Field.h \
 	Field.cpp \
+	FieldSet.h \
+	FieldSet.cpp \
 	NullField.h \
 	NullField.cpp \
 	FE_Field.h \
@@ -95,6 +95,8 @@ libcigma_a_SOURCES = \
 	ExtField.cpp \
 	ZeroField.h \
 	ZeroField.cpp \
+	GaleBenchmarkFields.h \
+	GaleBenchmarkFields.cpp \
 	\
 	Residuals.h \
 	Residuals.cpp \
@@ -143,22 +145,25 @@ libcigma_a_SOURCES = \
 	Command.cpp \
 	CommandSet.h \
 	CommandSet.cpp \
-	SkelCmd.h \
-	SkelCmd.cpp \
 	HelpCmd.h \
 	HelpCmd.cpp \
 	ListCmd.h \
 	ListCmd.cpp \
-	CubeCmd.h \
-	CubeCmd.cpp \
 	ExtractCmd.h \
 	ExtractCmd.cpp \
-	SearchCmd.h \
-	SearchCmd.cpp \
 	EvalCmd.h \
 	EvalCmd.cpp \
 	CompareCmd.h \
 	CompareCmd.cpp \
+	\
+	SkelCmd.h \
+	SkelCmd.cpp \
+	CubeCmd.h \
+	CubeCmd.cpp \
+	SearchCmd.h \
+	SearchCmd.cpp \
+	InfoCmd.h \
+	InfoCmd.cpp \
 	\
 	AnyOption.h \
 	AnyOption.cpp \

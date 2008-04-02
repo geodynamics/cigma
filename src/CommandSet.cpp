@@ -2,14 +2,19 @@
 #include <cstdlib>
 #include <cassert>
 #include "CommandSet.h"
-#include "SkelCmd.h"
+
+/* basic commands */
 #include "HelpCmd.h"
 #include "ListCmd.h"
-#include "CubeCmd.h"
 #include "ExtractCmd.h"
-#include "SearchCmd.h"
 #include "EvalCmd.h"
 #include "CompareCmd.h"
+
+/* misc commands for debugging */
+#include "SkelCmd.h"
+#include "CubeCmd.h"
+#include "SearchCmd.h"
+#include "InfoCmd.h"
 
 using namespace cigma;
 
@@ -37,13 +42,20 @@ void CommandSet::initialize()
 
     /* assemble set of commands */
     addCommand(help);
-    //addCommand(new SkelCmd());
     addCommand(new ListCmd());
-    addCommand(new CubeCmd());
     addCommand(new ExtractCmd());
-    addCommand(new SearchCmd());
     addCommand(new EvalCmd());
     addCommand(new CompareCmd());
+
+    /* additional commands for debugging */
+    const bool debug = true;
+    if (debug)
+    {
+        //addCommand(new SkelCmd());
+        addCommand(new CubeCmd());
+        addCommand(new SearchCmd());
+        addCommand(new InfoCmd());
+    }
 
     /* once assembled, pass set of commands to help command */
     help->setCommandSet(this);
