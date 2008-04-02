@@ -261,12 +261,12 @@ void MeshPartReader::load_mesh()
     }
     if (coordsReader == 0)
     {
-        cerr << "Could not make reader for mesh coordinates" << endl;
+        cerr << "Error: Could not make reader for mesh coordinates" << endl;
         exit(1);
     }
     if (connectReader == 0)
     {
-        cerr << "Could not make reader for mesh connectivity" << endl;
+        cerr << "Error: Could not make reader for mesh connectivity" << endl;
         exit(1);
     }
 
@@ -278,7 +278,7 @@ void MeshPartReader::load_mesh()
         ierr = meshReader->open(meshFile.c_str());
         if (ierr < 0)
         {
-            cerr << "Could not open mesh file " << meshFile << endl;
+            cerr << "Error: Could not open mesh file " << meshFile << endl;
             exit(1);
         }
     }
@@ -287,7 +287,7 @@ void MeshPartReader::load_mesh()
         ierr = coordsReader->open(coordsFile.c_str());
         if (ierr < 0)
         {
-            cerr << "Could not open mesh-coordinates file " << coordsFile << endl;
+            cerr << "Error: Could not open mesh-coordinates file " << coordsFile << endl;
             exit(1);
         }
     }
@@ -296,7 +296,7 @@ void MeshPartReader::load_mesh()
         ierr = connectReader->open(connectFile.c_str());
         if (ierr < 0)
         {
-            cerr << "Could not open mesh-connectivity file " << connectFile << endl;
+            cerr << "Error: Could not open mesh-connectivity file " << connectFile << endl;
             exit(1);
         }
     }
@@ -362,8 +362,37 @@ void MeshPartReader::load_mesh()
         meshPart->nel = nel;
         meshPart->ndofs = ndofs;
         meshPart->connect = connect;
+
+        // XXX: can we decide at this point which cell to assign?
+        meshPart->set_cell();
     }
 
+    //
+    // Clean up
+    //
+    if (meshReader != 0)
+    {
+        if (coordsReader == meshReader)
+        {
+            coordsReader = 0;
+        }
+        if (connectReader == meshReader)
+        {
+            connectReader = 0;
+        }
+        delete meshReader;
+        meshReader = 0;
+    }
+    if (coordsReader != 0)
+    {
+        delete coordsReader;
+        coordsReader = 0;
+    }
+    if (connectReader != 0)
+    {
+        delete connectReader;
+        connectReader = 0;
+    }
 }
 
 // ---------------------------------------------------------------------------
