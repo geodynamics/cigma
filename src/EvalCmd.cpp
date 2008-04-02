@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
-
 #include "EvalCmd.h"
+#include "ZeroField.h"
 #include "StringUtils.h"
 
 using namespace std;
@@ -15,12 +15,12 @@ EvalCmd::EvalCmd()
 
     field = 0;
     points = 0;
-    values = 0;
+    //values = 0;
 }
 
 EvalCmd::~EvalCmd()
 {
-    // XXX:
+    // XXX
 }
 
 
@@ -104,17 +104,24 @@ void EvalCmd::configure(AnyOption *opt)
     pointsReader.load_args(opt, "points");
     pointsReader.validate_args("eval");
     pointsReader.load_points();
-    if (pointsReader.points == 0)
+    points = pointsReader.points;
+    if (points == 0)
     {
         cerr << "eval: Could not load points dataset!" << endl;
         exit(1);
     }
 
+    /* initialize list of known fields */
+    fieldSet.initialize();
+
     /* determine the input field */
+    fieldReader.setFieldSet(&fieldSet);
     fieldReader.load_args(opt, "field");
     fieldReader.validate_args("eval");
     fieldReader.load_field();
-    if (fieldReader.field == 0)
+    field = fieldReader.field;
+    
+    if (field == 0)
     {
         cerr << "eval: Could not load field from path "
              << fieldReader.fieldPath
@@ -122,8 +129,13 @@ void EvalCmd::configure(AnyOption *opt)
         exit(1);
     }
 
-
-    if (field->n_dim() != points->n_dim())
+    if (fieldReader.fieldPath == "zero")
+    {
+        ZeroField *zero = static_cast<ZeroField*>(field);
+        assert(zero != 0);
+        zero->set_shape(points->n_dim(), 3);
+    }
+    else if (field->n_dim() != points->n_dim())
     {
         cerr << "eval: Domain dimensions do not match: "
              << "field->dim = " << field->n_dim() << ", "
@@ -138,7 +150,7 @@ int EvalCmd::run()
 {
     assert(field != 0);
     assert(points != 0);
-    assert(values != 0);
+    //assert(values != 0);
 
     // indices
     int i;

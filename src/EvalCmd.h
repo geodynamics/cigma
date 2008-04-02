@@ -4,10 +4,13 @@
 #include <string>
 #include "Command.h"
 #include "Field.h"
-#include "Points.h"
+#include "FieldSet.h"
 #include "FieldReader.h"
+#include "Points.h"
 #include "PointsReader.h"
 #include "Writer.h"
+
+
 
 namespace cigma
 {
@@ -29,6 +32,7 @@ public:
     int run();
 
 public:
+    FieldSet fieldSet;
     FieldReader fieldReader;
     PointsReader pointsReader;
     Writer *valuesWriter;
@@ -39,7 +43,7 @@ public:
 public:
     Field *field;
     Points *points;
-    Points *values;
+    //Points *values;
 };
 
 #endif
