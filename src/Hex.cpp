@@ -82,6 +82,42 @@ Hex::~Hex()
 }
 
 
+void Hex::qr_default(double **wts, double **pts, int *npts, int *ndim)
+{
+    // hex_qr(3)
+    const int hex_nno = 8;
+    const int hex_celldim = 3;
+    double hex_qpts[hex_nno * hex_celldim] = {
+        -0.57735027, -0.57735027, -0.57735027,
+         0.57735027, -0.57735027, -0.57735027,
+         0.57735027,  0.57735027, -0.57735027,
+        -0.57735027,  0.57735027, -0.57735027,
+        -0.57735027, -0.57735027,  0.57735027,
+         0.57735027, -0.57735027,  0.57735027,
+         0.57735027,  0.57735027,  0.57735027,
+        -0.57735027,  0.57735027,  0.57735027
+    };
+    double hex_qwts[hex_nno] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
+
+    int i,j,n;
+    *npts = hex_nno;
+    *ndim = hex_celldim;
+    *wts = new double[(*npts)];
+    *pts = new double[(*npts) * (*ndim)];
+    for (i = 0; i < hex_nno; i++)
+    {
+        (*wts)[i] = hex_qwts[i];
+        for (j = 0; j < (*ndim); j++)
+        {
+            n = (*ndim) * i + j;
+            (*pts)[n] = hex_qpts[n];
+        }
+    }
+}
+
+
+// ---------------------------------------------------------------------------
+
 /*
  * @param points points is an [num x celldim] array (in)
  * @param values values is an [num x ndofs] array (out)

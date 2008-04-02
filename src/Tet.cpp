@@ -58,6 +58,53 @@ Tet::~Tet()
 {
 }
 
+void Tet::qr_default(double **wts, double **pts, int *npts, int *ndim)
+{
+    // tet_qr(3)
+    const int tet_nno = 8;
+    const int tet_celldim = 3;
+    double tet_qpts[tet_nno * tet_celldim] = {
+        -0.68663473, -0.72789005, -0.75497035,
+        -0.83720867, -0.85864055,  0.08830369,
+        -0.86832263,  0.13186633, -0.75497035,
+        -0.93159441, -0.4120024 ,  0.08830369,
+         0.16949513, -0.72789005, -0.75497035,
+        -0.39245447, -0.85864055,  0.08830369,
+        -0.50857335,  0.13186633, -0.75497035,
+        -0.74470688, -0.4120024 ,  0.08830369
+    };
+    double tet_qwts[tet_nno] = {
+        0.29583885,  0.12821632,  0.16925605,  0.07335544,  0.29583885,
+        0.12821632,  0.16925605,  0.07335544
+    };
+
+    int i,j,n;
+
+    for (i = 0; i < tet_nno; i++)
+    {
+        for (j = 0; j < tet_celldim; j++)
+        {
+            n = tet_celldim * i + j;
+            tet_qpts[n] += 1;
+            tet_qpts[n] *= 0.5;
+        }
+    }
+
+    *npts = tet_nno;
+    *ndim = tet_celldim;
+    *wts = new double[(*npts)];
+    *pts = new double[(*npts) * (*ndim)];
+    for (i = 0; i < tet_nno; i++)
+    {
+        (*wts)[i] = tet_qwts[i];
+        for (j = 0; j < (*ndim); j++)
+        {
+            n = (*ndim) * i + j;
+            (*pts)[n] = tet_qpts[n];
+        }
+    }
+}
+
 void Tet::shape(int num, double *points, double *values)
 {
     const int nno = n_nodes();

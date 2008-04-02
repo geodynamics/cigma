@@ -111,123 +111,15 @@ void QuadratureReader::validate_args(const char *cmd_name)
 
 void QuadratureReader::load_quadrature(Cell *cell)
 {
-    //cout << "Calling QuadratureReader::load_quadrature()" << endl;
-
     assert(cell != 0);
 
-
     int i,j;
-
-    //
-    // XXX: move these default rules into the appropriate Cell subclasses
-    //
-
-    // tri_qr(5)
-    const int tri_nno = 9;
-    const int tri_celldim = 2;
-    double tri_qpts[tri_nno * tri_celldim] = {
-        -0.79456469, -0.82282408,
-        -0.86689186, -0.18106627,
-        -0.95213774,  0.57531892,
-        -0.08858796, -0.82282408,
-        -0.40946686, -0.18106627,
-        -0.78765946,  0.57531892,
-         0.61738877, -0.82282408,
-         0.04795814, -0.18106627,
-        -0.62318119,  0.57531892
-    };
-    double tri_qwts[tri_nno] = {
-        0.22325768,  0.25471234,  0.07758553,  0.35721229,  0.40753974,
-        0.12413685,  0.22325768,  0.25471234,  0.07758553
-    };
-    for (i = 0; i < tri_nno; i++)
-    {
-        for (j = 0; j < tri_celldim; j++)
-        {
-            int n = tri_celldim * i + j;
-            tri_qpts[n] += 1;
-            tri_qpts[n] *= 0.5;
-        }
-    }
-
-    // quad_qr(7)
-    const int quad_nno = 16;
-    const int quad_celldim = 2;
-    double quad_qpts[quad_nno * quad_celldim] = {
-        -0.86113631, -0.86113631,
-        -0.33998104, -0.86113631,
-         0.33998104, -0.86113631,
-         0.86113631, -0.86113631,
-         0.86113631, -0.33998104,
-         0.86113631,  0.33998104,
-         0.86113631,  0.86113631,
-         0.33998104,  0.86113631,
-        -0.33998104,  0.86113631,
-        -0.86113631,  0.86113631,
-        -0.86113631,  0.33998104,
-        -0.86113631, -0.33998104,
-        -0.33998104, -0.33998104,
-         0.33998104, -0.33998104,
-        -0.33998104,  0.33998104,
-         0.33998104,  0.33998104
-    };
-    double quad_qwts[quad_nno] = {
-        0.12100299,  0.22685185,  0.22685185,  0.12100299,  0.22685185,
-        0.22685185,  0.12100299,  0.22685185,  0.22685185,  0.12100299,
-        0.22685185,  0.22685185,  0.4252933 ,  0.4252933 ,  0.4252933 ,
-        0.4252933
-    };
-
-
-    // tet_qr(3)
-    const int tet_nno = 8;
-    const int tet_celldim = 3;
-    double tet_qpts[tet_nno * tet_celldim] = {
-        -0.68663473, -0.72789005, -0.75497035,
-        -0.83720867, -0.85864055,  0.08830369,
-        -0.86832263,  0.13186633, -0.75497035,
-        -0.93159441, -0.4120024 ,  0.08830369,
-         0.16949513, -0.72789005, -0.75497035,
-        -0.39245447, -0.85864055,  0.08830369,
-        -0.50857335,  0.13186633, -0.75497035,
-        -0.74470688, -0.4120024 ,  0.08830369
-    };
-    double tet_qwts[tet_nno] = {
-        0.29583885,  0.12821632,  0.16925605,  0.07335544,  0.29583885,
-        0.12821632,  0.16925605,  0.07335544
-    };
-    for (i = 0; i < tet_nno; i++)
-    {
-        for (j = 0; j < tet_celldim; j++)
-        {
-            int n = tet_celldim * i + j;
-            tet_qpts[n] += 1;
-            tet_qpts[n] *= 0.5;
-        }
-    }
-
-    // hex_qr(3)
-    const int hex_nno = 8;
-    const int hex_celldim = 3;
-    double hex_qpts[hex_nno * hex_celldim] = {
-        -0.57735027, -0.57735027, -0.57735027,
-         0.57735027, -0.57735027, -0.57735027,
-         0.57735027,  0.57735027, -0.57735027,
-        -0.57735027,  0.57735027, -0.57735027,
-        -0.57735027, -0.57735027,  0.57735027,
-         0.57735027, -0.57735027,  0.57735027,
-         0.57735027,  0.57735027,  0.57735027,
-        -0.57735027,  0.57735027,  0.57735027
-    };
-    double hex_qwts[hex_nno] = { 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1. };
-
 
     int nq, nd;
     double *qx, *qw;
 
     nq = nd = 0;
     qx = qw = 0;
-
 
     if ((pointsPath != "") && (weightsPath != ""))
     {
@@ -348,7 +240,7 @@ void QuadratureReader::load_quadrature(Cell *cell)
                 int npts,dim;
                 double *qx,*qw;
                 fiat->quadrature(geometry, order, &qx, &qw, &npts, &dim);
-                quadrature->set_quadrature(qx, qw, nno, nsd);
+                quadrature->set_quadrature(qw, qx, nno, nsd);
                 delete [] qx;
                 delete [] qw;
             // */
@@ -357,33 +249,15 @@ void QuadratureReader::load_quadrature(Cell *cell)
     else
     {
         // assign reasonable defaults
-        switch (cell->geometry())
-        {
-        case Cell::TRIANGLE:
-            quadrature = new QuadraturePoints();
-            quadrature->set_quadrature(tri_qpts, tri_qwts, tri_nno, tri_celldim);
-            break;
-        case Cell::QUADRANGLE:
-            quadrature = new QuadraturePoints();
-            quadrature->set_quadrature(quad_qpts, quad_qwts, quad_nno, quad_celldim);
-            break;
-        case Cell::TETRAHEDRON:
-            quadrature = new QuadraturePoints();
-            quadrature->set_quadrature(tet_qpts, tet_qwts, tet_nno, tet_celldim);
-            break;
-        case Cell::HEXAHEDRON:
-            quadrature = new QuadraturePoints();
-            quadrature->set_quadrature(hex_qpts, hex_qwts, hex_nno, hex_celldim);
-            break;
-        default:
-            break;
-        }
+        quadrature = new QuadraturePoints();
+        cell->qr_default(&qw, &qx, &nq, &nd);
+        quadrature->set_quadrature(qw, qx, nq, nd);
     }
 
     if ((qx != 0) && (qw != 0))
     {
         quadrature = new QuadraturePoints();
-        quadrature->set_quadrature(qx, qw, nq, nd);
+        quadrature->set_quadrature(qw, qx, nq, nd);
     }
 
     assert(quadrature != 0);

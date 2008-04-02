@@ -42,9 +42,58 @@ Tri::Tri()
     set_reference_vertices(verts, tri_nno);
 }
 
-cigma::Tri::~Tri()
+Tri::~Tri()
 {
 }
+
+void Tri::qr_default(double **wts, double **pts, int *npts, int *ndim)
+{
+    // tri_qr(5)
+    const int tri_nno = 9;
+    const int tri_celldim = 2;
+    double tri_qpts[tri_nno * tri_celldim] = {
+        -0.79456469, -0.82282408,
+        -0.86689186, -0.18106627,
+        -0.95213774,  0.57531892,
+        -0.08858796, -0.82282408,
+        -0.40946686, -0.18106627,
+        -0.78765946,  0.57531892,
+         0.61738877, -0.82282408,
+         0.04795814, -0.18106627,
+        -0.62318119,  0.57531892
+    };
+    double tri_qwts[tri_nno] = {
+        0.22325768,  0.25471234,  0.07758553,  0.35721229,  0.40753974,
+        0.12413685,  0.22325768,  0.25471234,  0.07758553
+    };
+
+    int i,j,n;
+
+    for (i = 0; i < tri_nno; i++)
+    {
+        for (j = 0; j < tri_celldim; j++)
+        {
+            n = tri_celldim * i + j;
+            tri_qpts[n] += 1;
+            tri_qpts[n] *= 0.5;
+        }
+    }
+
+    *npts = tri_nno;
+    *ndim = tri_celldim;
+    *wts = new double[(*npts)];
+    *pts = new double[(*npts) * (*ndim)];
+    for (i = 0; i < tri_nno; i++)
+    {
+        (*wts)[i] = tri_qwts[i];
+        for (j = 0; j < (*ndim); j++)
+        {
+            n = (*ndim) * i + j;
+            (*pts)[n] = tri_qpts[n];
+        }
+    }
+}
+
 
 // ---------------------------------------------------------------------------
 

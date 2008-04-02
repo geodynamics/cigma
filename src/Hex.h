@@ -13,6 +13,7 @@ class cigma::Hex : public Cell
 public:
     Hex();
     ~Hex();
+    void qr_default(double **wts, double **pts, int *npts, int *ndim);
 
 public:
     int n_nodes() { return 8; }

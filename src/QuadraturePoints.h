@@ -22,7 +22,7 @@ public:
     void clear();
 
 public:
-    void set_quadrature(double *qpts, double *qwts, int npts, int qdim);
+    void set_quadrature(double *qwts, double *qpts, int npts, int qdim);
     void apply_refmap(Cell *cell);
 
 public:

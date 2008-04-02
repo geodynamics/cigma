@@ -38,7 +38,7 @@ void QuadraturePoints::clear()
 
 // ---------------------------------------------------------------------------
 
-void QuadraturePoints::set_quadrature(double *qpts, double *qwts, int npts, int qdim)
+void QuadraturePoints::set_quadrature(double *qwts, double *qpts, int npts, int qdim)
 {
     /* some basic assertions */
     assert(qpts != 0);

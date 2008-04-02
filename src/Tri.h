@@ -13,6 +13,7 @@ class cigma::Tri : public Cell
 public:
     Tri();
     ~Tri();
+    void qr_default(double **wts, double **pts, int *npts, int *ndim);
 
 public:
     int n_nodes() { return 3; }

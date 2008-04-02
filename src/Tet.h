@@ -13,6 +13,7 @@ class cigma::Tet : public Cell
 public:
     Tet();
     ~Tet();
+    void qr_default(double **wts, double **pts, int *npts, int *ndim);
 
 public:
     int n_nodes() { return 4; }

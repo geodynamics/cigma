@@ -28,6 +28,9 @@ public:
     void set_global_vertices(double *vertices, int num_vertices, int nsd);
 
 public:
+    virtual void qr_default(double **wts, double **pts, int *npts, int *ndim) = 0;
+
+public:
     virtual void shape(int num, double *points, double *values) = 0;
     virtual void grad_shape(int num, double *points, double *values) = 0;
 
