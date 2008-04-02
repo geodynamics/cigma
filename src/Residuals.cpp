@@ -15,6 +15,9 @@ Residuals::Residuals()
     nel = 0;
     epsilon = 0;
     meshPart = 0;
+
+    global_error = 0.0;
+    max_residual = 0.0;
 }
 
 Residuals::~Residuals()
@@ -40,6 +43,7 @@ void Residuals::reset_accumulator()
     assert(epsilon != 0);
 
     global_error = 0.0;
+    max_residual = 0.0;
 
     for (int e = 0; e < nel; e++)
     {
@@ -49,12 +53,19 @@ void Residuals::reset_accumulator()
 
 void Residuals::update(int e, double cell_residual)
 {
+    assert(cell_residual >= 0);
+
     // remember residual on this cell
     epsilon[e] = cell_residual;
 
-    // XXX: this would generalize into global_error = norm_sum(global_error, cell_residual)
-    global_error += cell_residual;
+    // keep track of max residual
+    if (cell_residual > max_residual)
+    {
+        max_residual = cell_residual;
+    }
 
+    // XXX: generalize to global_error = norm_sum(global_error, cell_residual)
+    global_error += cell_residual * cell_residual;
 }
 
 double Residuals::L2()
@@ -62,19 +73,22 @@ double Residuals::L2()
     return sqrt(global_error); // XXX: generalize to norm_pow(global_error)
 }
 
+double Residuals::max()
+{
+    return max_residual;
+}
+
 // ---------------------------------------------------------------------------
 
-void Residuals::write_vtk(const char *filename)
+void Residuals::write(const char *filename)
 {
-    assert(meshPart != 0); // XXX: add support for dumping residuals w/o mesh
+    assert(meshPart != 0); // XXX: residuals w/o mesh?
     assert(meshPart->nel == nel);
 
     string output_filename = filename;
-    cout << "Creating file " << output_filename << endl;
 
     VtkWriter writer;
     writer.open(output_filename.c_str());
-    //writer.write_header();
     writer.write_points(meshPart->coords, meshPart->nno, meshPart->nsd);
     writer.write_cells(meshPart->connect, meshPart->nel, meshPart->ndofs);
     writer.write_cell_types(meshPart->nsd, meshPart->nel, meshPart->ndofs); // XXX: call from w/i write_cells()
