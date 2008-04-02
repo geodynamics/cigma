@@ -3,10 +3,13 @@
 #include <cmath>
 #include <cstdlib>
 #include <cassert>
+
 #include "CompareCmd.h"
 #include "StringUtils.h"
+
 #include "FE_Field.h"
 #include "PointField.h"
+#include "ZeroField.h"
 #include "ExtField.h"
 
 using namespace std;
@@ -18,14 +21,13 @@ CompareCmd::CompareCmd()
 {
     name = "compare";
 
-    // integrating mesh
-    meshPart = 0;
-    quadrature = 0;
-    qr = 0;
-
     // fields
     field_a = 0;
     field_b = 0;
+
+    // integration mesh
+    meshPart = 0;
+    quadrature = 0;
 
     // residuals
     residuals = new Residuals();
@@ -43,6 +45,7 @@ CompareCmd::~CompareCmd()
         residuals = 0;
     }
 }
+
 
 // ---------------------------------------------------------------------------
 
@@ -132,7 +135,6 @@ void CompareCmd::configure(AnyOption *opt)
     char *in;
 
     /* Check if --verbose was enabled */
-    
     verbose = opt->getFlag("verbose");
     if (verbose)
     {
@@ -141,7 +143,6 @@ void CompareCmd::configure(AnyOption *opt)
 
 
     /* Determine the --output-frequency option */
-    
     in = opt->getValue("output-frequency");
     if (in != 0)
     {
@@ -161,7 +162,6 @@ void CompareCmd::configure(AnyOption *opt)
 
 
     /* Determine the --output option */
-
     in = opt->getValue("output");
     if (in == 0)
     {
@@ -177,7 +177,7 @@ void CompareCmd::configure(AnyOption *opt)
             exit(1);
         }
     }
-    outputPath = in;
+    outputFile = in;
 
 
     /*
@@ -188,34 +188,35 @@ void CompareCmd::configure(AnyOption *opt)
      *  Load quadrature rule
      */
 
-    /* Gather up expected command line arguments */
 
+    /* Gather up expected command line arguments */
     firstReader.load_args(opt, "first");
     secondReader.load_args(opt, "second");
-    meshPartReader.load_args(opt, "quadrature-mesh");
     quadratureReader.load_args(opt, "quadrature");
-
-    /* Validate these arguments and complain about missing ones */
-
     if (opt->getFlag("debug"))
     {
-        // assign defaults if we're in debug mode. this overrides
-        // the command line settings from load_args()
+        // 
+        // Assign defaults if we're in debug mode.
+        // This will override any command line settings from load_args()
+        //
         if (firstReader.fieldPath == "")
             firstReader.fieldPath = "./tests/strikeslip_tet4_1000m_t0.vtk:displacements_t0";
         if (secondReader.fieldPath == "")
             secondReader.fieldPath = "./tests/strikeslip_hex8_1000m_t0.vtk:displacements_t0";
     }
 
+    /* Validate these arguments and complain about missing ones */
     firstReader.validate_args("compare");
     secondReader.validate_args("compare");
-    meshPartReader.validate_args("compare");
     quadratureReader.validate_args("compare");
 
 
-    /* Load the fields */
+    /* Initialize list of known fields */
+    fieldSet.initialize();
 
+    /* Load the first field */
     firstReader.verbose = true;
+    firstReader.setFieldSet(&fieldSet);
     firstReader.load_field();
     field_a = firstReader.field;
     assert(field_a != 0);
@@ -225,7 +226,9 @@ void CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
 
+    /* Load the second field */
     secondReader.verbose = true;
+    secondReader.setFieldSet(&fieldSet);
     secondReader.load_field();
     field_b = secondReader.field;
     assert(field_b != 0);
@@ -235,6 +238,29 @@ void CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
 
+    /* Override constraints when comparing against zero */
+    if (firstReader.fieldPathIsZero() || secondReader.fieldPathIsZero())
+    {
+        ZeroField *zero;
+        if (firstReader.fieldPathIsZero() && !secondReader.fieldPathIsZero())
+        {
+            zero = static_cast<ZeroField*>(field_a);
+            zero->set_shape(field_b->n_dim(), field_b->n_rank());
+        }
+        else if (!firstReader.fieldPathIsZero() && secondReader.fieldPathIsZero())
+        {
+            zero = static_cast<ZeroField*>(field_b);
+            zero->set_shape(field_a->n_dim(), field_a->n_rank());
+        }
+        else
+        {
+            cerr << "compare: Ambiguous domain & range dimensions "
+                 << "(both fields are zero)" << endl;
+            exit(1);
+        }
+    }
+
+    /* Check constraints on the two fields. */
     if (field_a->n_dim() != field_b->n_dim())
     {
         cerr << "compare: Domain dimensions do not match: "
@@ -251,27 +277,20 @@ void CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
 
-
-    /* Load the integration mesh -- XXX: move this operation to QuadratureReader */
-    meshPartReader.load_mesh();
-    meshPart = meshPartReader.meshPart;
-    if (meshPart == 0)
+    /* Reuse integration mesh? */
+    if (!quadratureReader.meshPartReader.has_paths())
     {
         if (field_a->getType() == Field::FE_FIELD)
         {
-            FE_Field *a = static_cast<FE_Field*>(field_a);
-            meshPart = a->meshPart;
+            FE_Field *fa = static_cast<FE_Field*>(field_a);
+            meshPart = fa->getMesh();
         }
     }
-    if (meshPart == 0)
-    {
-        cerr << "compare: Could not load the quadrature mesh!" << endl;
-        exit(1);
-    }
-    
-    /* Load the quadrature rule */
-    //quadratureReader.verbose = true;
-    quadratureReader.load_quadrature(meshPart->cell);
+
+    /* Load quadrature rule */
+    quadratureReader.verbose = verbose;
+    quadratureReader.set_mesh(meshPart);
+    quadratureReader.load_quadrature();
     quadrature = quadratureReader.quadrature;
     if (quadrature == 0)
     {
@@ -279,32 +298,30 @@ void CompareCmd::configure(AnyOption *opt)
         exit(1);
     }
 
-    // XXX: load qr object from first field. this needs to be done
-    // independently instead.
-    //
 
-    //qr = ...; // XXX
+    /* Update reference to mesh */
+    meshPart = quadratureReader.meshPart;
+    if (meshPart == 0)
+    {
+        cerr << "compare: Could not load integration mesh!" << endl;
+        exit(1);
+    }
 
+
+    /* Update field_a now that we've loaded the quadrature */
     if (field_a->getType() == Field::FE_FIELD)
     {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        a->fe = new FE();
-        a->fe->set_mesh(a->meshPart);
-        a->fe->set_quadrature_points(quadrature);
-
-        qr = a->fe; // XXX
+        FE_Field *fa = static_cast<FE_Field*>(field_a);
+        fa->set_fe(quadrature);
     }
 
-    if (field_b->getType() == Field::FE_FIELD)
-    {
-        FE_Field *b = static_cast<FE_Field*>(field_b);
-        b->fe = new FE();
-        b->fe->set_mesh(b->meshPart);
-        //b->fe->set_quadrature_points(quadrature);
-    }
 
-    /* Allocates residuals->epsilon[] array */
+    /* Allocates residuals array to fit meshPart */
     residuals->set_mesh(meshPart);
+
+
+    /* done with configure() step */
+    return;
 }
 
 
@@ -343,32 +360,16 @@ void CompareCmd::end_timer()
 
 // ---------------------------------------------------------------------------
 
-/************************************
- * My Kingdom for a macro system!!! *
- ************************************/
-
-void compare(CompareCmd *env, PointField *field_a, FE_Field *field_b)
-{
-    if (env->verbose)
-    {
-        cout << "Comparing PointField against FE_Field" << endl;
-    }
-    assert(false);
-    //env->start_timer(...);
-    //env->end_timer();
-}
-
 void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
 {
     if (env->verbose)
     {
         cout << "Comparing FE_Field against FE_Field" << endl;
     }
+    assert(env->quadrature != 0);
 
+    QuadratureRule *qr = env->quadrature;
     Residuals *residuals = env->residuals;
-    QuadratureRule *qr = env->qr;
-    assert(qr != 0);
-    assert(qr->points != 0);
 
     // dimensions
     int nel = qr->meshPart->nel;
@@ -382,16 +383,19 @@ void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
     phi_a.set_data(values_a, nq, valdim);
     phi_b.set_data(values_b, nq, valdim);
 
+    field_a->fe->initialize_basis_tab();
     residuals->reset_accumulator();
+
+    // main loop
     env->start_timer(nel,"elts");
     for (int e = 0; e < nel; e++)
     {
         qr->select_cell(e);
         field_a->tabulate_element(e, phi_a.data);
-        field_b->Field::eval(*(qr->points), phi_b);
+        bool cb = field_b->Field::eval(*(qr->points), phi_b);
         double err2 = qr->L2(phi_a, phi_b);
         double vol = qr->meshPart->cell->volume();
-        residuals->update(e, sqrt(err2/vol));
+        residuals->update(e, sqrt(err2)/vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -407,11 +411,10 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
     {
         cout << "Comparing FE_Field against PointField" << endl;
     }
+    assert(env->quadrature != 0);
 
+    QuadratureRule *qr = env->quadrature;
     Residuals *residuals = env->residuals;
-    QuadratureRule *qr = env->qr;
-    assert(qr != 0);
-    assert(qr->points != 0);
 
     // dimensions
     int nel = qr->meshPart->nel;
@@ -427,6 +430,8 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
 
     residuals->reset_accumulator();
     env->start_timer(nel, "elts");
+
+    // main loop
     for (int e = 0; e < nel; e++)
     {
         qr->select_cell(e);
@@ -435,14 +440,10 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
             double *globalPoint = (*(qr->points))[q];
             bool ca = field_a->eval(globalPoint, &values_a[q*valdim]);
             bool cb = field_b->eval(globalPoint, &values_b[q*valdim]);
-            //*
-            if (cb)
-            {
-                cout << globalPoint[0] << " " << globalPoint[1] << " " << globalPoint[2] << endl;
-            } // */
         }
-        double err = qr->L2(phi_a, phi_b);
-        residuals->update(e, err);
+        double err2 = qr->L2(phi_a, phi_b);
+        double vol = qr->meshPart->cell->volume();
+        residuals->update(e, sqrt(err2)/vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -450,83 +451,25 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
     // clean up
     delete [] values_a;
     delete [] values_b;
-
-
-
-    /*
-    // dimensions
-    int npts = field_b->points->n_points();
-    int ndim = field_b->n_dim();
-    int valdim = field_b->n_rank();
-
-    // local values
-    Points phi_a, phi_b;
-    double *values_a = new double[valdim];
-    double *values_b = new double[valdim];
-    phi_a.set_data(values_a, 1, valdim);
-    phi_b.set_data(values_b, 1, valdim);
-
-    residuals->reset_accumulator();
-    env->start_timer(npts,"pts");
-    for (int i = 0; i < npts; i++)
-    {
-        double *globalPoint = &((field_b->points->data)[i*ndim]);
-
-        field_a->eval(globalPoint, values_a);
-
-        for (int j = 0; j < valdim; j++)
-        {
-            values_b[j] = field_b->values->data[i*valdim + j];
-        }
-
-        double err = qr->L2(phi_a, phi_b);
-        residuals->update(i, err);
-        env->update_timer(i);
-    }
-    env->end_timer();
-
-    delete [] values_a;
-    delete [] values_b;
-    */
-}
-
-void compare(CompareCmd *env, FE_Field *field_a, ExtField *field_b)
-{
-    if (env->verbose)
-    {
-        cout << "Comparing FE_Field against ExtField" << endl;
-    }
-    assert(false);
-    //env->start_timer(nel,"elts");
-    //env->end_timer();
-}
-
-void compare(CompareCmd *env, FE_Field *field_a, Field *field_b)
-{
-    if (env->verbose)
-    {
-        cout << "Comparing FE_Field against Field" << endl;
-    }
-    assert(false);
-    //env->start_timer(nel,"elts");
-    //env->end_timer();
 }
 
 void compare(CompareCmd *env, Field *field_a, Field *field_b)
 {
+    const bool debug = false;
+
     if (env->verbose)
     {
         cout << "Comparing Field against Field" << endl;
     }
+    assert(env->quadrature != 0);
 
+    QuadratureRule *qr = env->quadrature;
     Residuals *residuals = env->residuals;
-    QuadratureRule *qr = env->qr;
-    assert(qr != 0);
-    assert(qr->points != 0);
 
     // dimensions
     int nel = qr->meshPart->nel;
     int nq = qr->points->n_points();
+    int ndim = field_a->n_dim();
     int valdim = field_a->n_rank();
 
     // field values at quadrature points
@@ -538,6 +481,8 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
 
     residuals->reset_accumulator();
     env->start_timer(nel, "elts");
+
+    // main loop
     for (int e = 0; e < nel; e++)
     {
         qr->select_cell(e);
@@ -546,10 +491,30 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
             double *globalPoint = (*(qr->points))[q];
             field_a->eval(globalPoint, &values_a[q*valdim]);
             field_b->eval(globalPoint, &values_b[q*valdim]);
+            if (debug)
+            {
+                int j;
+                cerr << e << " " << q << "  ";
+                for (j = 0; j < ndim; j++)
+                {
+                    cerr << globalPoint[j] << " ";
+                }
+                cerr << "\t";
+                for (j = 0; j < valdim; j++)
+                {
+                    cerr << values_a[valdim*q + j] << " ";
+                }
+                cerr << "\t";
+                for (j = 0; j < valdim; j++)
+                {
+                    cerr << values_b[valdim*q + j] << " ";
+                }
+                cerr << endl;
+            }
         }
         double err2 = qr->L2(phi_a, phi_b);
         double vol = qr->meshPart->cell->volume();
-        residuals->update(e, sqrt(err2/vol));
+        residuals->update(e, sqrt(err2)/vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -559,84 +524,64 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
     delete [] values_b;
 }
 
+
+// ---------------------------------------------------------------------------
+
 int CompareCmd::run()
 {
     // some basic checks before we begin
-    assert(meshPart != 0);
-    assert(quadrature != 0);
-    assert(qr != 0);
     assert(field_a != 0);
     assert(field_b != 0);
+    assert(meshPart != 0);
+    assert(quadrature != 0);
 
-
-    Field::FieldType ta = field_a->getType();
-    Field::FieldType tb = field_b->getType();
-    
-    if ((ta == Field::FE_FIELD) && (tb == Field::FE_FIELD))
+    if (verbose)
     {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        FE_Field *b = static_cast<FE_Field*>(field_b);
-        compare(this, a, b);
-
+        cout << endl;
     }
-    else if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
+
+    // double type dispatching
+    const bool double_dispatch = false;
+    if (double_dispatch)
     {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        PointField *b = static_cast<PointField*>(field_b);
-        compare(this, a, b);
+        Field::FieldType ta = field_a->getType();
+        Field::FieldType tb = field_b->getType();
+        
+        if ((ta == Field::FE_FIELD) && (tb == Field::FE_FIELD))
+        {
+            FE_Field *a = static_cast<FE_Field*>(field_a);
+            FE_Field *b = static_cast<FE_Field*>(field_b);
+            compare(this, a, b);
+
+        }
+        else if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
+        {
+            FE_Field *a = static_cast<FE_Field*>(field_a);
+            PointField *b = static_cast<PointField*>(field_b);
+            compare(this, a, b);
+        }
+        else
+        {
+            compare(this, field_a, field_b);
+        }
     }
     else
     {
         compare(this, field_a, field_b);
     }
-
-
-    /*
-    if ((ta == Field::POINT_FIELD) && (tb == Field::FE_FIELD))
-    {
-        PointField *fa = static_cast<PointField*>(field_a);
-        FE_Field *fb = static_cast<FE_Field*>(field_b);
-        compare(this, fa, fb);
-    }
-    else if ((ta == Field::FE_FIELD) && (tb == Field::FE_FIELD))
-    {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        FE_Field *b = static_cast<FE_Field*>(field_b);
-        compare(this, a, b);
-    }
-    else if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
-    {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        PointField *b = static_cast<PointField*>(field_b);
-        compare(this, a, b);
-    }
-    else if ((ta == Field::FE_FIELD) && (tb == Field::EXT_FIELD))
-    {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        ExtField *b = static_cast<ExtField*>(field_b);
-        compare(this, a, b);
-    }
-    else if ((ta == Field::FE_FIELD) && (tb == Field::USER_FIELD))
-    {
-        FE_Field *a = static_cast<FE_Field*>(field_a);
-        Field *b = field_b;
-        compare(this, a, b);
-    }
-    else
-    {
-        compare(this, field_a, field_b);
-    }
-    */
-
-
 
     // report global error
     double L2 = residuals->L2();
-    cout << setprecision(12);
-    cout << "L2 = " << L2 << endl;
+    double max_residual = residuals->max();
+    cout << setprecision(12) << endl;
+    cout << "Global Norms of Residuals" << endl;
+    cout << "  L2 = " << L2 << endl;
+    cout << "  MaxResidual = " << max_residual << endl;
+    cout << endl;
 
     // write out data
-    residuals->write_vtk(outputPath.c_str());
+    cout << "Creating file " << outputFile << endl;
+    residuals->write(outputFile.c_str());
 
     return 0;
 }

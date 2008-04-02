@@ -3,18 +3,14 @@
 
 #include <string>
 #include "Command.h"
-
+#include "Field.h"
+#include "FieldSet.h"
+#include "FieldReader.h"
 #include "MeshPart.h"
 #include "QuadratureRule.h"
-#include "Field.h"
-#include "Residuals.h"
-
-#include "Timer.h"
-#include "Writer.h"
-#include "Reader.h"
-#include "MeshPartReader.h"
 #include "QuadratureReader.h"
-#include "FieldReader.h"
+#include "Residuals.h"
+#include "Timer.h"
 
 
 namespace cigma
@@ -42,21 +38,18 @@ public:
     void end_timer();
 
 public:
-    QuadraturePoints *quadrature;
-    MeshPart *meshPart;
-    QuadratureRule *qr;
     Field *field_a;
     Field *field_b;
+    MeshPart *meshPart;
+    QuadratureRule *quadrature;
     Residuals *residuals;
 
 public:
-    MeshPartReader meshPartReader;
-    QuadratureReader quadratureReader;
+    FieldSet fieldSet;
     FieldReader firstReader;
     FieldReader secondReader;
-
-    Writer *writer;
-    std::string outputPath;
+    QuadratureReader quadratureReader;
+    std::string outputFile;
 
 public:
     Timer timer;
