@@ -4,7 +4,7 @@
 #include "Field.h"
 #include "DofHandler.h"
 #include "MeshPart.h"
-#include "FE.h"
+#include "QuadratureRule.h"
 
 namespace cigma
 {
@@ -27,24 +27,25 @@ public:
     int n_dim() { return dim; }
     int n_rank() { return rank; }
     FieldType getType() { return FE_FIELD; }
+    MeshPart *getMesh() { return meshPart; }
 
 public:
     bool eval(double *point, double *value);
 
 public:
-    void set_quadrature_rule(QuadratureRule *rule);
+    void set_fe(QuadratureRule *rule);
+    void set_mesh(MeshPart *mesh);
     void tabulate_element(int e, double *values);
 
 public:
     void get_cell_dofs(int cellIndex, double *cellDofs);
 
 public:
-    
     int dim;
     int rank;
     DofHandler *dofHandler;
+    QuadratureRule *fe;
     MeshPart *meshPart;
-    FE *fe;
 };
 
 #endif

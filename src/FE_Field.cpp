@@ -20,6 +20,20 @@ FE_Field::~FE_Field()
 
 // ---------------------------------------------------------------------------
 
+void FE_Field::set_fe(QuadratureRule *rule)
+{
+    assert(rule != 0);
+    this->fe = rule;
+}
+
+void FE_Field::set_mesh(MeshPart *mesh)
+{
+    assert(mesh != 0);
+    this->meshPart = mesh;
+}
+
+// ---------------------------------------------------------------------------
+
 void FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
 {
     assert(dofHandler != 0);
@@ -45,12 +59,9 @@ void FE_Field::get_cell_dofs(int cellIndex, double *cellDofs)
 
 bool FE_Field::eval(double *point, double *value)
 {
-    assert(fe != 0);
     assert(meshPart != 0);
-
-    // get reference cell object from fe
+    assert(meshPart->cell != 0);
     Cell *cell = meshPart->cell;
-    assert(cell != 0);
 
     // find the cell which contains given point
     int e;
@@ -76,9 +87,9 @@ bool FE_Field::eval(double *point, double *value)
 void FE_Field::tabulate_element(int e, double *values)
 {
     assert(fe != 0);
-    assert(meshPart != 0);
-    assert(fe->meshPart == meshPart);
     assert(fe->points != 0);
+    assert(fe->basis_tab != 0);
+    assert(meshPart != 0);
 
     Cell *cell = meshPart->cell;
     assert(cell != 0);
@@ -87,10 +98,12 @@ void FE_Field::tabulate_element(int e, double *values)
     assert(points != 0);
     int nq = points->n_points();
 
+
     // tabulate the function values
     const int valdim = n_rank();
     const int ndofs = cell->n_nodes();
     double dofs[ndofs * valdim]; // XXX
+
 
     get_cell_dofs(e, dofs); // XXX: do we split this function so that this call
                             //      is independent from the following loop?
