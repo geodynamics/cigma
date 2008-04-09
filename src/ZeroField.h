@@ -1,13 +1,13 @@
 #ifndef __ZERO_FIELD_H__
 #define __ZERO_FIELD_H__
 
-#include "Field.h"
+#include "UserField.h"
 
 namespace cigma {
     class ZeroField;
 }
 
-class cigma::ZeroField : public cigma::Field
+class cigma::ZeroField : public cigma::UserField
 {
 public:
     ZeroField();
@@ -17,7 +17,6 @@ public:
 public:
     int n_dim() { return dim; }
     int n_rank() { return rank; }
-    FieldType getType() { return USER_FIELD; }
 
 public:
     bool eval(double *point, double *value);
