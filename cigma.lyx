@@ -375,6 +375,11 @@ $ make
 $ make install
 \end_layout
 
+\begin_layout Standard
+Both HDF5 and VTK prefixes are required if you have installed these libraries
+ in a custom location.
+\end_layout
+
 \begin_layout Subsection
 HDF5
 \end_layout
@@ -398,19 +403,19 @@ target "hdfgroup.org/HDF5/release/obtain5.html"
 
 .
  To install from source, download the latest stable 1.6 version of this library
- (currently 1.6.5) and issue the following commands
+ (currently 1.6.7) and issue the following commands
 \end_layout
 
 \begin_layout LyX-Code
-$ tar xvfz hdf5-1.6.5
+$ tar xvfz hdf5-1.6.7
 \end_layout
 
 \begin_layout LyX-Code
-$ cd hdf5-1.6.5
+$ cd hdf5-1.6.7
 \end_layout
 
 \begin_layout LyX-Code
-$ ./configure
+$ ./configure --prefix=$HOME/opt/hdf5/1.6.7
 \end_layout
 
 \begin_layout LyX-Code
@@ -419,6 +424,15 @@ $ make
 
 \begin_layout LyX-Code
 $ make install
+\end_layout
+
+\begin_layout Standard
+Without the custom prefix, this installation procedure will target your
+ 
+\family typewriter
+/usr
+\family default
+ directory.
 \end_layout
 
 \begin_layout Subsection
@@ -597,8 +611,7 @@ HDFView (optional)
 \begin_layout Standard
 NCSA HDFView is a graphical user interface tool for accessing data in your
  HDF5 files.
- You can use it for viewing the internal file hierarchy in a tree structure
- (see Figure 
+ You can use it for viewing the internal group hierarchy (see Figure 
 \begin_inset LatexCommand ref
 reference "fig:With-HFDFView,-you"
 
@@ -695,11 +708,15 @@ Distance Measures
 
 \begin_layout Standard
 The simplest possible quantitative measure of the difference between two
- distinct fields consists of taking the pointwise difference of both fields
- at a common set of points.
+ distinct functions consists of taking the pointwise difference at a common
+ set of points.
  While no finite sample of points can perfectly represent a continuum of
  values, valuable information can be inferred from the statistics of the
  resulting set of differences.
+\end_layout
+
+\begin_layout Standard
+XXX: motivate this measure..validation
 \end_layout
 
 \begin_layout Standard
@@ -747,73 +764,49 @@ where
  
 \end_layout
 
+\begin_layout Section
+Global Error Approximation
+\end_layout
+
 \begin_layout Standard
 If we discretize the domain 
 \begin_inset Formula $\Omega$
 \end_inset
 
- into an appropriate set of finite elements 
-\begin_inset Formula $\{\Omega_{e}\}_{e=1}^{n_{el}}$
+ into an appropriate set of cells 
+\begin_inset Formula $\Omega_{1},\Omega_{2},\ldots,\Omega_{n_{el}}$
 \end_inset
 
-, we can compute the above integral as a sum over local contributions on
- each element.
- For efficiency purposes, each local contribution can in turn be integrated
- over a reference element 
-\begin_inset Formula $\hat{\Omega}_{e}$
+, we can compute the global error 
+\begin_inset Formula $\varepsilon^{2}$
 \end_inset
 
+ as a sum over localized cell contributions, 
+\begin_inset Formula $\varepsilon^{2}=\sum_{e}\varepsilon_{e}^{2}$
+\end_inset
 
+, where each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ is given by
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
-\varepsilon^{2} & = & \sum_{e=1}^{\mathrm{n_{el}}}\varepsilon_{e}^{2}\\
- & = & \sum_{e=1}^{\mathrm{n_{el}}}\int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\\
- & = & \sum_{e=1}^{\mathrm{n_{el}}}\int_{\hat{\Omega}_{e}}||u(\vec{\xi})-v(\vec{\xi})||^{2}J_{e}(\vec{\xi})d\vec{\xi}\end{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray*}
 
 \end_inset
 
-where the additional factor 
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
 
-\begin_inset Formula $J_{e}(\vec{\xi})$
-\end_inset
-
- is the Jacobian determinant of the reference map 
-\family default
-\series default
-\shape default
-\size default
-\emph default
-\bar default
-\noun default
-\color inherit
-
-\begin_inset Formula $\vec{x}_{e}(\vec{\xi})$
-\end_inset
-
- which describes how the physical element 
-\begin_inset Formula $\Omega_{e}$
-\end_inset
-
- maps to its corresponding reference element 
-\begin_inset Formula $\hat{\Omega}_{e}$
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Standard
-In general, we won't be able to integrate each local contribution exactly
- since the two fields 
+In general, we won't be able to integrate each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ exactly since either of the functions 
 \begin_inset Formula $u$
 \end_inset
 
@@ -821,15 +814,13 @@ In general, we won't be able to integrate each local contribution exactly
 \begin_inset Formula $v$
 \end_inset
 
- may have an incompatible representation with the local domain 
+ may have an incompatible representation relative to the finite element
+ space on each domain 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
 .
- However, we can approximate each 
-\begin_inset Formula $\varepsilon_{e}^{2}$
-\end_inset
-
+ However, we can still calculate an approximation of each cell residual
  by applying an appropriate quadrature rule with a tolerable truncation
  error 
 \begin_inset LatexCommand cite
@@ -838,66 +829,202 @@ key "Encyclopaedia of Cubature Formulas 2005"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Section
-Global Error
+ 
 \end_layout
 
 \begin_layout Standard
-Assuming we apply the same quadrature rule on every element, with 
-\begin_inset Formula $n_{Q}$
+To obtain an approximation to the integral of a function 
+\begin_inset Formula $F(\vec{x})$
 \end_inset
 
- weights 
-\begin_inset Formula $w_{q}$
-\end_inset
-
- and integration points 
-\begin_inset Formula $\vec{\xi}_{q}$
-\end_inset
-
- for 
-\begin_inset Formula $q=1,\ldots,n_{Q}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{e}^{2} & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||\hat{\rho}(\vec{x}_{q})||^{2}\\
- & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})\end{eqnarray*}
-
-\end_inset
-
-thus we arrive at the final form
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{q}}}w_{q}||u(\vec{\xi}_{q})-v(\vec{\xi}_{q})||^{2}J(\vec{\xi}_{q})}\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-In calculating the norm of the residual field 
-\begin_inset Formula $\rho$
-\end_inset
-
-, Cigma will output each of the local contributions 
-\begin_inset Formula $\varepsilon_{e}^{2}$
-\end_inset
-
- which by definition are scalar-valued cell quantities over each of their
- corresponding elements 
+ over a cell 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
+, we simply apply the quadrature rule with weights 
+\begin_inset Formula $w_{e,1},w_{e,2},\ldots,w_{e,n_{Q}}$
+\end_inset
+
+ and integration points 
+\begin_inset Formula $\vec{x}_{e,1},\vec{x}_{e,2},\ldots,\vec{x}_{e,n_{Q}}$
+\end_inset
+
+appropriate for the physical element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applying this quadrature rule directly over the entire physical domain 
+\begin_inset Formula $\Omega=\cup\Omega_{e}$
+\end_inset
+
+ gives us 
+\begin_inset Formula \[
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reasons, it is undesireable in finite element applications
+ to perform calculations in a global coordinate system.
+ To avoid duplication of work, shape function evaluations may be performed
+ once on a reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ and then transformed back into the corresponding physical cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ as needed.
+\end_layout
+
+\begin_layout Standard
+To compute integrals of 
+\begin_inset Formula $F$
+\end_inset
+
+ in a reference coordinate system, we need apply a change of variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\]
+
+\end_inset
+
+where 
+\color none
+the additional factor 
+\begin_inset Formula $J_{e}(\vec{\xi})=\det\left[\frac{d\vec{x}_{e}}{d\vec{\xi}}\right]$
+\end_inset
+
+ is the Jacobian determinant of the reference map 
+\begin_inset Formula $\vec{x}_{e}(\vec{\xi}):\hat{\Omega}\to\Omega_{e}$
+\end_inset
+
 .
+ This map describes how the physical points 
+\begin_inset Formula $\vec{x}\in\Omega_{e}$
+\end_inset
+
+ are transformed from the reference points 
+\begin_inset Formula $\vec{\xi}\in\hat{\Omega}$
+\end_inset
+
+.
+ Put another way, the inverse reference map 
+\color inherit
+
+\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})$
+\end_inset
+
+ tells us how the physical domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ maps into the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+At this point, we can assume without loss of generality that every physical
+ cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ can be derived from a single reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+, so that our quadrature rule becomes simply a set of weights 
+\begin_inset Formula $w_{1},\ldots,w_{n_{Q}}$
+\end_inset
+
+and points 
+\begin_inset Formula $\vec{\xi}_{1},\ldots,\vec{\xi}_{n_{Q}}$
+\end_inset
+
+ over 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ After changing variables, we end up with the final form of the quadrature
+ rule that we can use to integrate the global residual field
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we let 
+\begin_inset Formula $F(\vec{x})=||u(\vec{x})-v(\vec{x})||^{2}$
+\end_inset
+
+ in the above expression, we can find the cell residual contribution over
+ 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ from
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\\
+ & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The global error 
+\begin_inset Formula $\varepsilon=\sqrt{\sum_{e}\varepsilon_{e}^{2}}$
+\end_inset
+
+ is then approximated by the expression
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can make a number of observations based on our final expression for the
+ global error, (XXX: add observations here).
 \end_layout
 
 \begin_layout Section
@@ -954,213 +1081,33 @@ Running Cigma
 \end_layout
 
 \begin_layout Standard
-Cigma is used for obtaining error estimates between arbitrary fields, so
- naturally its primary operation is centered around the 
-\family typewriter
-compare
-\family default
- command.
- You will need to provide two datasets describing each of the two fields,
- along with an integration rule and a mesh over which to integrate, although
- these last two will have reasonable defaults if they are not specified.
+Cigma is primarily designed for calculating error estimates between arbitrary
+ fields, so naturally its primary usage is centered the following operation
+\end_layout
+
+\begin_layout LyX-Code
+$ 
+\series bold
+cigma compare -a 
+\emph on
+\bar under
+field1
+\emph default
+\bar default
+ -b 
+\emph on
+\bar under
+field2
+\emph default
+\bar default
+ -o residuals.vtk
+\end_layout
+
+\begin_layout Standard
+You will need to provide two datasets describing each of the two fields,
+ along with an integration rule and a discretization over which to integrate,
+ although these last two will have reasonable defaults if they are not specified.
  This chapter aims to summarize the information you'll need to run cigma.
-\end_layout
-
-\begin_layout Section
-Input and Output
-\end_layout
-
-\begin_layout Standard
-The underlying data storage format for Cigma is the HDF5 format, due to
- its flexibility for storing and organizing large amounts of data.
- 
-\end_layout
-
-\begin_layout Standard
-The Hierarchical Data Format (HDF) is a portable file format developed at
- the 
-\begin_inset LatexCommand htmlurl
-name "National Center for Supercomputing Applications (NCSA)"
-target "hdf.ncsa.uiuc.edu/HDF5"
-
-\end_inset
-
-.
- It is designed for storing, retrieving, analyzing, visualizing, and converting
- scientific data.
- The current and most popular version is HDF5, which stores multi-dimensional
- arrays together with ancillary data in a portable self-describing format.
- It uses a hierarchical structure that provides application programmers
- with a host of options for organizing how data is stored in HDF5 files.
-\end_layout
-
-\begin_layout Standard
-Using HDF5 datasets in Cigma allows us to avoid having to convert between
- too many distinct formats.
- Moreover, due to the amount of disk I/O, large finite element meshes can
- be handled more efficiently in binary format.
- 
-\end_layout
-
-\begin_layout Standard
-Cigma also supports the popular VTK format for providing mesh and field
- inputs.
- A simple text format is also supported to aid in debugging.
- As described in Chapter 
-\begin_inset LatexCommand ref
-reference "cha:Running-Cigma"
-
-\end_inset
-
-, you can easily examine the structure of an input file by using the 
-\family typewriter
-cigma list
-\family default
- command, which will simply reveal the names and dimensions of all datasets
- inside the specified file.
-\end_layout
-
-\begin_layout Section
-Mesh
-\end_layout
-
-\begin_layout Standard
-In Cigma, we define a finite element mesh simply by coordinates, 
-\begin_inset Formula $(x_{n},y_{n},z_{n})$
-\end_inset
-
- of its degrees of freedom, and the connectivity relations 
-\begin_inset Formula $\Omega_{e}=\{n_{1},n_{2},\ldots\}$
-\end_inset
-
- among them which define each individual element in the corresponding discretiza
-tion.
-\end_layout
-
-\begin_layout Standard
-As seen from Equation Since the integration points on two distinct meshes
- will not typically coincide, it is very important to index the location
- of each element into spatial data structure.
- 
-\end_layout
-
-\begin_layout Section
-Fields
-\end_layout
-
-\begin_layout Standard
-A field is a function which assigns a physical quantity to every point in
- space.
- This quantity may correspond to a scalar, a vector, or even a tensor.
- A finite element approximation to an unknown field 
-\begin_inset Formula $\phi(\vec{x})$
-\end_inset
-
- is simply the weighed sum over a fixed set of localized shape functions
- 
-\begin_inset Formula $\phi_{n}(\vec{x})$
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \[
-\phi(\vec{x})=\sum_{n=1}^{N}d_{n}\phi_{n}(\vec{x})\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Naturally, once the weights 
-\begin_inset Formula $d_{n}$
-\end_inset
-
-, or degrees of freedom as they are also called, are known to us, we can
- evaluate 
-\begin_inset Formula $\phi(\vec{x})$
-\end_inset
-
- at any point 
-\begin_inset Formula $\vec{x}$
-\end_inset
-
- we desire.
- Thus, in Cigma a field is represented simply by a list of degrees of freedom
- 
-\begin_inset Formula $d_{n}$
-\end_inset
-
-, which may be a scalar, vector or tensor quantity, depending on the nature
- of 
-\begin_inset Formula $\phi$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Section
-Elements
-\end_layout
-
-\begin_layout Standard
-The most common element types used in the finite element method are given
- by the following shape functions, defined on their respective domains,
-\end_layout
-
-\begin_layout Paragraph*
-Function Space 
-\bar under
-tet4
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-TN_{a} & = & \frac{1}{2}(-1-x-y-z)\\
-TN_{b} & = & \frac{1}{2}(1+x)\\
-TN_{c} & = & \frac{1}{2}(1+y)\\
-TN_{d} & = & \frac{1}{2}(1+z)\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph*
-Function Space 
-\bar under
-hex8
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-HN_{a} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1-z\right)\\
-HN_{b} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1-z\right)\\
-HN_{c} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1-z\right)\\
-HN_{d} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1-z\right)\\
-HN_{e} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1+z\right)\\
-HN_{f} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1+z\right)\\
-HN_{g} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1+z\right)\\
-HN_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-These are built-in elements in Cigma, and you may refer to them by name
- in the FunctionSpace metadata attribute on your datasets.
-\end_layout
-
-\begin_layout Standard
-Higher order elements can also be used by specifying an explicit tabulation
- matrix representing the values of your shape functions on the corresponding
- set of quadrature points.
- 
 \end_layout
 
 \begin_layout Section
@@ -1175,27 +1122,116 @@ Cigma is designed to be scriptable.
 cigma
 \family default
 .
- A list of available commands can be obtained by typing
+ A set of available commands can be obtained by typing
 \end_layout
 
 \begin_layout LyX-Code
 
 \family typewriter
-cigma --help
-\end_layout
-
-\begin_layout Standard
-Further usage information can also be obtained with 
+$ 
+\family default
+\series bold
+cigma help
 \end_layout
 
 \begin_layout LyX-Code
 
-\family typewriter
-cigma help <command>
+\end_layout
+
+\begin_layout LyX-Code
+Usage: cigma <subcommand> [options]
+\end_layout
+
+\begin_layout LyX-Code
+Type 'cigma help <subcommand>' for help on a specific subcommand.
+\end_layout
+
+\begin_layout LyX-Code
+Available subcommands
+\end_layout
+
+\begin_layout LyX-Code
+   help
+\end_layout
+
+\begin_layout LyX-Code
+   list
+\end_layout
+
+\begin_layout LyX-Code
+   extract
+\end_layout
+
+\begin_layout LyX-Code
+   eval
+\end_layout
+
+\begin_layout LyX-Code
+   compare 
 \end_layout
 
 \begin_layout Standard
-Specifying the complete path to a dataset consists of the special form 
+XXX Quick description of each command
+\end_layout
+
+\begin_layout Standard
+XXX: Also add the same description to the help page of the respective command
+\end_layout
+
+\begin_layout Section
+Input and Output Formats
+\end_layout
+
+\begin_layout Standard
+XXX Reformat from newfile1.lyx
+\end_layout
+
+\begin_layout Standard
+The default data storage format for Cigma is the Hierarchical Data Format
+ (HDF5), a portable file format developed at the 
+\begin_inset LatexCommand htmlurl
+name "National Center for Supercomputing Applications (NCSA)"
+target "hdf.ncsa.uiuc.edu/HDF5"
+
+\end_inset
+
+.
+ The HDF5 is designed for storing multi-dimensional arrays together with
+ meta-data in a portable self-describing format.
+\end_layout
+
+\begin_layout Standard
+The underlying data storage format for Cigma is the HDF5 format, due to
+ its flexibility for storing and organizing large amounts of data.
+ The Hierarchical Data Format (HDF) is a It is designed for storing, retrieving,
+ analyzing, visualizing, and converting scientific data.
+ It uses a hierarchical structure that provides application programmers
+ with a host of options for organizing how data is stored in HDF5 files.
+ Using HDF5 datasets in Cigma allows us to avoid having to convert between
+ too many distinct formats.
+ Moreover, due to the amount of disk I/O, large finite element meshes can
+ be handled more efficiently in binary format.
+ 
+\end_layout
+
+\begin_layout Standard
+Another VTK format for providing mesh and field inputs.
+
+\color none
+ 
+\color inherit
+You can easily examine the structure of an input file by using the 
+\family typewriter
+cigma list
+\family default
+ command, which will simply reveal the names and dimensions of all datasets
+ inside the specified file.
+\end_layout
+
+\begin_layout Standard
+Inputs can be either HDF5 or VTK.
+ Specifying the complete path to a dataset consists of the special form
+ 
 \family typewriter
 \series bold
 filepath:dataset
@@ -1204,8 +1240,17 @@ filepath:dataset
 , a colon-delimited pair of file path and dataset path.
 \end_layout
 
-\begin_layout Subsection
-Listing Data
+\begin_layout Standard
+Mesh inputs are currently only unstructured grids.
+\end_layout
+
+\begin_layout Standard
+Only exception are the residuals, which are written in legacy VTK format
+ as scalar cell data over an unstructured grid.
+\end_layout
+
+\begin_layout Standard
+XXX New section?
 \end_layout
 
 \begin_layout Standard
@@ -1242,13 +1287,9 @@ cigma list file.h5
 /vars/displacement/step0    Dataset {119827, 3}
 \end_layout
 
-\begin_layout LyX-Code
-/residuals/comparison0      Dataset {661929, 1}
-\end_layout
-
 \end_deeper
 \begin_layout Standard
-If VTK support is enabled, you can view the structure of a VTK file with:
+You can also view the structure of a VTK file with:
 \end_layout
 
 \begin_layout LyX-Code
@@ -1279,8 +1320,320 @@ PointDataArray[0] = displacements_t0 (119827 x 3)
 
 \end_layout
 
+\begin_layout Section
+Cigma Datasets
+\end_layout
+
+\begin_layout Standard
+Here we describe in a bit more detail the kind of datasets that Cigma expects.
+ 
+\end_layout
+
+\begin_layout Standard
+The first kind of dataset we shall discuss are meshes.
+ In this version of Cigma, meshes are expected to be specifed as an unstructured
+ grid.
+\end_layout
+
+\begin_layout Standard
+A field is a function which assigns a physical quantity to every point in
+ a domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+.
+ This quantity may correspond to a scalar, a vector, or even a tensor.
+ As in Chapter 3 (XXX: ref), we shall use the same discretization 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+A finite element approximation to an solution field 
+\begin_inset Formula $\phi(\vec{x})$
+\end_inset
+
+ on an element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ is essentially specified by the weighed sum over a fixed set of local shape
+ functions 
+\begin_inset Formula $\phi_{e,1}(\vec{\xi}),\phi_{e,2}(\vec{\xi}),\ldots,\phi_{e,N}(\vec{\xi})$
+\end_inset
+
+ defined on the appropriate reference cell,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\phi(\vec{x})=\sum_{n=1}^{N}d_{e,n}\phi_{e,n}(\vec{\xi})\]
+
+\end_inset
+
+where the global point 
+\begin_inset Formula $\vec{x}\in\Omega_{e}$
+\end_inset
+
+ corresponds to the local reference point 
+\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})\in\hat{\Omega}$
+\end_inset
+
+, and the weights 
+\begin_inset Formula $d_{e,n}$
+\end_inset
+
+, also known as degrees of freedom, are given on.
+ These shape functions define a basis for the function space on the finite
+ element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+For a mesh consisting of a single element type, we need specify the 
+\begin_inset Formula $(x_{n},y_{n},z_{n})$
+\end_inset
+
+ of its degrees of freedom , and the connectivity relations 
+\begin_inset Formula $\Omega_{e}=\{n_{1},n_{2},\ldots\}$
+\end_inset
+
+ among them which define each individual element in the corresponding discretiza
+tion.
+\end_layout
+
+\begin_layout Standard
+The most common element types used in the finite element method are given
+ by the following shape functions, defined the interior of a tetrahedron
+ with vertices at 
+\begin_inset Formula $a=(0,0,0)$
+\end_inset
+
+, 
+\begin_inset Formula $b=(1,0,0)$
+\end_inset
+
+, 
+\begin_inset Formula $c=(0,1,0)$
+\end_inset
+
+, 
+\begin_inset Formula $d=(0,0,1)$
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "b"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+N_{a} & = & \frac{1}{2}(-1-x-y-z)\\
+N_{b} & = & \frac{1}{2}(1+x)\\
+N_{c} & = & \frac{1}{2}(1+y)\\
+N_{d} & = & \frac{1}{2}(1+z)\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "c"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename figures/reference-tet4.png
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Reference Tetrahedron
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Likewise, a hexahedral element with vertices located at 
+\begin_inset Formula $a=(-1,-1,-1)$
+\end_inset
+
+, 
+\begin_inset Formula $b=(1,-1,-1)$
+\end_inset
+
+, 
+\begin_inset Formula $c=(1,1,-1)$
+\end_inset
+
+, 
+\begin_inset Formula $d=(-1,1,-1)$
+\end_inset
+
+, 
+\begin_inset Formula $e=(-1,-1,1)$
+\end_inset
+
+, 
+\begin_inset Formula $f=(1,-1,1)$
+\end_inset
+
+, 
+\begin_inset Formula $g=(1,1,1)$
+\end_inset
+
+, 
+\begin_inset Formula $h=(-1,1,1)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "c"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename figures/reference-hex8.png
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "c"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+N_{a} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1-z\right)\\
+N_{b} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1-z\right)\\
+N_{c} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1-z\right)\\
+N_{d} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1-z\right)\\
+N_{e} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1+z\right)\\
+N_{f} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1+z\right)\\
+N_{g} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1+z\right)\\
+N_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Reference Hexahedron
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+XXX: Take description of higher order elements from Karniadakis book
+\end_layout
+
 \begin_layout Subsection
-Comparing Two Fields
+Comparing Two Finite Element Fields
 \end_layout
 
 \begin_layout Standard
@@ -1301,7 +1654,7 @@ A basic comparison can be as simple as specifying the following arguments:
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk
+cigma compare --output=residuals.vtk
 \end_layout
 
 \begin_layout LyX-Code
@@ -1320,13 +1673,174 @@ cigma compare --output=squared-residuals.vtk
              --second=field2.h5:/field2/stepN
 \end_layout
 
+\begin_layout LyX-Code
+
+\end_layout
+
 \begin_layout Subsection
-Specifying a Mesh
+Comparing against Known Values
+\end_layout
+
+\begin_layout Standard
+A finite element description might not always be available for one of the
+ fields.
+ However, you can break the comparison into several steps if you have a
+ means to compute that field on any of the required points.
+\end_layout
+
+\begin_layout Standard
+First, extract the global coordinates of the integration points.
+ This will result in an explicit list of points over which to evaluate your
+ field.
+\end_layout
+
+\begin_layout LyX-Code
+cigma extract --mesh=field1.h5:/model/mesh/
+\end_layout
+
+\begin_layout LyX-Code
+              --output=points.h5:/projected_points
+\end_layout
+
+\begin_layout Standard
+Now you can evaluate your function at the designated points.
+ You can provide the path to the explicit set of values with
+\end_layout
+
+\begin_layout LyX-Code
+cigma compare --output=residuals.vtk
+\end_layout
+
+\begin_layout LyX-Code
+              --first=field1.h5:/field1/stepN
+\end_layout
+
+\begin_layout LyX-Code
+              --second-points=points.h5:/projected_points
+\end_layout
+
+\begin_layout LyX-Code
+              --second-values=values.h5:/projected_values
+\end_layout
+
+\begin_layout Subsection
+\begin_inset LatexCommand label
+name "sub:Comparing-against-a"
+
+\end_inset
+
+Comparing against a Known Function
+\end_layout
+
+\begin_layout Standard
+If one of your fields is easily described by an analytic expression, then
+ you also have the option to compile your analytic function into Cigma,
+ which will enable the 
+\family typewriter
+compare
+\family default
+ command to reference your function by name.
+ In our case, we 
+\end_layout
+
+\begin_layout LyX-Code
+cigma compare --output=residuals.vtk
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+ 
+\series default
+             --first=field1.h5:/vars/displacement/step0
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+ 
+\series default
+             --second=
+\bar under
+disloc3d
+\series bold
+\bar default
+ 
+\series default
+ 
+\end_layout
+
+\begin_layout Standard
+You may also interact with your analytic function by using the 
+\family typewriter
+cigma
+\family default
+ 
+\family typewriter
+eval
+\family default
+ command, and obtain a set of values which may then be passed back to the
+ 
+\family typewriter
+compare
+\family default
+ command.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+cigma eval --function=
+\bar under
+disloc3d
+\end_layout
+
+\begin_layout LyX-Code
+           --points=points.h5:/projected_points
+\end_layout
+
+\begin_layout LyX-Code
+           --values=values.h5:/disloc3d_values
+\end_layout
+
+\begin_layout Standard
+Once these values have been obtained, we can use it to resume the calculation
+ of 
+\end_layout
+
+\begin_layout LyX-Code
+cigma compare --output=residuals.vtk
+\end_layout
+
+\begin_layout LyX-Code
+              --first=field1.h5:/vars/displacement/step0
+\end_layout
+
+\begin_layout LyX-Code
+              --second-points=points.h5:/projected_points
+\end_layout
+
+\begin_layout LyX-Code
+              --second-values=values.h5:/disloc3d_values
+\end_layout
+
+\begin_layout Standard
+Another built-in function you might find useful is the 
+\family typewriter
+\bar under
+zero
+\family default
+\bar default
+ function, which is defined to return 0 everywhere.
+ You can use this function for estimating the norm of your field.
+\end_layout
+
+\begin_layout Subsection
+Specifying an Integration Mesh
 \end_layout
 
 \begin_layout Standard
 To override the mesh used in the integration, you can specify an extra argument
- providing the location of the mesh:
+ providing the location of the mesh,
 \end_layout
 
 \begin_layout LyX-Code
@@ -1338,8 +1852,8 @@ cigma compare [...]
 \end_layout
 
 \begin_layout Standard
-You can also specify the coordinates and connectivity arrays separately,
- in case they reside in separate files.
+Alternatively, you can also specify the coordinates and connectivity arrays
+ separately, in case they reside in separate files.
 \end_layout
 
 \begin_layout LyX-Code
@@ -1392,149 +1906,18 @@ cigma compare [...]
 
 \end_layout
 
-\begin_layout Subsection
-Comparing against Known Values
-\end_layout
-
 \begin_layout Standard
-A finite element description might not always be available for one of the
- fields.
- However, you can break the comparison into several steps if you have a
- means to compute that field on any of the required points.
-\end_layout
-
-\begin_layout Standard
-First, extract the global coordinates of the integration points.
- This will result in an explicit list of points over which to evaluate your
- field.
-\end_layout
-
-\begin_layout LyX-Code
-cigma extract --mesh=field1.h5:/model/mesh/
-\end_layout
-
-\begin_layout LyX-Code
-              --output=points.h5:/points
-\end_layout
-
-\begin_layout Standard
-Now you can evaluate your function at the designated points.
- You can provide the path to the explicit set of values with
-\end_layout
-
-\begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk
-\end_layout
-
-\begin_layout LyX-Code
-              --first=field1.h5:/field1/stepN
-\end_layout
-
-\begin_layout LyX-Code
-              --second=values.h5:/stepN_values
-\end_layout
-
-\begin_layout Subsection
-\begin_inset LatexCommand label
-name "sub:Comparing-against-a"
-
-\end_inset
-
-Comparing against a Known Function
-\end_layout
-
-\begin_layout Standard
-If one of your fields is easily described by an analytic expression, then
- you also have the option to compile your analytic function into Cigma,
- which will enable the 
+In the 
 \family typewriter
-compare
+src/
 \family default
- command to reference your function by name:
-\end_layout
-
-\begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             --first=field1.h5:/vars/displacement/step0
-\end_layout
-
-\begin_layout LyX-Code
-
-\series bold
- 
-\series default
-             --second=
-\bar under
-disloc3d
-\series bold
-\bar default
- 
-\series default
- 
-\end_layout
-
-\begin_layout Standard
-You may also interact with your analytic function by using the 
-\family typewriter
-cigma
-\family default
+ directory of the Cigma distribution, you can find a Python script called
  
 \family typewriter
-eval
+rules.py
 \family default
- command, and obtain a set of values which may then be passed back to the
- 
-\family typewriter
-compare
-\family default
- command.
- 
-\end_layout
-
-\begin_layout LyX-Code
-cigma eval --function=disloc3d
-\end_layout
-
-\begin_layout LyX-Code
-           --points=points.h5:/points
-\end_layout
-
-\begin_layout LyX-Code
-           --values=values.h5:/disloc3d_values
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-cigma compare --output=squared-residuals.vtk
-\end_layout
-
-\begin_layout LyX-Code
-              --first=field1.h5:/vars/displacement/step0
-\end_layout
-
-\begin_layout LyX-Code
-              --second=values.h5:/disloc3d_values
-\end_layout
-
-\begin_layout Standard
-Another built-in function you might find useful for evaluating the norm
- of your field is the 
-\family typewriter
-\bar under
-zero
-\family default
-\bar default
- function, which simply returns zero when evaluated at any point.
+ that uses FIAT for calculating an appropriate set of quadrature rules for
+ use in Cigma.
 \end_layout
 
 \begin_layout Chapter
@@ -1550,6 +1933,40 @@ In this Chapter we will use sample datasets from the strike-slip benchmark
  of two layers of different material types.
  The top layer of the cube is nearly elastic, while the bottom layer is
  viscoelastic.
+ (XXX: Anything else from Pylith manual or source?)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename figures/strike-slip-fault.png
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Geometry of Strike-Slip Benchmark
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1629,15 +2046,11 @@ where
 \end_layout
 
 \begin_layout Section
-Different Element Types
+Visualization
 \end_layout
 
 \begin_layout Standard
-Here we compare
-\end_layout
-
-\begin_layout Section
-Different FEM Codes
+Using MayaVi2, we may obtain a visualization of the Cigma datasets 
 \end_layout
 
 \begin_layout Chapter
@@ -1668,7 +2081,7 @@ Input File Format
 \end_layout
 
 \begin_layout Standard
-There are about six different objects you will want to use as input to cigma,
+There are five different objects you will want to use as input to cigma,
  all of which can be represented as two-dimensional datasets.
  These are the 
 \end_layout
@@ -1691,10 +2104,6 @@ quadrature rule points
 
 \begin_layout Itemize
 quadrature rule weights
-\end_layout
-
-\begin_layout Itemize
-shape function tabulation matrix
 \end_layout
 
 \begin_layout Subsection
