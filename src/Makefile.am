@@ -85,6 +85,8 @@ libcigma_a_SOURCES = \
 	Field.cpp \
 	FieldSet.h \
 	FieldSet.cpp \
+	UserField.h \
+	UserField.cpp \
 	NullField.h \
 	NullField.cpp \
 	FE_Field.h \
@@ -95,8 +97,18 @@ libcigma_a_SOURCES = \
 	ExtField.cpp \
 	ZeroField.h \
 	ZeroField.cpp \
+	TestBenchmarkFields.h \
+	TestBenchmarkFields.cpp \
 	GaleBenchmarkFields.h \
 	GaleBenchmarkFields.cpp \
+	OkadaBenchmarkFields.h \
+	OkadaBenchmarkFields.cpp \
+	okada/dc3d.h \
+	okada/dc3d.cpp \
+	okada/disloc3d.h \
+	okada/disloc3d.cpp \
+	okada/cervelli.h \
+	okada/cervelli.cpp \
 	\
 	Residuals.h \
 	Residuals.cpp \
@@ -173,5 +185,18 @@ libcigma_a_SOURCES = \
 	PathUtils.h \
 	PathUtils.cpp \
 	Timer.h \
-	Timer.cpp
+	Timer.cpp \
+	\
+	Misc.h \
+	Misc.cpp
+
+EXTRA_DIST = \
+	rules.py \
+	cigmalib/__init__.py \
+	cigmalib/api.py \
+	cigmalib/Cell.py \
+	cigmalib/FiatLagrange.py \
+	cigmalib/FiatQuadrature.py \
+	cigmalib/FiatShapes.py \
+	cigmalib/FiatSimplex.py
 
