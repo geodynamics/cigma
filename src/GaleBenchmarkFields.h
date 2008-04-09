@@ -1,7 +1,7 @@
 #ifndef __GaleBenchmarkFields_h__
 #define __GaleBenchmarkFields_h__
 
-#include "Field.h"
+#include "UserField.h"
 
 namespace gale
 {
@@ -11,7 +11,7 @@ namespace gale
     }
 }
 
-class gale::circular_inclusion::Pressure : public cigma::Field
+class gale::circular_inclusion::Pressure : public cigma::UserField
 {
 public:
     Pressure();
@@ -20,7 +20,6 @@ public:
 public:
     int n_dim() { return 2; }
     int n_rank() { return 1; }
-    FieldType getType() { return USER_FIELD; }
 
 public:
     bool eval(double *x, double *value);

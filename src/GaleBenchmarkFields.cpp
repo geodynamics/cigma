@@ -1,10 +1,18 @@
 #include <cmath>
+#include <iostream>
+#include <typeinfo>
 #include "GaleBenchmarkFields.h"
 
 using namespace gale::circular_inclusion;
 
-Pressure::Pressure() {}
-Pressure::~Pressure() {}
+Pressure::Pressure()
+{
+    //std::cout << "Creating instance of class " << typeid(this).name() << std::endl;
+}
+
+Pressure::~Pressure()
+{
+}
 
 bool Pressure::eval(double *x, double *value)
 {
