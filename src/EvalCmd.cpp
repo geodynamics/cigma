@@ -1,8 +1,10 @@
 #include <iostream>
+#include <iomanip>
 #include <cassert>
 #include "EvalCmd.h"
 #include "ZeroField.h"
 #include "StringUtils.h"
+#include "Timer.h"
 
 using namespace std;
 using namespace cigma;
@@ -163,10 +165,32 @@ int EvalCmd::run()
     // data
     double *phi = new double[npts * valdim];
 
+    Timer timer;
+    const int outputFrequency = 1000;
+    if (verbose)
+    {
+        cout << setprecision(5);
+        timer.print_header(cout, "points");
+        timer.start(npts);
+        timer.update(0);
+        cout << timer;
+    }
+
     for (i = 0; i < npts; i++)
     {
         double *globalPoint = (*points)[i];
         field->eval(globalPoint, &phi[valdim*i]);
+        if (verbose && ((i+1) % outputFrequency == 0))
+        {
+            timer.update(i+1);
+            cout << timer;
+        }
+    }
+
+    if (verbose)
+    {
+        timer.update(npts);
+        cout << timer << endl;
     }
 
     
