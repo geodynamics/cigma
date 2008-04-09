@@ -1,4 +1,4 @@
-#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -849,7 +849,7 @@ To obtain an approximation to the integral of a function
 \begin_inset Formula $\vec{x}_{e,1},\vec{x}_{e,2},\ldots,\vec{x}_{e,n_{Q}}$
 \end_inset
 
-appropriate for the physical element 
+ appropriate for the physical element 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
@@ -880,7 +880,7 @@ Applying this quadrature rule directly over the entire physical domain
 \end_layout
 
 \begin_layout Standard
-For efficiency reasons, it is undesireable in finite element applications
+For efficiency reasons, it is undesirable in finite element applications
  to perform calculations in a global coordinate system.
  To avoid duplication of work, shape function evaluations may be performed
  once on a reference cell 
@@ -899,7 +899,7 @@ To compute integrals of
 \begin_inset Formula $F$
 \end_inset
 
- in a reference coordinate system, we need apply a change of variables:
+ in a reference coordinate system, we need to apply a change of variables:
 \end_layout
 
 \begin_layout Standard
@@ -959,7 +959,7 @@ At this point, we can assume without loss of generality that every physical
 \begin_inset Formula $w_{1},\ldots,w_{n_{Q}}$
 \end_inset
 
-and points 
+ and points 
 \begin_inset Formula $\vec{\xi}_{1},\ldots,\vec{\xi}_{n_{Q}}$
 \end_inset
 
@@ -969,7 +969,7 @@ and points
 
 .
  After changing variables, we end up with the final form of the quadrature
- rule that we can use to integrate the global residual field
+ rule that we can use to integrate the global residual field:
 \end_layout
 
 \begin_layout Standard
@@ -1082,7 +1082,7 @@ Running Cigma
 
 \begin_layout Standard
 Cigma is primarily designed for calculating error estimates between arbitrary
- fields, so naturally its primary usage is centered the following operation
+ fields, so its primary usage is centered on the following operation
 \end_layout
 
 \begin_layout LyX-Code
@@ -1107,7 +1107,7 @@ field2
 You will need to provide two datasets describing each of the two fields,
  along with an integration rule and a discretization over which to integrate,
  although these last two will have reasonable defaults if they are not specified.
- This chapter aims to summarize the information you'll need to run cigma.
+ This chapter aims to summarize the information you'll need to run Cigma.
 \end_layout
 
 \begin_layout Section
@@ -1116,7 +1116,7 @@ Command Line Interface
 
 \begin_layout Standard
 Cigma is designed to be scriptable.
- Thus, all operations can be specified as command line arguments given to
+ Thus, all operations can be specified as command-line arguments given to
  a single executable called 
 \family typewriter
 cigma
@@ -1203,7 +1203,7 @@ target "hdf.ncsa.uiuc.edu/HDF5"
 \begin_layout Standard
 The underlying data storage format for Cigma is the HDF5 format, due to
  its flexibility for storing and organizing large amounts of data.
- The Hierarchical Data Format (HDF) is a It is designed for storing, retrieving,
+ The Hierarchical Data Format (HDF) is designed for storing, retrieving,
  analyzing, visualizing, and converting scientific data.
  It uses a hierarchical structure that provides application programmers
  with a host of options for organizing how data is stored in HDF5 files.
@@ -1220,7 +1220,16 @@ Another VTK format for providing mesh and field inputs.
 \color none
  
 \color inherit
-You can easily examine the structure of an input file by using the 
+[<-- XXX something wrong with that fragment.
+ Did you mean 
+\begin_inset Quotes sld
+\end_inset
+
+Another format for providing mesh and field inputs is the VTK format
+\begin_inset Quotes srd
+\end_inset
+
+?] You can easily examine the structure of an input file by using the 
 \family typewriter
 cigma list
 \family default
@@ -1289,7 +1298,7 @@ cigma list file.h5
 
 \end_deeper
 \begin_layout Standard
-You can also view the structure of a VTK file with:
+You can also view the structure of a VTK file with this command:
 \end_layout
 
 \begin_layout LyX-Code
@@ -1330,7 +1339,7 @@ Here we describe in a bit more detail the kind of datasets that Cigma expects.
 \end_layout
 
 \begin_layout Standard
-The first kind of dataset we shall discuss are meshes.
+The first kind of dataset required are meshes.
  In this version of Cigma, meshes are expected to be specifed as an unstructured
  grid.
 \end_layout
@@ -1343,7 +1352,13 @@ A field is a function which assigns a physical quantity to every point in
 
 .
  This quantity may correspond to a scalar, a vector, or even a tensor.
- As in Chapter 3 (XXX: ref), we shall use the same discretization 
+ As in Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Error-Analysis"
+
+\end_inset
+
+, we shall use the same discretization 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
@@ -1387,20 +1402,20 @@ where the global point
 \end_inset
 
 , also known as degrees of freedom, are given on.
- These shape functions define a basis for the function space on the finite
- element 
+ [<-- XXX does this sentence end correctly?] These shape functions define
+ a basis for the function space on the finite element 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
-, 
+, [<-- XXX more to this?]
 \end_layout
 
 \begin_layout Standard
-For a mesh consisting of a single element type, we need specify the 
+For a mesh consisting of a single element type, we need to specify the 
 \begin_inset Formula $(x_{n},y_{n},z_{n})$
 \end_inset
 
- of its degrees of freedom , and the connectivity relations 
+ of its degrees of freedom, and the connectivity relations 
 \begin_inset Formula $\Omega_{e}=\{n_{1},n_{2},\ldots\}$
 \end_inset
 
@@ -1410,7 +1425,7 @@ tion.
 
 \begin_layout Standard
 The most common element types used in the finite element method are given
- by the following shape functions, defined the interior of a tetrahedron
+ by the following shape functions, which define the interior of a tetrahedron
  with vertices at 
 \begin_inset Formula $a=(0,0,0)$
 \end_inset
@@ -1740,7 +1755,7 @@ If one of your fields is easily described by an analytic expression, then
 compare
 \family default
  command to reference your function by name.
- In our case, we 
+ For example,
 \end_layout
 
 \begin_layout LyX-Code
@@ -1925,7 +1940,7 @@ Examples
 \end_layout
 
 \begin_layout Standard
-In this Chapter we will use sample datasets from the strike-slip benchmark
+In this chapter we will use sample datasets from the strike-slip benchmark
  case defined by the CIG Short-Term Tectonics working group.
  In this benchmark problem, we solve for the viscoelastic relaxation of
  stresses from a single finite earthquake while ignoring gravity.
@@ -1940,7 +1955,7 @@ In this Chapter we will use sample datasets from the strike-slip benchmark
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset Graphics
@@ -2081,7 +2096,7 @@ Input File Format
 \end_layout
 
 \begin_layout Standard
-There are five different objects you will want to use as input to cigma,
+There are five different objects you will want to use as input to Cigma,
  all of which can be represented as two-dimensional datasets.
  These are the 
 \end_layout
