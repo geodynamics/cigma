@@ -64,10 +64,15 @@ CIGMA_PATH_PYTHON
 
 dnl Check for zlib and hdf5
 CIGMA_PATH_ZLIB
-CIGMA_PATH_HDF5
+CIGMA_PATH_HDF5(
+    [echo "Found HDF5 library!"],
+    [AC_MSG_ERROR([HDF5 library not found; try specifying its prefix with the configure option --with-hdf5])])
 
 dnl Check for vtk-5.0
-AM_PATH_VTK
+AM_PATH_VTK(
+    [],
+    [echo "Found VTK library!"],
+    [AC_MSG_ERROR([VTK5 library not found; try specifying its prefix with the configure option --with-vtk])])
 
 
 
