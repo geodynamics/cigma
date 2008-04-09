@@ -24,10 +24,12 @@ VtkReader::VtkReader()
     sgrid = 0;
 
     vtk_reader = 0;
-    vts_reader = 0;
     vtu_reader = 0;
-    pvts_reader = 0;
+    vts_reader = 0;
+    vtr_reader = 0;
     pvtu_reader = 0;
+    pvts_reader = 0;
+    pvtr_reader = 0;
 }
 
 VtkReader::~VtkReader()
@@ -76,15 +78,6 @@ int VtkReader::open(const char *filename)
             return -1;
         }
     }
-    else if (ext == ".vts")
-    {
-        vts_reader = vtkXMLStructuredGridReader::New();
-        vts_reader->SetFileName(filename);
-        vts_reader->Update();
-
-        dataset = vts_reader->GetOutputAsDataSet();
-        sgrid = vtkStructuredGrid::SafeDownCast(dataset);
-    }
     else if (ext == ".vtu")
     {
         vtu_reader = vtkXMLUnstructuredGridReader::New();
@@ -95,11 +88,27 @@ int VtkReader::open(const char *filename)
         pointset = vtkPointSet::SafeDownCast(dataset);
         ugrid = vtkUnstructuredGrid::SafeDownCast(dataset);
     }
+    else if (ext == ".vts")
+    {
+        vts_reader = vtkXMLStructuredGridReader::New();
+        vts_reader->SetFileName(filename);
+        vts_reader->Update();
+
+        dataset = vts_reader->GetOutputAsDataSet();
+        sgrid = vtkStructuredGrid::SafeDownCast(dataset);
+    }
+    else if (ext == ".vtr")
+    {
+        vtr_reader = vtkXMLRectilinearGridReader::New();
+        vtr_reader->SetFileName(filename);
+        vtr_reader->Update();
+
+        //dataset = vtr_reader->GetOutputAsDataset();
+        //rgrid = vtkRectilinearGrid::SafeDownCast(dataset);
+    }
     else
     {
-        cerr << "Unsupported VTK file type. "
-             << "Use only .vtk, .vts, or .vtu formats."
-             << endl;
+        cerr << "Unsupported VTK file type (" << ext << ")" << endl;
         return -1;
     }
 
@@ -114,16 +123,22 @@ int VtkReader::close()
         this->vtk_reader = 0;
     }
     
+    if (this->vtu_reader)
+    {
+        this->vtu_reader->Delete();
+        this->vtu_reader = 0;
+    }
+
     if (this->vts_reader)
     {
         this->vts_reader->Delete();
         this->vts_reader = 0;
     }
 
-    if (this->vtu_reader)
+    if (this->vtr_reader)
     {
-        this->vtu_reader->Delete();
-        this->vtu_reader = 0;
+        this->vtr_reader->Delete();
+        this->vtr_reader = 0;
     }
 
     return 0;

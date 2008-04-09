@@ -4,15 +4,18 @@
 #include "Reader.h"
 
 #include "vtkDataSetReader.h"
-#include "vtkXMLStructuredGridReader.h"
 #include "vtkXMLUnstructuredGridReader.h"
-#include "vtkXMLPStructuredGridReader.h"
+#include "vtkXMLStructuredGridReader.h"
+#include "vtkXMLRectilinearGridReader.h"
 #include "vtkXMLPUnstructuredGridReader.h"
+#include "vtkXMLPStructuredGridReader.h"
+#include "vtkXMLPRectilinearGridReader.h"
 
 #include "vtkDataSet.h"
 #include "vtkPointSet.h"
-#include "vtkStructuredGrid.h"
 #include "vtkUnstructuredGrid.h"
+#include "vtkStructuredGrid.h"
+#include "vtkRectilinearGrid.h"
 
 
 
@@ -45,14 +48,16 @@ public:
     vtkPointSet *pointset;
     vtkUnstructuredGrid *ugrid;
     vtkStructuredGrid *sgrid;
+    vtkRectilinearGrid *rgrid;
 
 public:
     vtkDataSetReader *vtk_reader;
-    vtkXMLStructuredGridReader *vts_reader;
     vtkXMLUnstructuredGridReader *vtu_reader;
-    vtkXMLPStructuredGridReader *pvts_reader;
+    vtkXMLStructuredGridReader *vts_reader;
+    vtkXMLRectilinearGridReader *vtr_reader;
     vtkXMLPUnstructuredGridReader *pvtu_reader;
-
+    vtkXMLPStructuredGridReader *pvts_reader;
+    vtkXMLPRectilinearGridReader *pvtr_reader;
 };
 
 
