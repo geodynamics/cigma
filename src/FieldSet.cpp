@@ -3,6 +3,7 @@
 #include <cassert>
 #include "FieldSet.h"
 #include "ZeroField.h"
+#include "UnitScalarField.h"
 #include "GaleBenchmarkFields.h"
 #include "OkadaBenchmarkFields.h"
 #include "TestBenchmarkFields.h"
@@ -24,6 +25,9 @@ void FieldSet::initialize()
     //
     ZeroField *zero = new ZeroField();
     addField("zero", zero);
+
+    UnitScalarField *one = new UnitScalarField();
+    addField("scalar.one", one);
 
     typedef okada::strike_slip::Disloc3d OkadaStrikeSlip;
     OkadaStrikeSlip *disloc3d = new OkadaStrikeSlip();

@@ -3,7 +3,8 @@
 
 #include "UserField.h"
 
-namespace cigma {
+namespace cigma
+{
     class ZeroField;
 }
 
