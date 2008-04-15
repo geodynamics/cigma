@@ -1,5 +1,6 @@
 #include "OkadaBenchmarkFields.h"
 #include "okada/cervelli.h"
+#include "okada/disloc3d.h"
 #include "Misc.h"
 
 using namespace cigma;
@@ -21,7 +22,7 @@ strike_slip::Disloc3d::Disloc3d()
     flag2 = new double[nsubfaults];
 
     //
-    // define strike slip fault
+    // define a strike-slip fault
     //
     int i;
     double *n;
@@ -66,8 +67,12 @@ strike_slip::Disloc3d::Disloc3d()
         fi[9]  = ds;
         fi[10] = ts;
     }
-
     delete [] n;
+
+    // get the "model matrix" with
+    // fault patch info in the form
+    // for cervelli calcs
+    getM(subfaults, nsubfaults, mu, models);
 }
 
 strike_slip::Disloc3d::~Disloc3d()
@@ -82,20 +87,17 @@ strike_slip::Disloc3d::~Disloc3d()
 bool strike_slip::Disloc3d::eval(double *station, double *disloc)
 {
     //
-    // XXX: deconstruct the following call.
-    // Specifically, move the call to getM() into the constructor,
-    // and then, instead, call disloc3d() with the appropriate arguments
+    // call the disloc3d wrapper
     //
-    calc_disp_cervelli(
-        mu, nu,
-        models, subfaults, nsubfaults,
-        station, 1,
-        displacement, derivatives, stress,
-        flag, flag2);
+    disloc3d(models, nsubfaults,
+             station, 1,
+             mu, nu,
+             displacement, derivatives, stress,
+             flag, flag2);
 
     //
     // copy the answer into the output array
-    // XXX: add a selection method which defaults to displacements?
+    // XXX: add a selector boolean?
     //
     disloc[0] = displacement[0];
     disloc[1] = displacement[1];
