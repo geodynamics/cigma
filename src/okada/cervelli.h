@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+void getM(double *fi, int nmod, double mu, double *M);
+
 void calc_disp_cervelli(double mu, double nu,
                         double *models, double *fault_info, int nfaults,
                         double *stations, int nstations,

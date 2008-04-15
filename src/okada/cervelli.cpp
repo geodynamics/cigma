@@ -113,8 +113,7 @@ fault_params_to_okada_form(double sx1, double sy1,
  *                      (see below for what is on the rows)
  *                      (one row per fault patch)
  */
-static void
-getM(double *fi, int nmod, double mu, double *M)
+void getM(double *fi, int nmod, double mu, double *M)
 {
     int j;
     double *fault;
