@@ -513,8 +513,9 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
             }
         }
         double err2 = qr->L2(phi_a, phi_b);
-        double vol = qr->meshPart->cell->volume();
-        residuals->update(e, sqrt(err2)/vol);
+        //double vol = qr->meshPart->cell->volume();
+        //residuals->update(e, sqrt(err2)/vol);
+        residuals->update(e, sqrt(err2));
         env->update_timer(e);
     }
     env->end_timer();
