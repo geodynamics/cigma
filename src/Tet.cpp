@@ -88,6 +88,9 @@ void Tet::qr_default(double **wts, double **pts, int *npts, int *ndim)
             tet_qpts[n] += 1;
             tet_qpts[n] *= 0.5;
         }
+        // don't forget to adjust the integration weights
+        // to account for the reference domain transformation!
+        tet_qwts[i] *= 0.125;
     }
 
     *npts = tet_nno;

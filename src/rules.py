@@ -12,6 +12,7 @@ def transform_rule(qr):
         x,w = qr(order)
         x += 1
         x *= 0.5
+        w *= 0.5 ** x.shape[1]
         return (x,w)
     return new_qr
 
