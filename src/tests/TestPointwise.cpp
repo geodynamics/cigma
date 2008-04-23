@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <cassert>
 
 #include "../OkadaBenchmarkFields.h"
 #include "../FieldReader.h"
@@ -22,33 +23,40 @@ void print_point(double *y)
 
 int main()
 {
-    int N = 1001;
-    
-    // line parallel to y-axis
-    //double A[3] = {     0, 12000, -12000 };
-    //double B[3] = { 24000, 12000, -12000 };
-
-    // line parallel to x-axis
-    double A[3] = { 12010,     0, -12000 };
-    double B[3] = { 12010, 24000, -12000 };
-
     int i,j;
-    double t, dt;
-    dt = 1.0 / (N - 1);
+    int N0 = 1200;
+    int N = 1000;
 
-    double *x = new double[N*3];
-    for (i = 0; i < N; i++)
+
+    FieldReader fieldReader;
+    fieldReader.pointsReader.pointsPath = "../tet4_1000m.h5:/projection/points";
+    fieldReader.valuesReader.pointsPath = "../tet4_1000m.h5:/projection/data/snapshot0/displacements";
+    fieldReader.load_field();
+
+    Field *field = fieldReader.field;
+    if (field == 0)
     {
-        t = i * dt;
-        for (j = 0; j < 3; j++)
-        {
-            x[3*i + j] = A[j] + t * (B[j] - A[j]);
-        }
+        cerr << "Could not load field!" << endl;
+        exit(1);
     }
+    if (field->getType() != Field::POINT_FIELD)
+    {
+        cerr << "Expecting a point field" << endl;
+        exit(1);
+    }
+    PointField *pointField = static_cast<PointField*>(field);
+    Points *points = pointField->points;
+    Points *values = pointField->values;
+
+    int npts = points->n_points();
+    assert(npts > N);
+
+    double *x = points->data;
 
     double *y[2];
     y[0] = new double[N*3];
     y[1] = new double[N*3];
+
     for (i = 0; i < N; i++)
     {
         for (j = 0; j < 3; j++)
@@ -68,34 +76,13 @@ int main()
         disloc3d.eval(station, displacement);
     }
 
-
-    FieldReader fieldReader;
-
-    fieldReader.pointsReader.pointsPath = "../tet4_1000m.h5:/projection/points";
-    fieldReader.valuesReader.pointsPath = "../tet4_1000m.h5:/projection/data/snapshot0/displacements";
-
-    fieldReader.load_field();
-
-    Field *field = fieldReader.field;
-    if (field == 0)
-    {
-        cerr << "Could not load field!" << endl;
-        exit(1);
-    }
-    if (field->getType() != Field::POINT_FIELD)
-    {
-        cerr << "Expecting a point field" << endl;
-        exit(1);
-    }
-    PointField *pointField = static_cast<PointField*>(fieldReader.field);
-    //pointField->locator = 0; // clear out locator -- brute force search
     for (i = 0; i < N; i++)
     {
-        double *station = &x[3*i];
-        double *displacement = &y[1][3*i];
-        field->eval(station, displacement);
+        for (j = 0; j < 3; j++)
+        {
+            y[1][3*i + j] = values->data[3*(i + N0) + j];
+        }
     }
-
 
     double *residuals = new double[N*3];
     for (i = 0; i < N; i++)
@@ -106,17 +93,17 @@ int main()
         }
     }
 
+    double epsilon = 0.0;
     cout << setprecision(12);
     for (i = 0; i < N; i++)
     {
-        t = i * dt;
-        cout << i << " ";
-        cout << t << "   ";
-
+        cout << i << "   ";
         double *X = &x[3*i];
         double *Y0 = &y[0][3*i];
         double *Y1 = &y[1][3*i];
         double *D = &residuals[3*i];
+        double eps = magnitude(D);
+        epsilon += eps * eps;
 
         print_point(X);
         print_point(Y0);
@@ -125,9 +112,12 @@ int main()
 
         cout << magnitude(Y0) << " ";
         cout << magnitude(Y1) << " ";
-        cout << magnitude(D) << " ";
+        cout << eps << " ";
         cout << endl;
     }
+
+    cerr << setprecision(12);
+    cerr << "epsilon = " << sqrt(epsilon) << endl;
 
 
     delete [] x;
