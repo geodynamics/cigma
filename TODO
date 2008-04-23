@@ -7,6 +7,7 @@ Add extent[6] member variable to MeshPart class (bounding box)
 Add configure flag --with-boost
 Add configure flag --with-cppunit
 Write corresponding man page for each the 'cigma foo' command (see git man pages)
+Create testbuild directory (commit scripts in current /build/ directory)
 
 
 

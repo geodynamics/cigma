@@ -48,10 +48,12 @@ void MeshPartReader::load_args(AnyOption *opt, const char *opt_prefix)
     string optstr;
     string mesh_name = opt_prefix;
 
-    in = opt->getValue(mesh_name.c_str());
+    optstr = mesh_name;
+    in = opt->getValue(optstr.c_str());
     if (in != 0)
     {
         this->meshPath = in;
+        //cout << "Reading option " << optstr << "=" << in << endl;
     }
 
     optstr = mesh_name + "-coordinates";
@@ -59,6 +61,7 @@ void MeshPartReader::load_args(AnyOption *opt, const char *opt_prefix)
     if (in != 0)
     {
         this->coordsPath = in;
+        //cout << "Reading option " << optstr << "=" << in << endl;
     }
 
     optstr = mesh_name + "-connectivity";
@@ -66,6 +69,7 @@ void MeshPartReader::load_args(AnyOption *opt, const char *opt_prefix)
     if (in != 0)
     {
         this->connectPath = in;
+        //cout << "Reading option " << optstr << "=" << in << endl;
     }
 }
 

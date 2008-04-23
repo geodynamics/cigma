@@ -4,6 +4,8 @@
 #include <cmath>
 #include "Residuals.h"
 #include "VtkWriter.h"
+#include "HdfWriter.h"
+#include "HdfAttr.h"
 
 using namespace std;
 using namespace cigma;
@@ -94,6 +96,20 @@ void Residuals::write(const char *filename)
     writer.write_cell_types(meshPart->nsd, meshPart->nel, meshPart->ndofs); // XXX: call from w/i write_cells()
     writer.write_cell_data("epsilon", epsilon, nel, 1);
     writer.close();
+
+    const bool debug = false;
+    if (debug)
+    {
+        int ierr;
+        herr_t status;
+
+        HdfWriter hdfWriter;
+        ierr = hdfWriter.open("residuals-debug.h5");
+        ierr = hdfWriter.write_dataset("residuals", epsilon, nel, 1);
+        //status = HdfAttr::set_double(hdfWriter.h5.file_id, "L2", this->L2());
+        //status = HdfAttr::set_double(hdfWriter.h5.file_id, "Linf", this->max());
+        ierr = hdfWriter.close();
+    }
 }
 
 // ---------------------------------------------------------------------------

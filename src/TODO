@@ -1,7 +1,19 @@
 ---high-----------------------------------------------------------------------
 
-Refactor common functions into VtkReader
-Create VtkLegacyReader & VtkXmlReader subclasses of VtkReader
+Create vector.i, vector.j, vector.k analogues to scalar.one function
+Split zero function into scalar.zero, vector.zero?
+
+Write cigma kernel for remote operation
+Write own cigma object for debugging & tracking of memory
+Keep track of time and memory usage
+
+Commit testbuild directory in next version
+Add Field::activate() method to the Field interface so that we can add delayed
+  initialization of predefined fields in FieldSet (to implement lazy loading)
+Call Field::eval_batch() from 'cigma eval' method, instead of 'eval()' directly
+
+Refactor common functions into VtkReader (done)
+Create VtkLegacyReader & VtkXmlReader subclasses of VtkReader (not necessary)
 
 Change points->num to points->npts
 Rename ResidualField to Residuals

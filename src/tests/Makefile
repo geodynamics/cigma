@@ -27,6 +27,7 @@ TESTOBJS = \
 	TestZeroField.o \
 	TestFieldSet.o \
 	TestStringUtils.o \
+	TestVtkReader.o \
 
 
 TESTS = $(TESTOBJS:.o=.out)

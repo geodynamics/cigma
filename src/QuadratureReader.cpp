@@ -181,6 +181,7 @@ void QuadratureReader::load_quadrature()
             cerr << "Could not open quadrature points file " << pointsFile << endl;
             exit(1);
         }
+        cout << endl;
         cout << "quadrature points file = " << pointsFile << endl;
         ierr = pointsReader->get_dataset(pointsLoc.c_str(), &qx, &nq, &nd);
         if (ierr < 0)
@@ -242,6 +243,7 @@ void QuadratureReader::load_quadrature()
             cerr << "Could not open file " << quadratureFile << endl;
             exit(1);
         }
+        cout << endl;
         cout << "quadrature file = " << quadratureFile << endl;
 
         if (reader->getType() == Reader::HDF_READER)

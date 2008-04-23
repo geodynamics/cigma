@@ -2,6 +2,9 @@
 #include "PathUtils.h"
 #include "StringUtils.h"
 
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 using namespace std;
 
@@ -25,9 +28,9 @@ bool TextExtension(const char *ext)
 bool VtkExtension(const char *ext)
 {
     string fileExt = ext;
-    return (fileExt == ".vtk")
-            || (fileExt == ".vtu") || (fileExt == ".vts")
-            || (fileExt == ".pvtu") || (fileExt == ".pvts");
+    return (fileExt == ".vtk")  // legacy format
+            || (fileExt == ".vtu")  || (fileExt == ".vts")  || (fileExt == ".vtr")      // XML formats
+            || (fileExt == ".pvtu") || (fileExt == ".pvts") || (fileExt == ".pvtr");    // Parallel XML formats
 }
 
 bool LibExtension(const char *ext)
@@ -39,9 +42,16 @@ bool LibExtension(const char *ext)
 
 // ---------------------------------------------------------------------------
 
+//#define S_ISREG(mode)   (mode & _S_IFREG)
+//#define S_ISDIR(mode)   (mode & _S_IFDIR)
 bool FileExists(const char *filename)
 {
-    return false;
+    int old_errno = errno;
+    bool ret;
+    struct stat buf;
+    ret = (stat(filename, &buf) == 0) && S_ISREG(buf.st_mode);
+    errno = old_errno;
+    return ret;
 }
 
 bool IsHdfFile(const char *filename)
