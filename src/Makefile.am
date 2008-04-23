@@ -97,6 +97,8 @@ libcigma_a_SOURCES = \
 	ExtField.cpp \
 	ZeroField.h \
 	ZeroField.cpp \
+	UnitScalarField.h \
+	UnitScalarField.cpp \
 	TestBenchmarkFields.h \
 	TestBenchmarkFields.cpp \
 	GaleBenchmarkFields.h \
