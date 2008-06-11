@@ -75,7 +75,7 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
         vtkDataSetReader *legacy_reader = static_cast<vtkDataSetReader*>(algorithm);
         
         int err = legacy_reader->OpenVTKFile();
-        if (err != 0)
+        if (err == 0)
         {
             cerr << "Error " << err << ": Could not read " << legacy_reader->GetFileName() << endl;
             exit(1);
