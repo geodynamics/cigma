@@ -1,5 +1,8 @@
 ---high-----------------------------------------------------------------------
 
+Refer to http://www.springerlink.com/content/m402534764117579/
+
+Add --select-component flag (values: all, x, y, z)
 Create vector.i, vector.j, vector.k analogues to scalar.one function
 Split zero function into scalar.zero, vector.zero?
 
