@@ -28,15 +28,16 @@ def cubemesh(x):
         for j in xrange(n):
             for k in xrange(n):
                 coords[N(i,j,k)] = (x[i],x[j],x[k])
+
     for i in xrange(n-1):
         for j in xrange(n-1):
             for k in xrange(n-1):
                 c = C(i,j,k)
                 
-                connect[c,0] = N(i + 0, j + 0, k+0)
-                connect[c,1] = N(i + 1, j + 0, k+0)
-                connect[c,2] = N(i + 1, j + 1, k+0)
-                connect[c,3] = N(i + 0, j + 1, k+0)
+                connect[c,0] = N(i + 0, j + 0, k + 0)
+                connect[c,1] = N(i + 1, j + 0, k + 0)
+                connect[c,2] = N(i + 1, j + 1, k + 0)
+                connect[c,3] = N(i + 0, j + 1, k + 0)
 
                 connect[c,4] = N(i + 0, j + 0, k + 1)
                 connect[c,5] = N(i + 1, j + 0, k + 1)
