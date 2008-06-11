@@ -1,5 +1,7 @@
 ---high-----------------------------------------------------------------------
 
+man pages for cigma-compare(1), cigma-eval(1), cigma-extract(1), cigma-list(1)
+
 Refer to http://www.springerlink.com/content/m402534764117579/
 
 Add --select-component flag (values: all, x, y, z)
