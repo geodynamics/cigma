@@ -20,6 +20,7 @@ Residuals::Residuals()
 
     global_error = 0.0;
     max_residual = 0.0;
+    total_volume = 0.0;
 }
 
 Residuals::~Residuals()
@@ -46,6 +47,7 @@ void Residuals::reset_accumulator()
 
     global_error = 0.0;
     max_residual = 0.0;
+    total_volume = 0.0;
 
     for (int e = 0; e < nel; e++)
     {
@@ -53,12 +55,16 @@ void Residuals::reset_accumulator()
     }
 }
 
-void Residuals::update(int e, double cell_residual)
+void Residuals::update(int e, double cell_residual, double cell_volume)
 {
     assert(cell_residual >= 0);
+    assert(cell_volume > 0);
 
     // remember residual on this cell
-    epsilon[e] = cell_residual;
+    epsilon[e] = cell_residual / cell_volume;
+
+    // keep track of domain volume
+    total_volume += cell_volume;
 
     // keep track of max residual
     if (cell_residual > max_residual)
@@ -72,7 +78,10 @@ void Residuals::update(int e, double cell_residual)
 
 double Residuals::L2()
 {
-    return sqrt(global_error); // XXX: generalize to norm_pow(global_error)
+    assert(total_volume > 0);
+
+    // XXX: generalizes to norm_pow(global_error)
+    return sqrt(global_error) / total_volume;
 }
 
 double Residuals::max()

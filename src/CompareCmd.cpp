@@ -395,7 +395,9 @@ void compare(CompareCmd *env, FE_Field *field_a, FE_Field *field_b)
         bool cb = field_b->Field::eval(*(qr->points), phi_b);
         double err2 = qr->L2(phi_a, phi_b);
         double vol = qr->meshPart->cell->volume();
-        residuals->update(e, sqrt(err2)/vol);
+        //residuals->update(e, sqrt(err2)/vol);
+        //residuals->update(e, sqrt(err2));
+        residuals->update(e, sqrt(err2), vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -421,6 +423,9 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
     int nq = qr->points->n_points();
     int valdim = field_a->n_rank();
 
+    assert((nel*nq) == field_b->points->n_points());
+    assert(valdim == field_b->values->n_dim());
+
     // field values at quadrature points
     Points phi_a, phi_b;
     double *values_a = new double[nq * valdim];
@@ -439,11 +444,17 @@ void compare(CompareCmd *env, FE_Field *field_a, PointField *field_b)
         {
             double *globalPoint = (*(qr->points))[q];
             bool ca = field_a->eval(globalPoint, &values_a[q*valdim]);
-            bool cb = field_b->eval(globalPoint, &values_b[q*valdim]);
+            //bool cb = field_b->eval(globalPoint, &values_b[q*valdim]);
+            for (int i = 0; i < valdim; i++)
+            {
+                values_b[q*valdim + i] = field_b->values->data[q*valdim + i];
+            }
         }
         double err2 = qr->L2(phi_a, phi_b);
         double vol = qr->meshPart->cell->volume();
-        residuals->update(e, sqrt(err2)/vol);
+        //residuals->update(e, sqrt(err2)/vol);
+        //residuals->update(e, sqrt(err2));
+        residuals->update(e, sqrt(err2), vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -513,9 +524,10 @@ void compare(CompareCmd *env, Field *field_a, Field *field_b)
             }
         }
         double err2 = qr->L2(phi_a, phi_b);
-        //double vol = qr->meshPart->cell->volume();
+        double vol = qr->meshPart->cell->volume();
         //residuals->update(e, sqrt(err2)/vol);
-        residuals->update(e, sqrt(err2));
+        //residuals->update(e, sqrt(err2));
+        residuals->update(e, sqrt(err2), vol);
         env->update_timer(e);
     }
     env->end_timer();
@@ -542,12 +554,13 @@ int CompareCmd::run()
     }
 
     // double type dispatching
-    const bool double_dispatch = false;
+    const bool double_dispatch = true;
     if (double_dispatch)
     {
         Field::FieldType ta = field_a->getType();
         Field::FieldType tb = field_b->getType();
         
+        /*
         if ((ta == Field::FE_FIELD) && (tb == Field::FE_FIELD))
         {
             FE_Field *a = static_cast<FE_Field*>(field_a);
@@ -555,7 +568,7 @@ int CompareCmd::run()
             compare(this, a, b);
 
         }
-        else if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
+        else*/ if ((ta == Field::FE_FIELD) && (tb == Field::POINT_FIELD))
         {
             FE_Field *a = static_cast<FE_Field*>(field_a);
             PointField *b = static_cast<PointField*>(field_b);

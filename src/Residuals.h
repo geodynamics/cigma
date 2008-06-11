@@ -19,7 +19,7 @@ public:
 
 public:
     void reset_accumulator();
-    void update(int e, double cell_residual);
+    void update(int e, double cell_residual, double cell_volume);
     double L2();
     double max();
 
@@ -31,6 +31,7 @@ public:
     double *epsilon;
     double global_error;
     double max_residual;
+    double total_volume;
     MeshPart *meshPart;
 };
 
