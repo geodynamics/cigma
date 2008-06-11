@@ -52,8 +52,8 @@ void CommandSet::initialize()
     if (debug)
     {
         //addCommand(new SkelCmd());
-        addCommand(new CubeCmd());
-        addCommand(new SearchCmd());
+        //addCommand(new CubeCmd());
+        //addCommand(new SearchCmd());
         addCommand(new InfoCmd());
     }
 
