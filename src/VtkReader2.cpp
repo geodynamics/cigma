@@ -107,7 +107,7 @@ int VtkReader::open(const char *filename)
         }
         else if (ext == ".pvtr")
         {
-            xml_reader = vtkXMLRectilinearGridReader::New();
+            xml_reader = vtkXMLPRectilinearGridReader::New();
             gridReaderType = PVTR;
         }
         else
