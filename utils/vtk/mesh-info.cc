@@ -38,6 +38,11 @@ double BoxSize(double bounds[6])
     const double y1 = bounds[3];
     const double z0 = bounds[4];
     const double z1 = bounds[5];
+    
+    assert(x0 < x1);
+    assert(y0 < y1);
+    assert(z0 < z1);
+
     return dist(x1-x0, y1-y0, z1-z0);
 }
 
@@ -65,15 +70,12 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
         break;
     }
 
-    if (false)
-    {
-        cout << "Grid information" << endl;
-        dataset->Update();
-        dataset->PrintSelf(cout, 4);
-    }
+    dataset->Update();
+    //dataset->ComputeBounds();
 
     int n_points, n_cells;
     int e, emax;
+    double bounds[6];
     double h, hmax;
 
     hmax = 0.0;
@@ -82,7 +84,6 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
     n_points = dataset->GetNumberOfPoints();
     for (e = 1; e <= n_cells; e++)
     {
-        double bounds[6];
         dataset->GetCellBounds(e, bounds);
         h = BoxSize(bounds);
         if (h > hmax)
@@ -94,7 +95,30 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
     cout << "n = " << n_points << endl;
     cout << "e = " << n_cells << endl;
     cout << "h = " << hmax << endl;
+
+    dataset->GetBounds(bounds);
+    double H = BoxSize(bounds);
+    cout << "H = " << H << endl;
+    cout << "% = " << (100.0 * (h / H)) << endl;
+
+    if (true)
+    {
+        cout << endl;
+        cout << "Bounds = " << endl
+             << "  (Xmin,Xmax): " << bounds[0] << ", " << bounds[1] << endl
+             << "  (Ymin,Ymax): " << bounds[2] << ", " << bounds[3] << endl
+             << "  (Zmin,Zmax): " << bounds[4] << ", " << bounds[5] << endl;
+    }
+
+    if (false)
+    {
+        cout << "Grid information" << endl;
+        dataset->PrintSelf(cout, 4);
+    }
+
+    return;
 }
+
 
 // ---------------------------------------------------------------------------
 
