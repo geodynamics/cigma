@@ -6,7 +6,7 @@
 #include "NullReader.h"
 #include "HdfReader.h"
 #include "TextReader.h"
-#include "VtkReader.h"
+#include "VtkReader2.h"
 
 #include "PathUtils.h"
 

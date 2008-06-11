@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "VtkList.h"
-#include "VtkReader.h"
+#include "VtkReader2.h"
 
 #include "vtkDataSet.h"
 #include "vtkPointData.h"

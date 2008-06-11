@@ -130,8 +130,8 @@ libcigma_a_SOURCES = \
 	HdfReader.cpp \
 	TextReader.h \
 	TextReader.cpp \
-	VtkReader.h \
-	VtkReader.cpp \
+	VtkReader2.h \
+	VtkReader2.cpp \
 	VtkList.h \
 	VtkList.cpp \
 	\
