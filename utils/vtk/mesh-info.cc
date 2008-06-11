@@ -73,11 +73,27 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
     if (readerType == VTK)
     {
         vtkDataSetReader *legacy_reader = static_cast<vtkDataSetReader*>(algorithm);
+        
+        int err = legacy_reader->OpenVTKFile();
+        if (err != 0)
+        {
+            cerr << "Error " << err << ": Could not read " << legacy_reader->GetFileName() << endl;
+            exit(1);
+        }
+
         dataset = legacy_reader->GetOutput();
     }
     else
     {
         vtkXMLReader *xml_reader = static_cast<vtkXMLReader*>(algorithm);
+
+        int err = xml_reader->CanReadFile(xml_reader->GetFileName());
+        if (err == 0)
+        {
+            cerr << "Error " << err << ": Could not read " << xml_reader->GetFileName() << endl;
+            exit(2);
+        }
+
         dataset = xml_reader->GetOutputAsDataSet();
     }
 
