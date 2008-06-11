@@ -6,12 +6,30 @@
 #include <boost/filesystem.hpp>
 
 // VTK includes
+#include <vtkDataSetReader.h>
+#include <vtkXMLReader.h>
+
+#include <vtkXMLPRectilinearGridReader.h>
+#include <vtkXMLPStructuredGridReader.h>
 #include <vtkXMLPUnstructuredGridReader.h>
+
+#include <vtkXMLRectilinearGridReader.h>
+#include <vtkXMLStructuredGridReader.h>
+#include <vtkXMLUnstructuredGridReader.h>
+
+#include <vtkRectilinearGridReader.h>
+#include <vtkStructuredGridReader.h>
 #include <vtkUnstructuredGridReader.h>
+
+#include <vtkRectilinearGrid.h>
+#include <vtkStructuredGrid.h>
 #include <vtkUnstructuredGrid.h>
+
+#include <vtkDataSet.h>
 #include <vtkDataArray.h>
 #include <vtkCell.h>
 #include <vtkIdList.h>
+
 
 // ---------------------------------------------------------------------------
 
@@ -39,9 +57,9 @@ double BoxSize(double bounds[6])
     const double z0 = bounds[4];
     const double z1 = bounds[5];
     
-    assert(x0 < x1);
-    assert(y0 < y1);
-    assert(z0 < z1);
+    assert(x0 <= x1);
+    assert(y0 <= y1);
+    assert(z0 <= z1);
 
     return dist(x1-x0, y1-y0, z1-z0);
 }
@@ -49,29 +67,22 @@ double BoxSize(double bounds[6])
 void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
 {
     vtkDataSet *dataset = 0;
-    vtkUnstructuredGridReader *vtk_ug_reader = 0;
-    vtkXMLPUnstructuredGridReader *pvtu_reader = 0;
 
     algorithm->Update();
 
-    switch (readerType)
+    if (readerType == VTK)
     {
-    case VTK:
-        vtk_ug_reader = static_cast<vtkUnstructuredGridReader*>(algorithm);
-        dataset = vtk_ug_reader->GetOutput();
-        break;
-    case PVTU:
-        pvtu_reader = static_cast<vtkXMLPUnstructuredGridReader*>(algorithm);
-        dataset = pvtu_reader->GetOutput();
-        break;
-    default:
-        cerr << "Unsupported reader" << endl;
-        assert(false);
-        break;
+        vtkDataSetReader *legacy_reader = static_cast<vtkDataSetReader*>(algorithm);
+        dataset = legacy_reader->GetOutput();
+    }
+    else
+    {
+        vtkXMLReader *xml_reader = static_cast<vtkXMLReader*>(algorithm);
+        dataset = xml_reader->GetOutputAsDataSet();
     }
 
     dataset->Update();
-    //dataset->ComputeBounds();
+    dataset->ComputeBounds();
 
     int n_points, n_cells;
     int e, emax;
@@ -82,10 +93,12 @@ void PrintSize(vtkAlgorithm *algorithm, VtkReaderType readerType)
     emax = -1;
     n_cells = dataset->GetNumberOfCells();
     n_points = dataset->GetNumberOfPoints();
-    for (e = 1; e <= n_cells; e++)
+    for (e = 0; e < n_cells; e++)
     {
         dataset->GetCellBounds(e, bounds);
         h = BoxSize(bounds);
+        //cerr << h << endl;
+
         if (h > hmax)
         {
             hmax = h;
@@ -135,9 +148,39 @@ int main(int argc, char *argv[])
 
     if (ext == ".vtk")
     {
-        vtkUnstructuredGridReader *reader = vtkUnstructuredGridReader::New();
+        vtkDataSetReader *reader = vtkDataSetReader::New();
         reader->SetFileName(argv[1]);
         PrintSize(reader, VTK);
+    }
+    else if (ext == ".vtr")
+    {
+        vtkXMLRectilinearGridReader *reader = vtkXMLRectilinearGridReader::New();
+        reader->SetFileName(argv[1]);
+        PrintSize(reader, VTR);
+    }
+    else if (ext == ".vts")
+    {
+        vtkXMLStructuredGridReader *reader = vtkXMLStructuredGridReader::New();
+        reader->SetFileName(argv[1]);
+        PrintSize(reader, VTS);
+    }
+    else if (ext == ".vtu")
+    {
+        vtkXMLUnstructuredGridReader *reader = vtkXMLUnstructuredGridReader::New();
+        reader->SetFileName(argv[1]);
+        PrintSize(reader, VTU);
+    }
+    else if (ext == ".pvtr")
+    {
+        vtkXMLPRectilinearGridReader *reader = vtkXMLPRectilinearGridReader::New();
+        reader->SetFileName(argv[1]);
+        PrintSize(reader, PVTR);
+    }
+    else if (ext == ".pvts")
+    {
+        vtkXMLPStructuredGridReader *reader = vtkXMLPStructuredGridReader::New();
+        reader->SetFileName(argv[1]);
+        PrintSize(reader, PVTS);
     }
     else if (ext == ".pvtu")
     {
