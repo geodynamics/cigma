@@ -33,8 +33,14 @@ void ListCmd::setupOptions(AnyOption *opt)
 
     /* setup usage */
     opt->addUsage("Usage:");
-    opt->addUsage("   cigma list <file>.h5");
-    opt->addUsage("   cigma list <file>.vtk");
+    opt->addUsage("    cigma list <file>");
+    opt->addUsage("");
+    opt->addUsage("Supported file extensions:");
+    opt->addUsage("    .h5                - Cigma HDF5 files");
+    opt->addUsage("    .vtk               - Legacy VTK files");
+    opt->addUsage("    .vtu, .vts . vtr   - XML VTK files");
+    opt->addUsage("    .pvtu .pvts .pvtr  - XML Parallel VTK files");
+    
 
     /* setup flags and options */
     opt->setFlag("help", 'h');
