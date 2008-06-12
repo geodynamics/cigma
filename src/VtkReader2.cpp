@@ -190,7 +190,8 @@ static int GetDimensionFromCellType(int cellType)
         return 3;
     }
 
-    if ((cellType == VTK_HEXAHEDRON) ||
+    if ((cellType == VTK_VOXEL) ||
+        (cellType == VTK_HEXAHEDRON) ||
         (cellType == VTK_QUADRATIC_HEXAHEDRON) ||
         (cellType == VTK_PARAMETRIC_HEX_REGION) ||
         (cellType == VTK_HIGHER_ORDER_HEXAHEDRON))
