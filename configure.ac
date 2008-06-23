@@ -68,6 +68,11 @@ CIGMA_PATH_HDF5(
     [echo "Found HDF5 library!"],
     [AC_MSG_ERROR([HDF5 library not found; try specifying its prefix with the configure option --with-hdf5])])
 
+dnl Work-around MPICH SEEK_XXX issues, etc.
+CIGMA_PARALLEL_HDF5(
+    [CIT_HEADER_MPI],
+    [])
+
 dnl Check for vtk-5.0
 AM_PATH_VTK(
     [],
