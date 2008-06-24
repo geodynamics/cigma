@@ -8,8 +8,8 @@ libann_a_CPPFLAGS = -I$(srcdir)/ann/include
 libcigma_a_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/ann/include
 
 cigma_CPPFLAGS = -Wno-deprecated $(HDF5_INCLUDES) $(PYTHON_INCLUDES) $(VTK_INCLUDES) -I$(srcdir)/ann/include
-cigma_LDFLAGS = -I$(srcdir)/ann/include
-cigma_LDADD = $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) libcigma.a libann.a
+cigma_LDFLAGS =
+cigma_LDADD = libcigma.a $(HDF5_LIBS) $(HDF5_LDFLAGS) -L$(srcdir) $(PYTHON_LDFLAGS) $(PYTHON_LIBS) $(VTK_LIBS) libann.a
 
 ##############################################################################
 
