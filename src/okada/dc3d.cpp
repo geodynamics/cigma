@@ -9,6 +9,7 @@ typedef long int integer;
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 #include <stdio.h>
+#include <math.h>
 
 
 /* Common Block Declarations */
@@ -297,9 +298,6 @@ L99:
     static doublereal pi2 = 6.283185307179586;
     static doublereal eps = 1e-6;
 
-    /* Builtin functions */
-    double sin(doublereal), cos(doublereal);
-
     /* Local variables */
     static doublereal p18;
 
@@ -464,9 +462,6 @@ L99:
     static doublereal f1 = 1.;
     static doublereal f2 = 2.;
     static doublereal pi2 = 6.283185307179586;
-
-    /* Builtin functions */
-    double sqrt(doublereal), atan(doublereal), log(doublereal);
 
     /* Local variables */
     static integer i__;
@@ -782,9 +777,6 @@ L99:
     static doublereal f1 = 1.;
     static doublereal f2 = 2.;
     static doublereal eps = 1e-6;
-
-    /* Builtin functions */
-    double sqrt(doublereal), atan(doublereal), log(doublereal);
 
     /* Local variables */
     static doublereal ret, rxi;
