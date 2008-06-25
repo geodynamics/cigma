@@ -60,7 +60,8 @@ AC_CHECK_LIB(m,main)
 
 
 dnl Check for the python include directories
-CIGMA_PATH_PYTHON
+CIT_PYTHON_SYSCONFIG
+CIGMA_PATH_NUMPY
 
 dnl Check for zlib and hdf5
 CIGMA_PATH_ZLIB
