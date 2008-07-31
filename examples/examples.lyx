@@ -1,0 +1,234 @@
+#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\newcommand{\mynote}[1]{}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Examples
+\end_layout
+
+\begin_layout Standard
+In this chapter we will use sample datasets from the strike-slip benchmark
+ case defined by the CIG Short-Term Tectonics working group.
+ In this benchmark problem, we solve for the viscoelastic relaxation of
+ stresses from a single finite earthquake while ignoring gravity.
+ The problem is defined on a cube domain with sides of 24 km consisting
+ of two layers of different material types.
+ The top layer of the cube is nearly elastic, while the bottom layer is
+ viscoelastic.
+ (XXX: Anything else from Pylith manual or source?)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../../figures/strike-slip-fault.png
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Geometry of Strike-Slip Benchmark
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Convergence
+\end_layout
+
+\begin_layout Standard
+When the exact solution of your equations is known, the norm of the error
+ for a finite element solution is easily computed through the procedure
+ given in Chapter 
+\begin_inset LatexCommand ref
+reference "cha:Error-Analysis"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Another way of checking the accuracy of a solution is by rerunning the same
+ problem with a finer mesh.
+ Recall that in the finite element method, the weight functions and trial
+ solutions are chosen so that the finite element method is convergent.
+ In other words, as the element size 
+\begin_inset Formula $h$
+\end_inset
+
+ decreases, the solution tends to the correct solution.
+ Thus, if the difference between the coarse and fine mesh solutions is small,
+ we can conclude that the coarse mesh solution is quite accurate.
+ However, if a solution changes noticeably with refinement of the mesh,
+ the coarse mesh solution is inaccurate, and even the finer mesh may be
+ inadequate as well.
+\end_layout
+
+\begin_layout Standard
+As can be seen from these results, the log of the error varies linearly
+ with element size and the slope depends on the order of the element.
+ Denoting the slope by 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, then the error in the function can be expressed as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\log\varepsilon=\log C+\alpha\log h\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\log C$
+\end_inset
+
+ is an arbitrary constant, the y-intercept of the curve.
+ The slope 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is the rate of convergence of the element.
+ We can rewrite this as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\varepsilon=Ch^{\alpha}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+XXX: list of examples to discuss here
+\end_layout
+
+\begin_layout Standard
+Viscoelastic strikeslip example (tet vs.
+ hex elts) -- pylith-tet / pylith-hex
+\end_layout
+
+\begin_layout Standard
+Cylinder extension for maxwell material (newtonian) -- pylith / geofest
+ / analytic
+\end_layout
+
+\begin_layout Standard
+Cylinder extension for maxwell material (non-newtonian) -- pylith / geofest
+ / analytic
+\end_layout
+
+\begin_layout Standard
+Cylinder gravitation -- pylith / geofest / analytic
+\end_layout
+
+\begin_layout Standard
+Laplace example (linear, quadratic elements) -- deal.II / libmesh / analytic
+\end_layout
+
+\begin_layout Standard
+Citcom example (structured datasets) -- citcom (3d) / analytic
+\end_layout
+
+\begin_layout Standard
+Gale example (structured datasets) -- gale (2d) / analytic
+\end_layout
+
+\begin_layout Standard
+MADDs example -- 
+\end_layout
+
+\begin_layout Section
+Visualization
+\end_layout
+
+\begin_layout Standard
+The residual field obtained in the 
+\end_layout
+
+\end_body
+\end_document

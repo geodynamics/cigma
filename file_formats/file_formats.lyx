@@ -1,0 +1,403 @@
+#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\newcommand{\mynote}[1]{}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+File Formats
+\end_layout
+
+\begin_layout Standard
+To differentiate between these input and output file formats, you will need
+ to provide an appropriate file extension.
+ Currently recognized file extensions include 
+\family typewriter
+*.h5
+\family default
+ for HDF5 files, 
+\family typewriter
+*.vtk
+\family default
+ for legacy VTK files, and 
+\family typewriter
+*.dat
+\family default
+ for simple text files.
+\end_layout
+
+\begin_layout Section
+Input File Format
+\end_layout
+
+\begin_layout Standard
+There are five different objects you will want to use as input to Cigma,
+ all of which can be represented as two-dimensional datasets.
+ These are the 
+\end_layout
+
+\begin_layout Itemize
+mesh coordinates
+\end_layout
+
+\begin_layout Itemize
+mesh connectivity
+\end_layout
+
+\begin_layout Itemize
+field coefficients (degrees of freedom)
+\end_layout
+
+\begin_layout Itemize
+quadrature rule points
+\end_layout
+
+\begin_layout Itemize
+quadrature rule weights
+\end_layout
+
+\begin_layout Subsection
+HDF5
+\end_layout
+
+\begin_layout Standard
+HDF5 files are organized in a hierarchical structure, similar to a UNIX
+ file system.
+ Two types of primary objects, groups and datasets, are stored in this structure.
+ A group contains instances of zero or more groups or datasets, while a
+ dataset stores a multi-dimensional array of data elements.
+ Both kinds of objects are accompanied by supporting metadata known as attribute
+s.
+\end_layout
+
+\begin_layout Standard
+A dataset is physically stored in two parts: a header and a data array.
+ The header contains miscellaneous metadata describing the dataset as well
+ as information that is needed to interpret the array portion of the dataset.
+ Essentially, it includes the name, datatype, dataspace, and storage layout
+ of the dataset.
+ The name is a text string identifying the dataset.
+ The datatype describes the type of the data array elements.
+ The dataspace defines the dimensionality of the dataset, i.e., the size and
+ shape of the multi-dimensional array.
+\end_layout
+
+\begin_layout Standard
+In Cigma you always provide an explicit path to every dataset, so you have
+ a fair amount of flexibility for how you organize your datasets inside
+ HDF5 files.
+ For example, a typical Cigma HDF5 file could have the following structure.
+\end_layout
+
+\begin_layout LyX-Code
+model.h5
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+__ model
+\end_layout
+
+\begin_layout LyX-Code
+    |__ mesh
+\end_layout
+
+\begin_layout LyX-Code
+    |   |__ coordinates    [nno x nsd]
+\end_layout
+
+\begin_layout LyX-Code
+    |   
+\backslash
+__ connectivity   [nel x ndof]
+\end_layout
+
+\begin_layout LyX-Code
+    
+\backslash
+__ variables
+\end_layout
+
+\begin_layout LyX-Code
+        |__ temperature
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 1]
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 1]
+\end_layout
+
+\begin_layout LyX-Code
+        |   
+\backslash
+...
+\end_layout
+
+\begin_layout LyX-Code
+        |__ displacement
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+        |   
+\backslash
+...
+\end_layout
+
+\begin_layout LyX-Code
+        
+\backslash
+__ velocity
+\end_layout
+
+\begin_layout LyX-Code
+            |__ step00000  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+            |__ step00010  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+            
+\backslash
+...
+\end_layout
+
+\begin_layout Standard
+Generally, Cigma will only require you to specify the path to a specific
+ field dataset.
+ If a small amount of metadata is present in your field dataset, the rest
+ of the required information, such as which mesh and finite elements to
+ use, will be deduced from that metadata.
+\end_layout
+
+\begin_layout Description
+MeshID an identifier assigned for use in linking child datasets to their
+ parent mesh.
+\end_layout
+
+\begin_layout Description
+MeshLocation points to the HDF5 group which contains the appropriate coordinates
+ and connectivity datasets.
+\end_layout
+
+\begin_layout Description
+FunctionSpace string identifier to determine which shape functions to use
+ for interpolating values inside the element (e.g., tet4, hex8, quad4, tri3,
+ ...).
+\end_layout
+
+\begin_layout Description
+DatasetType string identifier for classifying the type of data contained
+ in the dataset (e.g., points, connectivity, degrees of freedom, quadrature
+ rules, global quadrature points, global field values).
+\end_layout
+
+\begin_layout Subsection
+VTK
+\end_layout
+
+\begin_layout Standard
+The current version of Cigma only supports VTK unstructured grid datasets
+ of a single element type.
+ You can still compare various unstructured grids with different element
+ types to each other.
+\end_layout
+
+\begin_layout Standard
+Note that while you typically provide a path (or name) for every dataset,
+ this is not necessary when specifying a VTK mesh, since this data is taken
+ from the special Points and Cells arrays, which you cannot rename.
+ However, you will still need to provide a name when referring to the field
+ coefficients, which are assumed to be stored as Point Data in the input
+ VTK file.
+\end_layout
+
+\begin_layout Standard
+For more information, you may want to refer to Visualization ToolKit's 
+\begin_inset LatexCommand htmlurl
+name "File Formats"
+target "www.vtk.org/pdf/file-formats.pdf"
+
+\end_inset
+
+ document.
+ 
+\end_layout
+
+\begin_layout Subsection
+Text
+\end_layout
+
+\begin_layout Standard
+The text format is always in table form, with the dimensions of the table
+ specified in the first line.
+ For example, mesh coordinates can be specified in the following format
+\end_layout
+
+\begin_layout LyX-Code
+<nno> <nsd>
+\end_layout
+
+\begin_layout LyX-Code
+x1 y1 z1
+\end_layout
+
+\begin_layout LyX-Code
+x2 y2 z2
+\end_layout
+
+\begin_layout LyX-Code
+x3 y3 z3
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+Mesh connectivity with 
+\end_layout
+
+\begin_layout LyX-Code
+nel ndofs
+\end_layout
+
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
+
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
+
+\begin_layout LyX-Code
+node_1 node_2 node_3 node_4 ...
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+A generic field with 
+\family typewriter
+ndim
+\family default
+ components (i.e., scalar, vector, or tensor) is specified by
+\end_layout
+
+\begin_layout LyX-Code
+num ndim
+\end_layout
+
+\begin_layout LyX-Code
+f1 f2 f3 ..
+\end_layout
+
+\begin_layout LyX-Code
+f1 f2 f3 ..
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+In this last case, the number of rows could refer to either 
+\family typewriter
+nno
+\family default
+ or 
+\family typewriter
+nel
+\family default
+, depending on whether the field is node-based or cell-based.
+\end_layout
+
+\begin_layout Section
+Output File Format
+\end_layout
+
+\begin_layout Standard
+The output format for residuals consists simply of a list of scalars for
+ each element in the discretization.
+ If you specify a 
+\family typewriter
+.vtk
+\family default
+ extension for your output file, this will result in an scalar dataset named
+ epsilon stored using the legacy VTK file format in the Cell Data section
+ of the output file.
+ Note that this output consists of the squared values of the local residuals,
+ so further post-processing will be necessary.
+\end_layout
+
+\end_body
+\end_document

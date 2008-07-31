@@ -1,0 +1,182 @@
+#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\newcommand{\mynote}[1]{}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+About Cigma
+\end_layout
+
+\begin_layout Standard
+The CIG Model Analyzer (Cigma) consists of a suite of tools for comparing
+ numerical models.
+ CIG has developed Cigma in response to demand from the short-term tectonics
+ community for a simple tool that can perform rigorous error analysis on
+ their finite element codes.
+ The long-term goal for Cigma, however, is for it to be used for nearly
+ all geodynamics modeling codes.
+\end_layout
+
+\begin_layout Standard
+The current version of Cigma is intended for the calculation of 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ residuals for finite element models.
+ This software was designed for performing the following three main tasks:
+ (1) error analysis, (2) benchmarking, and (3) code verification.
+ In error analysis, Cigma can calculate a global measure of the error between
+ two solutions by performing an integration over a discretized version of
+ the common domain.
+ This comparison can take place even when the underlying discretizations
+ do not overlap.
+ In benchmarking, Cigma can help the geodynamics community agree on a standard
+ solution to specific problems by facilitating the process of comparing
+ different numerical codes against each other.
+ Lastly, as an automated tool, Cigma can help application developers create
+ regression tests to ensure that software changes do not affect the consistency
+ of the results.
+\end_layout
+
+\begin_layout Standard
+At its core, Cigma draws from a variety of libraries.
+ The 
+\begin_inset LatexCommand htmlurl
+name "FInite element Automatic Tabulator (FIAT)"
+target "www.fenics.org/wiki/FIAT"
+
+\end_inset
+
+ Python Library supports generation of arbitrary order instances of the
+ Lagrange elements on lines, triangles, and tetrahedra.
+ It can also generate higher order instances of Jacobi-type quadrature rules
+ on the same element shapes.
+ The 
+\begin_inset LatexCommand htmlurl
+name "Approximate Nearest Neighbor (ANN)"
+target "www.cs.umd.edu/~mount/ANN/"
+
+\end_inset
+
+ Library, written in C++, supports data structures and algorithms for both
+ exact and nearest-neighbor searching in arbitrarily high dimensions.
+\end_layout
+
+\begin_layout Standard
+Both of these libraries extend and generalize Cigma's functionality so it
+ can handle other types of elements, and provide the ability to compare
+ vector fields.
+\end_layout
+
+\begin_layout Section
+Citation
+\end_layout
+
+\begin_layout Standard
+Computational Infrastructure for Geodynamics (CIG) is making this source
+ code available to you in the hope that the software will enhance your research
+ in geophysics.
+ This is a brand-new code and at present no papers are published or press.
+ Please cite this manual as follows:
+\end_layout
+
+\begin_layout Itemize
+Armendariz, L., and S.
+ Kientz.
+ 
+\emph on
+Cigma User Manual.
+
+\emph default
+ Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
+ URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
+\end_layout
+
+\begin_layout Standard
+CIG requests that in your oral presentations and in your papers that you
+ indicate your use of this code and acknowledge the author of the code and
+ 
+\begin_inset LatexCommand htmlurl
+name "CIG"
+target "geodynamics.org"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Support
+\end_layout
+
+\begin_layout Standard
+Cigma development is based upon work supported by the National Science Foundatio
+n under Grant No.
+ EAR-0406751.
+ Any opinions, findings, and conclusions or recommendations expressed in
+ this material are those of the authors and do not necessarily reflect the
+ views of the National Science Foundation.
+ The code is being released under the GNU General Public License.
+\end_layout
+
+\end_body
+\end_document

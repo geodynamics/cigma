@@ -1,0 +1,474 @@
+#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\newcommand{\mynote}[1]{}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+\begin_inset LatexCommand label
+name "cha:Error-Analysis"
+
+\end_inset
+
+Error Analysis
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+When studying differential equations that represent physical systems we
+ often obtain solutions by using a variety of techniques.
+ Solving these equations using classical analytical methods is almost impossible
+, so we often resort to numerical algorithms such as the finite element
+ method.
+\end_layout
+
+\begin_layout Standard
+For assessing the quality of the solution to our equations, it is important
+ to quantify the error in our numerical solutions.
+ To calculate this error, we will have to compare these solutions against
+ each other through the use of a distance measure between two functions.
+\end_layout
+
+\begin_layout Standard
+The simplest possible quantitative measure of the difference between two
+ distinct functions consists of taking the pointwise difference at a common
+ set of points.
+ While no finite sample of points can perfectly represent a continuum of
+ values, valuable information can be inferred from the statistics of the
+ resulting set of differences.
+ However, the fields we want to compare may not be defined at a common set
+ of points.
+ This simple measure becomes unapplicable.
+\end_layout
+
+\begin_layout Section
+Interpolation Functions
+\end_layout
+
+\begin_layout Standard
+[XXX] Because We can apply a number of interpolation function
+\end_layout
+
+\begin_layout Section
+Distance Measures
+\end_layout
+
+\begin_layout Standard
+A very useful distance measure we can use is the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm, defined by the following integral
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\varepsilon=||u-v||_{L_{2}}=\sqrt{\int_{\Omega}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}}\]
+
+\end_inset
+
+where 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ are the two functions on a global coordinate system.
+ This gives us a single global estimate 
+\begin_inset Formula $\varepsilon$
+\end_inset
+
+ representing the distance between the two fields 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ and 
+\begin_inset Formula $v(\vec{x})$
+\end_inset
+
+.
+ Alternatively, you may think of this as the size, or norm, of the residual
+ field 
+\begin_inset Formula $\rho(\vec{x})=u(\vec{x})-v(\vec{x})$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Integral Approximations
+\end_layout
+
+\begin_layout Standard
+For a general approximation to
+\end_layout
+
+\begin_layout Section
+Global Error Approximation
+\end_layout
+
+\begin_layout Standard
+If we discretize the domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ into an appropriate set of cells 
+\begin_inset Formula $\Omega_{1},\Omega_{2},\ldots,\Omega_{n_{el}}$
+\end_inset
+
+, we can compute the global error 
+\begin_inset Formula $\varepsilon^{2}$
+\end_inset
+
+ as a sum over localized cell contributions, 
+\begin_inset Formula $\varepsilon^{2}=\sum_{e}\varepsilon_{e}^{2}$
+\end_inset
+
+, where each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, we won't be able to integrate each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ exactly since either of the functions 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ may have an incompatible representation relative to the finite element
+ space on each domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+.
+ However, we can still calculate an approximation of each cell residual
+ by applying an appropriate quadrature rule with a tolerable truncation
+ error 
+\begin_inset LatexCommand cite
+key "Encyclopaedia of Cubature Formulas 2005"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To obtain an approximation to the integral of a function 
+\begin_inset Formula $F(\vec{x})$
+\end_inset
+
+ over a cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, we simply apply the quadrature rule with weights 
+\begin_inset Formula $w_{e,1},w_{e,2},\ldots,w_{e,n_{Q}}$
+\end_inset
+
+ and integration points 
+\begin_inset Formula $\vec{x}_{e,1},\vec{x}_{e,2},\ldots,\vec{x}_{e,n_{Q}}$
+\end_inset
+
+ appropriate for the physical element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applying this quadrature rule directly over the entire physical domain 
+\begin_inset Formula $\Omega=\cup\Omega_{e}$
+\end_inset
+
+ gives us 
+\begin_inset Formula \[
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reasons, it is undesirable in finite element applications
+ to perform calculations in a global coordinate system.
+ To avoid duplication of work, shape function evaluations may be performed
+ once on a reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ and then transformed back into the corresponding physical cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ as needed.
+\end_layout
+
+\begin_layout Standard
+To compute integrals of 
+\begin_inset Formula $F$
+\end_inset
+
+ in a reference coordinate system, we need to apply a change of variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\]
+
+\end_inset
+
+where 
+\color none
+the additional factor 
+\begin_inset Formula $J_{e}(\vec{\xi})=\det\left[\frac{d\vec{x}_{e}}{d\vec{\xi}}\right]$
+\end_inset
+
+ is the Jacobian determinant of the reference map 
+\begin_inset Formula $\vec{x}_{e}(\vec{\xi}):\hat{\Omega}\to\Omega_{e}$
+\end_inset
+
+.
+ This map describes how the physical points 
+\begin_inset Formula $\vec{x}\in\Omega_{e}$
+\end_inset
+
+ are transformed from the reference points 
+\begin_inset Formula $\vec{\xi}\in\hat{\Omega}$
+\end_inset
+
+.
+ Put another way, the inverse reference map 
+\color inherit
+
+\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})$
+\end_inset
+
+ tells us how the physical domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ maps into the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+At this point, we can assume without loss of generality that every physical
+ cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ can be derived from a single reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+, so that our quadrature rule becomes simply a set of weights 
+\begin_inset Formula $w_{1},\ldots,w_{n_{Q}}$
+\end_inset
+
+ and points 
+\begin_inset Formula $\vec{\xi}_{1},\ldots,\vec{\xi}_{n_{Q}}$
+\end_inset
+
+ over 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ After changing variables, we end up with the final form of the quadrature
+ rule that we can use to integrate the global residual field:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we let 
+\begin_inset Formula $F(\vec{x})=||u(\vec{x})-v(\vec{x})||^{2}$
+\end_inset
+
+ in the above expression, we can find the cell residual contribution over
+ 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ from
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\\
+ & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The global error 
+\begin_inset Formula $\varepsilon=\sqrt{\sum_{e}\varepsilon_{e}^{2}}$
+\end_inset
+
+ is then approximated by the expression
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can make a number of observations based on our final expression for the
+ global error,
+\end_layout
+
+\begin_layout Section
+Comparing Residuals
+\end_layout
+
+\begin_layout Standard
+For comparing errors of different solutions, you can normalize the global
+ error by the norm of the exact solution.
+ For a family of solutions 
+\begin_inset Formula $u^{h}(\vec{x})$
+\end_inset
+
+, parametrized by the the maximum element size 
+\begin_inset Formula $h$
+\end_inset
+
+ of the underlying discretization, and an exact solution 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+, this normalized error is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{rel} & = & \frac{||u-u^{h}||_{L_{2}}}{||u||_{L_{2}}}\\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u^{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This normalized error can be interpreted as the average error in the physical
+ quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
+ error.
+\end_layout
+
+\begin_layout Standard
+Even if the exact solution is not currently known, this normalized error
+ may be used to test the accuracy between two or more numerical solutions,
+ defined on successively refined meshes.
+\end_layout
+
+\end_body
+\end_document
