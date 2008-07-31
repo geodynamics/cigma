@@ -730,10 +730,6 @@ The simplest possible quantitative measure of the difference between two
 Interpolation Functions
 \end_layout
 
-\begin_layout Standard
-We can apply a number of interpolation
-\end_layout
-
 \begin_layout Section
 Distance Measures
 \end_layout
@@ -1043,7 +1039,7 @@ The global error
 
 \begin_layout Standard
 We can make a number of observations based on our final expression for the
- global error,
+ global error, (XXX: add observations here).
 \end_layout
 
 \begin_layout Section
