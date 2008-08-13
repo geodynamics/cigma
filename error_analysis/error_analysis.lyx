@@ -1,4 +1,4 @@
-#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -50,7 +50,113 @@ status open
 
 
 \backslash
-mynote{}
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+Purpose of this chapter is to provide a high-level description of cigma,
+ and just reference later chapters if we need to.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+In reference to error analysis, we introduce the topics in the following
+ order
+\end_layout
+
+\begin_layout Standard
+
+  - Quick reference to distance measures, both pointwise and global L2
+\end_layout
+
+\begin_layout Standard
+
+  - Define function as used in cigma
+\end_layout
+
+\begin_layout Standard
+
+  - Define integration rule in this chapter
+\end_layout
+
+\begin_layout Standard
+
+    * in general (1D, 2D, 3D)
+\end_layout
+
+\begin_layout Standard
+
+    * as applied to a discretization (sum over cells)
+\end_layout
+
+\begin_layout Standard
+
+    * generating own integration points (XXX: moved to integration.lyx) --
+ give references
+\end_layout
+
+\begin_layout Standard
+
+      (give warning about using a different reference element -- weights,
+ not just points, need to be adjusted -- perhaps this warning belongs in
+ the next chapter)
+\end_layout
+
+\begin_layout Standard
+
+  - Mention the interpolation functions that are available (XXX: moved to
+ interpolation.lyx)
+\end_layout
+
+\begin_layout Standard
+
+    * global functions (predefined: zero, scalar.one, ...)
+\end_layout
+
+\begin_layout Standard
+
+    * FEM on a given discretization (local interpolations on tet4, hex8,
+ tri3, quad3, ...
+ elements)
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Other tasks:
+\end_layout
+
+\begin_layout Standard
+
+  Change name of chapter to something else (no longer necessary)
+\end_layout
+
+\begin_layout Standard
+
+  Give formula in the last section
+\end_layout
+
+\begin_layout Standard
+
+  Move discussion of convergence order from examples.lyx and merge it at
+ the end of this chapter
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+}
 \end_layout
 
 \end_inset
@@ -67,23 +173,28 @@ name "cha:Error-Analysis"
 Error Analysis
 \end_layout
 
-\begin_layout Section
-Introduction
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Here, discuss motivation and goals.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-When studying differential equations that represent physical systems we
- often obtain solutions by using a variety of techniques.
- Solving these equations using classical analytical methods is almost impossible
-, so we often resort to numerical algorithms such as the finite element
- method.
-\end_layout
-
-\begin_layout Standard
-For assessing the quality of the solution to our equations, it is important
- to quantify the error in our numerical solutions.
- To calculate this error, we will have to compare these solutions against
- each other through the use of a distance measure between two functions.
+When solving differential equations representing physical systems of interest,
+ we are often able to obtain a family of solutions by applying a variety
+ of solution techniques.
+ Sometimes an analytic method can be found, but most of the time we end
+ up resorting to a numerical algorithm, such as the finite element method.
+ Assessing the quality of these solutions is an important task, so we would
+ like to develop a quantitative measure for indicating just how close our
+ solutions approach the exact answer.
 \end_layout
 
 \begin_layout Standard
@@ -93,21 +204,15 @@ The simplest possible quantitative measure of the difference between two
  While no finite sample of points can perfectly represent a continuum of
  values, valuable information can be inferred from the statistics of the
  resulting set of differences.
- However, the fields we want to compare may not be defined at a common set
- of points.
- This simple measure becomes unapplicable.
-\end_layout
-
-\begin_layout Section
-Interpolation Functions
+ However, the functions we want to compare may not be defined at a common
+ set of points.
+ Unless we are able to interpolate the two functions on an intermediate
+ set of points, this simple pointwise measure becomes inapplicable.
 \end_layout
 
 \begin_layout Standard
-[XXX] Because We can apply a number of interpolation function
-\end_layout
-
-\begin_layout Section
-Distance Measures
+Another quantitative measure we can define is the energy norm.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -132,12 +237,12 @@ where
 \begin_inset Formula $v$
 \end_inset
 
- are the two functions on a global coordinate system.
+ are the two functions defined on a global coordinate system.
  This gives us a single global estimate 
 \begin_inset Formula $\varepsilon$
 \end_inset
 
- representing the distance between the two fields 
+ representing the distance between the two functions 
 \begin_inset Formula $u(\vec{x})$
 \end_inset
 
@@ -152,7 +257,8 @@ where
 \end_inset
 
 .
- 
+ This measure is useful because it is well known that solutions obtained
+ with the finite element method converge only in a weak sense.
 \end_layout
 
 \begin_layout Section
@@ -160,11 +266,50 @@ Integral Approximations
 \end_layout
 
 \begin_layout Standard
-For a general approximation to
+In order to evaluate the integral for our 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm, we will need to specify an integration mesh which partitions the
+ common domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
-Global Error Approximation
+Interpolation Functions
+\end_layout
+
+\begin_layout Standard
+Our two functions 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ and 
+\begin_inset Formula $v(\vec{x})$
+\end_inset
+
+ are assumed to be defined on a common domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+.
+ Since the points 
+\begin_inset Formula $\vec{x}\in\Omega$
+\end_inset
+
+ are said to be defined on a global coordinate system.
+ If we define them 
+\end_layout
+
+\begin_layout Standard
+For more details, see Chapter 5.
+\end_layout
+
+\begin_layout Section
+Global Error Measure
 \end_layout
 
 \begin_layout Standard
@@ -413,6 +558,19 @@ The global error
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
 \varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
 
@@ -421,9 +579,16 @@ The global error
 
 \end_layout
 
+\end_inset
+
+
+\newline
+
+\end_layout
+
 \begin_layout Standard
 We can make a number of observations based on our final expression for the
- global error,
+ global error.
 \end_layout
 
 \begin_layout Section
@@ -434,7 +599,7 @@ Comparing Residuals
 For comparing errors of different solutions, you can normalize the global
  error by the norm of the exact solution.
  For a family of solutions 
-\begin_inset Formula $u^{h}(\vec{x})$
+\begin_inset Formula $u_{h}(\vec{x})$
 \end_inset
 
 , parametrized by the the maximum element size 
@@ -450,8 +615,8 @@ For comparing errors of different solutions, you can normalize the global
 
 \begin_layout Standard
 \begin_inset Formula \begin{eqnarray*}
-\varepsilon_{rel} & = & \frac{||u-u^{h}||_{L_{2}}}{||u||_{L_{2}}}\\
- & = & \frac{\int_{\Omega}||u(\vec{x})-u^{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
+\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{||u||_{L_{2}}}\\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
 
 \end_inset
 
@@ -468,6 +633,96 @@ This normalized error can be interpreted as the average error in the physical
 Even if the exact solution is not currently known, this normalized error
  may be used to test the accuracy between two or more numerical solutions,
  defined on successively refined meshes.
+\end_layout
+
+\begin_layout Section
+Convergence
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+TODO: Move discussion of convergence from old running.lyx into this section.
+\end_layout
+
+\begin_layout Standard
+Standard error estimate (Hughes, pg 190; Johnson, pg 97)
+\end_layout
+
+\begin_layout Standard
+Give formula for 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ for when we know the exact solution (only need two levels), and we are
+ testing our numerical code.
+\end_layout
+
+\begin_layout Standard
+Give formula for 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ for when we have three levels (same formula), and we are testing our code
+ for convergence.
+\end_layout
+
+\begin_layout Standard
+Talk about least squares fit for when we have more than three levels.
+ (mention scipy script, and reproduce it here, since it's short)
+\end_layout
+
+\begin_layout Standard
+SciPy script for optimizing least squares fit into the formula y = a*x^b
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For elliptic problems, we can prove a formula
+\end_layout
+
+\begin_layout Standard
+Even if the exact solution 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ is not known, we may calculate a convergence rate.
+ For a given family of solutions 
+\begin_inset Formula $u_{h}(\vec{x})$
+\end_inset
+
+, we may
+\end_layout
+
+\begin_layout Section
+Uses in Benchmarking
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Here we define what we mean by Benchmark, and how we can use.
+\end_layout
+
+\begin_layout Standard
+Give URLs for benchmark repositories on CIG svn tree.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If 
 \end_layout
 
 \end_body

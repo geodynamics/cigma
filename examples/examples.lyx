@@ -1,4 +1,4 @@
-#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -50,7 +50,280 @@ status open
 
 
 \backslash
-mynote{}
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+Here are the examples discussed in this section and the intended motivation
+ for introducing them
+\end_layout
+
+\begin_layout Standard
+
+  * Strikeslip Benchmark (without gravity)
+\end_layout
+
+\begin_layout Standard
+
+    - PyLith vs PyLith (hex8, tet4 elts...higher order available?)
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate convergence order using sequence of meshes -- generated
+ using cubit
+\end_layout
+
+\begin_layout Standard
+
+    - Analytic (okada) vs Pylith -- initial timestep
+\end_layout
+
+\begin_layout Standard
+
+    - Variables compared: displacement, velocity
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate vtk visualization techniques - cell-to-point filter, then
+ isosurface
+\end_layout
+
+\begin_layout Standard
+
+    - Same case but with gravity?
+\end_layout
+
+\begin_layout Standard
+
+    - http://www.geodynamics.org/cig/workinggroups/short/workarea/benchmarks/
+\end_layout
+
+\begin_layout Standard
+
+  * Poisson solution on unit cube
+\end_layout
+
+\begin_layout Standard
+
+    - Analytic vs deal.II vs libMesh
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of quadratic elements vs.
+ linear
+\end_layout
+
+\begin_layout Standard
+
+    - tet{4,10} convergence, hex{8,20,27} convergence -- where possible
+\end_layout
+
+\begin_layout Standard
+
+    - take a planar slice and plot differences there
+\end_layout
+
+\begin_layout Standard
+
+    - inter-element solution comparisons (tet4 vs hex8, tet10 vs.
+ hex8)
+\end_layout
+
+\begin_layout Standard
+
+  * Cylinder viscoelastic extension
+\end_layout
+
+\begin_layout Standard
+
+    - Analytic (cylinder_extension.*.*) vs.
+ GeoFEST(tet4) vs.
+ PyLith (tet4,hex8)
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of predefined function
+\end_layout
+
+\begin_layout Standard
+
+    - Maxwell material (cylinder_extension.maxwell.{displacement,velocity,stress})
+\end_layout
+
+\begin_layout Standard
+
+    - Non-newtonian material (cylinder_extension.non_newtonian.{displacement,veloc
+ity,stress})
+\end_layout
+
+\begin_layout Standard
+
+  * Cylinder viscoelastic relaxation
+\end_layout
+
+\begin_layout Standard
+
+    - Analytic (cylinder_relaxation.*.*) vs.
+ GeoFEST (tet4) vs.
+ PyLith (tet4,hex8)
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of extract/eval -- on integration mesh
+\end_layout
+
+\begin_layout Standard
+
+    - Effect of varying the integration order
+\end_layout
+
+\begin_layout Standard
+
+    - Maxwell material (cylinder_relaxation.maxwell.{displacement,velocity,stress}
+)
+\end_layout
+
+\begin_layout Standard
+
+    - Non-newtonian material (cylinder_relaxation.non_newtonian.{displacement,velo
+city,stress})
+\end_layout
+
+\begin_layout Standard
+
+  * Gale Circular Inclusion benchmark
+\end_layout
+
+\begin_layout Standard
+
+    - Analytic (circular_inclusion.pressure) vs.
+ Gale
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of the Parallel VTK Format (PVTS structured grid)
+\end_layout
+
+\begin_layout Standard
+
+    - limitations of FEM description (discontinuity near boundary of circle)
+\end_layout
+
+\begin_layout Standard
+
+    - need discontinuous elements, perhaps?
+\end_layout
+
+\begin_layout Standard
+
+  * Mantle Convection -- Cartesian
+\end_layout
+
+\begin_layout Standard
+
+    - CitcomCU convergence order
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of Parallel VTK Format (PVTR files)
+\end_layout
+
+\begin_layout Standard
+
+    - http://www.geodynamics.org/cig/workinggroups/mc/workarea/benchmark/
+\end_layout
+
+\begin_layout Standard
+
+  * Mantle Convection -- Spherical
+\end_layout
+
+\begin_layout Standard
+
+    - CitcomS vs HC
+\end_layout
+
+\begin_layout Standard
+
+    - Demonstrate use of global basis functions (spherical harmonics)
+\end_layout
+
+\begin_layout Standard
+
+  * MADDS
+\end_layout
+
+\begin_layout Standard
+
+    - Run SpecRidge example
+\end_layout
+
+\begin_layout Standard
+
+    - Compare spectral solution against higher order elements
+\end_layout
+
+\begin_layout Standard
+
+    - http://www.geodynamics.org/cig/workinggroups/magma/workarea/benchmark/
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+The core concept for this chapter is to show-case specific use cases for
+ cigma.
+\end_layout
+
+\begin_layout Standard
+All the necessary data should be available in the 
+\family typewriter
+examples/
+\family default
+ directory.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+The following points should be emphasized for each example:
+\end_layout
+
+\begin_layout Enumerate
+Problem definition and method used to obtain the solutions.
+\end_layout
+
+\begin_layout Enumerate
+Pre-processing step for preparing the data
+\end_layout
+
+\begin_layout Enumerate
+Cigma command line usage
+\end_layout
+
+\begin_layout Enumerate
+Post-processing step for visualizing the resulting residuals, or for calculating
+ the required convergence rate.
 \end_layout
 
 \end_inset
@@ -62,172 +335,64 @@ mynote{}
 Examples
 \end_layout
 
-\begin_layout Standard
-In this chapter we will use sample datasets from the strike-slip benchmark
- case defined by the CIG Short-Term Tectonics working group.
- In this benchmark problem, we solve for the viscoelastic relaxation of
- stresses from a single finite earthquake while ignoring gravity.
- The problem is defined on a cube domain with sides of 24 km consisting
- of two layers of different material types.
- The top layer of the cube is nearly elastic, while the bottom layer is
- viscoelastic.
- (XXX: Anything else from Pylith manual or source?)
+\begin_layout Section
+Strikeslip Benchmark
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename ../../figures/strike-slip-fault.png
-	width 5cm
-
+This benchmark problem computes the viscoelastic (Maxwell) relaxation of
+ stresses from a single, finite, strike-slip earthquake in 3D without gravity.
+ Dirichlet boundary conditions equal to the analytical elastic solution
+ are imposed on the sides of a cube with sides of length 24 km.
+ Anti-plane strain boundary conditions are imposed at 
+\begin_inset Formula $y=0$
 \end_inset
 
+, so the solution is equivalent to that for a domain with a 48 km length
+ in the 
+\begin_inset Formula $y$
+\end_inset
 
+ direction.
+ In the initial time-step, we can use the analytical solution both to apply
+ the boundary conditions, and to compare against the numerically-computed
+ elastic solution.
+\end_layout
+
+\begin_layout Subsection
+Problem Description
 \end_layout
 
 \begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Geometry of Strike-Slip Benchmark
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+Figure 8.X
 \end_layout
 
 \begin_layout Section
-Convergence
-\end_layout
-
-\begin_layout Standard
-When the exact solution of your equations is known, the norm of the error
- for a finite element solution is easily computed through the procedure
- given in Chapter 
-\begin_inset LatexCommand ref
-reference "cha:Error-Analysis"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-Another way of checking the accuracy of a solution is by rerunning the same
- problem with a finer mesh.
- Recall that in the finite element method, the weight functions and trial
- solutions are chosen so that the finite element method is convergent.
- In other words, as the element size 
-\begin_inset Formula $h$
-\end_inset
-
- decreases, the solution tends to the correct solution.
- Thus, if the difference between the coarse and fine mesh solutions is small,
- we can conclude that the coarse mesh solution is quite accurate.
- However, if a solution changes noticeably with refinement of the mesh,
- the coarse mesh solution is inaccurate, and even the finer mesh may be
- inadequate as well.
-\end_layout
-
-\begin_layout Standard
-As can be seen from these results, the log of the error varies linearly
- with element size and the slope depends on the order of the element.
- Denoting the slope by 
-\begin_inset Formula $\alpha$
-\end_inset
-
-, then the error in the function can be expressed as
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \[
-\log\varepsilon=\log C+\alpha\log h\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-where 
-\begin_inset Formula $\log C$
-\end_inset
-
- is an arbitrary constant, the y-intercept of the curve.
- The slope 
-\begin_inset Formula $\alpha$
-\end_inset
-
- is the rate of convergence of the element.
- We can rewrite this as
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \[
-\varepsilon=Ch^{\alpha}\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-XXX: list of examples to discuss here
-\end_layout
-
-\begin_layout Standard
-Viscoelastic strikeslip example (tet vs.
- hex elts) -- pylith-tet / pylith-hex
-\end_layout
-
-\begin_layout Standard
-Cylinder extension for maxwell material (newtonian) -- pylith / geofest
- / analytic
-\end_layout
-
-\begin_layout Standard
-Cylinder extension for maxwell material (non-newtonian) -- pylith / geofest
- / analytic
-\end_layout
-
-\begin_layout Standard
-Cylinder gravitation -- pylith / geofest / analytic
-\end_layout
-
-\begin_layout Standard
-Laplace example (linear, quadratic elements) -- deal.II / libmesh / analytic
-\end_layout
-
-\begin_layout Standard
-Citcom example (structured datasets) -- citcom (3d) / analytic
-\end_layout
-
-\begin_layout Standard
-Gale example (structured datasets) -- gale (2d) / analytic
-\end_layout
-
-\begin_layout Standard
-MADDs example -- 
+Cylinder Extension
 \end_layout
 
 \begin_layout Section
-Visualization
+Cylinder Relaxation
+\end_layout
+
+\begin_layout Section
+Circular Inclusion
+\end_layout
+
+\begin_layout Section
+Mantle Convection on Rectangular Box
 \end_layout
 
 \begin_layout Standard
-The residual field obtained in the 
+Given the benchmark files in /examples/mc1/
+\end_layout
+
+\begin_layout Section
+Mantle Convection on a Sphere
+\end_layout
+
+\begin_layout Standard
+Here we use the output from CitcomS and the spherical.
 \end_layout
 
 \end_body

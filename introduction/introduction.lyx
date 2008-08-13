@@ -1,4 +1,4 @@
-#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -50,7 +50,23 @@ status open
 
 
 \backslash
-mynote{}
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+Anything to emphasize here?
+\end_layout
+
+\begin_layout Standard
+
+  Talk about requirements: quantitative definition, automatic, verification
+ of numerical codes
+\end_layout
+
+\begin_layout Standard
+
+}
 \end_layout
 
 \end_inset
@@ -69,11 +85,6 @@ About Cigma
 \begin_layout Standard
 The CIG Model Analyzer (Cigma) consists of a suite of tools for comparing
  numerical models.
- CIG has developed Cigma in response to demand from the short-term tectonics
- community for a simple tool that can perform rigorous error analysis on
- their finite element codes.
- The long-term goal for Cigma, however, is for it to be used for nearly
- all geodynamics modeling codes.
 \end_layout
 
 \begin_layout Standard
@@ -81,12 +92,13 @@ The current version of Cigma is intended for the calculation of
 \begin_inset Formula $L_{2}$
 \end_inset
 
- residuals for finite element models.
+ residuals in finite element models, but can be extended to compare arbitrary
+ functions.
  This software was designed for performing the following three main tasks:
  (1) error analysis, (2) benchmarking, and (3) code verification.
- In error analysis, Cigma can calculate a global measure of the error between
- two solutions by performing an integration over a discretized version of
- the common domain.
+ In error analysis, Cigma can calculate a global measure of the differences
+ between two solutions by performing an integration over a discretized version
+ of the common domain.
  This comparison can take place even when the underlying discretizations
  do not overlap.
  In benchmarking, Cigma can help the geodynamics community agree on a standard
@@ -95,6 +107,34 @@ The current version of Cigma is intended for the calculation of
  Lastly, as an automated tool, Cigma can help application developers create
  regression tests to ensure that software changes do not affect the consistency
  of the results.
+\end_layout
+
+\begin_layout Standard
+CIG has developed Cigma in response to demand from the short-term tectonics
+ community for a simple tool that can perform rigorous error analysis on
+ their finite element codes.
+ The long-term goal for Cigma, however, is for it to be used for nearly
+ all geodynamics modeling codes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{implementation details -- move contents of this note to other chapters}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -125,6 +165,11 @@ target "www.cs.umd.edu/~mount/ANN/"
 Both of these libraries extend and generalize Cigma's functionality so it
  can handle other types of elements, and provide the ability to compare
  vector fields.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

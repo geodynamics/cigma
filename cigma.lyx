@@ -1,4 +1,4 @@
-#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -172,7 +172,39 @@ mynote{
 
 \begin_layout Standard
 
-  TODO: Update version on cover to version 1.0.0
+  Global TODO Items
+\end_layout
+
+\begin_layout Standard
+
+    * Don't forget to change version on cover to version 1.0.0
+\end_layout
+
+\begin_layout Standard
+
+    * Change the cover image to use a newer comparison
+\end_layout
+
+\begin_layout Standard
+
+    * Add description of basic ExodusII format in file_formats.lyx (delay
+ this to version 1.1)
+\end_layout
+
+\begin_layout Standard
+
+    * grep for Chapter and replace all chapter numbers by relative references
+\end_layout
+
+\begin_layout Standard
+
+    * Fix alignment of tables where appropriate (left/center/right justified)
+\end_layout
+
+\begin_layout Standard
+
+    * Fix alignment of table cells where appropriate (left/center/right
+ justified)
 \end_layout
 
 \begin_layout Standard
@@ -205,6 +237,33 @@ preview false
 
 \begin_layout Standard
 \begin_inset Include \include{error_analysis/error_analysis.lyx}
+preview false
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Include \include{interpolation/interpolation.lyx}
+preview false
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Include \include{integration/integration.lyx}
+preview false
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Include \include{file_formats/file_formats.lyx}
 preview false
 
 \end_inset
@@ -246,8 +305,74 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{file_formats/file_formats.lyx}
+\begin_inset Include \include{appendix/appendix.lyx}
 preview false
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+References:
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+* Hughes, Thomas J.R., The Finite Element Method: Linear Static and Dynamic
+ Finite Element Analysis, Prentice-Hall 1987 (use Dover ref instead)
+\end_layout
+
+\begin_layout Standard
+
+* Zienkiewicz, O.C., Taylor, R.L.
+ The Finite Element Method: The Basis (Vol.
+ 1)
+\end_layout
+
+\begin_layout Standard
+
+* Akin, J.E., Finite Element Analysis with Error Estimators, Elsevier 2005
+ (ISBN 0750667222)
+\end_layout
+
+\begin_layout Standard
+
+* Johnson, Claes - Numerical Solutions of Partial Differential Equations
+ by the Finite Element Method, Cambridge University Press 1987
+\end_layout
+
+\begin_layout Standard
+
+* Carlos Felippa, A Compendium of FEM integration formulas for symbolic
+ work, Engineering Computation, Volume 21, Number 8, 2004, pages 867-890
+\end_layout
+
+\begin_layout Standard
+
+ 
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
 
 \end_inset
 

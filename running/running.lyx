@@ -1,4 +1,4 @@
-#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -50,7 +50,245 @@ status open
 
 
 \backslash
-mynote{}
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+In general, verify that the output of the commands, whenever given, matches
+ the actual output when running a similar command
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Do not forget to mention the following:
+\end_layout
+
+\begin_layout Standard
+
+  - Default behaviour if a flag or option is not specified (eg., what if
+ we omit --output?)
+\end_layout
+
+\begin_layout Standard
+
+  - Common flags:
+\end_layout
+
+\begin_layout Standard
+
+     Misc options: --quiet and --verbose (misc option)
+\end_layout
+
+\begin_layout Standard
+
+     Hidden options: --debug flag to enable logging
+\end_layout
+
+\begin_layout Standard
+
+  - Turn off logging if --disable-logging is given to ./configure script
+ (logging on by default)
+\end_layout
+
+\begin_layout Standard
+
+  - The --output option needs an override flag so we can force the rewriting
+ of specific datasets
+\end_layout
+
+\begin_layout Standard
+
+     * Default behavior? Exit if output dataset already exists
+\end_layout
+
+\begin_layout Standard
+
+     * Possible names if default behavior is to exit: --force-writes, --force-ou
+tput, --overwrite-output
+\end_layout
+
+\begin_layout Standard
+
+     * Possible names if default is to allow overwrites: --dont-overwrite
+\end_layout
+
+\begin_layout Standard
+
+  - Addition modifiers to compare command?
+\end_layout
+
+\begin_layout Standard
+
+     * Try --weighed-residuals={0,1} flag in order to divide the cell residuals
+ by the volume
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Given the context of the previous chapter (on file formats), define the
+\end_layout
+
+\begin_layout Standard
+
+'Dataset Path' when discussing the location of datasets within a file
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+XXX: Split the discussion of datasets and I/O into their corresponding chapters
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+  Ensure that most instances of the world 'Field' are replaced by 'Function'
+\end_layout
+
+\begin_layout Standard
+
+  Ensure that 'Quadrature Rule' is changed into 'Integration Rule'
+\end_layout
+
+\begin_layout Standard
+
+  Reference datasets in HDF5 files as 'Simple Arrays'
+\end_layout
+
+\begin_layout Standard
+
+  Discuss ExodusII format
+\end_layout
+
+\begin_layout Standard
+
+  Discuss VTK formats: Legacy VTK (.vtk), Unstructured Grid (.vtu), Structured
+ Grid (.vts), Rectilinear Grid (.vtr)
+\end_layout
+
+\begin_layout Standard
+
+  Discuss Parallel VTK formats: *.pvtu, *.pvts, *.pvtr
+\end_layout
+
+\begin_layout Standard
+
+  Discuss UCD format: *.inp, *.ucd -- uses class vtkAVSucdReader from the
+ VTK API
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Mention man pages as well -- which also provide an EXAMPLES section
+\end_layout
+
+\begin_layout Standard
+
+  Usage string from 'cigma help' displays short form of command -- using
+ the positional arguments
+\end_layout
+
+\begin_layout Standard
+
+  Commonly used long options are also provided
+\end_layout
+
+\begin_layout Standard
+
+  For more advanced usage, 'man cigma-compare' would bring up more examples.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Don't forget to mention that every positional argument can also be specified
+ through the use of a long option
+\end_layout
+
+\begin_layout Standard
+
+Mention common flags, such as --quiet and --verbose for tuning the amount
+ of output, and --debug for turning on logging (off by default)
+\end_layout
+
+\begin_layout Standard
+
+In general, --verbose should turn on the progress meter for long-running
+ operations, while --quiet will emit the minimal amount of output (none
+ for most commands, but the compare command should output just the (L2 norm,
+ Linf norm, time in seconds))
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Command for tracking memory usage of a running process?
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+----------------------------
+\end_layout
+
+\begin_layout Standard
+
+The default data storage format for Cigma is the Hierarchical Data Format
+ (HDF5), a portable file format developed at the $X .
+ The HDF5 is designed for storing multi-dimensional arrays together with
+ meta-data in a portable self-describing format.
+ X = [National Center for Supercomputing Applications (NCSA)](hdf.ncsa.uiuc.edu/HDF
+5)
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+-----------------------------------------------------
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+}
 \end_layout
 
 \end_inset
@@ -68,8 +306,9 @@ Running Cigma
 \end_layout
 
 \begin_layout Standard
-Cigma is primarily designed for calculating error estimates between arbitrary
- fields, so its primary usage is centered on the following operation
+As mentioned in the first chapter, Cigma is primarily designed for calculating
+ error estimates between arbitrary functions.
+ Therefore its primary usage revolves around the following operation
 \end_layout
 
 \begin_layout LyX-Code
@@ -78,37 +317,31 @@ $
 cigma compare 
 \emph on
 \bar under
-field1
+FunctionA
 \emph default
 \bar default
  
 \emph on
 \bar under
-field2
+FunctionB
 \emph default
 \bar default
  -o residuals.vtk
 \end_layout
 
 \begin_layout Standard
-You will need to provide two datasets describing each of the two fields,
- specify an integration rule and a domain discretization over which to integrate
-, although these last two will have reasonable defaults if they are not
- specified.
+In general, you will provide two paths pointing to the location of the data
+ describing the two functions you wish to compare, although in special cases
+ you will be able to refer to specific functions by name instead.
 \end_layout
 
 \begin_layout Standard
-The default data storage format for Cigma is the Hierarchical Data Format
- (HDF5), a portable file format developed at the 
-\begin_inset LatexCommand htmlurl
-name "National Center for Supercomputing Applications (NCSA)"
-target "hdf.ncsa.uiuc.edu/HDF5"
-
-\end_inset
-
-.
- The HDF5 is designed for storing multi-dimensional arrays together with
- meta-data in a portable self-describing format.
+You may also need to provide further information by using additional command
+ line options.
+ For example, you may want to use a different domain discretization for
+ the numerical integration step.
+ or you may need to increase the order of the quadrature rule in order to
+ improve accuracy of the integration.
 \end_layout
 
 \begin_layout Section
@@ -116,490 +349,21 @@ Command Line Interface
 \end_layout
 
 \begin_layout Standard
-Cigma is designed to be scriptable.
- Thus, all operations can be specified as command-line arguments given to
- a single executable called 
-\family typewriter
-cigma
-\family default
-.
- A set of available commands can be obtained by typing
-\end_layout
-
-\begin_layout LyX-Code
-
-\family typewriter
-$ 
-\family default
-\series bold
-cigma help
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Usage: cigma <subcommand> [options]
-\end_layout
-
-\begin_layout LyX-Code
-Type 'cigma help <subcommand>' for help on a specific subcommand.
-\end_layout
-
-\begin_layout LyX-Code
-Available subcommands
-\end_layout
-
-\begin_layout LyX-Code
-   help
-\end_layout
-
-\begin_layout LyX-Code
-   list
-\end_layout
-
-\begin_layout LyX-Code
-   extract
-\end_layout
-
-\begin_layout LyX-Code
-   eval
-\end_layout
-
-\begin_layout LyX-Code
-   compare 
-\end_layout
-
-\begin_layout Standard
-Examples for each of these commands are given in the sections below.
-\end_layout
-
-\begin_layout Section
-Input and Output Formats
-\end_layout
-
-\begin_layout Standard
-The underlying data storage format for Cigma is the HDF5 format, due to
- its flexibility for storing and organizing large amounts of data.
- The Hierarchical Data Format (HDF) is designed for storing, retrieving,
- analyzing, visualizing, and converting scientific data.
- It uses a hierarchical structure that provides users a host of options
- for organizing how their data is stored in HDF5 files.
- Using HDF5 datasets in Cigma allows us to avoid having to convert between
- too many distinct formats.
- Moreover, due to the amount of disk I/O, large finite element meshes can
- be handled more efficiently in binary format.
- 
-\end_layout
-
-\begin_layout Standard
-Another popular format for providing mesh and field inputs.You can easily
- examine the structure of an input file by using the 
-\family typewriter
-cigma list
-\family default
- command, which will simply reveal the names and dimensions of all datasets
- inside the specified file.
-\end_layout
-
-\begin_layout Standard
-Inputs can be either HDF5 or VTK.
- Specifying the complete path to a dataset consists of the special form
- 
-\family typewriter
-\series bold
-filepath:dataset
-\family default
-\series default
-, a colon-delimited pair of file path and dataset path.
-\end_layout
-
-\begin_layout Standard
-Mesh inputs are currently only unstructured grids.
-\end_layout
-
-\begin_layout Standard
-Only exception are the residuals, which are written in legacy VTK format
- as scalar cell data over an unstructured grid.
-\end_layout
-
-\begin_layout Standard
-XXX New section?
-\end_layout
-
-\begin_layout Standard
-Because Cigma relies on the ability of the user to specify dataset paths,
- we have provided a command called 
-\family typewriter
-list
-\family default
- for viewing the structure of an input file.
- Its usage is very simple.
- 
-\end_layout
-
-\begin_layout Standard
-To view the structure of an HDF5 file:
-\end_layout
-
-\begin_layout LyX-Code
-$ 
-\series bold
-cigma list file.h5
-\end_layout
-
-\begin_deeper
-\begin_layout LyX-Code
-/mesh/coordinates           Dataset {119827, 3}
-\end_layout
-
-\begin_layout LyX-Code
-/mesh/connectivity          Dataset {661929, 4}
-\end_layout
-
-\begin_layout LyX-Code
-/vars/displacement/step0    Dataset {119827, 3}
-\end_layout
-
-\end_deeper
-\begin_layout Standard
-You can also view the structure of a VTK file with this command:
-\end_layout
-
-\begin_layout LyX-Code
-$ 
-\series bold
-cigma list file.vtk
-\end_layout
-
-\begin_deeper
-\begin_layout LyX-Code
-Reading file.vtk
-\end_layout
-
-\begin_layout LyX-Code
-Points = 119827
-\end_layout
-
-\begin_layout LyX-Code
-Cells = 661929
-\end_layout
-
-\begin_layout LyX-Code
-PointDataArray[0] = displacements_t0 (119827 x 3)
-\end_layout
-
-\end_deeper
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Section
-Cigma Datasets
-\end_layout
-
-\begin_layout Standard
-A field is a function which assigns a physical quantity to every point in
- a domain 
-\begin_inset Formula $\Omega$
-\end_inset
-
-.
- This quantity may correspond to a scalar, a vector, or even a tensor.
- As in Chapter 
-\begin_inset LatexCommand ref
-reference "cha:Error-Analysis"
-
-\end_inset
-
-, we shall use the same discretization 
-\begin_inset Formula $\Omega_{e}$
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-A finite element approximation to an solution field 
-\begin_inset Formula $\phi(\vec{x})$
-\end_inset
-
- on an element 
-\begin_inset Formula $\Omega_{e}$
-\end_inset
-
- is essentially specified by the weighed sum over a fixed set of local shape
- functions 
-\begin_inset Formula $\phi_{e,1}(\vec{\xi}),\phi_{e,2}(\vec{\xi}),\ldots,\phi_{e,N}(\vec{\xi})$
-\end_inset
-
- defined on the appropriate reference cell,
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \[
-\phi(\vec{x})=\sum_{n=1}^{N}d_{e,n}\phi_{e,n}(\vec{\xi})\]
-
-\end_inset
-
-where the global point 
-\begin_inset Formula $\vec{x}\in\Omega_{e}$
-\end_inset
-
- corresponds to the local reference point 
-\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})\in\hat{\Omega}$
-\end_inset
-
-, and the weights 
-\begin_inset Formula $d_{e,n}$
-\end_inset
-
-, also known as degrees of freedom, are given on each global node.
- These shape functions define a basis for the function space on the finite
- element 
-\begin_inset Formula $\Omega_{e}$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-For a mesh consisting of a single element type, we need to specify the 
-\begin_inset Formula $(x_{n},y_{n},z_{n})$
-\end_inset
-
- of its degrees of freedom, and the connectivity relations 
-\begin_inset Formula $\Omega_{e}=\{n_{1},n_{2},\ldots\}$
-\end_inset
-
- among them which define each individual element in the corresponding discretiza
-tion.
-\end_layout
-
-\begin_layout Standard
-The most common element types used in the finite element method are given
- by the following shape functions, which define the interior of a tetrahedron
- with vertices at 
-\begin_inset Formula $a=(0,0,0)$
-\end_inset
-
-, 
-\begin_inset Formula $b=(1,0,0)$
-\end_inset
-
-, 
-\begin_inset Formula $c=(0,1,0)$
-\end_inset
-
-, 
-\begin_inset Formula $d=(0,0,1)$
-\end_inset
-
-, 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
+\begin_inset ERT
 status open
 
 \begin_layout Standard
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "b"
-use_parbox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-N_{a} & = & \frac{1}{2}(-1-x-y-z)\\
-N_{b} & = & \frac{1}{2}(1+x)\\
-N_{c} & = & \frac{1}{2}(1+y)\\
-N_{d} & = & \frac{1}{2}(1+z)\end{eqnarray*}
-
-\end_inset
 
 
+\backslash
+mynote{Summarize commands.
+ Explain 'cigma help foo' and 'man cigma-foo'.
+ Include flow diagram showing the relationship between the various commands.}
 \end_layout
 
 \end_inset
 
 
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "c"
-use_parbox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status collapsed
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename ../../figures/reference-tet4.png
-	width 5cm
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reference Tetrahedron
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Likewise, a hexahedral element with vertices located at 
-\begin_inset Formula $a=(-1,-1,-1)$
-\end_inset
-
-, 
-\begin_inset Formula $b=(1,-1,-1)$
-\end_inset
-
-, 
-\begin_inset Formula $c=(1,1,-1)$
-\end_inset
-
-, 
-\begin_inset Formula $d=(-1,1,-1)$
-\end_inset
-
-, 
-\begin_inset Formula $e=(-1,-1,1)$
-\end_inset
-
-, 
-\begin_inset Formula $f=(1,-1,1)$
-\end_inset
-
-, 
-\begin_inset Formula $g=(1,1,1)$
-\end_inset
-
-, 
-\begin_inset Formula $h=(-1,1,1)$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "c"
-use_parbox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status collapsed
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename ../../figures/reference-hex8.png
-	width 5cm
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Frameless
-position "c"
-hor_pos "c"
-has_inner_box 1
-inner_pos "c"
-use_parbox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-N_{a} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1-z\right)\\
-N_{b} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1-z\right)\\
-N_{c} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1-z\right)\\
-N_{d} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1-z\right)\\
-N_{e} & = & \frac{1}{8}\left(1-x\right)\left(1-y\right)\left(1+z\right)\\
-N_{f} & = & \frac{1}{8}\left(1+x\right)\left(1-y\right)\left(1+z\right)\\
-N_{g} & = & \frac{1}{8}\left(1-x\right)\left(1+y\right)\left(1+z\right)\\
-N_{h} & = & \frac{1}{8}\left(1+x\right)\left(1+y\right)\left(1+z\right)\end{eqnarray*}
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Caption
-
-\begin_layout Standard
-Reference Hexahedron
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-XXX: Take description of higher order elements from Karniadakis book
 \end_layout
 
 \begin_layout Subsection
