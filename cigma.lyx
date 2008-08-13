@@ -263,7 +263,7 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{file_formats/file_formats.lyx}
+\begin_inset Include \include{formats/formats.lyx}
 preview false
 
 \end_inset
