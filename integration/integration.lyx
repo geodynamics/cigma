@@ -1,0 +1,195 @@
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\newcommand{\mynote}[1]{}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+Go over numerical integration in 2d and 3d.
+\end_layout
+
+\begin_layout Standard
+
+Required order of numerical integration.
+\end_layout
+
+\begin_layout Standard
+
+Give references to defining your own points here.
+ Explain how to use the scripts here.
+\end_layout
+
+\begin_layout Standard
+
+For each element, give the default quadrature rule employed and its order
+ of accuracy.
+\end_layout
+
+\begin_layout Standard
+
+Give more examples of quadrature rules.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Mention tabulation of shape function values here.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+References to mention here:
+\end_layout
+
+\begin_layout Standard
+
+  FIAT homepage
+\end_layout
+
+\begin_layout Standard
+
+  FILIPPA mathematica notebooks
+\end_layout
+
+\begin_layout Standard
+
+  Encyclopedia of Cubature Formulas (url?)
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+The core concepts to get across in this chapter are the following:
+\end_layout
+
+\begin_layout Enumerate
+Each element in Cigma is assigned a default quadrature rule
+\end_layout
+
+\begin_layout Enumerate
+Explain briefly how quadrature rules are obtained (product rules)
+\end_layout
+
+\begin_layout Enumerate
+Error bound on integration (dependent on the discretization size h, and
+ the order of integration q).
+\end_layout
+
+\begin_layout Enumerate
+How to obtain more quadrature rules (encyclopedia website, FIAT, mathematica
+ scripts -- don't forget to mention caveat about using rules that use different
+ reference cells -- points transform according to map, while weights are
+ multiplied by the appropriate jacobian factor).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Numerical Integration
+\end_layout
+
+\begin_layout Standard
+In order to calculate the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm integral from Chapter 3, we must resort to numerical integration.
+ Additionally, we may want to specify a distinct integration mesh which
+ does not match the underlying discretization of the functions being compared.
+\end_layout
+
+\begin_layout Section
+Reference Regions
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Subsection
+Line Segment Rules
+\end_layout
+
+\begin_layout Subsection
+Triangles
+\end_layout
+
+\begin_layout Subsection
+Quadrilaterals
+\end_layout
+
+\begin_layout Subsection
+Tetrahedra
+\end_layout
+
+\end_body
+\end_document
