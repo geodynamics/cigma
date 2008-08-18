@@ -44,7 +44,7 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
@@ -244,8 +244,7 @@ Interpolation Functions
 \end_layout
 
 \begin_layout Standard
-Because Cigma will perform comparisons on a common domain, we will typically
- have defined.
+Because we wish to integrate 
 \end_layout
 
 \begin_layout Section
@@ -265,12 +264,116 @@ Defined locally over a discretization of the domain of interest.
 Domain Discretization
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Definition of mesh here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A typical discretization will partition the domain of interest into a large
+ number of cells.
+ 
+\end_layout
+
+\begin_layout Standard
+A set of cells which partition the domain.
+ These cells are defined geometrically by a number of node points, which
+ together with a set of connectivity rules.
+ This set of node points will have a number of degrees of freedom associated
+ with them.
+ An interpolation function can be.
+\end_layout
+
 \begin_layout Subsection
 Interpolation Step
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Shape functions.
+ Interpolant function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once we arrive at a solution on a cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, we can define an interpolant function that will give us
+\end_layout
+
 \begin_layout Subsection
 Available Elements
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Reference domain.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Tetrahedra
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Reference domain.
+ Shape functions.
+ Jacobian determinant and volume.
+ Interior test.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Hexahedron
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Reference cell.
+ Shape functions.
+ Jacobian determinant & volume.
+ Interior test.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -747,7 +850,11 @@ By default, we compile a number of functions into Cigma.
  Finally, the third class of functions consists of example benchmark cases
  that you may use to define your own.
 \newline
-Basic functions
+
+\newline
+There are two basic functions that are
+ available, listed in the table below.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -808,7 +915,11 @@ Always evaluates to 1.
 
 
 \newline
-Test functions
+
+\newline
+The following functions have short definitions and are available for internal
+ testing purposes.
+ Mainly, these are used to make sure Cigma returns consistent results 
 \end_layout
 
 \begin_layout Standard
@@ -911,6 +1022,8 @@ Vector field in 2-dimensions
 
 
 \newline
+
+\newline
 Cylinder extension case (maxwell and non-newtonian materials)
 \end_layout
 
@@ -1001,6 +1114,8 @@ cylinder_ext.non_newt_mat.stress
 
 \end_inset
 
+
+\newline
 
 \newline
 Cylinder relaxation case (maxwell and non-newtonian materials)
@@ -1095,7 +1210,9 @@ cylinder_rel.non_newt_mat.stress
 
 
 \newline
-Circular inclusion
+
+\newline
+Using Gale, we may compute various
 \end_layout
 
 \begin_layout Standard
@@ -1122,7 +1239,11 @@ circular_inclusion.pressure
 
 
 \newline
-Strike-slip benchmark (no gravity)
+
+\newline
+We can also calculate the initial step of the strike-slip benchmark (no
+ gravity) discussed in Chapter 8.
+ This is based on the Okada (1992) dislocation code.
 \end_layout
 
 \begin_layout Standard
@@ -1174,6 +1295,10 @@ strikeslip.disloc3d.stress
 \end_inset
 
 
+\newline
+
+\newline
+
 \end_layout
 
 \begin_layout Subsection
@@ -1182,10 +1307,10 @@ Defining Your Own Global Function
 
 \begin_layout Standard
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Standard
-Show a skeleton definition for a subclass of cigma::Function.
+Show example subclass of cigma::Function.
 \end_layout
 
 \end_inset

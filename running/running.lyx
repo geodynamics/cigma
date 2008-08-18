@@ -345,6 +345,15 @@ You may also need to provide further information by using additional command
 \end_layout
 
 \begin_layout Section
+Data Paths
+\end_layout
+
+\begin_layout Standard
+In the previous chapter we studied the layout.
+ Now throughout this chapter we will reference..
+\end_layout
+
+\begin_layout Section
 Command Line Interface
 \end_layout
 

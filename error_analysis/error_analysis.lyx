@@ -636,7 +636,7 @@ Even if the exact solution is not currently known, this normalized error
 \end_layout
 
 \begin_layout Section
-Convergence
+Convergence Rates
 \end_layout
 
 \begin_layout Standard
@@ -684,20 +684,28 @@ SciPy script for optimizing least squares fit into the formula y = a*x^b
 \end_layout
 
 \begin_layout Standard
-For elliptic problems, we can prove a formula
-\end_layout
-
-\begin_layout Standard
 Even if the exact solution 
 \begin_inset Formula $u(\vec{x})$
 \end_inset
 
- is not known, we may calculate a convergence rate.
- For a given family of solutions 
+ is not known, but we have calculated a family of solutions 
 \begin_inset Formula $u_{h}(\vec{x})$
 \end_inset
 
-, we may
+ on discrete meshes, we may calculate a convergence rate by using the standard
+ error estimate you will find in textbooks: 
+\begin_inset Formula $||u-u_{h}||_{p}\leq Ch^{\alpha},$
+\end_inset
+
+where 
+\begin_inset Formula $C$
+\end_inset
+
+ is independent of both 
+\begin_inset Formula $h$
+\end_inset
+
+ and 
 \end_layout
 
 \begin_layout Section
@@ -706,7 +714,7 @@ Uses in Benchmarking
 
 \begin_layout Standard
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Standard
 Here we define what we mean by Benchmark, and how we can use.
@@ -722,7 +730,7 @@ Give URLs for benchmark repositories on CIG svn tree.
 \end_layout
 
 \begin_layout Standard
-If 
+As seen before, there are 
 \end_layout
 
 \end_body

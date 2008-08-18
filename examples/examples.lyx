@@ -44,7 +44,7 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -288,7 +288,7 @@ city,stress})
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 The core concept for this chapter is to show-case specific use cases for
@@ -340,6 +340,19 @@ Strikeslip Benchmark
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Reference: Taken from pylith.pdf page 123.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite, strike-slip earthquake in 3D without gravity.
  Dirichlet boundary conditions equal to the analytical elastic solution
@@ -364,19 +377,77 @@ Problem Description
 \end_layout
 
 \begin_layout Standard
-Figure 8.X
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Do we need a subsection? Try this, but use a single section for the rest
+ of examples.
+ Settle into whichever style you like better.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 8.X refers to 
 \end_layout
 
 \begin_layout Section
 Cylinder Extension
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Purpose: Compares solutions from physical problem obtained using two different
+ codes, and checked against actual analytical solution.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This benchmark problem computes the viscoelastic displacements and velocities
+ resulting from extending a unit cylinder.
+ 
+\end_layout
+
 \begin_layout Section
 Cylinder Relaxation
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Purpose: Compares solutions from physical problem obtained using two different
+ codes, and checked against known analytical solution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This problem is similar to the one in the previous section, where we have
+ taken.
+\end_layout
+
 \begin_layout Section
 Circular Inclusion
+\end_layout
+
+\begin_layout Standard
+Description from gale
 \end_layout
 
 \begin_layout Section
@@ -393,6 +464,23 @@ Mantle Convection on a Sphere
 
 \begin_layout Standard
 Here we use the output from CitcomS and the spherical.
+\end_layout
+
+\begin_layout Section
+Waves
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Example of a 1-D comparison.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

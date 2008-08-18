@@ -177,7 +177,7 @@ mynote{
 
 \begin_layout Standard
 
-    * Don't forget to change version on cover to version 1.0.0
+    * Don't forget to change version on cover to version 1.0.0 (done)
 \end_layout
 
 \begin_layout Standard
@@ -188,12 +188,13 @@ mynote{
 \begin_layout Standard
 
     * Add description of basic ExodusII format in file_formats.lyx (delay
- this to version 1.1)
+ for version 1.1 -- use Scientific.IO.NetCDF for now)
 \end_layout
 
 \begin_layout Standard
 
-    * grep for Chapter and replace all chapter numbers by relative references
+    * grep for 'Chapter' and make sure all chapter numbers are relative
+ references
 \end_layout
 
 \begin_layout Standard
@@ -366,7 +367,6 @@ References:
 
 \begin_layout Standard
 
- 
 \end_layout
 
 \begin_layout Standard

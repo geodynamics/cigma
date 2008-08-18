@@ -1,4 +1,4 @@
-#LyX 1.5.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 276
 \begin_document
 \begin_header
@@ -63,7 +63,7 @@ Workfile 1
 The Linear Tetrahedron
 \end_layout
 
-\begin_layout Section
+\begin_layout Section*
 15.2 The Linear Tetrahedron
 \end_layout
 
@@ -71,7 +71,7 @@ The Linear Tetrahedron
 The linear tetrahedron, shown in figure 15.1(a), is not used often for stress
  analysis because of its poor performance.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Standard
 Derivative of shape functions are constant over the element volume.
@@ -97,7 +97,7 @@ Derivative of shape functions are constant over the element volume.
 Figure 15.1a and 15.1b
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section*
 15.2.1 Tetrahedron Geometry
 \end_layout
 
@@ -123,7 +123,7 @@ x_{i},\, y_{i},\, z_{i}\,\left(i=1,\,2,\,3,\,4\right)\label{eq:1}\end{equation}
 \begin_layout Standard
 The volume measure of the tetrahedron is denoted
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Standard
 This symbol (Upsilon) is used to avoid confusion with 
@@ -192,7 +192,7 @@ In what follows, we shall always assume that the numbering has been done
 
 .
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Standard
 The tetrahedron volume can be zero only if the four corners are coplanar.
@@ -209,7 +209,7 @@ The tetrahedron volume can be zero only if the four corners are coplanar.
 Figure 15.2a and 15.2b
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section*
 15.2.2 Tetrahedral Coordinates
 \end_layout
 
@@ -312,7 +312,7 @@ Example 15.1.
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
 15.2.3 Coordinate Transformations
 \end_layout
 
@@ -572,7 +572,7 @@ Remark 15.2
  coordinates,'' will not be used here.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
 15.2.5 Partial Derivatives
 \end_layout
 
