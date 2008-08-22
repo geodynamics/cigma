@@ -244,7 +244,11 @@ Interpolation Functions
 \end_layout
 
 \begin_layout Standard
-Because we wish to integrate 
+As noted in Chapter 3, we will often need to evaluate a function 
+\begin_inset Formula $f(\vec{x})$
+\end_inset
+
+ at arbitrary points on a global coordinate system.
 \end_layout
 
 \begin_layout Section
@@ -841,19 +845,34 @@ cylinder_rel.non_newt_mat.stress
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
 By default, we compile a number of functions into Cigma.
  We subdivide these into three categories.
  The first class contains only two functions, zero and one, with special
  initialization rules.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By default, we compile a number of functions into Cigma.
+ We subdivide these into three categories.
+ The first class contains only two functions, zero and one.
  The second class of functions consists of test functions intended to verify
  the operation of Cigma.
  Finally, the third class of functions consists of example benchmark cases
- that you may use to define your own.
+ that you may use as a base for defining your own functions.
 \newline
 
 \newline
-There are two basic functions that are
- available, listed in the table below.
+There are two
+ basic functions that are available, listed in the table below.
  
 \end_layout
 

@@ -44,7 +44,7 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
@@ -55,7 +55,7 @@ mynote{
 
 \begin_layout Standard
 
-TODO: Rename file_formats.lyx to formats.lyx
+TODO: Rename file_formats.lyx to formats.lyx (done)
 \end_layout
 
 \begin_layout Standard
@@ -64,8 +64,16 @@ TODO: Rename file_formats.lyx to formats.lyx
 
 \begin_layout Standard
 
-Define the dimensions for every object in the file (summarize only the tables
- in the appendix)
+TODO: What about NodeNumberMap?
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Define the dimensions for every object in the file
 \end_layout
 
 \begin_layout Standard
@@ -727,7 +735,8 @@ Array Data
 \newline
 
 \newline
-The second index varies the fastest, when analyzing the 
+The second index in this array varies the fastest, so that data often referenced
+ together remains together in memory as well.
 \end_layout
 
 \begin_layout Subsection
@@ -760,7 +769,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset Box Frameless
@@ -1064,7 +1073,12 @@ Element Connectivity
 Mesh connectivity is specified at the element-block level.
  On a given block, we only consider a single element type, which allows
  us to store the global node ids into a contiguous array of integers.
- In general, if our block contains 
+ Multiple blocks are specified separately, and they all reference the same
+ node ids into the node coordinates table.
+\end_layout
+
+\begin_layout Standard
+In general, if our block contains 
 \begin_inset Formula $k$
 \end_inset
 
@@ -1613,13 +1627,249 @@ A field variable represents one of the functions that we can evaluate, and
  in the mesh.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+arrays are subject to interpretation based on their corresponding tag:
+\end_layout
+
+\begin_layout Standard
+by default, interpreted as shape function coefficients (from text and vtk)
+\end_layout
+
+\begin_layout Standard
+can also specify spherical harmonics coefficients.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Shape Function Values
+\end_layout
+
+\begin_layout Standard
+In certain circumstances you may be able to provide your custom reference
+ element by simply providing the appropriate 
+\begin_inset Formula $n$
+\end_inset
+
+ shape function values to be used at the expected integration points.
+ This is most useful when you are using the same mesh for both the integration
+ mesh and the array.
+\newline
+
+\newline
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Shape Function Values: 
+\begin_inset Formula $(n,Q)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Jacobian Determinant: 
+\begin_inset Formula $(Q,1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{1}),N_{2}(\vec{\xi}_{1}),\ldots,N_{n}(\vec{\xi}_{1})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{1})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{2}),N_{2}(\vec{\xi}_{2}),\ldots,N_{n}(\vec{\xi}_{2})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{2})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 
+\begin_inset Formula $Q$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{Q}),N_{2}(\vec{\xi}_{Q}),\ldots,N_{n}(\vec{\xi}_{Q})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{Q})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Integration Rule
 \end_layout
 
 \begin_layout Standard
-As described in Chapter 4, an integration rule is specified by using the
- natural coordinate system of the reference element.
+As described in Chapter 4, an integration rule is specified by a list of
+ points and associated weights.
+ The points are given on natural coordinate system of the reference element.
  
 \newline
 
@@ -1629,11 +1879,11 @@ As described in Chapter 4, an integration rule is specified by using the
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="5">
 <features>
-<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
 <column alignment="center" valignment="top" leftline="true" width="0">
 <column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" width="0">
 <column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<column alignment="center" valignment="top" rightline="true" width="0">
 <row topline="true" bottomline="true">
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -1938,6 +2188,48 @@ Rule Definition
 \end_inset
 
 
+\newline
+
+\newline
+
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+A typical point 
+\begin_inset Formula $\vec{\xi}_{i}$
+\end_inset
+
+ in 2-D is typically written as 
+\begin_inset Formula $(\xi_{i},\eta_{i})$
+\end_inset
+
+, and in 3-D we write 
+\begin_inset Formula $(\xi_{i},\eta_{i},\zeta_{i})$
+\end_inset
+
+.
+ In special cases, integration points may be specified in 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Note: It is important to realize that the integration weights need to be
+ adjusted by the appropriate factor when trying to compare rules defined
+ on different reference regions.
+ It is not sufficient to simply transform the points, as the weights need
+ to be adjusted by the jacobian factor as well (see the change of variables
+ formula for integrals).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -2207,8 +2499,8 @@ Coordinates
 \newline
 The result of an evaluation will depend on the rank of the function being
  evaluated, as indicated in the table below.
- Note that the fastest varying dimension of the array contains the values
- of the function at each point.
+ Note that the fastest varying dimension of the array contains the components
+ of the function value at each point.
 \newline
 
 \newline
@@ -2361,11 +2653,346 @@ Scalar
 \end_layout
 
 \begin_layout Subsection
-Spherical Harmonics
+Comparison Residuals
+\end_layout
+
+\begin_layout Standard
+Since our norm reduces integrals over cells to a single scalar value, the
+ result of a comparison will result in a simple scalar array for each element
+ block examined.
+ Note that element blocks used in the integration process belong to the
+ integration mesh, which may differ from the associated mesh to either function.
+\end_layout
+
+\begin_layout Standard
+Thus, for each element block containing 
+\begin_inset Formula $k$
+\end_inset
+
+ cells, we have the output array
+\newline
+
+\newline
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(k,1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Residual Value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{k}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+\newline
+These residual values may be combined in the following form: 
+\begin_inset Formula \[
+\varepsilon_{block}=\sqrt{\varepsilon_{1}^{2}+\varepsilon_{2}^{2}+\cdots+\varepsilon_{k}^{2}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The final global residual norm maybe obtained by simply summing over all
+ element blocks that partition the domain of interest:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\varepsilon_{global}=\sqrt{\sum_{block}\varepsilon_{block}^{2}}\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 File Formats
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+XXX: The input/output file dichotomy does not seem as necessary now that
+ we've added the Data Format section.
+ Get rid of those subsection headings.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A number of file formats are supported for storing and retrieving the above
+ data structures to and from disk.
+ The following file extensions are used for these purposes:
+\newline
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+File Format
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Recognized Extensions
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+HDF5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+*.h5
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+VTK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+*.vtk
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+XML VTK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+*.vtu, *.vts, *.vtr
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Parallel XML VTK
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+*.pvtu, *.pvts, *.pvtr
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Text
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+*.txt, *.dat
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -2408,8 +3035,9 @@ quadrature rule weights
 \end_layout
 
 \begin_layout Standard
-Now that we have examined what kinds of objects we will be accessing, let's
- discuss the actual layout in the files in which these objects will be stored.
+In Section 1.1, we examined what kinds of objects we will be accessing, so
+ now let's discuss the actual layout in the files in which these objects
+ will be stored.
 \end_layout
 
 \begin_layout Subsection
@@ -2417,12 +3045,32 @@ HDF5
 \end_layout
 
 \begin_layout Standard
-HDF5 files are organized in a hierarchical structure, similar to a UNIX
- file system.
- Two types of primary objects, groups and datasets, are stored in this structure.
+HDF5 files are binary files encoded in a data format designed to store large
+ amounts of scientific data in a portable and self-describing way.
+\end_layout
+
+\begin_layout Standard
+The internal organization of a typical HDF5 file consists of a hierarchical
+ structure similar to a UNIX file system.
+ Two types of primary objects, 
+\emph on
+groups
+\emph default
+ and 
+\emph on
+datasets
+\emph default
+, are stored in this structure.
  A group contains instances of zero or more groups or datasets, while a
  dataset stores a multi-dimensional array of data elements.
- Both kinds of objects are accompanied by supporting metadata known as attribute
+ In a sense, datasets are analogous to files in a traditional filesystem,
+ and groups are analagous to folders.
+ One important difference, however, is that you can attach supporting metadata
+ to both kinds of objects.
+ The metadata objects are called 
+\emph on
+attribute
+\emph default
 s.
 \end_layout
 
@@ -2580,9 +3228,15 @@ VTK
 \end_layout
 
 \begin_layout Standard
-The current version of Cigma only supports VTK unstructured grid datasets
- of a single element type.
- You can still compare various unstructured grids with different element
+VTK files are typically
+\end_layout
+
+\begin_layout Standard
+In the current version of Cigma, data
+\end_layout
+
+\begin_layout Standard
+You can still compare various unstructured grids with different element
  types to each other.
 \end_layout
 
@@ -2612,97 +3266,53 @@ Text
 \end_layout
 
 \begin_layout Standard
-The text format is always in table form, with the dimensions of the table
- specified in the first line.
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Don't forget about the comment character '#' (which skips everything until
+ the next newline)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-For example, mesh coordinates can be specified in the following format
-\end_layout
-
-\begin_layout LyX-Code
-<nno> <nsd>
-\end_layout
-
-\begin_layout LyX-Code
-x1 y1 z1
-\end_layout
-
-\begin_layout LyX-Code
-x2 y2 z2
-\end_layout
-
-\begin_layout LyX-Code
-x3 y3 z3
-\end_layout
-
-\begin_layout LyX-Code
-...
+The text files we use in Cigma consist of a simple list of numbers in ASCII
+ format whose layout corresponds exactly to the simple array layout discussed
+ earlier in Section 1.1.
+ The first line of the file contains the dimensions of the array, just two
+ integers separated by whitespace.
+ The rest of the file, describing the array data, must contain as many numbers
+ as the product of the two dimensions given in the first line.
+ These numbers are formatted as integer or floating point, depending on
+ context, and are all separated by whitespace.
 \end_layout
 
 \begin_layout Standard
-Mesh connectivity with 
-\end_layout
-
-\begin_layout LyX-Code
-nel ndofs
-\end_layout
-
-\begin_layout LyX-Code
-node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-node_1 node_2 node_3 node_4 ...
-\end_layout
-
-\begin_layout LyX-Code
-...
+Some restrictions apply when providing data in text format, mostly because
+ you can only specify a single element block in a text file containing connectiv
+ity information.
+ Operations involving a larger number of blocks must use data in the format
+ described in Section 1.3.1.
 \end_layout
 
 \begin_layout Standard
-A generic field with 
-\family typewriter
-ndim
-\family default
- components (i.e., scalar, vector, or tensor) is specified by
-\end_layout
-
-\begin_layout LyX-Code
-num ndim
-\end_layout
-
-\begin_layout LyX-Code
-f1 f2 f3 ..
-\end_layout
-
-\begin_layout LyX-Code
-f1 f2 f3 ..
-\end_layout
-
-\begin_layout LyX-Code
-...
-\end_layout
-
-\begin_layout Standard
-In this last case, the number of rows could refer to either 
-\family typewriter
-nno
-\family default
- or 
-\family typewriter
-nel
-\family default
-, depending on whether the field is node-based or cell-based.
+Another point worthy of mention is that arrays must be two-dimensional,
+ so two integers are always expected in the first line.
+ When specifying a one-dimensional array, such as a list of weights correspondin
+g to an integration rule, one of the array dimensions must be 1.
 \end_layout
 
 \begin_layout Section
-Output File
+Output Files
 \end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
 
 \begin_layout Standard
 Depending on the particular operation you perform, there are three different
@@ -2718,6 +3328,11 @@ Depending on the particular operation you perform, there are three different
  of the output file.
  Note that this output consists of the squared values of the local residuals,
  so further post-processing will be necessary.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

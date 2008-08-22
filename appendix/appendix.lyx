@@ -44,7 +44,7 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
@@ -55,21 +55,7 @@ mynote{
 
 \begin_layout Standard
 
-Appendix Chapters:
-\end_layout
-
-\begin_layout Standard
-
- Summarize data formats as also done in the VTK file-formats.pdf document.
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-TODO: Introduce NodeNumberMap, for mapping connectivity
+XXX: Content moved to formats.lyx, what else do we need in an appendix?
 \end_layout
 
 \begin_layout Standard
@@ -134,7 +120,7 @@ On a mesh with
 \end_inset
 
  node coordinates, which are specified on a global coordinate system, we
- have.
+ have
 \newline
 
 \end_layout
@@ -1329,7 +1315,7 @@ Rule Definition
 \end_layout
 
 \begin_layout Section
-Element Tabulation
+Shape Function Values
 \end_layout
 
 \begin_layout Standard
@@ -1962,15 +1948,15 @@ Scalar
 \end_layout
 
 \begin_layout Section
-Function Residuals
+Comparison Residuals
 \end_layout
 
 \begin_layout Standard
 Since our norm reduces integrals over cells to a single scalar value, the
  result of a comparison will result in a simple scalar array for each element
  block examined.
- Note that the element blocks used belong to the integration mesh, which
- may differ from the associated mesh from either function.
+ The element blocks used belong to the integration mesh, which may differ
+ from the associated mesh belonging to either function.
  Thus, for each element block containing 
 \begin_inset Formula $k$
 \end_inset
@@ -2032,7 +2018,7 @@ Residual Value
 \end_inset
 </cell>
 </row>
-<row topline="true">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -2055,7 +2041,7 @@ Residual Value
 \end_inset
 </cell>
 </row>
-<row topline="true">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -2078,7 +2064,7 @@ Residual Value
 \end_inset
 </cell>
 </row>
-<row topline="true" bottomline="true">
+<row bottomline="true">
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 

@@ -193,8 +193,8 @@ mynote{
 
 \begin_layout Standard
 
-    * grep for 'Chapter' and make sure all chapter numbers are relative
- references
+    * grep for 'Chapter' and 'Section' and make sure that all such numbers
+ are relative references.
 \end_layout
 
 \begin_layout Standard
@@ -206,6 +206,12 @@ mynote{
 
     * Fix alignment of table cells where appropriate (left/center/right
  justified)
+\end_layout
+
+\begin_layout Standard
+
+    * Figure out how to reference equation numbers in lyx (how to give them
+ a label?)
 \end_layout
 
 \begin_layout Standard

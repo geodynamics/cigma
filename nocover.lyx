@@ -166,8 +166,12 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{appendix/appendix.lyx}
-preview false
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Include appendix.lyx, and gpl-license.lyx
+\end_layout
 
 \end_inset
 
