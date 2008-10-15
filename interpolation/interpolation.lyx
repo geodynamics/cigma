@@ -44,7 +44,7 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -256,12 +256,14 @@ Local Functions
 \end_layout
 
 \begin_layout Standard
-Defined locally over a discretization of the domain of interest.
- Over each discretization element, we define a local coordinate system.
+Typically, as a result of numerical simulations, your function will be defined
+ locally on a discretization of the domain of interest.
+ Each discretization element defines a local coordinate system.
  Since the integration points are defined on a global coordinate system,
  we might have to invert the appropriate reference map after running a search
  through each discretization cell, followed by a newton-iteration to convert
  into the local coordinates, followed by an interior test.
+ (XXX: Insert workfile1.lyx in this section)
 \end_layout
 
 \begin_layout Subsection
@@ -293,7 +295,7 @@ A set of cells which partition the domain.
  together with a set of connectivity rules.
  This set of node points will have a number of degrees of freedom associated
  with them.
- An interpolation function can be.
+ An interpolation
 \end_layout
 
 \begin_layout Subsection
@@ -319,7 +321,8 @@ Once we arrive at a solution on a cell
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
-, we can define an interpolant function that will give us
+, we can define an interpolant function that will give us the value of our
+ function on any point in the interior of the cell.
 \end_layout
 
 \begin_layout Subsection
@@ -337,11 +340,12 @@ Reference domain.
 
 \end_inset
 
-
+Fig.
+ elts.jpg
 \end_layout
 
 \begin_layout Subsection
-Tetrahedra
+Triangles and Tetrahedra
 \end_layout
 
 \begin_layout Standard
@@ -361,7 +365,7 @@ Reference domain.
 \end_layout
 
 \begin_layout Subsection
-Hexahedron
+Quadrilateral and Hexahedral Elements
 \end_layout
 
 \begin_layout Standard
@@ -388,6 +392,8 @@ Global Functions
 These functions are given explicitly on a domain.
  They may be defined explicitly, in the source code, or may also be defined
  by a global set of basis functions (such as spherical harmonics).
+ Either way, they will be associated with a callback function that Cigma
+ will evaluate whenever necessary.
 \end_layout
 
 \begin_layout Subsection
@@ -846,7 +852,7 @@ cylinder_rel.non_newt_mat.stress
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 By default, we compile a number of functions into Cigma.
@@ -873,7 +879,6 @@ By default, we compile a number of functions into Cigma.
 \newline
 There are two
  basic functions that are available, listed in the table below.
- 
 \end_layout
 
 \begin_layout Standard
@@ -1043,6 +1048,72 @@ Vector field in 2-dimensions
 \newline
 
 \newline
+We can also calculate the initial step of the strike-slip benchmark (no
+ gravity) discussed in Chapter X.
+ This is based on the Okada (1992) dislocation code[?].
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features>
+<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+strikeslip.disloc3d.displacement
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+strikeslip.disloc3d.velocity
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+strikeslip.disloc3d.stress
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+\newline
+The full list of all pre-defined functions which are available by name are
+ given in the appendix.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
 Cylinder extension case (maxwell and non-newtonian materials)
 \end_layout
 
@@ -1257,66 +1328,10 @@ circular_inclusion.pressure
 \end_inset
 
 
-\newline
-
-\newline
-We can also calculate the initial step of the strike-slip benchmark (no
- gravity) discussed in Chapter 8.
- This is based on the Okada (1992) dislocation code.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="1">
-<features>
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-strikeslip.disloc3d.displacement
 \end_layout
 
 \end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
 
-\begin_layout Standard
-
-\family typewriter
-strikeslip.disloc3d.velocity
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-strikeslip.disloc3d.stress
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\newline
-
-\newline
 
 \end_layout
 
@@ -1326,7 +1341,7 @@ Defining Your Own Global Function
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 Show example subclass of cigma::Function.
@@ -1352,11 +1367,11 @@ src/core/functions/
 \family typewriter
 cigma::Function
 \family default
- which interfaces to your definition.
+ which interfaces to your function.
 \end_layout
 
 \begin_layout Enumerate
-Add any new source and header files into the 
+Add the new source and header files into the 
 \family typewriter
 libcigma_a_SOURCES
 \family default
@@ -1366,23 +1381,40 @@ src/Makefile.am
 \family default
 , following the examples given in the section that refers to the 
 \family typewriter
-Zero.h
+ZeroFunction.h
 \family default
  and 
 \family typewriter
-Zero.cpp
+ZeroFunction.cpp
 \family default
  files.
 \end_layout
 
 \begin_layout Enumerate
 Instantiate your function and insert it into the appropriate map object
- in src/core/functions/FunctionRegistry.cpp, again following the examples
- already in the file.
+ in 
+\family typewriter
+src/core/functions/FunctionRegistry.cpp
+\family default
+, again following the examples already in the file.
+ It is in this file where you will give a unique name to your function,
+ for use in the command line.
 \end_layout
 
 \begin_layout Standard
-XXX: copy example src/core/functions/Test.cpp::TestCube here
+Other examples to examine are located at 
+\family typewriter
+TestFunctions.cpp
+\family default
+ and in 
+\family typewriter
+StrikeslipFunctions.cpp
+\family default
+ in the 
+\family typewriter
+src/core/functions/
+\family default
+ directory.
 \end_layout
 
 \end_body

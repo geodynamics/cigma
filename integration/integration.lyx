@@ -122,7 +122,7 @@ References to mention here:
 
 
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 The core concepts to get across in this chapter are the following:
@@ -172,7 +172,7 @@ In order to calculate the
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 Define integration rule.
@@ -212,7 +212,7 @@ Gaussian Quadrature
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 Hughes, pg 143
@@ -349,7 +349,7 @@ The reference region for this geometry is
 \end_layout
 
 \begin_layout Section
-Triangles
+Triangles and Tetrahedra
 \end_layout
 
 \begin_layout Standard
@@ -372,14 +372,6 @@ Fig.
 \end_layout
 
 \begin_layout Section
-Tetrahedra
-\end_layout
-
-\begin_layout Standard
-Similar to the triangle
-\end_layout
-
-\begin_layout Section
 Other Integration Rules
 \end_layout
 
@@ -387,6 +379,14 @@ Other Integration Rules
 The integration points given in this section were obtained by using the
  FIAT Python module.
  
+\end_layout
+
+\begin_layout Standard
+(XXX: here, insert and explain the example script 
+\family typewriter
+src/fiat_rules.py
+\family default
+)
 \end_layout
 
 \end_body

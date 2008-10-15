@@ -349,8 +349,51 @@ Data Paths
 \end_layout
 
 \begin_layout Standard
-In the previous chapter we studied the layout.
- Now throughout this chapter we will reference..
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+XXX
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Chapter 6, we described the layout used in the various file formats.
+ To refer to a particular array on the command line you can use the string
+ 
+\series bold
+A:B
+\series default
+, to refer to stored in a file 
+\series bold
+A
+\series default
+, you can refer to a particular named array 
+\series bold
+B
+\series default
+ by using the string 
+\series bold
+A:B
+\series default
+, with the colon character `:' serving as a separator between the two paths.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+For example, a VTK file named 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

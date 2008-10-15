@@ -115,6 +115,33 @@ CIG has developed Cigma in response to demand from the short-term tectonics
  their finite element codes.
  The long-term goal for Cigma, however, is for it to be used for nearly
  all geodynamics modeling codes.
+ Cigma relies on a number of libraries.
+ The 
+\begin_inset LatexCommand htmlurl
+name "FInite element Automatic Tabulator (FIAT)"
+target "www.fenics.org/wiki/FIAT"
+
+\end_inset
+
+ Python Library supports generation of arbitrary order instances of the
+ Lagrange elements on lines, triangles, and tetrahedra.
+ It can also generate higher order instances of Jacobi-type quadrature rules
+ on the same element shapes.
+ The 
+\begin_inset LatexCommand htmlurl
+name "Approximate Nearest Neighbor (ANN)"
+target "www.cs.umd.edu/~mount/ANN/"
+
+\end_inset
+
+ Library, written in C++, supports data structures and algorithms for both
+ exact and nearest-neighbor searching in arbitrarily high dimensions.
+\end_layout
+
+\begin_layout Standard
+Both of these libraries extend and generalize Cigma's functionality so it
+ can handle other types of elements, and provide the ability to compare
+ vector fields.
 \end_layout
 
 \begin_layout Standard

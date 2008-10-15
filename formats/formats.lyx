@@ -3228,16 +3228,16 @@ VTK
 \end_layout
 
 \begin_layout Standard
-VTK files are typically
-\end_layout
+\begin_inset Note Note
+status open
 
 \begin_layout Standard
-In the current version of Cigma, data
+VTK files are typically designed for visualization purposes, 
 \end_layout
 
-\begin_layout Standard
-You can still compare various unstructured grids with different element
- types to each other.
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3312,7 +3312,7 @@ Output Files
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 Depending on the particular operation you perform, there are three different
@@ -3333,6 +3333,16 @@ Depending on the particular operation you perform, there are three different
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Depending on the particular operation you perform, there are three different
+ kinds of output files.
+ The output format for residuals consists simply of a list of scalars for
+ each element in the discretization, stored using the legacy VTK file format
+ in the Cell Data section of the output file.
+ Note that this output consists of the squared values of the local residuals,
+ so further post-processing will be necessary.
 \end_layout
 
 \end_body

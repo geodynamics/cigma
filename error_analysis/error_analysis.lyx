@@ -282,8 +282,8 @@ Functions
 \end_layout
 
 \begin_layout Standard
-The functions being compared that we discuss in this manual are assumed
- to be defined in a common region of space which we denote by 
+The functions that we discuss in this manual are assumed to be defined in
+ a common region of space denoted by 
 \begin_inset Formula $\Omega$
 \end_inset
 
@@ -292,7 +292,7 @@ The functions being compared that we discuss in this manual are assumed
 \begin_inset Formula $\Omega$
 \end_inset
 
- are denoted by 
+ are written as 
 \begin_inset Formula $\vec{x}$
 \end_inset
 
@@ -332,7 +332,7 @@ Integral Approximations
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 Briefer discussion here.
@@ -454,7 +454,7 @@ local coordinate system
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 FIGURE refmap.png: 
@@ -479,7 +479,7 @@ Omega_i
 Note that a given discretization may contain cells of different shapes,
  which would require us to define an appropriate number of reference cells
  for each type of cell.
- However, for the purposes of this manual, we may restrict the discussions
+ However, for the purposes of this manual we may restrict the discussions
  in this manuals, without any loss of generality, to discretizations consisting
  of a single geometric shape.
  (XXX: reword this last sentence)
@@ -750,7 +750,7 @@ Global Error Measure
 
 \begin_layout Standard
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Standard
 Suppose the domain 
@@ -1048,6 +1048,281 @@ In this section we show the formula used by Cigma to compute the
 .
 \end_layout
 
+\begin_layout Standard
+Suppose the domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ into an appropriate set of cells 
+\begin_inset Formula $\Omega_{1},\Omega_{2},\ldots,\Omega_{n_{el}}$
+\end_inset
+
+, we can compute the global error 
+\begin_inset Formula $\varepsilon^{2}$
+\end_inset
+
+ as a sum over localized cell contributions, 
+\begin_inset Formula $\varepsilon^{2}=\sum_{e}\varepsilon_{e}^{2}$
+\end_inset
+
+, where each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, we won't be able to integrate each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ exactly since either of the functions 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ may have an incompatible representation relative to the finite element
+ space on each domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+.
+ However, we can still calculate an approximation of each cell residual
+ by applying an appropriate quadrature rule with a tolerable truncation
+ error 
+\begin_inset LatexCommand cite
+key "Encyclopaedia of Cubature Formulas 2005"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To obtain an approximation to the integral of a function 
+\begin_inset Formula $F(\vec{x})$
+\end_inset
+
+ over a cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, we simply apply the quadrature rule with weights 
+\begin_inset Formula $w_{e,1},w_{e,2},\ldots,w_{e,n_{Q}}$
+\end_inset
+
+ and integration points 
+\begin_inset Formula $\vec{x}_{e,1},\vec{x}_{e,2},\ldots,\vec{x}_{e,n_{Q}}$
+\end_inset
+
+ appropriate for the physical element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applying this quadrature rule directly over the entire physical domain 
+\begin_inset Formula $\Omega=\cup\Omega_{e}$
+\end_inset
+
+ gives us 
+\begin_inset Formula \[
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reasons, it is undesirable in finite element applications
+ to perform calculations in a global coordinate system.
+ To avoid duplication of work, shape function evaluations may be performed
+ once on a reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ and then transformed back into the corresponding physical cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ as needed.
+\end_layout
+
+\begin_layout Standard
+To compute integrals of 
+\begin_inset Formula $F$
+\end_inset
+
+ in a reference coordinate system, we need to apply a change of variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\]
+
+\end_inset
+
+where 
+\color none
+the additional factor 
+\begin_inset Formula $J_{e}(\vec{\xi})=\det\left[\frac{d\vec{x}_{e}}{d\vec{\xi}}\right]$
+\end_inset
+
+ is the Jacobian determinant of the reference map 
+\begin_inset Formula $\vec{x}_{e}(\vec{\xi}):\hat{\Omega}\to\Omega_{e}$
+\end_inset
+
+.
+ This map describes how the physical points 
+\begin_inset Formula $\vec{x}\in\Omega_{e}$
+\end_inset
+
+ are transformed from the reference points 
+\begin_inset Formula $\vec{\xi}\in\hat{\Omega}$
+\end_inset
+
+.
+ Put another way, the inverse reference map 
+\color inherit
+
+\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})$
+\end_inset
+
+ tells us how the physical domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ maps into the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+At this point, we can assume without loss of generality that every physical
+ cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ can be derived from a single reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+, so that our quadrature rule becomes simply a set of weights 
+\begin_inset Formula $w_{1},\ldots,w_{n_{Q}}$
+\end_inset
+
+ and points 
+\begin_inset Formula $\vec{\xi}_{1},\ldots,\vec{\xi}_{n_{Q}}$
+\end_inset
+
+ over 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ After changing variables, we end up with the final form of the quadrature
+ rule that we can use to integrate the global residual field:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we let 
+\begin_inset Formula $F(\vec{x})=||u(\vec{x})-v(\vec{x})||^{2}$
+\end_inset
+
+ in the above expression, we can find the cell residual contribution over
+ 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ from
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\\
+ & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The global error 
+\begin_inset Formula $\varepsilon=\sqrt{\sum_{e}\varepsilon_{e}^{2}}$
+\end_inset
+
+ is then approximated by the expression
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\newline
+We use this final form to calculate the global and localized errors on arbitrary
+ discretizations.
+\end_layout
+
 \begin_layout Section
 Comparing Residuals
 \end_layout
@@ -1150,7 +1425,7 @@ Even if the exact solution
 \end_inset
 
  on discrete meshes, we may calculate a convergence rate by using the standard
- error estimate you will find in textbooks: 
+ error estimate 
 \begin_inset Formula $||u-u_{h}||_{p}\leq Ch^{\alpha},$
 \end_inset
 
@@ -1167,6 +1442,7 @@ where
 \end_inset
 
 .
+ This error bound holds problems
 \end_layout
 
 \begin_layout Section
@@ -1191,10 +1467,20 @@ Give URLs for benchmark repositories on CIG svn tree.
 \end_layout
 
 \begin_layout Standard
-One of our goals is to provide As we saw in Section 3.5, it is easier to
- calculate the convergence rate on a sequence of meshes if we have access
- to the exact solution.
- Since one of our goals is to provide 
+As we saw in Section 3.5, it is easier to calculate the convergence rate
+ on a sequence of meshes if we have access to the exact solution.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Since one of our goals is to provide an easy means of calculating these
+ comparisons,
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

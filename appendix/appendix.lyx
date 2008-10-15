@@ -2120,5 +2120,357 @@ The final global residual may be obtained by simply summing over each element
 
 \end_layout
 
+\begin_layout Chapter
+Numerical Integration
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mynote{
+\end_layout
+
+\begin_layout Standard
+
+Go over numerical integration in 2d and 3d.
+\end_layout
+
+\begin_layout Standard
+
+Required order of numerical integration.
+\end_layout
+
+\begin_layout Standard
+
+Give references to defining your own points here.
+ Explain how to use the scripts here.
+\end_layout
+
+\begin_layout Standard
+
+For each element, give the default quadrature rule employed and its order
+ of accuracy.
+\end_layout
+
+\begin_layout Standard
+
+Give more examples of quadrature rules.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+Mention tabulation of shape function values here.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+References to mention here:
+\end_layout
+
+\begin_layout Standard
+
+  FIAT homepage
+\end_layout
+
+\begin_layout Standard
+
+  FILIPPA mathematica notebooks
+\end_layout
+
+\begin_layout Standard
+
+  Encyclopedia of Cubature Formulas (url?)
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+The core concepts to get across in this chapter are the following:
+\end_layout
+
+\begin_layout Enumerate
+Each element in Cigma is assigned a default quadrature rule
+\end_layout
+
+\begin_layout Enumerate
+Explain briefly how quadrature rules are obtained (product rules)
+\end_layout
+
+\begin_layout Enumerate
+Error bound on integration (dependent on the discretization size h, and
+ the order of integration q).
+\end_layout
+
+\begin_layout Enumerate
+How to obtain more quadrature rules (encyclopedia website, FIAT, mathematica
+ scripts -- don't forget to mention caveat about using rules that use different
+ reference cells -- points transform according to map, while weights are
+ multiplied by the appropriate jacobian factor).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to calculate the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm integral from Chapter 3, we must resort to numerical integration.
+ If we integrate over a mesh which does not match the underlying discretization
+ of the functions being compared, you may need to increase the accuracy
+ of the integration.
+ In this chapter we give a brief overview of the quadrature rules available,
+ and how you may create your own.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Standard
+Define integration rule.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, we may define an integration rule as a set of points with associated
+ weights for which we may approximate an integration procedure by a simple
+ weighed sum
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{Q}w_{q}F(\vec{x}_{q})+R\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is possible to integrate, but the remainder 
+\begin_inset Formula $R$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Gaussian Quadrature
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Hughes, pg 143
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The general Gaussian quadrature rule with 
+\begin_inset Formula $Q$
+\end_inset
+
+ integration points is given in Hughes, page 143,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{-1}^{1}F(\xi)\ d\xi=\sum_{q=1}^{Q}w_{q}F(\xi_{q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+w_{i} & = & \frac{2}{(1-\xi_{i}^{2})P_{Q}'(\xi_{i})^{2}}\\
+R & = & \frac{2^{2Q+1}(Q!)^{4}}{(2Q+1)[(2Q)!]^{3}}F^{(2Q)}(\bar{\xi})\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\xi_{i}$
+\end_inset
+
+ is the 
+\begin_inset Formula $i$
+\end_inset
+
+-th zero of the Legendre Polynomial 
+\begin_inset Formula $P_{Q}(\xi)$
+\end_inset
+
+, and 
+\begin_inset Formula $P_{Q}^{'}$
+\end_inset
+
+ denotes the derivative of 
+\begin_inset Formula $P_{Q}$
+\end_inset
+
+.
+ The Legendre polynomials are defined by
+\begin_inset Formula \[
+P_{Q}(\xi)=\frac{1}{2^{Q}Q!}\frac{d^{Q}}{d\xi^{Q}}(\xi^{2}-1)^{Q}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In multiple dimensions, we simply use a different one-dimensional Gaussian
+ rule on each direction.
+ For two dimensions, this becomes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{-1}^{1}\int_{-1}^{1}\ F(\xi,\eta)\ d\xi d\eta\cong\sum_{q_{1}=1}^{Q_{1}}\sum_{q_{2}=1}^{Q_{2}}w_{q_{1}}w_{q_{2}}F(\xi_{q_{1}},\eta_{q_{2}})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and similarly for three dimensions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{-1}^{1}\int_{-1}^{1}\int_{-1}^{1}\ F(\xi,\eta,\zeta)\ d\xi d\eta d\zeta\cong\sum_{q_{1}=1}^{Q_{1}}\sum_{q_{2}=1}^{Q_{2}}\sum_{q_{3}=1}^{Q_{3}}w_{q_{1}}w_{q_{2}}w_{q_{3}}F(\xi_{q_{1}},\eta_{q_{2}},\zeta_{q_{3}})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Section
+Quadrilaterals and Hexahedra
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Since these two are very similar, keep them together.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For the reference quadrilateral and hexahedral elements, we can use the
+ 
+\end_layout
+
+\begin_layout Standard
+For quadrilaterals, we use the same reference region 
+\begin_inset Formula $[-1,1]\times[-1,1]$
+\end_inset
+
+ as in Section 4.X.
+\end_layout
+
+\begin_layout Standard
+The reference region for this geometry is 
+\begin_inset Formula $[-1,1]\times[-1,1]\times[-1,1]$
+\end_inset
+
+, as in Section 4.X.
+ 
+\end_layout
+
+\begin_layout Section
+Triangles and Tetrahedra
+\end_layout
+
+\begin_layout Standard
+To easily obtain high order accuracy quadrature rules for triangles, we
+ can re-use the same rules for quadrilaterals by collapsing two of the nodes
+ of the quadrilateral.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
+Fig.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Similar to the triangle
+\end_layout
+
+\begin_layout Section
+Other Integration Rules
+\end_layout
+
+\begin_layout Standard
+The integration points given in this section were obtained by using the
+ FIAT Python module.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

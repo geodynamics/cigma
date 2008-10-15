@@ -73,7 +73,7 @@ thispagestyle{empty}
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset Graphics
@@ -161,7 +161,7 @@ raggedbottom
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -261,15 +261,6 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{integration/integration.lyx}
-preview false
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Include \include{formats/formats.lyx}
 preview false
 
@@ -280,15 +271,6 @@ preview false
 
 \begin_layout Standard
 \begin_inset Include \include{running/running.lyx}
-preview false
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Include \include{examples/examples.lyx}
 preview false
 
 \end_inset
