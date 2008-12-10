@@ -1,11 +1,12 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -44,15 +47,17 @@
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 This document exists for preview purposes.
-\newline
+\begin_inset Newline newline
+\end_inset
+
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 When rebuilding the original cigma.lyx, don't forget to double-check the
  following for errors:
 \end_layout
@@ -79,8 +84,9 @@ figure placements (figures appearing on own page, etc.)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{introduction/introduction.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "introduction.lyx"
 
 \end_inset
 
@@ -88,8 +94,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{installation/installation.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "installation.lyx"
 
 \end_inset
 
@@ -97,8 +104,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{error_analysis/error_analysis.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "error_analysis.lyx"
 
 \end_inset
 
@@ -106,8 +114,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{interpolation/interpolation.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "interpolation.lyx"
 
 \end_inset
 
@@ -115,8 +124,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{integration/integration.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "integration.lyx"
 
 \end_inset
 
@@ -124,8 +134,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{formats/formats.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "formats.lyx"
 
 \end_inset
 
@@ -133,8 +144,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{running/running.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "running.lyx"
 
 \end_inset
 
@@ -142,8 +154,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{examples/examples.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "examples.lyx"
 
 \end_inset
 
@@ -155,7 +168,7 @@ preview false
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 %dummy comment inserted to ensure this paragraph is not empty
 \end_layout
@@ -166,8 +179,9 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{appendix/appendix.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "appendix.lyx"
 
 \end_inset
 
@@ -176,9 +190,9 @@ preview false
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Include appendix.lyx, and gpl-license.lyx
 \end_layout
 

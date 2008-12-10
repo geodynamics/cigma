@@ -1,11 +1,12 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -44,200 +47,200 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
 mynote{
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 In general, verify that the output of the commands, whenever given, matches
  the actual output when running a similar command
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Do not forget to mention the following:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Default behaviour if a flag or option is not specified (eg., what if
  we omit --output?)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Common flags:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      Misc options: --quiet and --verbose (misc option)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      Hidden options: --debug flag to enable logging
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Turn off logging if --disable-logging is given to ./configure script
  (logging on by default)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - The --output option needs an override flag so we can force the rewriting
  of specific datasets
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * Default behavior? Exit if output dataset already exists
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * Possible names if default behavior is to exit: --force-writes, --force-ou
 tput, --overwrite-output
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * Possible names if default is to allow overwrites: --dont-overwrite
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Addition modifiers to compare command?
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * Try --weighed-residuals={0,1} flag in order to divide the cell residuals
  by the volume
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Given the context of the previous chapter (on file formats), define the
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 'Dataset Path' when discussing the location of datasets within a file
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 XXX: Split the discussion of datasets and I/O into their corresponding chapters
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Ensure that most instances of the world 'Field' are replaced by 'Function'
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Ensure that 'Quadrature Rule' is changed into 'Integration Rule'
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Reference datasets in HDF5 files as 'Simple Arrays'
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Discuss ExodusII format
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Discuss VTK formats: Legacy VTK (.vtk), Unstructured Grid (.vtu), Structured
  Grid (.vts), Rectilinear Grid (.vtr)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Discuss Parallel VTK formats: *.pvtu, *.pvts, *.pvtr
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Discuss UCD format: *.inp, *.ucd -- uses class vtkAVSucdReader from the
  VTK API
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Mention man pages as well -- which also provide an EXAMPLES section
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Usage string from 'cigma help' displays short form of command -- using
  the positional arguments
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Commonly used long options are also provided
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   For more advanced usage, 'man cigma-compare' would bring up more examples.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Don't forget to mention that every positional argument can also be specified
  through the use of a long option
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Mention common flags, such as --quiet and --verbose for tuning the amount
  of output, and --debug for turning on logging (off by default)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 In general, --verbose should turn on the progress meter for long-running
  operations, while --quiet will emit the minimal amount of output (none
@@ -245,25 +248,25 @@ In general, --verbose should turn on the progress meter for long-running
  Linf norm, time in seconds))
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Command for tracking memory usage of a running process?
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 ----------------------------
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 The default data storage format for Cigma is the Hierarchical Data Format
  (HDF5), a portable file format developed at the $X .
@@ -273,20 +276,20 @@ The default data storage format for Cigma is the Hierarchical Data Format
 5)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 -----------------------------------------------------
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 }
 \end_layout
@@ -297,7 +300,8 @@ The default data storage format for Cigma is the Hierarchical Data Format
 \end_layout
 
 \begin_layout Chapter
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "cha:Running-Cigma"
 
 \end_inset
@@ -349,19 +353,6 @@ Data Paths
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Standard
-XXX
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 In Chapter 6, we described the layout used in the various file formats.
  To refer to a particular array on the command line you can use the string
  
@@ -387,7 +378,7 @@ A:B
 \begin_inset Note Note
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 For example, a VTK file named 
 \end_layout
 
@@ -404,7 +395,7 @@ Command Line Interface
 \begin_inset ERT
 status open
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -504,7 +495,8 @@ cigma compare --first=field1.h5:/field1/stepN
 \end_layout
 
 \begin_layout Subsection
-\begin_inset LatexCommand label
+\begin_inset CommandInset label
+LatexCommand label
 name "sub:Comparing-against-a"
 
 \end_inset

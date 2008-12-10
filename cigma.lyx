@@ -1,5 +1,5 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
@@ -11,6 +11,7 @@
 
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -21,9 +22,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry true
 \use_amsmath 1
@@ -59,7 +62,7 @@
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -73,12 +76,11 @@ thispagestyle{empty}
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Graphics
 	filename cigma_cover.pdf
-	display color
 	width 75page%
 
 \end_inset
@@ -92,7 +94,7 @@ status open
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -110,7 +112,9 @@ Cigma
 
 \begin_layout Author
 © California Institute of Technology
-\newline
+\begin_inset Newline newline
+\end_inset
+
 Version 1.0.0
 \end_layout
 
@@ -118,7 +122,7 @@ Version 1.0.0
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -128,7 +132,8 @@ today
 \end_inset
 
 
-\begin_inset LatexCommand tableofcontents
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
 
 \end_inset
 
@@ -141,7 +146,7 @@ today
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -154,8 +159,9 @@ raggedbottom
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
 
-\newpage
 
 \end_layout
 
@@ -163,58 +169,58 @@ raggedbottom
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
 mynote{
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Global TODO Items
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Don't forget to change version on cover to version 1.0.0 (done)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Change the cover image to use a newer comparison
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Add description of basic ExodusII format in file_formats.lyx (delay
  for version 1.1 -- use Scientific.IO.NetCDF for now)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * grep for 'Chapter' and 'Section' and make sure that all such numbers
  are relative references.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Fix alignment of tables where appropriate (left/center/right justified)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Fix alignment of table cells where appropriate (left/center/right
  justified)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
     * Figure out how to reference equation numbers in lyx (how to give them
  a label?)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 }
 \end_layout
@@ -225,8 +231,9 @@ mynote{
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{introduction/introduction.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "introduction.lyx"
 
 \end_inset
 
@@ -234,8 +241,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{installation/installation.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "installation.lyx"
 
 \end_inset
 
@@ -243,8 +251,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{error_analysis/error_analysis.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "error_analysis.lyx"
 
 \end_inset
 
@@ -252,8 +261,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{interpolation/interpolation.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "interpolation.lyx"
 
 \end_inset
 
@@ -261,8 +271,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{formats/formats.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "formats.lyx"
 
 \end_inset
 
@@ -270,8 +281,9 @@ preview false
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{running/running.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "running.lyx"
 
 \end_inset
 
@@ -283,7 +295,7 @@ preview false
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 %dummy comment inserted to ensure this paragraph is not empty
 \end_layout
@@ -294,8 +306,9 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-\begin_inset Include \include{appendix/appendix.lyx}
-preview false
+\begin_inset CommandInset include
+LatexCommand include
+filename "appendix.lyx"
 
 \end_inset
 
@@ -304,60 +317,60 @@ preview false
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
 mynote{
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 References:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 * Hughes, Thomas J.R., The Finite Element Method: Linear Static and Dynamic
  Finite Element Analysis, Prentice-Hall 1987 (use Dover ref instead)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 * Zienkiewicz, O.C., Taylor, R.L.
  The Finite Element Method: The Basis (Vol.
  1)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 * Akin, J.E., Finite Element Analysis with Error Estimators, Elsevier 2005
  (ISBN 0750667222)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 * Johnson, Claes - Numerical Solutions of Partial Differential Equations
  by the Finite Element Method, Cambridge University Press 1987
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 * Carlos Felippa, A Compendium of FEM integration formulas for symbolic
  work, Engineering Computation, Volume 21, Number 8, 2004, pages 867-890
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 }
 \end_layout
@@ -368,7 +381,8 @@ References:
 \end_layout
 
 \begin_layout Bibliography
-\begin_inset LatexCommand bibitem
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "1"
 key "Akin 2005"
 
@@ -384,7 +398,8 @@ Finite Element Analysis with Error Estimators,
 \end_layout
 
 \begin_layout Bibliography
-\begin_inset LatexCommand bibitem
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "2"
 key "Encyclopaedia of Cubature Formulas 2005"
 
@@ -396,7 +411,8 @@ Encyclopaedia of Cubature Formulas (1998-2005), Katholieke Universiteit
 \end_layout
 
 \begin_layout Bibliography
-\begin_inset LatexCommand bibitem
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "3"
 key "Hughes 2000"
 
@@ -411,7 +427,8 @@ The Finite Element Method: Linear Static and Dynamic Finite Element Analysis
 \end_layout
 
 \begin_layout Bibliography
-\begin_inset LatexCommand bibitem
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "4"
 key "KarniadakisSherwin2005"
 
@@ -431,7 +448,8 @@ Element Methods for Computational Fluid Dynamics, Second Edition
 \end_layout
 
 \begin_layout Bibliography
-\begin_inset LatexCommand bibitem
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "5"
 key "Uesu-etal2005"
 

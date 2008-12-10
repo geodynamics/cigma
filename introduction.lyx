@@ -1,11 +1,12 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -44,27 +47,27 @@
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
 mynote{
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Anything to emphasize here?
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   Talk about requirements: quantitative definition, automatic, verification
  of numerical codes
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 }
 \end_layout
@@ -116,10 +119,14 @@ CIG has developed Cigma in response to demand from the short-term tectonics
  The long-term goal for Cigma, however, is for it to be used for nearly
  all geodynamics modeling codes.
  Cigma relies on a number of libraries.
- The 
-\begin_inset LatexCommand htmlurl
-name "FInite element Automatic Tabulator (FIAT)"
-target "www.fenics.org/wiki/FIAT"
+ The FInite element Automatic Tabulator (FIAT) 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.fenics.org/wiki/FIAT
+\end_layout
 
 \end_inset
 
@@ -127,10 +134,14 @@ target "www.fenics.org/wiki/FIAT"
  Lagrange elements on lines, triangles, and tetrahedra.
  It can also generate higher order instances of Jacobi-type quadrature rules
  on the same element shapes.
- The 
-\begin_inset LatexCommand htmlurl
-name "Approximate Nearest Neighbor (ANN)"
-target "www.cs.umd.edu/~mount/ANN/"
+ The Approximate Nearest Neighbor (ANN) 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.cs.umd.edu/~mount/ANN/
+\end_layout
 
 \end_inset
 
@@ -146,13 +157,13 @@ Both of these libraries extend and generalize Cigma's functionality so it
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset ERT
-status open
+status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
@@ -164,12 +175,16 @@ mynote{implementation details -- move contents of this note to other chapters}
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 At its core, Cigma draws from a variety of libraries.
- The 
-\begin_inset LatexCommand htmlurl
-name "FInite element Automatic Tabulator (FIAT)"
-target "www.fenics.org/wiki/FIAT"
+ The FInite element Automatic Tabulator (FIAT) 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.fenics.org/wiki/FIAT
+\end_layout
 
 \end_inset
 
@@ -177,10 +192,14 @@ target "www.fenics.org/wiki/FIAT"
  Lagrange elements on lines, triangles, and tetrahedra.
  It can also generate higher order instances of Jacobi-type quadrature rules
  on the same element shapes.
- The 
-\begin_inset LatexCommand htmlurl
-name "Approximate Nearest Neighbor (ANN)"
-target "www.cs.umd.edu/~mount/ANN/"
+ The Approximate Nearest Neighbor (ANN) 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.cs.umd.edu/~mount/ANN/
+\end_layout
 
 \end_inset
 
@@ -188,7 +207,7 @@ target "www.cs.umd.edu/~mount/ANN/"
  exact and nearest-neighbor searching in arbitrarily high dimensions.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Both of these libraries extend and generalize Cigma's functionality so it
  can handle other types of elements, and provide the ability to compare
  vector fields.
@@ -226,10 +245,14 @@ Cigma User Manual.
 \begin_layout Standard
 CIG requests that in your oral presentations and in your papers that you
  indicate your use of this code and acknowledge the author of the code and
- 
-\begin_inset LatexCommand htmlurl
-name "CIG"
-target "geodynamics.org"
+ CIG 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org
+\end_layout
 
 \end_inset
 
