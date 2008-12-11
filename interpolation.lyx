@@ -1,11 +1,12 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -46,33 +49,33 @@
 \begin_inset ERT
 status collapsed
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 
 \backslash
 mynote{
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 TODO:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   * Move discussion from error_analysis.lyx and running.lyx here (done)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   * Rename document to interpolation.lyx (done)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Note that we place the interpolation chapter before the integration chapter
  because we wish to define the isoparametric elements in here (interpolation.lyx)
@@ -80,156 +83,156 @@ Note that we place the interpolation chapter before the integration chapter
  rules)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Random Notes: 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 For parametrizing the predefined functions we would need to use boost::regex
  when initializing the function from a user specified source string
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Give list of predefined functions here
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - basic:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * zero
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * scalar.one
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - benchmarks:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * strikeslip.okada.disloc3d
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * cylinder_extension.{maxwell,non_newtonian}.{displacement,velocity,stress}
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * cylinder_relaxation.{maxwell,non_newtonian}.{displacement,velocity,stress}
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * circular_inclusion.pressure
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
      * test.{cube,sphere,square,circle}
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Explain what is needed to define own function
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 Important things to discuss:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Natural coordinates
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Restricting discussion to isoparametric elements
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Available elements: tet4, tet10, hex8, hex20, hex27, tri3, quad4
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Node orderings for each element type (use figures to illustrate)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Shape functions
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Shape function derivatives
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Calculation of Jacobian
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Calculation of Volumes
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Deciding if a given point is contained in element
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Default integration rule for each element type
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Mesh Locator for finding element given an arbitrary point -- returns
  list of likely elements
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
   - Deciding if a given global point is contained in element (need inverse
  reference map)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 }
 \end_layout
@@ -271,19 +274,6 @@ Domain Discretization
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Standard
-Definition of mesh here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 A typical discretization will partition the domain of interest into a large
  number of cells.
  
@@ -303,20 +293,6 @@ Interpolation Step
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Standard
-Shape functions.
- Interpolant function.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Once we arrive at a solution on a cell 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
@@ -329,59 +305,12 @@ Once we arrive at a solution on a cell
 Available Elements
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Standard
-Reference domain.
- 
-\end_layout
-
-\end_inset
-
-Fig.
- elts.jpg
-\end_layout
-
 \begin_layout Subsection
 Triangles and Tetrahedra
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Standard
-Reference domain.
- Shape functions.
- Jacobian determinant and volume.
- Interior test.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Quadrilateral and Hexahedral Elements
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Standard
-Reference cell.
- Shape functions.
- Jacobian determinant & volume.
- Interior test.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -401,472 +330,6 @@ Available Global Functions
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
-mynote{
-\end_layout
-
-\begin_layout Standard
-
-TODO: do we really need to compile every function?
-\end_layout
-
-\begin_layout Standard
-
-If the number of functions becomes unwieldy, maybe this should become a
- configure-time option.
-\end_layout
-
-\begin_layout Standard
-
-For example: we could configure cigma with the following flags:
-\end_layout
-
-\begin_layout Standard
-
-    --with-all-functions=yes, --with-gale-functions=no, --with-test-functions,
- --with-foo-functions, etc..
-\end_layout
-
-\begin_layout Standard
-
-TODO: add more to the description of each function
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Standard
-TODO: Is there a way to get rid of the internal horizontal rules in the
- second column of a table?
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="18" columns="2">
-<features>
-<column alignment="center" valignment="top" leftline="true" width="0">
-<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Name
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Description
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-zero
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-scalar.one
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-strikeslip.disloc3d.displacement
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Strike-slip benchmark calculation with Okada disloc3d routine
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-strikeslip.disloc3d.velocity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-strikeslip.disloc3d.stress
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.maxwell_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Extension of Cylinder
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.maxwell_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.maxwell_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.non_newt_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Extending a cylinder with a non-newtonian material
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.non_newt_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_ext.non_newt_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.maxwell_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-Gravity relaxation of 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.maxwell_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.maxwell_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.non_newt_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.non_newt_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-cylinder_rel.non_newt_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Standard
-By default, we compile a number of functions into Cigma.
- We subdivide these into three categories.
- The first class contains only two functions, zero and one, with special
- initialization rules.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 By default, we compile a number of functions into Cigma.
  We subdivide these into three categories.
  The first class contains only two functions, zero and one.
@@ -874,24 +337,27 @@ By default, we compile a number of functions into Cigma.
  the operation of Cigma.
  Finally, the third class of functions consists of example benchmark cases
  that you may use as a base for defining your own functions.
-\newline
+\begin_inset Newline newline
+\end_inset
 
-\newline
-There are two
- basic functions that are available, listed in the table below.
+
+\begin_inset Newline newline
+\end_inset
+
+There are two basic functions that are available, listed in the table below.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
 <lyxtabular version="3" rows="2" columns="2">
 <features>
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<column alignment="left" valignment="top" rightline="true" width="0">
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 zero
@@ -899,10 +365,10 @@ zero
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Always evaluates to 0.
  Compatible with scalar, vector, and tensor functions.
 \end_layout
@@ -910,11 +376,11 @@ Always evaluates to 0.
 \end_inset
 </cell>
 </row>
-<row bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 one
@@ -922,10 +388,10 @@ one
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Always evaluates to 1.
  Only compatible with scalar functions.
 \end_layout
@@ -938,9 +404,13 @@ Always evaluates to 1.
 \end_inset
 
 
-\newline
+\begin_inset Newline newline
+\end_inset
 
-\newline
+
+\begin_inset Newline newline
+\end_inset
+
 The following functions have short definitions and are available for internal
  testing purposes.
  Mainly, these are used to make sure Cigma returns consistent results 
@@ -950,13 +420,13 @@ The following functions have short definitions and are available for internal
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
 <features>
-<column alignment="left" valignment="top" leftline="true" width="0">
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 test.cube
@@ -967,18 +437,18 @@ test.cube
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Scalar field in 3-dimensions
 \end_layout
 
 \end_inset
 </cell>
 </row>
-<row topline="true">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 test.sphere
@@ -989,18 +459,18 @@ test.sphere
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Vector field in 3-dimensions
 \end_layout
 
 \end_inset
 </cell>
 </row>
-<row topline="true">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 test.square
@@ -1011,18 +481,18 @@ test.square
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Scalar field in 2-dimensions
 \end_layout
 
 \end_inset
 </cell>
 </row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 test.circle
@@ -1030,10 +500,10 @@ test.circle
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Vector field in 2-dimensions
 \end_layout
 
@@ -1045,9 +515,13 @@ Vector field in 2-dimensions
 \end_inset
 
 
-\newline
+\begin_inset Newline newline
+\end_inset
 
-\newline
+
+\begin_inset Newline newline
+\end_inset
+
 We can also calculate the initial step of the strike-slip benchmark (no
  gravity) discussed in Chapter X.
  This is based on the Okada (1992) dislocation code[?].
@@ -1057,12 +531,12 @@ We can also calculate the initial step of the strike-slip benchmark (no
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="1">
 <features>
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true">
+<column alignment="left" valignment="top" width="0">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 strikeslip.disloc3d.displacement
@@ -1071,11 +545,11 @@ strikeslip.disloc3d.displacement
 \end_inset
 </cell>
 </row>
-<row topline="true">
+<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 strikeslip.disloc3d.velocity
@@ -1084,11 +558,11 @@ strikeslip.disloc3d.velocity
 \end_inset
 </cell>
 </row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Standard
+\begin_layout Plain Layout
 
 \family typewriter
 strikeslip.disloc3d.stress
@@ -1102,254 +576,19 @@ strikeslip.disloc3d.stress
 \end_inset
 
 
-\newline
+\begin_inset Newline newline
+\end_inset
 
-\newline
+
+\begin_inset Newline newline
+\end_inset
+
 The full list of all pre-defined functions which are available by name are
  given in the appendix.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Standard
-Cylinder extension case (maxwell and non-newtonian materials)
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="1">
-<features>
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.maxwell_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.maxwell_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.maxwell_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.non_newt_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.non_newt_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_ext.non_newt_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\newline
-
-\newline
-Cylinder relaxation case (maxwell and non-newtonian materials)
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="1">
-<features>
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.maxwell_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.maxwell_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.maxwell_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.non_newt_mat.displacement
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.non_newt_mat.velocity
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-cylinder_rel.non_newt_mat.stress
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\newline
-
-\newline
-Using Gale, we may compute various
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="1" columns="1">
-<features>
-<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
-<row topline="true" bottomline="true">
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Standard
-
-\family typewriter
-circular_inclusion.pressure
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Defining Your Own Global Function
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Standard
-Show example subclass of cigma::Function.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

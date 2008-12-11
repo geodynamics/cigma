@@ -1,11 +1,12 @@
-#LyX 1.5.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 276
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
 \newcommand{\mynote}[1]{}
 \end_preamble
+\use_default_options false
 \language english
 \inputencoding auto
 \font_roman default
@@ -16,9 +17,11 @@
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
+
 \graphics default
 \paperfontsize default
 \spacing single
+\use_hyperref false
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -42,82 +45,6 @@
 
 \begin_body
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Standard
-
-
-\backslash
-mynote{
-\end_layout
-
-\begin_layout Standard
-
-Things to mention:
-\end_layout
-
-\begin_layout Standard
-
-  Mention installation from binary (test the binaries from buildbot and
- make sure they install properly)
-\end_layout
-
-\begin_layout Standard
-
-  Mention how to obtain a copy of the development tree
-\end_layout
-
-\begin_layout Standard
-
-  Add Scientific.IO.NetCDF to list of optional tools
-\end_layout
-
-\begin_layout Standard
-
-  Add SciPy to the list of optional tools
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-Portions of Boost that we use
-\end_layout
-
-\begin_layout Standard
-
-  boost::filesystem
-\end_layout
-
-\begin_layout Standard
-
-  boost::program_options
-\end_layout
-
-\begin_layout Standard
-
-  boost::regex (parsing parameters from source strings)
-\end_layout
-
-\begin_layout Standard
-
-  boost::python (for wrapping the core library objects)
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Chapter
 Installation and Getting Help
 \end_layout
@@ -127,10 +54,14 @@ Getting Help
 \end_layout
 
 \begin_layout Standard
-For help, send an e-mail to the 
-\begin_inset LatexCommand url
-name "CIG Computational Science Mailing List"
-target "cig-cs@geodynamics.org"
+For help, send an e-mail to the CIG Computational Science Mailing List 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cig-cs@geodynamics.org
+\end_layout
 
 \end_inset
 
@@ -139,19 +70,28 @@ target "cig-cs@geodynamics.org"
 \family typewriter
 cig-cs
 \family default
- mailing list and view archived discussions at the 
-\begin_inset LatexCommand htmlurl
-name "CIG Mail Lists web page"
-target "geodynamics.org/cig/lists"
+ mailing list and view archived discussions at the CIG Mail Lists web page
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/lists
+\end_layout
 
 \end_inset
 
 .
  If you encounter any bugs or have problems installing Cigma, please submit
- a report to the 
-\begin_inset LatexCommand htmlurl
-name "CIG Bug Tracker"
-target "geodynamics.org/bugs"
+ a report to the CIG Bug Tracker 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/bugs
+\end_layout
 
 \end_inset
 
@@ -163,10 +103,15 @@ Installing from Source
 \end_layout
 
 \begin_layout Standard
-To install Cigma, download the source package from the 
-\begin_inset LatexCommand htmlurl
-name "CIG Cigma web page"
-target "geodynamics.org/cig/software/packages/cs/cigma"
+To install Cigma, download the source package from the CIG Cigma web page
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/software/packages/cs/cigma
+\end_layout
 
 \end_inset
 
@@ -263,17 +208,26 @@ HDF5
 
 \begin_layout Standard
 The Hierarchical Data Format (HDF5) library is available for download from
- 
-\begin_inset LatexCommand htmlurl
-name "The HDF Group"
-target "hdfgroup.org/HDF5"
+ The HDF Group 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5
+\end_layout
 
 \end_inset
 
 .
  Binaries can be obtained at 
-\begin_inset LatexCommand htmlurl
-target "hdfgroup.org/HDF5/release/obtain5.html"
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5/release/obtain5.html
+\end_layout
 
 \end_inset
 
@@ -320,19 +274,28 @@ The Visualization Toolkit (VTK) library is a popular open source graphics
  library for scientific visualizations.
  We recommend that you obtain the binaries from a package manager, making
  sure to install the associated development headers along with the library.
- The source for the VTK library is available from 
-\begin_inset LatexCommand htmlurl
-name "Kitware, Inc."
-target "www.vtk.org/get-software.php"
+ The source for the VTK library is available from Kitware, Inc.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.vtk.org/get-software.php
+\end_layout
 
 \end_inset
 
 .
  If you decide to compile VTK from source, you will also need the CMake
- build environment, available from 
-\begin_inset LatexCommand htmlurl
-name "CMake"
-target "cmake.org"
+ build environment, available from CMake 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cmake.org
+\end_layout
 
 \end_inset
 
@@ -408,10 +371,15 @@ NumPy
 
 \begin_layout Standard
 NumPy is a Python module which adds support for large multi-dimensional
- arrays and matrices, and is available for download from the 
-\begin_inset LatexCommand htmlurl
-name "NumPy Home Page"
-target "numpy.scipy.org "
+ arrays and matrices, and is available for download from the NumPy Home
+ Page 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+numpy.scipy.org 
+\end_layout
 
 \end_inset
 
@@ -444,10 +412,14 @@ PyTables
 PyTables is a Python extension module that builds on top of the HDF5 library.
  It provides a convenient scripting interface to manipulate HDF5 files,
  which can be used to manipulate the input files needed by Cigma.
- PyTables is available for download from 
-\begin_inset LatexCommand htmlurl
-name "PyTables"
-target "www.pytables.org"
+ PyTables is available for download from PyTables 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.pytables.org
+\end_layout
 
 \end_inset
 
@@ -495,8 +467,13 @@ The ScientificPython module is a Python library for common tasks in scientific
 
 \begin_layout Standard
 ScientificPython is available for download from 
-\begin_inset LatexCommand htmlurl
-target "dirac.cnrs-orleans.fr/plone/software/scientificpython"
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+dirac.cnrs-orleans.fr/plone/software/scientificpython
+\end_layout
 
 \end_inset
 
@@ -535,8 +512,13 @@ SciPy is a Python module for use in mathematics, science, and engineering.
  It contains algorithms for optimization, linear algebra, and other common
  scientific tasks.
  SciPy is available for download from 
-\begin_inset LatexCommand url
-target "scipy.org"
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+scipy.org
+\end_layout
 
 \end_inset
 
@@ -557,10 +539,14 @@ The Finite Element Automatic Tabulator (FIAT) Python module supports generation
 \end_layout
 
 \begin_layout Standard
-FIAT is available from 
-\begin_inset LatexCommand htmlurl
-name "The FEniCS Project"
-target "www.fenics.org/wiki/FIAT"
+FIAT is available from The FEniCS Project 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.fenics.org/wiki/FIAT
+\end_layout
 
 \end_inset
 
@@ -591,10 +577,14 @@ NCSA HDFView is a graphical user interface tool for accessing data in your
  You can use it for viewing the internal group hierarchy, adding new datasets,
  and modifying or deleting existing datasets, or altering metadata on groups
  and datasets.
- You can download it from the 
-\begin_inset LatexCommand htmlurl
-name "HDFView home page"
-target "hdf.ncsa.uiuc.edu/hdf-java-html/hdfview"
+ You can download it from the HDFView home page 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdf.ncsa.uiuc.edu/hdf-java-html/hdfview
+\end_layout
 
 \end_inset
 
