@@ -208,16 +208,6 @@ filename "interpolation.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "formats.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
 filename "running.lyx"
 
 \end_inset
@@ -243,7 +233,7 @@ status collapsed
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "appendix.lyx"
+filename "formats.lyx"
 
 \end_inset
 
@@ -264,20 +254,23 @@ Akin, J.E.
 Finite Element Analysis with Error Estimators,
 \emph default
  Butterworth-Heinemann, Oxford, 447 pp.
- 
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "2"
-key "Encyclopaedia of Cubature Formulas 2005"
+key "Knupp"
 
 \end_inset
 
-Encyclopaedia of Cubature Formulas (1998-2005), Katholieke Universiteit
- Leuven, Dept.
- Computerwetenschappen, www.cs.kuleuven.be/~nines/research/ecf/
+P.
+ Knupp, K.
+ Salari (2003), 
+\emph on
+Verification of Computer Codes in Computational Science and Engineering,
+\emph default
+ Chapman & Hall/CRC, 144 pp.
 \end_layout
 
 \begin_layout Bibliography
@@ -300,7 +293,7 @@ The Finite Element Method: Linear Static and Dynamic Finite Element Analysis
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "4"
-key "KarniadakisSherwin2005"
+key "Karniadakis 2005"
 
 \end_inset
 
@@ -321,7 +314,25 @@ Element Methods for Computational Fluid Dynamics, Second Edition
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 label "5"
-key "Uesu-etal2005"
+key "Cools 2003"
+
+\end_inset
+
+R.
+ Cools, 
+\emph on
+An Encyclopaedia of Cubature Formulas
+\emph default
+, J.
+ Complexity, 19: 445-453, 2003; Katholieke Universiteit Leuven, Dept.
+ Computerwetenschappen, www.cs.kuleuven.be/~nines/research/ecf/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "Uesu 2005"
 
 \end_inset
 

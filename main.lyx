@@ -1,0 +1,1933 @@
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+The CIG Model Analyzer (Cigma) consists of a general suite of tools for
+ comparing numerical models.
+ CIG has developed Cigma in response to demand from the short-term tectonics
+ community for an automated tool that is capable.
+\end_layout
+
+\begin_layout Section
+Error Analysis
+\end_layout
+
+\begin_layout Section
+Citation
+\end_layout
+
+\begin_layout Standard
+Computational Infrastructure for Geodynamics (CIG) is making this source
+ code available to you in the hope that the software will enhance your research
+ in geophysics.
+ This is a brand-new code and at present no papers are published or press.
+ Please cite this manual as follows:
+\end_layout
+
+\begin_layout Itemize
+Armendariz, L., and S.
+ Kientz.
+ 
+\emph on
+Cigma User Manual.
+
+\emph default
+ Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
+ URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
+\end_layout
+
+\begin_layout Standard
+CIG requests that in your oral presentations and in your papers that you
+ indicate your use of this code and acknowledge the author of the code and
+ CIG 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Support
+\end_layout
+
+\begin_layout Standard
+Cigma development is based upon work supported by the National Science Foundatio
+n under Grant No.
+ EAR-0406751.
+ Any opinions, findings, and conclusions or recommendations expressed in
+ this material are those of the authors and do not necessarily reflect the
+ views of the National Science Foundation.
+ The code is being released under the GNU General Public License.
+\end_layout
+
+\begin_layout Chapter
+Installation and Getting Help
+\end_layout
+
+\begin_layout Section
+Getting Help and Reporting Bugs
+\end_layout
+
+\begin_layout Standard
+For help, send an e-mail to the CIG Computational Science Mailing List 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cig-cs@geodynamics.org
+\end_layout
+
+\end_inset
+
+.
+ You can subscribe to the 
+\family typewriter
+cig-cs
+\family default
+ mailing list and view archived discussions at the CIG Mail Lists web page
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/lists
+\end_layout
+
+\end_inset
+
+.
+ If you encounter any bugs or have problems installing Cigma, please submit
+ a report to the CIG Bug Tracker 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+geodynamics.org/bugs
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Installing from Source
+\end_layout
+
+\begin_layout Standard
+In this section we discuss how to install each of the software libraries
+ necessary for building Cigma.
+ We recommend that you obtain binaries for these dpendencies from your package
+ manager of choice, or from the corresponding website.
+ When using a package manager, make sure to install the associated development
+ headers along with the library, as these tend to be distributed separately
+ from the library package itself.
+\end_layout
+
+\begin_layout Subsection
+Quick Summary
+\end_layout
+
+\begin_layout Standard
+After installing the necessary dependencies described below, download the
+ source package from the CIG Cigma web page 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/software/packages/cs/cigma
+\end_layout
+
+\end_inset
+
+.
+ You will need the GNU C++ compiler for this step.
+ Unpack the source tar file and issue the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cigma-1.0.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma-1.0.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-boost=$BOOST_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-hdf5=$HDF5_PREFIX        
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-netcdf=$NETCDF_PREFIX    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk=$VTK_PREFIX          
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk-version=$VTK_VERSION 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-cppunit-prefix=$CPPUNIT_PREFIX
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The Boost and HDF5 libraries are the only required components for this step.
+ The installation prefixes should be used if you have installed the correspondin
+g library in a custom location.
+ In the instructions below, we use a subdirectory of 
+\family typewriter
+$HOME/opt
+\family default
+ as the installation prefix, but you may change it to something else.
+ After all these steps are complete, you should be able to run the 
+\family typewriter
+cigma
+\family default
+ binary and begin comparing arbitrary functions.
+\end_layout
+
+\begin_layout Subsection
+Boost library
+\end_layout
+
+\begin_layout Standard
+The Boost C++ libraries are a collection of peer-reviewed and open source
+ libraries that extend the functionality of C++.
+ Cigma uses Boost for its smart pointer facilities, lexical conversions,
+ as well as for parsing command-line options, and for providing cross-platform
+ filesystem operations.
+ In order to build Boost with the necessary components used in Cigma, you
+ can use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz boost_1_37_0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd boost_1_37_0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/boost 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-libraries=system,filesystem,program_options
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+Other components of Boost that need to be built can be chosen from the list
+ generated by the command
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --show-libraries
+\end_layout
+
+\begin_layout Standard
+and modifying the comma-delimited list passed to the 
+\family typewriter
+--with-libraries
+\family default
+ option when repeating the build procedure above.
+ The next version of Cigma will include a Python extension module that will
+ need the python component of Boost, but is currently not necessary.
+\end_layout
+
+\begin_layout Subsection
+HDF5 library
+\end_layout
+
+\begin_layout Standard
+The Hierarchical Data Format is a library and multi-object file format for
+ the transfer of numerical data between computers.
+ Cigma depends on the C++ API of the HDF5 library, so it is important to
+ enable it when running the configure script below.
+ You can obtain the latest source from The HDF Group 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5
+\end_layout
+
+\end_inset
+
+, and use the following sequence of commands to build the library.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz hdf5-1.8.2.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-zlib=$ZLIB_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-cxx
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+If it is not already available on your system, you must build the zlib compressi
+on library before building HDF5 above 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz zlib-1.2.3.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd zlib-1.2.3
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+In practice, you only need to do this if your system is missing the zlib
+ development headers and you are unable to install them otherwise.
+\end_layout
+
+\begin_layout Standard
+Alternatively, compiled binaries for the HDF5 library can be obtained at
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5/release/obtain5.html
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+NetCDF library
+\end_layout
+
+\begin_layout Standard
+NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
+ependent data formats that support the creation, access, and sharing of
+ array-oriented scientific data.
+ The source for
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ cd netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/netcdf-4.0    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-hdf5=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-netcdf-4
+\end_layout
+
+\begin_layout LyX-Code
+              
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+You may also 
+\end_layout
+
+\begin_layout Subsection
+VTK library
+\end_layout
+
+\begin_layout Standard
+The Visualization Toolkit (VTK) library is a popular open source graphics
+ library for scientific visualizations.
+ Cigma will need to be configured with the VTK library if you plan to directly
+ specify your functions by using the VTK file format.
+ The source for the VTK library is available from Kitware, Inc.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.vtk.org/get-software.php
+\end_layout
+
+\end_inset
+
+.
+ You will also need the CMake build environment, available from CMake 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cmake.org
+\end_layout
+
+\end_inset
+
+.
+ After downloading the source package for the VTK library, you can issue
+ the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz vtk-5.2.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd VTK
+\end_layout
+
+\begin_layout LyX-Code
+$ mkdir build
+\end_layout
+
+\begin_layout LyX-Code
+$ cd build
+\end_layout
+
+\begin_layout LyX-Code
+$ ccmake ..
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The installation prefix and other settings can be changed during the 
+\family typewriter
+ccmake
+\family default
+ step above.
+ By default, the installation prefix will point to the 
+\family typewriter
+/usr/local
+\family default
+ directory, but you may want to change it to a location like 
+\family typewriter
+$HOME/opt/vtk-5.2
+\family default
+ in case you would like to manage multiple versions of the VTK library in
+ the same system.
+\end_layout
+
+\begin_layout Subsection
+CppUnit library
+\end_layout
+
+\begin_layout Standard
+CppUnit is a C++ unit testing framework used by Cigma for automatically
+ running various internal consistency checks during every build.
+ You will need this library if you want to modify the Cigma source and want
+ to make certain guarantees about your additions to the code.
+ After obtaining the obtaining the latest source release, you may build
+ CppUnit by using the following sequence of steps.
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cppunit-1.21.1.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+CppUnit is available for download from 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+sourceforge.net/projects/cppunit/
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Installing from the Software Repository
+\end_layout
+
+\begin_layout Standard
+The Cigma source code is available via the CIG Subversion Repository 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/software/Repository
+\end_layout
+
+\end_inset
+
+.
+ For this section, you will need an Subversion client, as well as the GNU
+ tools Autoconf, Automake, and Libtool.
+ To check if you have a Subversion client installed, type 
+\family typewriter
+svn
+\family default
+ and look for a usage message
+\end_layout
+
+\begin_layout LyX-Code
+$ svn
+\end_layout
+
+\begin_layout LyX-Code
+Type 'svn help' for usage.
+\end_layout
+
+\begin_layout Standard
+To check for the presence of the GNU Autotools, use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ autoconf --version
+\end_layout
+
+\begin_layout LyX-Code
+$ automake --version
+\end_layout
+
+\begin_layout LyX-Code
+$ libtoolize --version
+\end_layout
+
+\begin_layout Standard
+Using the source repository directly is recommended for users who want to
+ extend Cigma 
+\end_layout
+
+\begin_layout Subsection
+Downloading the Cigma Source
+\end_layout
+
+\begin_layout Standard
+You may check out the latest version of Cigma by using the 
+\family typewriter
+svn checkout
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ svn checkout http://geodynamics.org/svn/cig/cs/cigma/trunk cigma
+\end_layout
+
+\begin_layout Standard
+This will create the local directory 
+\family typewriter
+cigma
+\family default
+ and fill it with the latest Cigma source from the CIG software repository.
+ This new directory is called a 
+\emph on
+working copy
+\emph default
+.
+ To merge the latest changes on your working copy, use the 
+\family typewriter
+svn update
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ svn update
+\end_layout
+
+\begin_layout Standard
+This will preserve any local changes you have made to your working copy.
+\end_layout
+
+\begin_layout Subsection
+Using the GNU Build System
+\end_layout
+
+\begin_layout Standard
+Once you have obtained a working copy of the Cigma source, you will need
+ to use the GNU Autotools to generate the appropriate build files.
+ This can be accomplished by running the command 
+\family typewriter
+autoreconf -fi
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ autoreconf -fi
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure <
+\emph on
+necessary-flags-here
+\emph default
+>
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+autoreconf
+\family default
+ tool generates the 
+\family typewriter
+configure
+\family default
+ script from the 
+\family typewriter
+configure.ac
+\family default
+ file.
+ It also runs Automake to generate 
+\family typewriter
+Makefile.in
+\family default
+ from 
+\family typewriter
+Makefile.am
+\family default
+ in each source directory.
+ After running 
+\family typewriter
+autoreconf
+\family default
+, you may install Cigma as described in Section 2.2 earlier in this Chapter.
+\end_layout
+
+\begin_layout Chapter
+Running Cigma
+\end_layout
+
+\begin_layout Standard
+Cigma is primarily designed for calculating error estimates between arbitrary
+ functions.
+ As such, the basic command line operation for comparing two functions takes
+ the following form:
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+\bar under
+FunctionA
+\series default
+\bar default
+ 
+\series bold
+\bar under
+FunctionB
+\series default
+\bar default
+ -m 
+\series bold
+\bar under
+IntegrationMesh
+\series default
+\bar default
+ -o 
+\series bold
+\bar under
+LocalResiduals
+\end_layout
+
+\begin_layout Standard
+This command will compute local and global error metrics for the difference
+ between two functions specified on the command line.
+ Typically, you will also want to specify a particular discretization to
+ use as the integration mesh.
+ The output file will be used to store the results of the comparison, which
+ are defined relative to the integration mesh.
+ Here we give a general overview of the options used in Cigma, and show
+ actual usage examples in the next Chapter.
+\end_layout
+
+\begin_layout Section
+How to Select Your Input and Output Datasets
+\end_layout
+
+\begin_layout Standard
+The basic object used to store data in Cigma is a simple two dimensional
+ array of values, or dataset.
+ Since scientific file formats are capable of storing multiple datasets,
+ you will typically need a way to select a specific array on a given data
+ file.
+ Therefore, regardless of the context, the option arguments to Cigma are
+ parsed consistently by following the 
+\family typewriter
+\series bold
+Filename:Location
+\family default
+\series default
+ convention.
+ If the 
+\emph on
+filename
+\emph default
+ unambiguously determines the target array, then the 
+\emph on
+location
+\emph default
+ part of the option argument is taken to be empty.
+ Now, depending on how Cigma was configured during the build procedure,
+ there are a number of different file formats available for specifying and
+ storing your data.
+ In this case, the file format will be derived directly from the 
+\emph on
+filename
+\emph default
+ extension.
+ 
+\end_layout
+
+\begin_layout Standard
+The simplest format you can use is a simple text file (with extension 
+\family typewriter
+.dat
+\family default
+) containing a single array.
+ The most flexible way to store your arrays will be to use an HDF5 file
+ (with extension 
+\family typewriter
+.h5
+\family default
+), which will allow you to organize your arrays in a hierarchy, as well
+ as attach metadata attributes explaining the role that each of those arrays
+ will serve.
+ In VTK files, arrays can be accessed through an a single identifier.
+\end_layout
+
+\begin_layout Section
+Specifying a Mesh
+\end_layout
+
+\begin_layout Standard
+A mesh is associated with three items of information: (1) geometrical informatio
+n for a number of nodes defined on a global coordinate system, and (2) topologic
+al information describing how those nodes are connected to each other to
+ form elements, and (3) an element type associated with the cell.
+ In Cigma, these items are determined by the following command line options,
+ arranged in tabular format for easy reference.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="5">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Option
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+\bar under
+MeshA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+\bar under
+MeshB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+\bar under
+IntegrationMesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Items Read
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+M
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--first-mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--second-mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(1,2,3)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+M1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--first-mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--second-mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(1)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+M2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--first-mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--second-mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(2)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MC
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--first-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--second-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--mesh-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(3)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Command Line Options
+\end_layout
+
+\begin_layout Standard
+For any of the 
+\bar under
+MeshA
+\bar default
+, 
+\bar under
+MeshB
+\bar default
+, 
+\bar under
+IntegrationMesh
+\bar default
+ columns in the table above, the relationship between these options is as
+ follows:
+\end_layout
+
+\begin_layout Enumerate
+If option (M) is given, then options (M1) and (M2) are forbidden.
+\end_layout
+
+\begin_layout Enumerate
+If option (M) is missing, then both options (M1) and (M2) must be specified.
+\end_layout
+
+\begin_layout Enumerate
+Option (MC) can be deduced from option (M)
+\end_layout
+
+\begin_layout Enumerate
+Option (MC) is required if options (M1) and (M2) are given.
+\end_layout
+
+\begin_layout Subsection
+Mesh from an HDF5 File
+\end_layout
+
+\begin_layout Standard
+When using an HDF5 file to store the mesh information, the 
+\emph on
+location
+\emph default
+ associated with option (M) must point to an HDF5 group that contains two
+ arrays with the relevant mesh information.
+ The names of those two arrays must be 
+\family typewriter
+\series bold
+coordinates
+\family default
+\series default
+ and 
+\family typewriter
+\series bold
+connectivity
+\family default
+\series default
+.
+ If the 
+\emph on
+location
+\emph default
+ is empty, as is the case when only 
+\emph on
+filename
+\emph default
+ is specified, then the HDF5 group is assumed to be the root group 
+\family typewriter
+/
+\family default
+ of the hierarchy.
+ Lastly, the option (MC) can be omitted if the HDF5 group has an attribute
+ called 
+\family typewriter
+\series bold
+\emph on
+CellType
+\family default
+\series default
+\emph default
+ with a correct value.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+
+\emph on
+Group location
+\end_layout
+
+\begin_layout LyX-Code
+ |-- Attribute 
+\series bold
+\emph on
+CellType
+\end_layout
+
+\begin_layout LyX-Code
+ |-- Array 
+\series bold
+coordinates
+\end_layout
+
+\begin_layout LyX-Code
+ `-- Array 
+\series bold
+connectivity
+\end_layout
+
+\begin_layout Standard
+Alternatively, one may specify options (M1) and (M2) separately by pointing
+ directly to the arrays corresponding to the coordinates and connectivity
+ information.
+\end_layout
+
+\begin_layout Subsection
+Mesh From a VTK File
+\end_layout
+
+\begin_layout Standard
+Specifying a mesh by using a vtk files is very convenient, since we can
+ simply pass the 
+\emph on
+filename
+\emph default
+ to (M).
+ No 
+\emph on
+location
+\emph default
+ needs to be specified since all the appropriate mesh information can be
+ read implicitly from the 
+\family typewriter
+POINTS
+\family default
+, and 
+\family typewriter
+CELLS
+\family default
+ datasets, which are required by the VTK file format.
+ The value of (MC) is determined from the 
+\family typewriter
+CELL_TYPES
+\family default
+ dataset, which is also required.
+\end_layout
+
+\begin_layout Subsection
+Mesh from a CUBIT ExodusII File
+\end_layout
+
+\begin_layout Standard
+Another convenient way to specify a mesh is to use an ExodusII file created
+ by the CUBIT mesh generation toolkit.
+ In this case, the mesh file is natively in the NetCDF format.
+ Again, it suffices to simply pass 
+\emph on
+filename
+\emph default
+ to option (M), and the appropriate mesh information will be read from the
+ file.
+ Currently, only the first element block is used.
+ The value of (MC) is determined from the NetCDF string attribute 
+\family typewriter
+elem_type
+\family default
+ attached to the NetCDF integer variable called 
+\family typewriter
+connect1
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Mesh from Text Files
+\end_layout
+
+\begin_layout Standard
+When using a text files, all three options (M1), (M2), and (MC) must be
+ specified.
+\end_layout
+
+\begin_layout Subsection
+Mesh Cell Shapes
+\end_layout
+
+\begin_layout Standard
+The option (MC) can have a limited number of values, listed below.
+\end_layout
+
+\begin_layout Section
+Specifying an Integration Mesh
+\end_layout
+
+\begin_layout Standard
+An integration mesh can be specified by the command line options in Section
+ 3.2, subject to the following rules
+\end_layout
+
+\begin_layout Enumerate
+At least one of 
+\bar under
+MeshA
+\bar default
+, 
+\bar under
+MeshB
+\bar default
+, or 
+\bar under
+IntegrationMesh
+\bar default
+ must be given.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\bar under
+IntegrationMesh
+\bar default
+ is specified, then it is always used.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\bar under
+IntegrationMesh
+\bar default
+ is missing, then 
+\bar under
+MeshA
+\bar default
+ is copied to 
+\bar under
+IntegrationMesh
+\bar default
+.
+\end_layout
+
+\begin_layout Enumerate
+If only 
+\bar under
+MeshB
+\bar default
+ is given, then it is copied to 
+\bar under
+IntegrationMesh
+\bar default
+.
+\end_layout
+
+\begin_layout Standard
+Now, deciding if a given mesh is adequate for accurately capturing the error
+ in the comparison will depend on the functions being compared.
+ One strategy to ensure an adequate mesh would be to take the discretization
+ cells on which the error metric exceeds a certain threshold, mark those
+ cells for refinement, and recalculate the residuals over the new discretization
+, repeating the process if necessary.
+ This strategy could be implemented on top of Cigma as a series of post-processi
+ng steps by writing a suitable program or script that repeats this refinement
+ process until the variations in the global error metric are small enough.
+\end_layout
+
+\begin_layout Standard
+A second strategy would be to increase the order of the quadrature rule
+ that we associate with the cells in the integration mesh.
+ This has the advantage that we.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+IntegrationRule
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--rule
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--rule-points
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+--rule-weights
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Specifying the Functions
+\end_layout
+
+\begin_layout Standard
+The requirements on the kind of functions that Cigma will accept are actually
+ quite stringent.
+ Recall from Chapter 1 that computing the local error metric involves approximat
+ing a local error integral by a finite weighed sum over specific quadrature
+ points.
+ If we allow arbitrary meshes for the integration procedure, that means
+ that we must be able to evaluate our functions wherever those quadrature
+ points may lie.
+ This implies that our functions must be capable of evaluating on arbitrary
+ points, which may not always be possible due to missing information, or
+ it may be too inefficient without first building an appropriate spatial-index
+ database.
+\end_layout
+
+\begin_layout Subsection
+Command Line Arguments
+\end_layout
+
+\begin_layout Subsection
+By Finite Elements
+\end_layout
+
+\begin_layout Standard
+A finite element description of a function is associated with three items
+ of information: (1) a finite set of local basis functions, (2) a discretization
+ over which the function is locally approximated by those basis functions,
+ and finally (3) the actual global list of coefficients that yield the closest
+ approximation to the function.
+ How these items are specified depends on the underlying file format used
+ to store the finite element description to our function.
+\end_layout
+
+\begin_layout Subsubsection
+Using an HDF5 File
+\end_layout
+
+\begin_layout Standard
+When giving 
+\end_layout
+
+\begin_layout Subsubsection
+Using a VTK File
+\end_layout
+
+\begin_layout Subsubsection
+Using a Text File
+\end_layout
+
+\begin_layout Standard
+Alternatively, you can also specify
+\end_layout
+
+\begin_layout Subsection
+By an Explicit Function
+\end_layout
+
+\begin_layout Standard
+Sometimes you will be able to express a function in terms of a general formula
+ or algorithm, in which case would like to be able to refer to such a function
+ by using a simple name when specifying either of the 
+\bar under
+FunctionA
+\bar default
+ or 
+\bar under
+FunctionB
+\bar default
+ arguments.
+ Currently in Cigma, this is accomplished in two major steps.
+\end_layout
+
+\begin_layout Enumerate
+Start by implementing your function or algorithm as a C++ subclass of 
+\family typewriter
+cigma::Function
+\family default
+.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Simple examples are available in the 
+\family typewriter
+src/fn_*.cpp
+\family default
+ source files.
+\end_layout
+
+\begin_layout Enumerate
+If you decide to link against a shared library containing your implementation,
+ you will need to make the appropriate modifications to the 
+\family typewriter
+cigma_LDFLAGS
+\family default
+ and 
+\family typewriter
+cigma_CPPFLAGS
+\family default
+ automake variables in the 
+\family typewriter
+Makefile.am
+\family default
+ file.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Next, register your new function under a unique name in the appropriate
+ section of the 
+\family typewriter
+src/FunctionRegistry.cpp
+\family default
+ source file.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Follow the examples already shown in the implementation of the constructor
+ 
+\family typewriter
+cigma::FunctionRegistry
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Defining your own functions is ideal for analytic functions that other people
+ downloading Cigma can use as benchmarks.
+\end_layout
+
+\begin_layout Subsection
+By an Explicit List of Values
+\end_layout
+
+\begin_layout Standard
+Registering an analytic function is not always convenient, since you will
+ have to rebuild the 
+\family typewriter
+cigma
+\family default
+ executable every time you wish to add a new function, or modify an existing
+ one.
+ Unless you are working on defining a function that will be used repeatedly,
+ you will probably find it easier to first calculate the required evaluation
+ points, evaluate your function on those points by using a separate program
+ or script, and then feed the values directly as one of the functions.
+\end_layout
+
+\begin_layout Standard
+The only disadvantage of this approach is the number of evaluation points
+ may be large.
+ Moreover, this large number of evaluation points will be tied to a single
+ integration mesh.
+\end_layout
+
+\begin_layout Section
+Visualizing the Local 
+\begin_inset Formula $L^{2}$
+\end_inset
+
+ Residuals
+\end_layout
+
+\begin_layout Standard
+There are three possible output formats for the local residuals.
+ 
+\end_layout
+
+\begin_layout Standard
+Once you've obtained the visualization file
+\end_layout
+
+\begin_layout Section
+Other command line options
+\end_layout
+
+\begin_layout Standard
+The full list of options can be obtained by running the following command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare --help
+\end_layout
+
+\begin_layout LyX-Code
+Usage: cigma compare <FIRST-FIELD> <SECOND-FIELD> -o <RESIDUAL-FILE>
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Compare Options:    
+\end_layout
+
+\begin_layout LyX-Code
+  -a [ --first ] arg    Path to first field
+\end_layout
+
+\begin_layout LyX-Code
+  -b [ --second ] arg   Path to second field
+\end_layout
+
+\begin_layout LyX-Code
+  -o [ --output ] arg   Output file (for residuals)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Detailed Options:
+\end_layout
+
+\begin_layout LyX-Code
+  --first-mesh arg             Mesh for first field
+\end_layout
+
+\begin_layout LyX-Code
+  --first-mesh-cell arg        ...cell type for first mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --first-mesh-coords arg      ...node coordinates for first mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --first-mesh-connect arg     ...connectivity for first mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --second-mesh arg            Mesh for second field
+\end_layout
+
+\begin_layout LyX-Code
+  --second-mesh-cell arg       ...cell type for second mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --second-mesh-coords arg     ...node coordinates for second mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --second-mesh-connect arg    ...connectivity for second mesh
+\end_layout
+
+\begin_layout LyX-Code
+  -m [ --mesh ] arg            Path to integration mesh
+\end_layout
+
+\begin_layout LyX-Code
+  -c [ --mesh-cell ] arg       ...cell type of integration mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --mesh-coords arg            ...node coordinates of integration mesh
+\end_layout
+
+\begin_layout LyX-Code
+  --mesh-connect arg           ...connectivity of integration mesh
+\end_layout
+
+\begin_layout LyX-Code
+  -r [ --rule ] arg            Integration rule (points and weights)
+\end_layout
+
+\begin_layout LyX-Code
+  --rule-weights arg           ...integration weights on reference cell
+\end_layout
+
+\begin_layout LyX-Code
+  --rule-points arg            ...integration points on reference cell
+\end_layout
+
+\begin_layout LyX-Code
+  --do-not-overwrite           Do NOT overwrite existing data
+\end_layout
+
+\begin_layout LyX-Code
+  -f [ --timer-frequency ] arg Output frequency of timer
+\end_layout
+
+\begin_layout LyX-Code
+  --global-threshold arg       Threshold value for global residual
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Other Options:
+\end_layout
+
+\begin_layout LyX-Code
+  -h [ --help ]         produce help message
+\end_layout
+
+\begin_layout LyX-Code
+  -v [ --verbose ]      produce verbose output 
+\end_layout
+
+\begin_layout Chapter
+Examples
+\end_layout
+
+\begin_layout Section
+Short-Term Tectonics
+\end_layout
+
+\begin_layout Section
+Long-Term Tectonics
+\end_layout
+
+\begin_layout Section
+Mantle Convection
+\end_layout
+
+\begin_layout Chapter
+Troubleshooting
+\end_layout
+
+\begin_layout Standard
+It is possible that.
+\end_layout
+
+\begin_layout Section
+Mesh
+\end_layout
+
+\begin_layout Section
+Finite Elements
+\end_layout
+
+\begin_layout Chapter
+\start_of_appendix
+Input and Output Formats
+\end_layout
+
+\begin_layout Section
+Supported File Formats
+\end_layout
+
+\begin_layout Standard
+Cigma can understand a number of file formats
+\end_layout
+
+\begin_layout Section
+Input Quantities
+\end_layout
+
+\begin_layout Section
+Output Quantities
+\end_layout
+
+\begin_layout Chapter
+Quadrature Rules
+\end_layout
+
+\begin_layout Standard
+Here we discuss the quadrature rules
+\end_layout
+
+\end_body
+\end_document
