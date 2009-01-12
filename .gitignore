@@ -1,0 +1,9 @@
+# Temporary patterns
+/backup
+/scripts
+/TODO
+
+# Ignore patterns
+*~
+\#*\#
+.DS_Store
