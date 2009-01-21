@@ -1,0 +1,42 @@
+
+Verify that the following points are discussed in the manual:
+
+  - Cigma does not include a mesh generation package, so in order
+    to have greater accuracy in the comparisons one needs to increase
+    order of the integration rule being used.
+
+  - Meshes are internally stored as unstructured meshes.
+
+  - That we can only compare Fields on a single ElementBlock at a time.
+
+Things to check for the release:
+
+  - Files
+    * Make sure the tarball has all the required files
+    * Check for the proper /doc/ files
+    * Check for the proper /examples/ files
+    * Check that all required data files are included (see /tests/data/ directory)
+    * Check that 'make check' works
+
+  - Installation procedures
+    * Create tarball with 'make dist' and test it
+    * Use custom boost installation on ~/opt/boost
+    * Use custom hdf5 installation on ~/opt/hdf5
+    * Use custom vtk installation on ~/opt/vtk
+
+  - Consistency checks
+    * comparing one and zero on brick{1,2} meshes (should give volume)
+    * comparing test.brick and zero on brick{1,2} meshes (should give known answer)
+    * comparing test.square and zero on brick{1,2} meshes (should give known answer)
+
+  - Integration rules
+    * Increase order of integration rule instead of mesh refinement (check convergence)
+
+  - Examples
+    * comparing laplace solutions
+    * comparing citcomcu solutions
+    * comparing conman solutions (see blankenbach)
+    * comparing gale solutions
+    * comparing pylith solutions
+    * comparing geofest solutions
+

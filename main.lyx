@@ -835,11 +835,10 @@ How to Select Your Input and Output Datasets
 \end_layout
 
 \begin_layout Standard
-The basic object used to store data in Cigma is a simple two dimensional
- array of values, or dataset.
- Since scientific file formats are capable of storing multiple datasets,
- you will typically need a way to select a specific array on a given data
- file.
+The basic objects used to store data in Cigma are simple two dimensional
+ array of values, or datasets.
+ As scientific file formats are capable of storing multiple datasets, you
+ will typically need a way to select a specific array on a given data file.
  Therefore, regardless of the context, the option arguments to Cigma are
  parsed consistently by following the 
 \family typewriter
@@ -852,11 +851,11 @@ Filename:Location
 \emph on
 filename
 \emph default
- unambiguously determines the target array, then the 
+ part unambiguously determines the target array, then the 
 \emph on
 location
 \emph default
- part of the option argument is taken to be empty.
+ part of the option argument may be omitted.
  Now, depending on how Cigma was configured during the build procedure,
  there are a number of different file formats available for specifying and
  storing your data.
@@ -1224,7 +1223,7 @@ Option (MC) is required if options (M1) and (M2) are given.
 \end_layout
 
 \begin_layout Subsection
-Mesh from an HDF5 File
+Mesh HDF5 File
 \end_layout
 
 \begin_layout Standard
@@ -1280,20 +1279,32 @@ Group location
 \end_layout
 
 \begin_layout LyX-Code
- |-- Attribute 
+ |-- 
+\emph on
+Attribute
+\emph default
+ 
 \series bold
 \emph on
 CellType
 \end_layout
 
 \begin_layout LyX-Code
- |-- Array 
+ |-- 
+\emph on
+Array
+\emph default
+ 
 \series bold
 coordinates
 \end_layout
 
 \begin_layout LyX-Code
- `-- Array 
+ `-- 
+\emph on
+Array
+\emph default
+ 
 \series bold
 connectivity
 \end_layout
@@ -1926,7 +1937,34 @@ Quadrature Rules
 \end_layout
 
 \begin_layout Standard
-Here we discuss the quadrature rules
+Here we discuss the quadrature rules available in Cigma.
+\end_layout
+
+\begin_layout Chapter
+Utilities
+\end_layout
+
+\begin_layout Standard
+Cigma comes with a couple of utilities that make the life easier to the
+ user.
+ One is called 
+\family typewriter
+h5attr
+\family default
+ and lets you see the attributes attached to a dataset inside an HDF5 file.
+ The other one is called 
+\family typewriter
+vtk-residuals
+\family default
+ and allows the user to create visualization files given a mesh and a scalar
+ array representing the residuals over the elements of the mesh.
+\end_layout
+
+\begin_layout Standard
+Normally, these utilities will be installed somewhere in your PATH during
+ the process of installation of the Cigma package, so that you can invoke
+ them from any place in your filesystem after the installation has successfully
+ finished.
 \end_layout
 
 \end_body
