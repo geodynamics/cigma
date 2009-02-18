@@ -908,7 +908,6 @@ a posteriori
  error analysis and is problem dependent.
  In general, the residual field used under this norm is defined in terms
  of the linearized equation from which the solution was obtained.
- The rest of this chapter will discuss how to evaluate.
 \end_layout
 
 \begin_layout Section
@@ -949,11 +948,12 @@ rank
 \emph on
 scalar functions
 \emph default
- have a rank of 1, 
+ have a rank of 1, while 
 \emph on
 vector functions
 \emph default
- would have a rank of either 2 or 3.
+ would have a rank of either 2 or 3 depending on whether we wish to restrict
+ our function to a plane or not.
 \end_layout
 
 \begin_layout Section
@@ -988,12 +988,12 @@ integration rule
 
  can then be replaced by a weighed sum evaluated at a finite set of points.
  This integral will be valid up to a certain accuracy.
- In Chapter 5, we discuss in more detail how choose the location and values
- for the integration points and weights which give optimal accuracy.
+ In later chapters, we will discuss in more detail how choose the location
+ and values for the integration points and weights which give optimal accuracy.
 \end_layout
 
 \begin_layout Standard
-Thus, in general, an integration rule with 
+In general, an integration rule with 
 \begin_inset Formula $Q$
 \end_inset
 
@@ -1020,14 +1020,13 @@ where the integration points
 \end_inset
 
 .
- As we will see in Chapter 7, one possibility is to pre-calculate these
- points and weights explicitly on a specific discretization.
- Thus, as discussed in more detail in Chapters 4 and 5, we will generally
- want to define a reference cell 
+ One possibility is to pre-calculate these points and weights explicitly
+ on a specific discretization.
+ We will generally want to define a reference cell 
 \begin_inset Formula $\hat{\Omega}$
 \end_inset
 
- which acts as a template for cells with the same geometric shape.
+ which acts as a template for all cells with the same geometric shape.
  We can achieve this by defining a 
 \series bold
 \emph on
@@ -1357,11 +1356,12 @@ Suppose the domain
 \begin_inset Formula $\Omega$
 \end_inset
 
- into an appropriate set of cells 
+ is partitioned into an appropriate set of cells 
 \begin_inset Formula $\Omega_{1},\Omega_{2},\ldots,\Omega_{n_{el}}$
 \end_inset
 
-, we can compute the global error 
+.
+ We can then compute the global error 
 \begin_inset Formula $\varepsilon^{2}$
 \end_inset
 
@@ -1665,12 +1665,8 @@ Since the absolute magnitude of the
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Alternatively, we can normalize the global error by the total volume of
- the domain
+Alternatively, we can normalize the global error using the total volume
+ of the domain
 \begin_inset Formula \begin{eqnarray*}
 \varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{V}\\
  & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}d\vec{x}}\end{eqnarray*}
@@ -1699,6 +1695,15 @@ Once we have calculated a family of solutions
 \end_inset
 
  on a family of increasingly refined meshes 
+\begin_inset Formula $\Omega_{h}$
+\end_inset
+
+, where 
+\begin_inset Formula $h$
+\end_inset
+
+ is a parameter denoting the size of the largest element in the corresponding
+ mesh 
 \begin_inset Formula $\Omega_{h}$
 \end_inset
 
@@ -1734,6 +1739,12 @@ Once we have calculated a family of solutions
 \end_inset
 
  is unknown, one may use in its place the highest-accuracy solution available.
+ In that case, the value of 
+\begin_inset Formula $h$
+\end_inset
+
+ you should use would correspond to the lower-accuracy solution you are
+ comparing against.
 \end_layout
 
 \begin_layout Standard
@@ -1754,7 +1765,8 @@ For a single refinement level, we have two discretizations
 \end_inset
 
 .
- The convergence rate can the be estimated from the two equations 
+ The convergence rate can the be estimated from the two approximate bounds
+ 
 \begin_inset Formula \begin{eqnarray*}
 \varepsilon_{1} & \sim & Ch_{1}^{\alpha}\\
 \varepsilon_{2} & \sim & Ch_{2}^{\alpha}\end{eqnarray*}
@@ -1781,7 +1793,7 @@ or, solving for
 \end_layout
 
 \begin_layout Standard
-In general, if solutions are available for several refinement levels 
+If solutions are available for several refinement levels 
 \begin_inset Formula $\Omega_{i}$
 \end_inset
 
@@ -1808,13 +1820,19 @@ with regression variables
 \begin_inset Formula $\alpha.$
 \end_inset
 
- A short script called 
+ For this purpose, a short script called 
 \family typewriter
 power-plot.py
 \family default
-, based on the SciPy and Matplotlib Python modules, is provided for calculating
- and plotting the regression line associated with the input points 
+, based on the SciPy and Matplotlib Python modules, is provided in the Cigma
+ source code.
+ You can use it for both calculating and plotting the regression line associated
+ with the points 
 \begin_inset Formula $(X_{i},Y_{i})$
+\end_inset
+
+, given an input file containing the points 
+\begin_inset Formula $(h_{i},\varepsilon_{i})$
 \end_inset
 
 .
@@ -2561,7 +2579,8 @@ A second strategy would be to increase the order of the quadrature rule
 \begin_inset Formula $L_{2}$
 \end_inset
 
--norm without 
+-norm without performing pre- and post-processing on a sequence of integration
+ meshes.
 \end_layout
 
 \begin_layout Standard
@@ -2668,6 +2687,26 @@ Various quadrature rules for different cell types are available in the top
  level file 
 \family typewriter
 integration-rules.h5
+\family default
+, which was generated using the Jacobi quadrature rules available in the
+ FIAT (finite element automatic tabulator) Python module.
+ Using these higher-order quadrature rules should allow you to increase
+ the accuracy of the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm integral without having to adaptively refine the integration meshes,
+ although this will come at a cost of an increasing number of function evaluatio
+ns due to the higher number of quadrature points for the high-order rules.
+\end_layout
+
+\begin_layout Standard
+The default integration rule used on each cell type can be obtained by running
+ the 
+\family typewriter
+cigma element-info
+\family default
+ command, as shown in Section 4.5.3.
 \end_layout
 
 \begin_layout Section
@@ -2705,9 +2744,30 @@ FunctionA
 FunctionB
 \bar default
  arguments.
- Defining your own functions is ideal for analytic functions that other
- people downloading Cigma can use to benchmark their own codes.
- You may refer to Appendix B for help in defining your own functions.
+ Extending Cigma by defining your own functions is ideal for analytic functions
+ that other people who have downloaded Cigma can use to benchmark their
+ own codes.
+ Two such examples can be found in the Cigma source code.
+ A simple analytic benchmark is available in the 
+\family typewriter
+fn_gale2.h
+\family default
+ and 
+\family typewriter
+fn_gale2.cpp
+\family default
+ source files, while a more complex benchmark which calls external procedures
+ is available in 
+\family typewriter
+fn_disloc3d.h
+\family default
+ and 
+\family typewriter
+fn_disloc3d.cpp
+\family default
+.
+ For detailed help on the exact steps involved in registering your own functions
+, you may refer to Appendix B.
 \end_layout
 
 \begin_layout Subsection
@@ -2818,9 +2878,19 @@ Note that in this example, we have grouped all fields by variable name first
 \end_layout
 
 \begin_layout Standard
-If the dataset is stored in a VTK file, currently you can only use Point
- Data arrays.
- 
+If the dataset is stored in a VTK file, the only restrictions are that you
+ can only compare against Point Data arrays, and unstructured datasets must
+ not mix more than one element in the same file.
+ Otherwise, you may use any of the formats supported by the VTK library
+ (structured, rectilinear, etc.) to define your field.
+\end_layout
+
+\begin_layout Section
+Other Options
+\end_layout
+
+\begin_layout Standard
+In 
 \end_layout
 
 \begin_layout Section
@@ -2864,7 +2934,7 @@ raw
 \family typewriter
 vtk-residuals
 \family default
- that can take residuals stored in HDF5 format and output a simple legacy
+ that can take residuals stored in HDF5 format and create a simple legacy
  VTK file, which can then be conveniently visualized using any number of
  visualization packages.
  The utility 
@@ -2902,9 +2972,8 @@ By default, this command will only copy the residual values from the input
 \family typewriter
 --output-log-values
 \family default
-, which will write the logarithms (base 10) of the final residual values
- to the VTK file, allowing you to visualize the residuals using a logarithmic
- scale.
+, which will take the logarithms (base 10) of each residual before writing
+ the VTK file.
 \end_layout
 
 \begin_layout Section
@@ -3239,19 +3308,22 @@ Default integration rule (weights & points):
 \end_layout
 
 \begin_layout Standard
-You will need the corresponding mesh in order to query the shape function
- values.
+Querying the shape function values is possible by using the previously discussed
+ command 
+\family typewriter
+cigma function-info
+\family default
+ and an appropriately defined mesh containing a single element.
  These reference meshes are provided in the top level data file 
 \family typewriter
 reference-cells.h5
 \family default
 .
- Querying 
+ For example, querying 
 \begin_inset Formula $N_{0}$
 \end_inset
 
- for tet4 at the other corner nodes, for example, would be accomplished
- with,
+ for a tet4 reference cell would be accomplished with
 \end_layout
 
 \begin_layout LyX-Code
@@ -3287,7 +3359,26 @@ Calculating Order of Convergence
 \end_layout
 
 \begin_layout Subsection
-Laplace Problem
+Circular Inclusion Benchmark
+\end_layout
+
+\begin_layout Standard
+We begin by analyzing a two-dimensional example.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=PressureField
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p128.vts:${var} -o circ_inc.h5:/pressure_256_128
+ -v
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p64.vts:${var}  -o circ_inc.h5:/pressure_256_064
+ -v
 \end_layout
 
 \begin_layout Subsection
@@ -3295,8 +3386,8 @@ Mantle Convection
 \end_layout
 
 \begin_layout Standard
-For this example, we have calculated obtained three levels of refinement,
- in the files 
+For this example, we use a mantle convection numerical code called CitcomCU.
+ Here, we have solved the three levels of refinement, in the files 
 \family typewriter
 citcomcu.case8.vtr
 \family default
@@ -3333,24 +3424,6 @@ Since we did not specify an integration mesh, the mesh from the first field
 \end_layout
 
 \begin_layout Subsection
-Circular Inclusion Benchmark
-\end_layout
-
-\begin_layout LyX-Code
-$ export var=PressureField
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p128.vts:${var} -o circular_inclusion.h5:/pressure_
-256_128 -v
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p64.vts:${var}  -o circular_inclusion.h5:/pressure_
-256_064 -v
-\end_layout
-
-\begin_layout Subsection
 Strikeslip Benchmark Convergence
 \end_layout
 
@@ -3358,6 +3431,10 @@ Strikeslip Benchmark Convergence
 This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite strike-slip earthquake in 3D without gravity.
 \end_layout
+
+\begin_layout Plain Layout
+\begin_inset Note Note
+status collapsed
 
 \begin_layout LyX-Code
 $ export a=hex8_0500m
@@ -3432,8 +3509,13 @@ strikeslipnog.h5:/${var}-${a}-${b}-${n}
   done
 \end_layout
 
-\begin_layout LyX-Code
+\end_inset
 
+
+\end_layout
+
+\begin_layout Subsection
+Laplace Problem
 \end_layout
 
 \begin_layout Section
@@ -3467,16 +3549,15 @@ $ export bm=bm.gale.circular_inclusion
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p256.vts:${var} -o res_ci.h5:/pressure_256 -v
+$ cigma compare ${bm}.pressure p256.vts:${var} -o ci.h5:/pressure_256 -v
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p128.vts:${var} -o res_ci.h5:/pressure_128 -v
- 
+$ cigma compare ${bm}.pressure p128.vts:${var} -o ci.h5:/pressure_128 -v 
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p64.vts:${var}  -o res_ci.h5:/pressure_064 -v
+$ cigma compare ${bm}.pressure p64.vts:${var}  -o ci.h5:/pressure_064 -v
 \end_layout
 
 \begin_layout LyX-Code
@@ -5955,10 +6036,6 @@ These residual values may be combined in the following form:
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 The final global residual norm maybe obtained by simply summing over all
  element blocks that partition the domain of interest:
 \end_layout
@@ -5969,7 +6046,9 @@ The final global residual norm maybe obtained by simply summing over all
 
 \end_inset
 
-
+Currently, this last calculation can only be performed using a problem-specific
+ post-processing script, since Cigma will only perform comparisons on a
+ single element block.
 \end_layout
 
 \begin_layout Section
