@@ -1,0 +1,6276 @@
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author ""
+\author ""
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+About Cigma
+\end_layout
+
+\begin_layout Standard
+The CIG Model Analyzer (Cigma) consists of a general suite of tools for
+ comparing numerical models.
+ In particular, this program is intended for the calculation of 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ residuals for finite element models.
+\end_layout
+
+\begin_layout Standard
+CIG has developed Cigma in response to demand from the short-term tectonics
+ community for an automated tool that can perform rigorous error analysos
+ on their finite element codes.
+ In the long term, Cigma aims to be general enough for use in other geodynamics
+ modeling codes.
+\end_layout
+
+\begin_layout Section
+Citation
+\end_layout
+
+\begin_layout Standard
+Computational Infrastructure for Geodynamics (CIG) is making this source
+ code available to you in the hope that the software will enhance your research
+ in geophysics.
+ This is a brand-new code and at present no papers are published or press.
+ Please cite this manual as follows:
+\end_layout
+
+\begin_layout Itemize
+Armendariz, L., and S.
+ Kientz.
+ 
+\emph on
+Cigma User Manual.
+
+\emph default
+ Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
+ URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
+\end_layout
+
+\begin_layout Standard
+CIG requests that in your oral presentations and in your papers that you
+ indicate your use of this code and acknowledge the author of the code and
+ CIG 
+\begin_inset LatexCommand url
+target "geodynamics.org"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Support
+\end_layout
+
+\begin_layout Standard
+Cigma development is based upon work supported by the National Science Foundatio
+n under Grant No.
+ EAR-0406751.
+ Any opinions, findings, and conclusions or recommendations expressed in
+ this material are those of the authors and do not necessarily reflect the
+ views of the National Science Foundation.
+ The code is being released under the GNU General Public License.
+\end_layout
+
+\begin_layout Chapter
+Installation and Getting Help
+\end_layout
+
+\begin_layout Section
+Getting Help and Reporting Bugs
+\end_layout
+
+\begin_layout Standard
+For help, send an e-mail to the CIG Computational Science Mailing List 
+\begin_inset LatexCommand url
+target "cig-cs@geodynamics.org"
+
+\end_inset
+
+.
+ You can subscribe to the 
+\family typewriter
+cig-cs
+\family default
+ mailing list and view archived discussions at the CIG Mail Lists web page
+ 
+\begin_inset LatexCommand url
+target "geodynamics.org/cig/lists"
+
+\end_inset
+
+.
+ If you encounter any bugs or have problems installing Cigma, please submit
+ a report to the CIG Bug Tracker 
+\begin_inset LatexCommand url
+target "geodynamics.org/bugs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Installing from Source
+\end_layout
+
+\begin_layout Standard
+In this section we discuss how to install each of the software libraries
+ necessary for building Cigma.
+ We recommend that you obtain binaries for these dpendencies from your package
+ manager of choice, or from the corresponding website.
+ When using a package manager, make sure to install the associated development
+ headers along with the library, as these tend to be distributed separately
+ from the library package itself.
+\end_layout
+
+\begin_layout Subsection
+Quick Summary
+\end_layout
+
+\begin_layout Standard
+After installing the necessary dependencies described below, download the
+ source package from the CIG Cigma web page 
+\begin_inset LatexCommand url
+target "geodynamics.org/cig/software/packages/cs/cigma"
+
+\end_inset
+
+.
+ You will need the GNU C++ compiler for this step.
+ Unpack the source tar file and issue the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cigma-1.0.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma-1.0.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-boost=$BOOST_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-hdf5=$HDF5_PREFIX        
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-netcdf=$NETCDF_PREFIX    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk=$VTK_PREFIX          
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk-version=$VTK_VERSION 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-cppunit-prefix=$CPPUNIT_PREFIX
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The Boost and HDF5 libraries are the only required components for this step.
+ The installation prefixes should be used if you have installed the correspondin
+g library in a custom location.
+ In the instructions below, we use a subdirectory of 
+\family typewriter
+$HOME/opt
+\family default
+ as the installation prefix, but you may change it to something else.
+ After all these steps are complete, you should be able to run the 
+\family typewriter
+cigma
+\family default
+ binary and start comparing arbitrary functions.
+\end_layout
+
+\begin_layout Subsection
+Boost library
+\end_layout
+
+\begin_layout Standard
+The Boost C++ libraries are a collection of peer-reviewed and open source
+ libraries that extend the functionality of C++.
+ Cigma uses Boost for its smart pointer facilities, lexical conversions,
+ as well as for parsing command-line options, and for providing cross-platform
+ filesystem operations.
+ In order to build Boost with the necessary components used in Cigma, you
+ can use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz boost_1_37_0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd boost_1_37_0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/boost 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-libraries=system,filesystem,program_options
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+Other components of Boost that need to be built can be chosen from the list
+ generated by the command
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --show-libraries
+\end_layout
+
+\begin_layout Standard
+and modifying the comma-delimited list passed to the 
+\family typewriter
+--with-libraries
+\family default
+ option when repeating the build procedure above.
+ The next version of Cigma will include a Python extension module that will
+ need the python component of Boost, but is currently not necessary.
+\end_layout
+
+\begin_layout Subsection
+HDF5 library
+\end_layout
+
+\begin_layout Standard
+The Hierarchical Data Format is a library and multi-object file format for
+ the transfer of numerical data between computers.
+ Cigma depends on the C++ API of the HDF5 library, so it is important to
+ enable it when running the configure script below.
+ You can obtain the latest source from The HDF Group 
+\begin_inset LatexCommand url
+target "hdfgroup.org/HDF5"
+
+\end_inset
+
+, and use the following sequence of commands to build the library.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz hdf5-1.8.2.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-zlib=$ZLIB_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-cxx
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+If it is not already available on your system, you must build the zlib compressi
+on library before building HDF5 above 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz zlib-1.2.3.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd zlib-1.2.3
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+In practice, you only need to do this if your system is missing the zlib
+ development headers and you are unable to install them otherwise.
+\end_layout
+
+\begin_layout Standard
+Alternatively, compiled binaries for the HDF5 library can be obtained at
+ 
+\begin_inset LatexCommand url
+target "hdfgroup.org/HDF5/release/obtain5.html"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+NetCDF library
+\end_layout
+
+\begin_layout Standard
+NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
+ependent data formats that support the creation, access, and sharing of
+ array-oriented scientific data.
+ The source for NetCDF can be obtained from Unidata 
+\begin_inset LatexCommand url
+target "www.unidata.ucar.edu/software/netcdf/"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ cd netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/netcdf-4.0    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-hdf5=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-netcdf-4
+\end_layout
+
+\begin_layout LyX-Code
+              
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+This library is optional, and recommended if you plan to use meshes created
+ by the CUBIT mesh generator.
+\end_layout
+
+\begin_layout Subsection
+VTK library
+\end_layout
+
+\begin_layout Standard
+The Visualization Toolkit (VTK) library is a popular open source graphics
+ library for scientific visualizations.
+ Cigma will need to be configured with the VTK library if you plan to directly
+ specify your functions by using the VTK file format.
+ The source for the VTK library is available from Kitware, Inc.
+ 
+\begin_inset LatexCommand url
+target "www.vtk.org/get-software.php"
+
+\end_inset
+
+.
+ You will also need the CMake build environment, available from CMake 
+\begin_inset LatexCommand url
+target "cmake.org"
+
+\end_inset
+
+.
+ After downloading the source package for the VTK library, you can issue
+ the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz vtk-5.2.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd VTK
+\end_layout
+
+\begin_layout LyX-Code
+$ mkdir build
+\end_layout
+
+\begin_layout LyX-Code
+$ cd build
+\end_layout
+
+\begin_layout LyX-Code
+$ ccmake ..
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The installation prefix and other settings can be changed during the 
+\family typewriter
+ccmake
+\family default
+ step above.
+ By default, the installation prefix will point to the 
+\family typewriter
+/usr/local
+\family default
+ directory, but you may want to change it to a location like 
+\family typewriter
+$HOME/opt/vtk-5.2
+\family default
+ in case you would like to manage multiple versions of the VTK library in
+ the same system.
+\end_layout
+
+\begin_layout Subsection
+CppUnit library
+\end_layout
+
+\begin_layout Standard
+CppUnit is a C++ unit testing framework used by Cigma for automatically
+ running various internal consistency checks during every build.
+ You will need this library if you want to modify the Cigma source and want
+ to make certain guarantees about your additions to the code.
+ After obtaining the obtaining the latest source release, you may build
+ CppUnit by using the following sequence of steps.
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cppunit-1.21.1.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+CppUnit is available for download from 
+\begin_inset LatexCommand url
+target "sourceforge.net/projects/cppunit/"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Installing from the Software Repository
+\end_layout
+
+\begin_layout Standard
+The Cigma source code is available via the CIG Subversion Repository 
+\begin_inset LatexCommand url
+target "geodynamics.org/cig/software/Repository"
+
+\end_inset
+
+.
+ For this section, you will need an Subversion client, as well as the GNU
+ tools Autoconf, Automake, and Libtool.
+ To check if you have a Subversion client installed, type 
+\family typewriter
+svn
+\family default
+ and look for a usage message
+\end_layout
+
+\begin_layout LyX-Code
+$ svn
+\end_layout
+
+\begin_layout LyX-Code
+Type 'svn help' for usage.
+\end_layout
+
+\begin_layout Standard
+To check for the presence of the GNU Autotools, use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ autoconf --version
+\end_layout
+
+\begin_layout LyX-Code
+$ automake --version
+\end_layout
+
+\begin_layout LyX-Code
+$ libtoolize --version
+\end_layout
+
+\begin_layout Standard
+Using the source repository directly is recommended for users who want to
+ extend Cigma 
+\end_layout
+
+\begin_layout Subsection
+Downloading the Cigma Source
+\end_layout
+
+\begin_layout Standard
+You may check out the latest version of Cigma by using the 
+\family typewriter
+svn checkout
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ svn checkout http://geodynamics.org/svn/cig/cs/cigma/trunk cigma
+\end_layout
+
+\begin_layout Standard
+This will create the local directory 
+\family typewriter
+cigma
+\family default
+ and fill it with the latest Cigma source from the CIG software repository.
+ This new directory is called a 
+\emph on
+working copy
+\emph default
+.
+ To merge the latest changes on your working copy, use the 
+\family typewriter
+svn update
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ svn update
+\end_layout
+
+\begin_layout Standard
+This will preserve any local changes you have made to your working copy.
+\end_layout
+
+\begin_layout Subsection
+Using the GNU Build System
+\end_layout
+
+\begin_layout Standard
+Once you have obtained a working copy of the Cigma source, you will need
+ to use the GNU Autotools to generate the appropriate build files.
+ This can be accomplished by running the command 
+\family typewriter
+autoreconf -fi
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ autoreconf -fi
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure <
+\emph on
+necessary-flags-here
+\emph default
+>
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+autoreconf
+\family default
+ tool generates the 
+\family typewriter
+configure
+\family default
+ script from the 
+\family typewriter
+configure.ac
+\family default
+ file.
+ It also runs Automake to generate 
+\family typewriter
+Makefile.in
+\family default
+ from 
+\family typewriter
+Makefile.am
+\family default
+ in each source directory.
+ After running 
+\family typewriter
+autoreconf
+\family default
+, you may install Cigma as described in Section 2.2 earlier in this Chapter.
+\end_layout
+
+\begin_layout Chapter
+Error Analysis
+\end_layout
+
+\begin_layout Section
+\begin_inset LatexCommand label
+name "cha:Error-Analysis"
+
+\end_inset
+
+Error Analysis
+\end_layout
+
+\begin_layout Standard
+When solving differential equations representing physical systems of interest,
+ we are often able to obtain a family of solutions by applying a variety
+ of solution techniques.
+ Sometimes an analytic method can be found, but most of the time we end
+ up resorting to a numerical algorithm, such as the finite element method.
+ Assessing the quality of these solutions is an important task, so we would
+ like to develop a quantitative measure for indicating just how close our
+ solutions approach the exact answer.
+\end_layout
+
+\begin_layout Standard
+The simplest possible quantitative measure of the difference between two
+ distinct functions consists of taking the pointwise difference at a common
+ set of points.
+ While no finite sample of points can perfectly represent a continuum of
+ values, valuable information can be inferred from the statistics of the
+ resulting set of differences.
+ However, the functions we want to compare may not be defined at a common
+ set of points.
+ Unless we are able to interpolate the two functions on an intermediate
+ set of points, this simple pointwise measure becomes inapplicable.
+\end_layout
+
+\begin_layout Standard
+A very useful distance measure we can use is the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm, defined by the following integral
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{equation}
+\varepsilon=||u-v||_{L_{2}}=\sqrt{\int_{\Omega}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}}\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ are the two functions defined on a global coordinate system.
+ This gives us a single global estimate 
+\begin_inset Formula $\varepsilon$
+\end_inset
+
+ representing the distance between the two functions 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ and 
+\begin_inset Formula $v(\vec{x})$
+\end_inset
+
+.
+ Alternatively, you may think of this as the size, or norm, of the 
+\series bold
+\emph on
+residual field
+\series default
+\emph default
+ 
+\begin_inset Formula $\rho(\vec{x})=u(\vec{x})-v(\vec{x})$
+\end_inset
+
+.
+ This measure is useful because it is well known that solutions obtained
+ with the finite element method converge only in a weak sense, as an average
+ over a geometric region.
+ In the rest of this chapter we will discuss the details involved in evaluating
+ the above integral.
+\end_layout
+
+\begin_layout Standard
+Another quantitative measure, which we won't discuss in this version of
+ Cigma, is the energy norm.
+ This norm is typically employed in 
+\emph on
+a posteriori
+\emph default
+ error analysis and is problem dependent.
+ In general, the residual field used under this norm is defined in terms
+ of the linearized equation from which the solution was obtained.
+ The rest of this chapter will discuss how to evaluate.
+\end_layout
+
+\begin_layout Section
+Functions
+\end_layout
+
+\begin_layout Standard
+The functions that we discuss in this manual are assumed to be defined in
+ a common region of space denoted by 
+\begin_inset Formula $\Omega$
+\end_inset
+
+.
+ Elements of 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ are written as 
+\begin_inset Formula $\vec{x}$
+\end_inset
+
+, and the number of components in the corresponding value of 
+\begin_inset Formula $f(\vec{x})$
+\end_inset
+
+, is said to be the 
+\series bold
+\emph on
+rank
+\series default
+\emph default
+ of the function 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ Thus, 
+\emph on
+scalar functions
+\emph default
+ have a rank of 1, 
+\emph on
+vector functions
+\emph default
+ would have a rank of either 2 or 3.
+\end_layout
+
+\begin_layout Section
+Integral Approximations
+\end_layout
+
+\begin_layout Standard
+In order to evaluate the integral for our 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm, we will need to define an integration mesh which partitions the common
+ domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ on which our two functions are defined.
+ We can then use a numerical approximation, or 
+\series bold
+\emph on
+integration rule
+\series default
+\emph default
+, on each of the discrete cell elements 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+ of our partition.
+ Each of these cell integrals of the continuous residual norm 
+\begin_inset Formula $||\rho(\vec{x})||^{2}$
+\end_inset
+
+ can then be replaced by a weighed sum evaluated at a finite set of points.
+ This integral will be valid up to a certain accuracy.
+ In Chapter 5, we discuss in more detail how choose the location and values
+ for the integration points and weights which give optimal accuracy.
+\end_layout
+
+\begin_layout Standard
+Thus, in general, an integration rule with 
+\begin_inset Formula $Q$
+\end_inset
+
+ points and weights that allows us to integrate the scalar function 
+\begin_inset Formula $F(\vec{x})$
+\end_inset
+
+ is given by the equation
+\begin_inset Formula \begin{equation}
+\int_{\Omega_{i}}\ F(\vec{x})\ d\vec{x}\approx\sum_{q=1}^{Q}F(\vec{X_{q}})W_{q}\end{equation}
+
+\end_inset
+
+where the integration points 
+\begin_inset Formula $\vec{X}_{q}$
+\end_inset
+
+ and integration weights 
+\begin_inset Formula $W_{q}$
+\end_inset
+
+ depend on the integration region 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+.
+ As we will see in Chapter 7, one possibility is to pre-calculate these
+ points and weights explicitly on a specific discretization.
+ Thus, as discussed in more detail in Chapters 4 and 5, we will generally
+ want to define a reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ which acts as a template for cells with the same geometric shape.
+ We can achieve this by defining a 
+\series bold
+\emph on
+reference map
+\series default
+\emph default
+ 
+\begin_inset Formula $\chi_{i}:\hat{\Omega}\to\Omega_{i}$
+\end_inset
+
+ that describes how points in a specific cell 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+ originate from the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ In this sense, the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ is said to define a 
+\series bold
+\emph on
+local coordinate system
+\series default
+\emph default
+ for the 
+\begin_inset Formula $i$
+\end_inset
+
+-th cell 
+\begin_inset Formula $\Omega_{i}.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that a given discretization may contain cells of different shapes,
+ which would require us to define an appropriate number of reference cells
+ for each type of cell.
+ However, we may restrict the discussions in this manual to discretizations
+ consisting of a single geometric shape without any loss of generality.
+\end_layout
+
+\begin_layout Standard
+The advantage of this approach is readily apparent when one realizes that
+ the integration points and weights can be calculated once and for all on
+ the reference cell, and then reused for the other cells through the application
+ of the corresponding reference map.
+ In other words,
+\begin_inset Formula \begin{eqnarray*}
+\vec{X}_{q} & = & \chi_{i}(\vec{\xi}_{q})\\
+W_{q} & = & w_{q}J_{i}(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
+where 
+\begin_inset Formula $\vec{\xi}_{q}$
+\end_inset
+
+ and 
+\begin_inset Formula $w_{q}$
+\end_inset
+
+ are the optimal integration points and weights for the integration rule
+ defined on the reference domain 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ Here, the factor 
+\begin_inset Formula $J_{i}(\vec{\xi})=\det\ \left|\frac{d\chi_{i}}{d\vec{\xi}}\right|$
+\end_inset
+
+ is the Jacobian determinant of the transformation 
+\begin_inset Formula $\chi_{i}$
+\end_inset
+
+.
+ Recall that the index 
+\begin_inset Formula $i$
+\end_inset
+
+ corresponds to the 
+\begin_inset Formula $i$
+\end_inset
+
+-th cell 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+, and the index 
+\begin_inset Formula $q$
+\end_inset
+
+ ranges over the usual 
+\begin_inset Formula $q=1,\ldots,Q$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Interpolation Functions
+\end_layout
+
+\begin_layout Standard
+Our two functions 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ and 
+\begin_inset Formula $v(\vec{x})$
+\end_inset
+
+ are given in terms of the point 
+\begin_inset Formula $\vec{x}\in\Omega$
+\end_inset
+
+, and are said to be defined on a 
+\series bold
+\emph on
+global coordinate system
+\series default
+\emph default
+.
+ Based on our discussion in Section 3.1, we see that we only need to know
+ the values of 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ at a finite set of global points in order to calculate an approximation
+ to the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm of the residual field 
+\begin_inset Formula $\rho=u-v$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Specifically, given a function 
+\begin_inset Formula $f(\vec{x})$
+\end_inset
+
+ we must be able to calculate its values at exactly those integration points.
+ If we know a formula or algorithm for 
+\begin_inset Formula $f$
+\end_inset
+
+, then our task is easy.
+ Alternatively, these values can be given explicitly as a finite list.
+ In all other cases, we will need an interpolation scheme that allows us
+ to calculate 
+\begin_inset Formula $f$
+\end_inset
+
+ on any intermediate points.
+ This ability is also important because we may want to increase the accuracy
+ of our norm by using more integration points, and thus we will need to
+ be able to evaluate our function 
+\begin_inset Formula $f$
+\end_inset
+
+ at the new points.
+\end_layout
+
+\begin_layout Standard
+In general, an interpolation scheme involves a set of known functions 
+\begin_inset Formula $\phi_{j}(\vec{x})$
+\end_inset
+
+ that we can compute anywhere and a set of parameters 
+\begin_inset Formula $c_{j}$
+\end_inset
+
+ that define how these known functions are combined.
+ Usually, the relation between the parameters and the known functions is
+ a linear combination, 
+\begin_inset Formula \begin{equation}
+f(\vec{x})=d_{1}\phi_{1}(\vec{x})+d_{2}\phi_{2}(\vec{x})+\cdots+d_{m}\phi_{m}(\vec{x})\end{equation}
+
+\end_inset
+
+where the parameters 
+\begin_inset Formula $d_{j}$
+\end_inset
+
+, with 
+\begin_inset Formula $j=1,\ldots,m$
+\end_inset
+
+, are also sometimes referred to as the 
+\series bold
+\emph on
+degrees of freedom
+\series default
+\emph default
+ of the function 
+\begin_inset Formula $f$
+\end_inset
+
+.
+ As described in Chapter 4, the functions 
+\begin_inset Formula $\phi_{j}$
+\end_inset
+
+, also known as 
+\series bold
+\emph on
+shape functions
+\series default
+\emph default
+, must satisfy a number of conditions.
+ Because the choice of shape functions affects how well the true solution
+ is represented, the convergence of the numerical method used to obtain
+ the solution, the optimal choice of shape functions is very problem dependent.
+\end_layout
+
+\begin_layout Standard
+If we know the shape functions 
+\begin_inset Formula $\phi_{j}$
+\end_inset
+
+ directly in terms of the global points 
+\begin_inset Formula $\vec{x}\in\Omega$
+\end_inset
+
+, they are said to form a 
+\series bold
+\emph on
+global interpolation scheme
+\series default
+\emph default
+, and we may use Eq 3 directly to find the values of 
+\begin_inset Formula $f(\vec{x})$
+\end_inset
+
+, and we may refer to the 
+\begin_inset Formula $\phi_{j}$
+\end_inset
+
+as 
+\emph on
+global shape functions
+\emph default
+.
+ Note that since we are working in the global coordinate system, we don't
+ need the discretization of the domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+.
+ An example of global shape functions would be the spherical harmonic functions.
+\end_layout
+
+\begin_layout Standard
+Perhaps a more typical case is when 
+\begin_inset Formula $f(\vec{x})$
+\end_inset
+
+ is defined piecewise, on each discretization element 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+.
+ Because these cells partition the original domain by definition, a given
+ point in our domain will be found in one and only one cell, which will
+ have a local definition.
+ That is, for a particular 
+\begin_inset Formula $\vec{x}\in\Omega$
+\end_inset
+
+ we will be able to find a unique cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, for some index 
+\begin_inset Formula $e$
+\end_inset
+
+.
+ We can refer to this as a 
+\series bold
+\emph on
+local interpolation scheme
+\series default
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Refer to the Appendix for more details on the specific interpolation schemes
+ available in Cigma.
+\end_layout
+
+\begin_layout Section
+Global Error Measure
+\end_layout
+
+\begin_layout Standard
+In this section we discuss the underlying formula used by Cigma to compute
+ the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm of the residual field 
+\begin_inset Formula $\rho$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Suppose the domain 
+\begin_inset Formula $\Omega$
+\end_inset
+
+ into an appropriate set of cells 
+\begin_inset Formula $\Omega_{1},\Omega_{2},\ldots,\Omega_{n_{el}}$
+\end_inset
+
+, we can compute the global error 
+\begin_inset Formula $\varepsilon^{2}$
+\end_inset
+
+ as a sum over localized cell contributions, 
+\begin_inset Formula $\varepsilon^{2}=\sum_{e}\varepsilon_{e}^{2}$
+\end_inset
+
+, where each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, we won't be able to integrate each cell residual 
+\begin_inset Formula $\varepsilon_{e}^{2}$
+\end_inset
+
+ exactly since either of the functions 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ may have an incompatible representation relative to the finite element
+ space on each domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+.
+ However, we can still calculate an approximation of each cell residual
+ by applying an appropriate quadrature rule with a tolerable truncation
+ error 
+\begin_inset LatexCommand cite
+key "Encyclopaedia of Cubature Formulas 2005"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To obtain an approximation to the integral of a function 
+\begin_inset Formula $F(\vec{x})$
+\end_inset
+
+ over a cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+, we simply apply the quadrature rule with weights 
+\begin_inset Formula $w_{e,1},w_{e,2},\ldots,w_{e,n_{Q}}$
+\end_inset
+
+ and integration points 
+\begin_inset Formula $\vec{x}_{e,1},\vec{x}_{e,2},\ldots,\vec{x}_{e,n_{Q}}$
+\end_inset
+
+ appropriate for the physical element 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applying this quadrature rule directly over the entire physical domain 
+\begin_inset Formula $\Omega=\cup\Omega_{e}$
+\end_inset
+
+ gives us 
+\begin_inset Formula \[
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reasons, it is undesirable in finite element applications
+ to perform calculations in a global coordinate system.
+ To avoid duplication of work, shape function evaluations may be performed
+ once on a reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+ and then transformed back into the corresponding physical cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ as needed.
+\end_layout
+
+\begin_layout Standard
+To compute integrals of 
+\begin_inset Formula $F$
+\end_inset
+
+ in a reference coordinate system, we need to apply a change of variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\]
+
+\end_inset
+
+where 
+\color none
+the additional factor 
+\begin_inset Formula $J_{e}(\vec{\xi})=\det\left[\frac{d\vec{x}_{e}}{d\vec{\xi}}\right]$
+\end_inset
+
+ is the Jacobian determinant of the reference map 
+\begin_inset Formula $\vec{x}_{e}(\vec{\xi}):\hat{\Omega}\to\Omega_{e}$
+\end_inset
+
+.
+ This map describes how the physical points 
+\begin_inset Formula $\vec{x}\in\Omega_{e}$
+\end_inset
+
+ are transformed from the reference points 
+\begin_inset Formula $\vec{\xi}\in\hat{\Omega}$
+\end_inset
+
+.
+ Put another way, the inverse reference map 
+\color inherit
+
+\begin_inset Formula $\vec{\xi}=\vec{x}_{e}^{-1}(\vec{x})$
+\end_inset
+
+ tells us how the physical domain 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ maps into the reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+At this point, we can assume without loss of generality that every physical
+ cell 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ can be derived from a single reference cell 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+, so that our quadrature rule becomes simply a set of weights 
+\begin_inset Formula $w_{1},\ldots,w_{n_{Q}}$
+\end_inset
+
+ and points 
+\begin_inset Formula $\vec{\xi}_{1},\ldots,\vec{\xi}_{n_{Q}}$
+\end_inset
+
+ over 
+\begin_inset Formula $\hat{\Omega}$
+\end_inset
+
+.
+ After changing variables, we end up with the final form of the quadrature
+ rule that we can use to integrate the global residual field:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we let 
+\begin_inset Formula $F(\vec{x})=||u(\vec{x})-v(\vec{x})||^{2}$
+\end_inset
+
+ in the above expression, we can find the cell residual contribution over
+ 
+\begin_inset Formula $\Omega_{e}$
+\end_inset
+
+ from
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\\
+ & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The global error 
+\begin_inset Formula $\varepsilon=\sqrt{\sum_{e}\varepsilon_{e}^{2}}$
+\end_inset
+
+ is then approximated by the expression
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}w_{q}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\newline
+
+We use this final form to calculate the global and localized errors on arbitrary
+ discretizations.
+\end_layout
+
+\begin_layout Section
+Comparing Global Residuals
+\end_layout
+
+\begin_layout Standard
+Since the absolute magnitude of the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm is typically not important, you may want to normalize it relative
+ to another computable global quantity, to make comparisons easier.
+ One possibility would be to normalize the global error by the norm of the
+ exact solution.
+ For a family of solutions 
+\begin_inset Formula $u_{h}(\vec{x})$
+\end_inset
+
+, parametrized by the the maximum element size 
+\begin_inset Formula $h$
+\end_inset
+
+ of the underlying discretization, and an exact solution 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+, this normalized error is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{||u||_{L_{2}}}\\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alternatively, we can normalize the global error by the total volume of
+ the domain
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{V}\\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}d\vec{x}}\end{eqnarray*}
+
+\end_inset
+
+which is the normalization that Cigma uses by default.
+\end_layout
+
+\begin_layout Standard
+This normalized error can be interpreted as the average error in the physical
+ quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
+ error.
+ Even if the exact solution is not currently known, this normalized error
+ may be used to test the accuracy between two or more numerical solutions,
+ defined on successively refined meshes.
+\end_layout
+
+\begin_layout Section
+Convergence Rates
+\end_layout
+
+\begin_layout Standard
+Once we have calculated a family of solutions 
+\begin_inset Formula $u_{h}(\vec{x})$
+\end_inset
+
+ on a family of increasingly refined meshes 
+\begin_inset Formula $\Omega_{h}$
+\end_inset
+
+, we may estimate how fast we are converging to the analytic solution 
+\begin_inset Formula $u(\vec{x})$
+\end_inset
+
+ by using the standard error estimate 
+\begin_inset Formula $||u-u_{h}||_{p}\leq Ch^{\alpha},$
+\end_inset
+
+ where 
+\begin_inset Formula $C$
+\end_inset
+
+ is independent of both 
+\begin_inset Formula $h$
+\end_inset
+
+ and 
+\begin_inset Formula $u$
+\end_inset
+
+.
+ This error bound holds for a wide range of problems and may be used for
+ estimating the convergence rate 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+ If the analytic solution 
+\begin_inset Formula $u$
+\end_inset
+
+ is unknown, one may use in its place the highest-accuracy solution available.
+\end_layout
+
+\begin_layout Standard
+For a single refinement level, we have two discretizations 
+\begin_inset Formula $\Omega_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Omega_{2}$
+\end_inset
+
+, along with the corresponding solutions 
+\begin_inset Formula $u_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $u_{2}$
+\end_inset
+
+.
+ The convergence rate can the be estimated from the two equations 
+\begin_inset Formula \begin{eqnarray*}
+\varepsilon_{1} & \sim & Ch_{1}^{\alpha}\\
+\varepsilon_{2} & \sim & Ch_{2}^{\alpha}\end{eqnarray*}
+
+\end_inset
+
+which can be combined into
+\begin_inset Formula \[
+\left(\frac{\varepsilon_{2}}{\varepsilon_{1}}\right)\sim\left(\frac{h_{2}}{h_{1}}\right)^{\alpha}\]
+
+\end_inset
+
+or, solving for 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, we arrive at the simple equation
+\begin_inset Formula \[
+\alpha\sim\frac{\log(\varepsilon_{2}/\varepsilon_{1})}{\log(h_{2}/h_{1})}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In general, if solutions are available for several refinement levels 
+\begin_inset Formula $\Omega_{i}$
+\end_inset
+
+, we can estimate 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ by performing linear regression analysis on the equation
+\begin_inset Formula \[
+\log\varepsilon_{i}=\log C+\alpha\log h_{i}\]
+
+\end_inset
+
+with regression variables 
+\begin_inset Formula $X_{i}=\log h_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $Y_{i}=\log\varepsilon_{i}$
+\end_inset
+
+.
+ The slope of the regression line will result in an estimate of 
+\begin_inset Formula $\alpha.$
+\end_inset
+
+ A short script called 
+\family typewriter
+power-plot.py
+\family default
+, based on the SciPy and Matplotlib Python modules, is provided for calculating
+ and plotting the regression line associated with the input points 
+\begin_inset Formula $(X_{i},Y_{i})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Chapter
+Running Cigma
+\end_layout
+
+\begin_layout Standard
+Cigma is primarily designed for calculating error estimates between arbitrary
+ functions, where the primary operation has the form
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+\bar under
+FunctionA
+\series default
+\bar default
+ 
+\series bold
+\bar under
+FunctionB
+\series default
+\bar default
+ -m 
+\series bold
+\bar under
+IntegrationMesh
+\series default
+\bar default
+ -o 
+\series bold
+\bar under
+LocalResiduals
+\end_layout
+
+\begin_layout Standard
+This command will compute local and global error metrics for the difference
+ between two functions specified on the command line.
+ Typically, you will also want to specify a particular discretization to
+ use as the integration mesh.
+ The output file will be used to store the results of the comparison, which
+ are defined relative to the integration mesh.
+\end_layout
+
+\begin_layout Standard
+In this chapter, we give a general overview of the options used in Cigma,
+ and show actual usage examples in the next Chapter.
+ To access the full list of options simply run the 
+\family typewriter
+cigma help
+\family default
+ command.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma help
+\end_layout
+
+\begin_layout LyX-Code
+Usage: cigma <subcommand> [options] [args]
+\end_layout
+
+\begin_layout LyX-Code
+Type 'cigma help <subcommand>' for help on a specific subcommand.
+\end_layout
+
+\begin_layout LyX-Code
+Type 'cigma --version' to see the program version
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Available subcommands:
+\end_layout
+
+\begin_layout LyX-Code
+   compare        Calculate local and global residuals over two fields
+\end_layout
+
+\begin_layout LyX-Code
+   eval           Evaluate function at specified quadrature points
+\end_layout
+
+\begin_layout LyX-Code
+   extract        Extract quadrature points from a mesh
+\end_layout
+
+\begin_layout LyX-Code
+   list           List file contents (fields, dimensions, ...)
+\end_layout
+
+\begin_layout LyX-Code
+   mesh-info      Show information about specified mesh
+\end_layout
+
+\begin_layout LyX-Code
+   function-info  Show list of pre-defined functions
+\end_layout
+
+\begin_layout LyX-Code
+   element-info   Show information about available element types
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Cigma is a tool for querying & analyzing numerical models.
+ For additional information, visit http://geodynamics.org/ 
+\end_layout
+
+\begin_layout Standard
+The rest of this chapter deals.
+\end_layout
+
+\begin_layout Section
+Selecting a Dataset
+\end_layout
+
+\begin_layout Standard
+All datasets in Cigma are assumed to be simple two dimensional array of
+ values.
+ As most scientific formats are capable of storing multiple datasets in
+ the same file, you will need a consistent way to select a specific array
+ on a given data file.
+ Therefore, all option arguments to Cigma that expect a dataset can be specified
+ in the form 
+\family typewriter
+\series bold
+Filename:Location
+\family default
+\series default
+.
+ If the 
+\emph on
+filename
+\emph default
+ part unambiguously determines the target array, then the 
+\emph on
+location
+\emph default
+ part of the option argument may be omitted.
+ There are a number of different file formats available for specifying and
+ storing your data, according to how Cigma was configured at build time.
+ The file format will be derived directly from the 
+\emph on
+filename
+\emph default
+ extension.
+\end_layout
+
+\begin_layout Section
+Mesh Options
+\end_layout
+
+\begin_layout Standard
+A mesh block is associated with three items of information: (1) geometrical
+ information for a number of nodes defined on a global coordinate system,
+ and (2) topological information describing how those nodes are connected
+ to each other to form elements, and (3) an element type associated with
+ the cell.
+ In Cigma, these items are determined by the following command line options,
+ arranged in tabular format for easy reference.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="5">
+<features>
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Option
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+\bar under
+MeshA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+\bar under
+MeshB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+\series bold
+\bar under
+IntegrationMesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Items Read
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+M
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--first-mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--second-mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+(1,2,3)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+M1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--first-mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--second-mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--mesh-coords
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+(1)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+M2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--first-mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--second-mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--mesh-connect
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+(2)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+MC
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--first-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--second-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--mesh-cell
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+(3)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are a number of rules determining which of these options are required.
+ For any of the 
+\bar under
+MeshA
+\bar default
+, 
+\bar under
+MeshB
+\bar default
+, 
+\bar under
+IntegrationMesh
+\bar default
+ columns in the table above, the relationship between these options is as
+ follows:
+\end_layout
+
+\begin_layout Enumerate
+If option (M) is given, then options (M1) and (M2) are forbidden.
+\end_layout
+
+\begin_layout Enumerate
+If option (M) is missing, then both options (M1) and (M2) must be specified.
+\end_layout
+
+\begin_layout Enumerate
+Option (MC) can be deduced from option (M)
+\end_layout
+
+\begin_layout Enumerate
+Option (MC) is required if options (M1) and (M2) are given.
+\end_layout
+
+\begin_layout Standard
+It is important to note that Cigma assumes every element in the mesh uses
+ the same basis functions.
+\end_layout
+
+\begin_layout Subsection
+Mesh Files
+\end_layout
+
+\begin_layout Standard
+When using an HDF5 file to store the mesh information, the 
+\emph on
+location
+\emph default
+ associated with option (M) must point to an HDF5 group that contains two
+ arrays with the relevant mesh information.
+ Those two arrays must be named 
+\family typewriter
+\series bold
+coordinates
+\family default
+\series default
+ and 
+\family typewriter
+\series bold
+connectivity
+\family default
+\series default
+.
+ If the 
+\emph on
+location
+\emph default
+ is empty, as is the case when only 
+\emph on
+filename
+\emph default
+ is specified, then the HDF5 group is assumed to be the root group 
+\family typewriter
+/
+\family default
+ of the hierarchy.
+ Lastly, the option (MC) can be omitted if the HDF5 group has an attribute
+ called 
+\family typewriter
+\series bold
+\emph on
+CellType
+\family default
+\series default
+\emph default
+ with the appropriate value.
+\end_layout
+
+\begin_layout LyX-Code
+File
+\emph on
+ 
+\bar under
+filename
+\end_layout
+
+\begin_layout LyX-Code
+
+\emph on
+ 
+\emph default
+ Group
+\emph on
+ 
+\bar under
+location
+\end_layout
+
+\begin_layout LyX-Code
+  |-- 
+\emph on
+Attribute
+\emph default
+ 
+\series bold
+\emph on
+CellType
+\end_layout
+
+\begin_layout LyX-Code
+  |-- 
+\emph on
+Array
+\emph default
+ 
+\series bold
+coordinates
+\end_layout
+
+\begin_layout LyX-Code
+  `-- 
+\emph on
+Array
+\emph default
+ 
+\series bold
+connectivity
+\end_layout
+
+\begin_layout Standard
+may specify options (M1) and (M2) separately by pointing directly to the
+ arrays corresponding to the coordinates and connectivity information.
+ The node ordering on the connectivity dataset is described in Appendix
+ A.
+\end_layout
+
+\begin_layout Standard
+Alternatively, using a VTK file is very convenient.
+ In this case, no 
+\emph on
+location
+\emph default
+ needs to be specified since all the appropriate information can be read
+ implicitly from the 
+\family typewriter
+POINTS
+\family default
+, and 
+\family typewriter
+CELLS
+\family default
+ datasets, which are required by the VTK file format.
+ The value of the option (MC) is determined from the first entry in the
+ 
+\family typewriter
+CELL_TYPES
+\family default
+ dataset, since we are limiting ourselves to element blocks consisting of
+ a single cell type.
+ 
+\end_layout
+
+\begin_layout Standard
+Another convenient way to prepare a mesh file for use with Cigma is to use
+ the ExodusII format created by the CUBIT mesh generation toolkit.
+ In this case, the mesh can be stored on disk using the NetCDF format.
+ It suffices to give the 
+\emph on
+filename
+\emph default
+, without the 
+\emph on
+location
+\emph default
+ part, to option (M).
+ The appropriate mesh information will be read from the file.
+ Only the first element block in the ExodusII file is used.
+ The value of the (MC) option is determined from the NetCDF string attribute
+ 
+\family typewriter
+elem_type
+\family default
+ that is attached to the NetCDF integer variable called 
+\family typewriter
+connect1
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Lastly, it is also possible to use a simple text file, in which case all
+ three options (M1), (M2), and (MC) are required.
+\end_layout
+
+\begin_layout Subsection
+Integration Mesh
+\end_layout
+
+\begin_layout Standard
+An integration mesh can be specified by the command line options in Section
+ 3.2, subject to the following rules
+\end_layout
+
+\begin_layout Enumerate
+At least one of 
+\bar under
+MeshA
+\bar default
+, 
+\bar under
+MeshB
+\bar default
+, or 
+\bar under
+IntegrationMesh
+\bar default
+ must be given.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\bar under
+IntegrationMesh
+\bar default
+ is specified, then it is always used.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\bar under
+IntegrationMesh
+\bar default
+ is missing, then 
+\bar under
+MeshA
+\bar default
+ is copied to 
+\bar under
+IntegrationMesh
+\bar default
+.
+\end_layout
+
+\begin_layout Enumerate
+If only 
+\bar under
+MeshB
+\bar default
+ is given, then it is copied to 
+\bar under
+IntegrationMesh
+\bar default
+.
+\end_layout
+
+\begin_layout Standard
+Deciding if a given mesh is adequate for accurately capturing the error
+ in the comparison will clearly depend on the functions being compared.
+ One strategy to ensure an adequate mesh would be to take the discretization
+ cells on which the error metric exceeds a certain threshold, mark those
+ cells for refinement, and recalculate the residuals over the new discretization
+, repeating the process if necessary.
+ This strategy could be implemented on top of Cigma as a series of post-processi
+ng steps by writing a suitable program or script that repeats this refinement
+ process until the variations in the global error metric are small enough.
+ Both of the TetGen and CUBIT mesh generators are capable of refining.
+\end_layout
+
+\begin_layout Standard
+A second strategy would be to increase the order of the quadrature rule
+ that we associate with the cells in the integration mesh.
+ This has the advantage that we can increase the accuracy of the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm without 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features>
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="left" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+IntegrationRule
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+R
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--rule
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+R1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--rule-points
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+R2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\family typewriter
+--rule-weights
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Various quadrature rules for different cell types are available in the top
+ level file 
+\family typewriter
+integration-rules.h5
+\end_layout
+
+\begin_layout Section
+Function Options
+\end_layout
+
+\begin_layout Standard
+The requirements on the kind of functions that Cigma will accept are relatively
+ quite stringent.
+ Recall from Chapter 3 that computing the local error metric involves approximat
+ing a local error integral by a finite weighed sum over specific quadrature
+ points.
+ If we allow arbitrary meshes for the integration procedure, that means
+ that we must be able to evaluate our functions wherever those quadrature
+ points may lie.
+ This implies that our functions must be capable of evaluating on arbitrary
+ points, which may not always be possible due to missing information, or
+ it may be too inefficient without first building an appropriate spatial-index
+ database.
+\end_layout
+
+\begin_layout Subsection
+By an Explicit Function
+\end_layout
+
+\begin_layout Standard
+Sometimes you will be able to express a function in terms of a general formula
+ or algorithm, in which case would like to be able to refer to such a function
+ by using a simple name when specifying either of the 
+\bar under
+FunctionA
+\bar default
+ or 
+\bar under
+FunctionB
+\bar default
+ arguments.
+ Defining your own functions is ideal for analytic functions that other
+ people downloading Cigma can use to benchmark their own codes.
+ You may refer to Appendix B for help in defining your own functions.
+\end_layout
+
+\begin_layout Subsection
+By a Finite Element Field
+\end_layout
+
+\begin_layout Standard
+A finite element description of a function is associated with three items
+ of information: (1) a finite set of local basis functions, (2) a discretization
+ over which the function is locally approximated by those basis functions,
+ and finally (3) a global list of shape function coefficients that yield
+ the closest approximation to the function.
+ How these items are specified depends on the underlying file format used
+ to store the finite element description to our function.
+ Items (1) and (2) are typically deduced from the appropriate mesh options
+ discussed in Section 4.2, while item (3) is determined from the dataset
+ given to either of the 
+\family typewriter
+--first
+\family default
+ or 
+\family typewriter
+--second
+\family default
+ command line options.
+\end_layout
+
+\begin_layout Standard
+If the dataset is stored in an HDF5 file, item (3) would be typically specified
+ as a single array containing the shape function coefficients.
+ You can optionally attach an attribute called MeshLocation to that dataset.
+\end_layout
+
+\begin_layout LyX-Code
+File
+\emph on
+ 
+\bar under
+filename
+\end_layout
+
+\begin_layout LyX-Code
+
+\emph on
+ 
+\emph default
+ Group
+\emph on
+ 
+\bar under
+location
+\end_layout
+
+\begin_layout LyX-Code
+  |-- Group 
+\series bold
+temperature
+\end_layout
+
+\begin_layout LyX-Code
+  |   |-- Array 
+\series bold
+step000
+\end_layout
+
+\begin_layout LyX-Code
+  |   |   `-- Attribute 
+\series bold
+\emph on
+MeshLocation
+\end_layout
+
+\begin_layout LyX-Code
+  |   |-- Array 
+\series bold
+step001
+\end_layout
+
+\begin_layout LyX-Code
+  |   |   `-- Attribute 
+\series bold
+\emph on
+MeshLocation
+\end_layout
+
+\begin_layout LyX-Code
+  |   `-- ...
+\end_layout
+
+\begin_layout LyX-Code
+  `-- Group displacements
+\end_layout
+
+\begin_layout LyX-Code
+      |-- ...
+\end_layout
+
+\begin_layout LyX-Code
+      `-- ...
+\end_layout
+
+\begin_layout Standard
+Note that in this example, we have grouped all fields by variable name first
+ and then by time step, but we could have easily grouped everything by time
+ step first and then by variable name.
+ Cigma will only operate on the full path to a dataset , leaving you the
+ freedom to organize your data as you see fit.
+\end_layout
+
+\begin_layout Standard
+If the dataset is stored in a VTK file, currently you can only use Point
+ Data arrays.
+ 
+\end_layout
+
+\begin_layout Section
+Visualizing the Local 
+\begin_inset Formula $L^{2}$
+\end_inset
+
+ Residuals
+\end_layout
+
+\begin_layout Standard
+The command 
+\family typewriter
+cigma compare
+\family default
+ will always output the local residuals in the 
+\begin_inset Quotes eld
+\end_inset
+
+raw
+\begin_inset Quotes erd
+\end_inset
+
+ form described in Section 3.5.
+ However, for visualization purposes, you may wish to renormalize the integrated
+ errors 
+\begin_inset Formula $\varepsilon_{e}$
+\end_inset
+
+ by the corresponding integration-cell volumes 
+\begin_inset Formula $v_{e}$
+\end_inset
+
+, so that errors accumulated over smaller cells have more visual influence
+ than errors of the same magnitude accumulated over larger cells.
+ It may be also be useful visually, to output the logarithm of the residual
+ values, which will accentuate the contrast betwen the orders of magnitude
+ in the local residuals.
+ For these reasons, we include in Cigma a post-processing utility called
+ 
+\family typewriter
+vtk-residuals
+\family default
+ that can take residuals stored in HDF5 format and output a simple legacy
+ VTK file, which can then be conveniently visualized using any number of
+ visualization packages.
+ The utility 
+\family typewriter
+vtk-residuals
+\family default
+ can be used as follows,
+\end_layout
+
+\begin_layout LyX-Code
+$ vtk-residuals [...] -m 
+\bar under
+MeshFile
+\bar default
+ -i 
+\bar under
+InputResiduals.h5:/path
+\bar default
+ -o 
+\bar under
+OutputResiduals.vtk
+\end_layout
+
+\begin_layout Standard
+By default, this command will only copy the residual values from the input
+ HDF5 file into the output VTK file.
+ Further processing can be performed by specifying two additional options.
+ The option 
+\family typewriter
+--divide-by-cell-volumes
+\family default
+ will normalize each local residual by its corresponding cell volume in
+ the MeshFile.
+ The other option is 
+\family typewriter
+--output-log-values
+\family default
+, which will write the logarithms (base 10) of the final residual values
+ to the VTK file, allowing you to visualize the residuals using a logarithmic
+ scale.
+\end_layout
+
+\begin_layout Section
+Troubleshooting
+\end_layout
+
+\begin_layout Standard
+The rest of the Cigma commands are there to help you query your model, so
+ you can tell whether the input files are properly specified, or whether
+ the function information is being interpreted correctly before evaluations.
+\end_layout
+
+\begin_layout Subsection
+Working with a Mesh
+\end_layout
+
+\begin_layout Standard
+Using the command 
+\family typewriter
+cigma mesh-info
+\family default
+, you can examine your mesh files and extract basic information such as
+ the number of nodes and cells, the total volume, bounding box, and the
+ maximum cell diameter of your mesh.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma mesh-info 
+\series bold
+MESH
+\end_layout
+
+\begin_layout Standard
+You can also extract connectivity information for a specific cell in your
+ mesh, which will help you find out whether the elements that your finite
+ element model uses have the same node ordering as the elements in Cigma,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma mesh-info 
+\series bold
+MESH
+\series default
+ --cell-id=N
+\end_layout
+
+\begin_layout Standard
+Lastly, you can also query an arbitrary point within the mesh,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma mesh-info 
+\series bold
+MESH
+\series default
+ --query-point=
+\begin_inset Quotes erd
+\end_inset
+
+[x,y,z]
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which you can use to verify that the underlying spatial index that maps
+ points to cells is working properly.
+\end_layout
+
+\begin_layout Standard
+In general, the 
+\family typewriter
+cigma mesh-info
+\family default
+ command will help you detect when you have specified the connectivity informati
+on incorrectly.
+ For example, you may find that some of the cell volumes are negative, or
+ that you are unable to query a point which should be found somewhere within
+ the mesh inside a specific cell.
+\end_layout
+
+\begin_layout Subsection
+Working with Functions
+\end_layout
+
+\begin_layout Standard
+Finding information on given function can be done with the 
+\family typewriter
+cigma function-info
+\family default
+ command.
+ Using it without arguments will return the list of functions that have
+ been compiled into Cigma.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout LyX-Code
+one
+\end_layout
+
+\begin_layout LyX-Code
+zero
+\end_layout
+
+\begin_layout LyX-Code
+test.square
+\end_layout
+
+\begin_layout LyX-Code
+test.cube
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+You can also query any function accepted by the 
+\family typewriter
+cigma compare
+\family default
+ command, not just builtin ones, at any arbitrary point in its function
+ domain,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info 
+\series bold
+FUNCTION
+\series default
+ --query-point=
+\begin_inset Quotes erd
+\end_inset
+
+[x,y,z]
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will allow you to verify whether the function is reporting the correct
+ value at the expected point.
+ You can use this to check that the element interpolations are done correctly,
+ and whether a newly defined analytic function returns the appropriate values
+ on a selection of points.
+\end_layout
+
+\begin_layout Subsection
+Working with Elements
+\end_layout
+
+\begin_layout Standard
+On a more basic level, you can also verify that the elements basis functions
+ work as expected, especially if you decide to extend Cigma by adding your
+ own element types.
+ Calling the 
+\family typewriter
+cigma element-info
+\family default
+ command without arguments will generate the list of registered elements.
+ Note that the names of the element types listed here correspond to the
+ acceptable values that you can give to the (MC) argument discussed in Section
+ 4.2.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma element-info
+\end_layout
+
+\begin_layout LyX-Code
+List of elements available for use in a Field:
+\end_layout
+
+\begin_layout LyX-Code
+   tet4, tet10
+\end_layout
+
+\begin_layout LyX-Code
+   hex8
+\end_layout
+
+\begin_layout LyX-Code
+   tri3, tri6
+\end_layout
+
+\begin_layout LyX-Code
+   quad4
+\end_layout
+
+\begin_layout Standard
+For example, querying the hex8 element would result in the following information
+ being displayed
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma element-info hex8
+\end_layout
+
+\begin_layout LyX-Code
+Information on cell 'hex8'
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Reference-Cell Nodes:
+\end_layout
+
+\begin_layout LyX-Code
+     0  -1.000000 -1.000000 -1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     1  +1.000000 -1.000000 -1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     2  +1.000000 +1.000000 -1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     3  -1.000000 +1.000000 -1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     4  -1.000000 -1.000000 +1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     5  +1.000000 -1.000000 +1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     6  +1.000000 +1.000000 +1.000000
+\end_layout
+
+\begin_layout LyX-Code
+     7  -1.000000 +1.000000 +1.000000
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Shape functions:
+\end_layout
+
+\begin_layout LyX-Code
+   N[0] = 0.125 * (1.0 - u) * (1.0 - v) * (1.0 - w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[1] = 0.125 * (1.0 + u) * (1.0 - v) * (1.0 - w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[2] = 0.125 * (1.0 + u) * (1.0 + v) * (1.0 - w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[3] = 0.125 * (1.0 - u) * (1.0 + v) * (1.0 - w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[4] = 0.125 * (1.0 - u) * (1.0 - v) * (1.0 + w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[5] = 0.125 * (1.0 + u) * (1.0 - v) * (1.0 + w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[6] = 0.125 * (1.0 + u) * (1.0 + v) * (1.0 + w)
+\end_layout
+
+\begin_layout LyX-Code
+   N[7] = 0.125 * (1.0 - u) * (1.0 + v) * (1.0 + w)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Default integration rule (weights & points):
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   -0.577350 -0.577350 -0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   +0.577350 -0.577350 -0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   +0.577350 +0.577350 -0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   -0.577350 +0.577350 -0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   -0.577350 -0.577350 +0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   +0.577350 -0.577350 +0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   +0.577350 +0.577350 +0.577350
+\end_layout
+
+\begin_layout LyX-Code
+    1.000000   -0.577350 +0.577350 +0.577350 
+\end_layout
+
+\begin_layout Standard
+You will need the corresponding mesh in order to query the shape function
+ values.
+ These reference meshes are provided in the top level data file 
+\family typewriter
+reference-cells.h5
+\family default
+.
+ Querying 
+\begin_inset Formula $N_{0}$
+\end_inset
+
+ for tet4 at the other corner nodes, for example, would be accomplished
+ with,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,0,0
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 1,0,0
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,1,0
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,0,1
+\end_layout
+
+\begin_layout Standard
+which serves as a quick check that 
+\begin_inset Formula $N_{0}$
+\end_inset
+
+ is 1 one vertex, and 0 at the other vertices.
+\end_layout
+
+\begin_layout Chapter
+Examples
+\end_layout
+
+\begin_layout Section
+Calculating Order of Convergence
+\end_layout
+
+\begin_layout Subsection
+Laplace Problem
+\end_layout
+
+\begin_layout Subsection
+Mantle Convection
+\end_layout
+
+\begin_layout Standard
+For this example, we have calculated obtained three levels of refinement,
+ in the files 
+\family typewriter
+citcomcu.case8.vtr
+\family default
+, 
+\family typewriter
+citcomcu.case16.vtr
+\family default
+, and 
+\family typewriter
+citcomcu.case32.vtr
+\family default
+, and we would like to estimate how fast we are converging.
+ First we perform the comparison using the commands
+\end_layout
+
+\begin_layout LyX-Code
+$ export v=velocity
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare citcomcu.case32.vtr:$v citcomcu.case8.vtr:$v  -o citcomcu.h5:/case_32
+_08
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare citcomcu.case32.vtr:$v citcomcu.case16.vtr:$v -o citcomcu.h5:/case_32
+_16
+\end_layout
+
+\begin_layout Standard
+Since we did not specify an integration mesh, the mesh from the first field
+ is used.
+ 
+\end_layout
+
+\begin_layout Subsection
+Circular Inclusion Benchmark
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=PressureField
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p128.vts:${var} -o circular_inclusion.h5:/pressure_
+256_128 -v
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p64.vts:${var}  -o circular_inclusion.h5:/pressure_
+256_064 -v
+\end_layout
+
+\begin_layout Subsection
+Strikeslip Benchmark Convergence
+\end_layout
+
+\begin_layout Standard
+This benchmark problem computes the viscoelastic (Maxwell) relaxation of
+ stresses from a single, finite strike-slip earthquake in 3D without gravity.
+\end_layout
+
+\begin_layout LyX-Code
+$ export a=hex8_0500m
+\end_layout
+
+\begin_layout LyX-Code
+$ export b=hex8_1000m
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=displacements
+\end_layout
+
+\begin_layout LyX-Code
+$ export steps=`seq -f '%04g' 0 10 100`  # generates list 0 10 20 ...
+ 100
+\end_layout
+
+\begin_layout LyX-Code
+$ for n in ${steps}; do
+\end_layout
+
+\begin_layout LyX-Code
+    echo 
+\begin_inset Quotes eld
+\end_inset
+
+Calculating ${a}-${b}-${n}
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+    cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      strikeslip_${a}_t${n}.vtk:${var} 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      strikeslip_${b}_t${n}.vtk:${var} 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -o 
+\begin_inset Quotes eld
+\end_inset
+
+strikeslipnog.h5:/${var}-${a}-${b}-${n}
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --verbose
+\end_layout
+
+\begin_layout LyX-Code
+  done
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Section
+Comparison Involving an Analytic Benchmark
+\end_layout
+
+\begin_layout Standard
+In the current version of Cigma, two analytic benchmark functions have been
+ pre-defined, available under the somewhat verbose names 
+\family typewriter
+bm.ssnog.displacement
+\family default
+ and 
+\family typewriter
+bm.gale.circular_inclusion.pressure
+\family default
+.
+ You can use these as templates for defining your own analytic functions.
+\end_layout
+
+\begin_layout Standard
+The benchmark functions can be used just as in Section 5.1.3
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=PressureField
+\end_layout
+
+\begin_layout LyX-Code
+$ export bm=bm.gale.circular_inclusion
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p256.vts:${var} -o res_ci.h5:/pressure_256 -v
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p128.vts:${var} -o res_ci.h5:/pressure_128 -v
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p64.vts:${var}  -o res_ci.h5:/pressure_064 -v
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Chapter
+\start_of_appendix
+Input and Output
+\end_layout
+
+\begin_layout Section
+Supported File Formats
+\end_layout
+
+\begin_layout Standard
+Cigma can understand a number of file formats, depending on how it is configured
+ (see Chapter 2).
+ By default it will read and write all information in binary form as HDF5
+ files, which is format optimal for archiving data with minimal redundancy.
+ VTK files are also sometimes used by finite element software, due to the
+ ease with which the solution fields can be visualize.
+ Lastly, ExodusII mesh files generated by the CUBIT mesh generation package
+ can also be used directly as integration meshes.
+\end_layout
+
+\begin_layout Standard
+The simplest format you can use is a simple text file (with extension 
+\family typewriter
+.dat
+\family default
+) containing a single array.
+ The most flexible way to store your arrays will be to use an HDF5 file
+ (with extension 
+\family typewriter
+.h5
+\family default
+), which will allow you to organize your arrays in a hierarchy.
+ You will also have the ability to attach metadata attributes.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.h5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input/output
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+HDF5 Format
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.dat
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input/output
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Text Format
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.vtk
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input/output
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Legacy VTK Format
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.vtu
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+VTK File for Unstructured Datasets
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.vts
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+VTK File for Structured Datasets
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.vtr
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+VTK File for Rectilinear Datasets
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+.exo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+input
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Exodus Mesh Format
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Overview of Cigma's file formats
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Data Formats
+\end_layout
+
+\begin_layout Standard
+The basic data structure is a two-dimensional array of values, stored in
+ a contiguous format as shown below 
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(m,n)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Data
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $a_{11},a_{12},\ldots,a_{1n}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $a_{21},a_{22},\ldots,a_{2n}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\cdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $a_{m1},a_{m2},\ldots,a_{mn}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\newline
+
+The second index in this array varies the fastest, so that data often referenced
+ together remains together in memory as well.
+\end_layout
+
+\begin_layout Subsection
+Node Coordinates
+\end_layout
+
+\begin_layout Standard
+On a mesh with 
+\begin_inset Formula $n_{no}$
+\end_inset
+
+ node coordinates, which are specified on a global coordinate system, we
+ have.
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{no},3)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Coordinates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{1},y_{1},z_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{2},y_{2},z_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{n_{no}},y_{n_{no}},z_{n_{no}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{no},2)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Coordinates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{1},y_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{2},y_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{n_{no}},y_{n_{no}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Element Connectivity
+\end_layout
+
+\begin_layout Standard
+Mesh connectivity is specified at the element-block level.
+ On a given block, we only consider a single element type, which allows
+ us to store the global node ids into a contiguous array of integers.
+ Multiple blocks are specified separately, and they all reference the same
+ node ids into the node coordinates table.
+\end_layout
+
+\begin_layout Standard
+In general, if our block contains 
+\begin_inset Formula $k$
+\end_inset
+
+ elements with 
+\begin_inset Formula $m$
+\end_inset
+
+-degrees of freedom each, then the connectivity array defining our element
+ block has the form
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(k,m)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Connectivity Data
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $n_{11},n_{12},\ldots,n_{1m}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $n_{21},n_{22},\ldots,n_{2m}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $n_{k1},n_{k2},\ldots,n_{km}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+For the element types defined in Cigma, the values for 
+\begin_inset Formula $m$
+\end_inset
+
+ are as follows.
+ Note that the total number of degrees of freedom depends on the rank of
+ the specific function being represented.
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Element
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Scalar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Vector
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Tensor
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+tet4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+12
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+24
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+tet10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+30
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+60
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+hex8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+24
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+48
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+hex20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+60
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+120
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+hex27
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+27
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+81
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+162
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+Similarly for the 2-D elements, we have
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Element
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Scalar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Vector
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Tensor
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+tri3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+quad4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+12
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Field Variables
+\end_layout
+
+\begin_layout Standard
+A field variable represents one of the functions that we can evaluate, and
+ is typically stored over a series of timesteps.
+ The data for a field variable consists of snapshots through time, which
+ are stored as separate arrays.
+ A value for each degree of freedom is provided on the global list of nodes
+ in the mesh.
+\end_layout
+
+\begin_layout Subsection
+Shape Function Values
+\end_layout
+
+\begin_layout Standard
+In certain circumstances you may be able to provide your custom reference
+ element by simply providing the appropriate 
+\begin_inset Formula $n$
+\end_inset
+
+ shape function values to be used at the expected integration points.
+ This is most useful when you are using the same mesh for both the integration
+ mesh and the array.
+\newline
+
+
+\newline
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Shape Function Values: 
+\begin_inset Formula $(n,Q)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Jacobian Determinant: 
+\begin_inset Formula $(Q,1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{1}),N_{2}(\vec{\xi}_{1}),\ldots,N_{n}(\vec{\xi}_{1})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{1})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{2}),N_{2}(\vec{\xi}_{2}),\ldots,N_{n}(\vec{\xi}_{2})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{2})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Integration Point 
+\begin_inset Formula $Q$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $N_{1}(\vec{\xi}_{Q}),N_{2}(\vec{\xi}_{Q}),\ldots,N_{n}(\vec{\xi}_{Q})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $J(\vec{\xi}_{Q})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Integration Rule
+\end_layout
+
+\begin_layout Standard
+As described in Chapter 4, an integration rule is specified by a list of
+ points and associated weights.
+ The points are given on natural coordinate system of the reference element.
+ 
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="5">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<column alignment="center" valignment="top" width="0" leftline="false" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Weights: 
+\begin_inset Formula $(Q,1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Points: 
+\begin_inset Formula $(Q,n_{dim})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Points: 
+\begin_inset Formula $(Q,2)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Points: 
+\begin_inset Formula $(Q,3)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Rule Definition
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $w_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{\xi}_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{1},\eta_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{1},\eta_{1},\zeta_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $w_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{\xi}_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{2},\eta_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{2},\eta_{2},\zeta_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $w_{Q}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{\xi}_{Q}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{Q},\eta_{Q}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\xi_{Q},\eta_{Q},\zeta_{Q}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\newline
+
+
+\end_layout
+
+\begin_layout Subsection
+Integration Points and Values
+\end_layout
+
+\begin_layout Standard
+Given a mesh and an integration rule, we can map the integration points
+ on each element into a possibly large set of global points.
+\newline
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Points: 
+\begin_inset Formula $(n_{pts},n_{dim})$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Points: 
+\begin_inset Formula $(n_{pts},2)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Points: 
+\begin_inset Formula $(n_{pts},3)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Coordinates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{x}_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{1},y_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{1},y_{1},z_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{x}_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{2},y_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{2},y_{2},z_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vec{x}_{n_{pts}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{n_{pts}}y_{n_{pts}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $x_{n_{pts}},y_{n_{pts}},z_{n_{pts}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\newline
+
+The result of an evaluation will depend on the rank of the function being
+ evaluated, as indicated in the table below.
+ Note that the fastest varying dimension of the array contains the components
+ of the function value at each point.
+\newline
+
+
+\newline
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Evaluated Quantity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Resulting Array Shape
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Scalar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{pts},1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Vector
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{pts},2)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Vector
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{pts},3)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+2-D Tensor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{pts},3)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+3-D Tensor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(n_{pts},6)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Comparison Residuals
+\end_layout
+
+\begin_layout Standard
+Since our norm reduces integrals over cells to a single scalar value, the
+ result of a comparison will result in a simple scalar array for each element
+ block examined.
+ Note that element blocks used in the integration process belong to the
+ integration mesh, which may differ from the associated mesh to either function.
+\end_layout
+
+\begin_layout Standard
+Thus, for each element block containing 
+\begin_inset Formula $k$
+\end_inset
+
+ cells, we have the output array
+\newline
+
+
+\newline
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="false">
+<column alignment="center" valignment="top" width="0" leftline="true" rightline="true">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Array Shape
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $(k,1)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="false">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Residual Value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="false">
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="false" bottomline="true">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\varepsilon_{k}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\newline
+
+
+\newline
+
+These residual values may be combined in the following form: 
+\begin_inset Formula \[
+\varepsilon_{block}=\sqrt{\varepsilon_{1}^{2}+\varepsilon_{2}^{2}+\cdots+\varepsilon_{k}^{2}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The final global residual norm maybe obtained by simply summing over all
+ element blocks that partition the domain of interest:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\varepsilon_{global}=\sqrt{\sum_{block}\varepsilon_{block}^{2}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Input Files
+\end_layout
+
+\begin_layout Standard
+In Section 1.1, we examined what kinds of objects we will be accessing, so
+ now let's discuss the actual layout in the files in which these objects
+ will be stored.
+\end_layout
+
+\begin_layout Subsection
+HDF5
+\end_layout
+
+\begin_layout Standard
+HDF5 files are binary files encoded in a data format designed to store large
+ amounts of scientific data in a portable and self-describing way.
+\end_layout
+
+\begin_layout Standard
+The internal organization of a typical HDF5 file consists of a hierarchical
+ structure similar to a UNIX file system.
+ Two types of primary objects, 
+\emph on
+groups
+\emph default
+ and 
+\emph on
+datasets
+\emph default
+, are stored in this structure.
+ A group contains instances of zero or more groups or datasets, while a
+ dataset stores a multi-dimensional array of data elements.
+ In a sense, datasets are analogous to files in a traditional filesystem,
+ and groups are analagous to folders.
+ One important difference, however, is that you can attach supporting metadata
+ to both kinds of objects.
+ The metadata objects are called 
+\emph on
+attribute
+\emph default
+s.
+\end_layout
+
+\begin_layout Standard
+A dataset is physically stored in two parts: a header and a data array.
+ The header contains miscellaneous metadata describing the dataset as well
+ as information that is needed to interpret the array portion of the dataset.
+ Essentially, it includes the name, datatype, dataspace, and storage layout
+ of the dataset.
+ The name is a text string identifying the dataset.
+ The datatype describes the type of the data array elements.
+ The dataspace defines the dimensionality of the dataset, i.e., the size and
+ shape of the multi-dimensional array.
+\end_layout
+
+\begin_layout Standard
+In Cigma you may always provide an explicit path to every dataset, so you
+ have a fair amount of flexibility for how you organize your datasets inside
+ HDF5 files.
+ For example, a typical Cigma HDF5 file could have the following structure.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+model.h5
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+__ model
+\end_layout
+
+\begin_layout LyX-Code
+    |__ mesh
+\end_layout
+
+\begin_layout LyX-Code
+    |   |__ coordinates    [nno x nsd]
+\end_layout
+
+\begin_layout LyX-Code
+    |   
+\backslash
+__ connectivity   [nel x ndof]
+\end_layout
+
+\begin_layout LyX-Code
+    
+\backslash
+__ variables
+\end_layout
+
+\begin_layout LyX-Code
+        |__ temperature
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 1]
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 1]
+\end_layout
+
+\begin_layout LyX-Code
+        |   
+\backslash
+...
+\end_layout
+
+\begin_layout LyX-Code
+        |__ displacement
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00000  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+        |   |__ step00010  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+        |   
+\backslash
+...
+\end_layout
+
+\begin_layout LyX-Code
+        
+\backslash
+__ velocity
+\end_layout
+
+\begin_layout LyX-Code
+            |__ step00000  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+            |__ step00010  [nno x 3]
+\end_layout
+
+\begin_layout LyX-Code
+            
+\backslash
+...
+\end_layout
+
+\begin_layout Standard
+Generally, Cigma will only require you to specify the path to a specific
+ field dataset.
+ If a small amount of metadata is present in your field dataset, the rest
+ of the required information, such as which mesh and finite elements to
+ use, will be deduced from that metadata.
+\end_layout
+
+\begin_layout Description
+MeshLocation points to the HDF5 group which contains the appropriate coordinates
+ and connectivity datasets.
+ This attribute should be attached to the array corresponding to your degrees
+ of freedom (shape function coefficients).
+\end_layout
+
+\begin_layout Description
+CellType string identifier to determine which shape functions to use for
+ interpolating values inside the element (e.g., tet4, hex8, quad4, tri3, ...).
+ This attribute should be attached to the mesh dataset.
+\end_layout
+
+\begin_layout Standard
+Even if you forgot to set these attributes when creating your HDF5 datasets,
+ setting or changing them can be done easily by using the 
+\family typewriter
+h5attr
+\family default
+ utility included in Cigma.
+ For example, the following command would let Cigma know that the path 
+\family typewriter
+/model/mesh
+\family default
+ corresponds to a linear tetrahedral mesh
+\end_layout
+
+\begin_layout LyX-Code
+$ h5attr model.h5:/model/mesh CellType tet4
+\end_layout
+
+\begin_layout Standard
+Likewise, the following command would associate the mesh 
+\family typewriter
+/model/mesh
+\family default
+ with the field coefficients 
+\family typewriter
+/model/variables/temperature/step00000
+\end_layout
+
+\begin_layout LyX-Code
+$ h5attr model.h5:/model/variables/temperature/step00000 MeshLocation /model/mesh
+ 
+\end_layout
+
+\begin_layout Standard
+Setting the MeshLocation attribute in this manner has the advantage that
+ corresponding mesh options can be omitted when calling 
+\family typewriter
+cigma compare
+\family default
+ on the command line.
+\end_layout
+
+\begin_layout Subsection
+VTK
+\end_layout
+
+\begin_layout Standard
+For detailed information on this format, you may want to refer to Visualization
+ ToolKit's File Formats 
+\begin_inset LatexCommand url
+target "www.vtk.org/pdf/file-formats.pdf"
+
+\end_inset
+
+ document.
+ Here will only note that using VTK files is convenient due to the fact
+ that the mesh is always required by the file format.
+ You typically only need to provide the file name, and the name of the dataset
+ inside the file that you wish to use in the comparison operation, although
+ if you may safely omit the dataset name if your VTK file contains only
+ a single point dataset.
+ Perhaps one of the most important things to keep in mind, when using VTK
+ files with the current version of Cigma, is that unstructured datasets
+ will need to consist of cells of a single type.
+\end_layout
+
+\begin_layout Subsection
+Text
+\end_layout
+
+\begin_layout Standard
+The text files we use in Cigma consist of a simple list of numbers in ASCII
+ format whose layout corresponds exactly to the simple array layout discussed
+ earlier in Section A.2.
+ The first line of the file contains the dimensions of the array, just two
+ integers separated by whitespace.
+ The rest of the file specifies the array data, and must contain as many
+ numbers as the product of the two dimensions given in the first line, all
+ separated by whitespace.
+ These numbers should be formatted as integer or floating point, depending
+ on whether you are describing coordinates or coefficients, or whether are
+ referring to a connectivity array.
+\end_layout
+
+\begin_layout Standard
+Some restrictions apply when providing data in text format, mostly because
+ you can only specify a single element block in a text file containing connectiv
+ity information.
+ Operations involving a larger number of blocks must use data in the format
+ described in Section A.3.1.
+\end_layout
+
+\begin_layout Standard
+Another point worthy of mention is that arrays must be given in two-dimensional
+ form, i.e., two integers are always expected in the first line.
+ Therefore, when specifying a one-dimensional array, such as a list of weights
+ corresponding to an integration rule, the second array dimension must be
+ 1.
+\end_layout
+
+\begin_layout Section
+Output Files
+\end_layout
+
+\begin_layout Standard
+For the most part, there are three different kinds of output files you can
+ use, as already summarized in Section A.1.
+ Switching output formats is as simple as changing the extension of the
+ output file name.
+ Now, the result of all comparisons always consists of a one dimensional
+ list of scalars, one for each element in the underlying discretization
+ used to approximate the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm integral.
+ You can output these residual values directly into a VTK file, in which
+ case the array will be stored in the Cell Data section of the output file.
+ Since Cigma includes a post-processing utility called 
+\family typewriter
+vtk-residuals
+\family default
+ that can convert HDF5 residuals into VTK files, we recommend that you use
+ HDF5 files to store the result of your comparisons.
+ Note that HDF5 files will not be overwritten when used for output, which
+ allows you to store multiple datasets inside the same HDF5 file without
+ redundant mesh information.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Subsection
+Meshes
+\end_layout
+
+\begin_layout Standard
+Here we describe the mesh format.
+\end_layout
+
+\begin_layout Section
+Output Quantities
+\end_layout
+
+\begin_layout Chapter
+Mesh Format
+\end_layout
+
+\begin_layout Standard
+In this chapter we describe the mesh format used to store meshes.
+\end_layout
+
+\begin_layout Section
+Element Types
+\end_layout
+
+\begin_layout Standard
+We give we assume that within the block we have a single element type, chosen
+ from this list.
+\end_layout
+
+\begin_layout Description
+CellType This attribute defines the geometrical type of the reference element
+ associated with a particular Element Block
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+tri3 Three-node triangle.
+\end_layout
+
+\begin_layout Description
+tri6 Six-node second order triangle.
+ Three nodes associated with the vertices, and three with the edges.
+\end_layout
+
+\begin_layout Description
+quad4 Four-node quadrangle.
+\end_layout
+
+\begin_layout Description
+pixel4 Four-node quadrangle with a different node ordering.
+\end_layout
+
+\begin_layout Description
+tet4 Four-node tetrahedron.
+\end_layout
+
+\begin_layout Description
+tet10 Ten-node second order tetrahedron.
+ Four nodes associated with the vertices, and six with the edges.
+\end_layout
+
+\begin_layout Description
+hex8 Eight-node hexahedron.
+\end_layout
+
+\begin_layout Description
+voxel8 Eight-node hexahedron with different node ordering.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Node Ordering
+\end_layout
+
+\begin_layout Standard
+The ordering of the columns in the connectivity array corresponds to the
+ node ordering.
+ The reference elements are defined as follows.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
