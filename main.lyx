@@ -46,11 +46,745 @@
 Introduction
 \end_layout
 
+\begin_layout Section
+About Cigma
+\end_layout
+
 \begin_layout Standard
 The CIG Model Analyzer (Cigma) consists of a general suite of tools for
  comparing numerical models.
  CIG has developed Cigma in response to demand from the short-term tectonics
  community for an automated tool that is capable.
+\end_layout
+
+\begin_layout Section
+Citation
+\end_layout
+
+\begin_layout Standard
+Computational Infrastructure for Geodynamics (CIG) is making this source
+ code available to you in the hope that the software will enhance your research
+ in geophysics.
+ This is a brand-new code and at present no papers are published or press.
+ Please cite this manual as follows:
+\end_layout
+
+\begin_layout Itemize
+Armendariz, L., and S.
+ Kientz.
+ 
+\emph on
+Cigma User Manual.
+
+\emph default
+ Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
+ URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
+\end_layout
+
+\begin_layout Standard
+CIG requests that in your oral presentations and in your papers that you
+ indicate your use of this code and acknowledge the author of the code and
+ CIG 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Support
+\end_layout
+
+\begin_layout Standard
+Cigma development is based upon work supported by the National Science Foundatio
+n under Grant No.
+ EAR-0406751.
+ Any opinions, findings, and conclusions or recommendations expressed in
+ this material are those of the authors and do not necessarily reflect the
+ views of the National Science Foundation.
+ The code is being released under the GNU General Public License.
+\end_layout
+
+\begin_layout Chapter
+Installation and Getting Help
+\end_layout
+
+\begin_layout Section
+Getting Help and Reporting Bugs
+\end_layout
+
+\begin_layout Standard
+For help, send an e-mail to the CIG Computational Science Mailing List 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cig-cs@geodynamics.org
+\end_layout
+
+\end_inset
+
+.
+ You can subscribe to the 
+\family typewriter
+cig-cs
+\family default
+ mailing list and view archived discussions at the CIG Mail Lists web page
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/lists
+\end_layout
+
+\end_inset
+
+.
+ If you encounter any bugs or have problems installing Cigma, please submit
+ a report to the CIG Bug Tracker 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+geodynamics.org/bugs
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Installing from Source
+\end_layout
+
+\begin_layout Standard
+In this section we discuss how to install each of the software libraries
+ necessary for building Cigma.
+ We recommend that you obtain binaries for these dpendencies from your package
+ manager of choice, or from the corresponding website.
+ When using a package manager, make sure to install the associated development
+ headers along with the library, as these tend to be distributed separately
+ from the library package itself.
+\end_layout
+
+\begin_layout Subsection
+Quick Summary
+\end_layout
+
+\begin_layout Standard
+After installing the necessary dependencies described below, download the
+ source package from the CIG Cigma web page 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/software/packages/cs/cigma
+\end_layout
+
+\end_inset
+
+.
+ You will need the GNU C++ compiler for this step.
+ Unpack the source tar file and issue the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cigma-1.0.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma-1.0.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-boost=$BOOST_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-hdf5=$HDF5_PREFIX        
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-netcdf=$NETCDF_PREFIX    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk=$VTK_PREFIX          
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-vtk-version=$VTK_VERSION 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --with-cppunit-prefix=$CPPUNIT_PREFIX
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The Boost and HDF5 libraries are the only required components for this step.
+ The installation prefixes should be used if you have installed the correspondin
+g library in a custom location.
+ In the instructions below, we use a subdirectory of 
+\family typewriter
+$HOME/opt
+\family default
+ as the installation prefix, but you may change it to something else.
+ After all these steps are complete, you should be able to run the 
+\family typewriter
+cigma
+\family default
+ binary and begin comparing arbitrary functions.
+\end_layout
+
+\begin_layout Subsection
+Boost library
+\end_layout
+
+\begin_layout Standard
+The Boost C++ libraries are a collection of peer-reviewed and open source
+ libraries that extend the functionality of C++.
+ Cigma uses Boost for its smart pointer facilities, lexical conversions,
+ as well as for parsing command-line options, and for providing cross-platform
+ filesystem operations.
+ In order to build Boost with the necessary components used in Cigma, you
+ can use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz boost_1_37_0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd boost_1_37_0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/boost 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-libraries=system,filesystem,program_options
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+Other components of Boost that need to be built can be chosen from the list
+ generated by the command
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --show-libraries
+\end_layout
+
+\begin_layout Standard
+and modifying the comma-delimited list passed to the 
+\family typewriter
+--with-libraries
+\family default
+ option when repeating the build procedure above.
+ The next version of Cigma will include a Python extension module that will
+ need the python component of Boost, but is currently not necessary.
+\end_layout
+
+\begin_layout Subsection
+HDF5 library
+\end_layout
+
+\begin_layout Standard
+The Hierarchical Data Format is a library and multi-object file format for
+ the transfer of numerical data between computers.
+ Cigma depends on the C++ API of the HDF5 library, so it is important to
+ enable it when running the configure script below.
+ You can obtain the latest source from The HDF Group 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5
+\end_layout
+
+\end_inset
+
+, and use the following sequence of commands to build the library.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz hdf5-1.8.2.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-zlib=$ZLIB_PREFIX      
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-cxx
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+If it is not already available on your system, you must build the zlib compressi
+on library before building HDF5 above 
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz zlib-1.2.3.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd zlib-1.2.3
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/hdf5-1.8.2
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+In practice, you only need to do this if your system is missing the zlib
+ development headers and you are unable to install them otherwise.
+\end_layout
+
+\begin_layout Standard
+Alternatively, compiled binaries for the HDF5 library can be obtained at
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+hdfgroup.org/HDF5/release/obtain5.html
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+NetCDF library
+\end_layout
+
+\begin_layout Standard
+NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
+ependent data formats that support the creation, access, and sharing of
+ array-oriented scientific data.
+ The source for
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ cd netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/netcdf-4.0    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-hdf5=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-netcdf-4
+\end_layout
+
+\begin_layout LyX-Code
+              
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+You may also 
+\end_layout
+
+\begin_layout Subsection
+VTK library
+\end_layout
+
+\begin_layout Standard
+The Visualization Toolkit (VTK) library is a popular open source graphics
+ library for scientific visualizations.
+ Cigma will need to be configured with the VTK library if you plan to directly
+ specify your functions by using the VTK file format.
+ The source for the VTK library is available from Kitware, Inc.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.vtk.org/get-software.php
+\end_layout
+
+\end_inset
+
+.
+ You will also need the CMake build environment, available from CMake 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+cmake.org
+\end_layout
+
+\end_inset
+
+.
+ After downloading the source package for the VTK library, you can issue
+ the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz vtk-5.2.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd VTK
+\end_layout
+
+\begin_layout LyX-Code
+$ mkdir build
+\end_layout
+
+\begin_layout LyX-Code
+$ cd build
+\end_layout
+
+\begin_layout LyX-Code
+$ ccmake ..
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+The installation prefix and other settings can be changed during the 
+\family typewriter
+ccmake
+\family default
+ step above.
+ By default, the installation prefix will point to the 
+\family typewriter
+/usr/local
+\family default
+ directory, but you may want to change it to a location like 
+\family typewriter
+$HOME/opt/vtk-5.2
+\family default
+ in case you would like to manage multiple versions of the VTK library in
+ the same system.
+\end_layout
+
+\begin_layout Subsection
+CppUnit library
+\end_layout
+
+\begin_layout Standard
+CppUnit is a C++ unit testing framework used by Cigma for automatically
+ running various internal consistency checks during every build.
+ You will need this library if you want to modify the Cigma source and want
+ to make certain guarantees about your additions to the code.
+ After obtaining the obtaining the latest source release, you may build
+ CppUnit by using the following sequence of steps.
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cppunit-1.21.1.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+CppUnit is available for download from 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+sourceforge.net/projects/cppunit/
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Installing from the Software Repository
+\end_layout
+
+\begin_layout Standard
+The Cigma source code is available via the CIG Subversion Repository 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+geodynamics.org/cig/software/Repository
+\end_layout
+
+\end_inset
+
+.
+ For this section, you will need an Subversion client, as well as the GNU
+ tools Autoconf, Automake, and Libtool.
+ To check if you have a Subversion client installed, type 
+\family typewriter
+svn
+\family default
+ and look for a usage message
+\end_layout
+
+\begin_layout LyX-Code
+$ svn
+\end_layout
+
+\begin_layout LyX-Code
+Type 'svn help' for usage.
+\end_layout
+
+\begin_layout Standard
+To check for the presence of the GNU Autotools, use the following commands
+\end_layout
+
+\begin_layout LyX-Code
+$ autoconf --version
+\end_layout
+
+\begin_layout LyX-Code
+$ automake --version
+\end_layout
+
+\begin_layout LyX-Code
+$ libtoolize --version
+\end_layout
+
+\begin_layout Standard
+Using the source repository directly is recommended for users who want to
+ extend Cigma 
+\end_layout
+
+\begin_layout Subsection
+Downloading the Cigma Source
+\end_layout
+
+\begin_layout Standard
+You may check out the latest version of Cigma by using the 
+\family typewriter
+svn checkout
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ svn checkout http://geodynamics.org/svn/cig/cs/cigma/trunk cigma
+\end_layout
+
+\begin_layout Standard
+This will create the local directory 
+\family typewriter
+cigma
+\family default
+ and fill it with the latest Cigma source from the CIG software repository.
+ This new directory is called a 
+\emph on
+working copy
+\emph default
+.
+ To merge the latest changes on your working copy, use the 
+\family typewriter
+svn update
+\family default
+ command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ svn update
+\end_layout
+
+\begin_layout Standard
+This will preserve any local changes you have made to your working copy.
+\end_layout
+
+\begin_layout Subsection
+Using the GNU Build System
+\end_layout
+
+\begin_layout Standard
+Once you have obtained a working copy of the Cigma source, you will need
+ to use the GNU Autotools to generate the appropriate build files.
+ This can be accomplished by running the command 
+\family typewriter
+autoreconf -fi
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma
+\end_layout
+
+\begin_layout LyX-Code
+$ autoreconf -fi
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure <
+\emph on
+necessary-flags-here
+\emph default
+>
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+autoreconf
+\family default
+ tool generates the 
+\family typewriter
+configure
+\family default
+ script from the 
+\family typewriter
+configure.ac
+\family default
+ file.
+ It also runs Automake to generate 
+\family typewriter
+Makefile.in
+\family default
+ from 
+\family typewriter
+Makefile.am
+\family default
+ in each source directory.
+ After running 
+\family typewriter
+autoreconf
+\family default
+, you may install Cigma as described in Section 2.2 earlier in this Chapter.
+\end_layout
+
+\begin_layout Chapter
+Error Analysis
 \end_layout
 
 \begin_layout Section
@@ -966,732 +1700,6 @@ As we saw in Section 3.5, it is easier to calculate the convergence rate
  
 \end_layout
 
-\begin_layout Section
-Citation
-\end_layout
-
-\begin_layout Standard
-Computational Infrastructure for Geodynamics (CIG) is making this source
- code available to you in the hope that the software will enhance your research
- in geophysics.
- This is a brand-new code and at present no papers are published or press.
- Please cite this manual as follows:
-\end_layout
-
-\begin_layout Itemize
-Armendariz, L., and S.
- Kientz.
- 
-\emph on
-Cigma User Manual.
-
-\emph default
- Pasadena, CA: Computational Infrastructure of Geodynamics, 2008.
- URL: geodynamics.org/cig/software/cs/cigma/cigma.pdf
-\end_layout
-
-\begin_layout Standard
-CIG requests that in your oral presentations and in your papers that you
- indicate your use of this code and acknowledge the author of the code and
- CIG 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-geodynamics.org
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Section
-Support
-\end_layout
-
-\begin_layout Standard
-Cigma development is based upon work supported by the National Science Foundatio
-n under Grant No.
- EAR-0406751.
- Any opinions, findings, and conclusions or recommendations expressed in
- this material are those of the authors and do not necessarily reflect the
- views of the National Science Foundation.
- The code is being released under the GNU General Public License.
-\end_layout
-
-\begin_layout Chapter
-Installation and Getting Help
-\end_layout
-
-\begin_layout Section
-Getting Help and Reporting Bugs
-\end_layout
-
-\begin_layout Standard
-For help, send an e-mail to the CIG Computational Science Mailing List 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-cig-cs@geodynamics.org
-\end_layout
-
-\end_inset
-
-.
- You can subscribe to the 
-\family typewriter
-cig-cs
-\family default
- mailing list and view archived discussions at the CIG Mail Lists web page
- 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-geodynamics.org/cig/lists
-\end_layout
-
-\end_inset
-
-.
- If you encounter any bugs or have problems installing Cigma, please submit
- a report to the CIG Bug Tracker 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-geodynamics.org/bugs
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Section
-Installing from Source
-\end_layout
-
-\begin_layout Standard
-In this section we discuss how to install each of the software libraries
- necessary for building Cigma.
- We recommend that you obtain binaries for these dpendencies from your package
- manager of choice, or from the corresponding website.
- When using a package manager, make sure to install the associated development
- headers along with the library, as these tend to be distributed separately
- from the library package itself.
-\end_layout
-
-\begin_layout Subsection
-Quick Summary
-\end_layout
-
-\begin_layout Standard
-After installing the necessary dependencies described below, download the
- source package from the CIG Cigma web page 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-geodynamics.org/cig/software/packages/cs/cigma
-\end_layout
-
-\end_inset
-
-.
- You will need the GNU C++ compiler for this step.
- Unpack the source tar file and issue the following commands
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz cigma-1.0.0.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd cigma-1.0.0
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-boost=$BOOST_PREFIX      
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-hdf5=$HDF5_PREFIX        
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-netcdf=$NETCDF_PREFIX    
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-vtk=$VTK_PREFIX          
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-vtk-version=$VTK_VERSION 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --with-cppunit-prefix=$CPPUNIT_PREFIX
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-The Boost and HDF5 libraries are the only required components for this step.
- The installation prefixes should be used if you have installed the correspondin
-g library in a custom location.
- In the instructions below, we use a subdirectory of 
-\family typewriter
-$HOME/opt
-\family default
- as the installation prefix, but you may change it to something else.
- After all these steps are complete, you should be able to run the 
-\family typewriter
-cigma
-\family default
- binary and begin comparing arbitrary functions.
-\end_layout
-
-\begin_layout Subsection
-Boost library
-\end_layout
-
-\begin_layout Standard
-The Boost C++ libraries are a collection of peer-reviewed and open source
- libraries that extend the functionality of C++.
- Cigma uses Boost for its smart pointer facilities, lexical conversions,
- as well as for parsing command-line options, and for providing cross-platform
- filesystem operations.
- In order to build Boost with the necessary components used in Cigma, you
- can use the following commands
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz boost_1_37_0.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd boost_1_37_0
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/boost 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --with-libraries=system,filesystem,program_options
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-Other components of Boost that need to be built can be chosen from the list
- generated by the command
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --show-libraries
-\end_layout
-
-\begin_layout Standard
-and modifying the comma-delimited list passed to the 
-\family typewriter
---with-libraries
-\family default
- option when repeating the build procedure above.
- The next version of Cigma will include a Python extension module that will
- need the python component of Boost, but is currently not necessary.
-\end_layout
-
-\begin_layout Subsection
-HDF5 library
-\end_layout
-
-\begin_layout Standard
-The Hierarchical Data Format is a library and multi-object file format for
- the transfer of numerical data between computers.
- Cigma depends on the C++ API of the HDF5 library, so it is important to
- enable it when running the configure script below.
- You can obtain the latest source from The HDF Group 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-hdfgroup.org/HDF5
-\end_layout
-
-\end_inset
-
-, and use the following sequence of commands to build the library.
- 
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz hdf5-1.8.2.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd hdf5-1.8.2
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/hdf5-1.8.2 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --with-zlib=$ZLIB_PREFIX      
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --enable-cxx
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-If it is not already available on your system, you must build the zlib compressi
-on library before building HDF5 above 
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz zlib-1.2.3.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd zlib-1.2.3
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/hdf5-1.8.2
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-In practice, you only need to do this if your system is missing the zlib
- development headers and you are unable to install them otherwise.
-\end_layout
-
-\begin_layout Standard
-Alternatively, compiled binaries for the HDF5 library can be obtained at
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-hdfgroup.org/HDF5/release/obtain5.html
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsection
-NetCDF library
-\end_layout
-
-\begin_layout Standard
-NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
-ependent data formats that support the creation, access, and sharing of
- array-oriented scientific data.
- The source for
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz netcdf-4.0
-\end_layout
-
-\begin_layout LyX-Code
-$ cd netcdf-4.0
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/netcdf-4.0    
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --with-hdf5=$HOME/opt/hdf5-1.8.2 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --enable-netcdf-4
-\end_layout
-
-\begin_layout LyX-Code
-              
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-You may also 
-\end_layout
-
-\begin_layout Subsection
-VTK library
-\end_layout
-
-\begin_layout Standard
-The Visualization Toolkit (VTK) library is a popular open source graphics
- library for scientific visualizations.
- Cigma will need to be configured with the VTK library if you plan to directly
- specify your functions by using the VTK file format.
- The source for the VTK library is available from Kitware, Inc.
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-www.vtk.org/get-software.php
-\end_layout
-
-\end_inset
-
-.
- You will also need the CMake build environment, available from CMake 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-cmake.org
-\end_layout
-
-\end_inset
-
-.
- After downloading the source package for the VTK library, you can issue
- the following commands
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz vtk-5.2.0.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd VTK
-\end_layout
-
-\begin_layout LyX-Code
-$ mkdir build
-\end_layout
-
-\begin_layout LyX-Code
-$ cd build
-\end_layout
-
-\begin_layout LyX-Code
-$ ccmake ..
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-The installation prefix and other settings can be changed during the 
-\family typewriter
-ccmake
-\family default
- step above.
- By default, the installation prefix will point to the 
-\family typewriter
-/usr/local
-\family default
- directory, but you may want to change it to a location like 
-\family typewriter
-$HOME/opt/vtk-5.2
-\family default
- in case you would like to manage multiple versions of the VTK library in
- the same system.
-\end_layout
-
-\begin_layout Subsection
-CppUnit library
-\end_layout
-
-\begin_layout Standard
-CppUnit is a C++ unit testing framework used by Cigma for automatically
- running various internal consistency checks during every build.
- You will need this library if you want to modify the Cigma source and want
- to make certain guarantees about your additions to the code.
- After obtaining the obtaining the latest source release, you may build
- CppUnit by using the following sequence of steps.
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz cppunit-1.21.1.tar.gz
-\end_layout
-
-\begin_layout LyX-Code
-$ cd cppunit-1.21.1
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/cppunit-1.21.1
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-CppUnit is available for download from 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-sourceforge.net/projects/cppunit/
-\end_layout
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Section
-Installing from the Software Repository
-\end_layout
-
-\begin_layout Standard
-The Cigma source code is available via the CIG Subversion Repository 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-geodynamics.org/cig/software/Repository
-\end_layout
-
-\end_inset
-
-.
- For this section, you will need an Subversion client, as well as the GNU
- tools Autoconf, Automake, and Libtool.
- To check if you have a Subversion client installed, type 
-\family typewriter
-svn
-\family default
- and look for a usage message
-\end_layout
-
-\begin_layout LyX-Code
-$ svn
-\end_layout
-
-\begin_layout LyX-Code
-Type 'svn help' for usage.
-\end_layout
-
-\begin_layout Standard
-To check for the presence of the GNU Autotools, use the following commands
-\end_layout
-
-\begin_layout LyX-Code
-$ autoconf --version
-\end_layout
-
-\begin_layout LyX-Code
-$ automake --version
-\end_layout
-
-\begin_layout LyX-Code
-$ libtoolize --version
-\end_layout
-
-\begin_layout Standard
-Using the source repository directly is recommended for users who want to
- extend Cigma 
-\end_layout
-
-\begin_layout Subsection
-Downloading the Cigma Source
-\end_layout
-
-\begin_layout Standard
-You may check out the latest version of Cigma by using the 
-\family typewriter
-svn checkout
-\family default
- command:
-\end_layout
-
-\begin_layout LyX-Code
-$ svn checkout http://geodynamics.org/svn/cig/cs/cigma/trunk cigma
-\end_layout
-
-\begin_layout Standard
-This will create the local directory 
-\family typewriter
-cigma
-\family default
- and fill it with the latest Cigma source from the CIG software repository.
- This new directory is called a 
-\emph on
-working copy
-\emph default
-.
- To merge the latest changes on your working copy, use the 
-\family typewriter
-svn update
-\family default
- command:
-\end_layout
-
-\begin_layout LyX-Code
-$ cd cigma
-\end_layout
-
-\begin_layout LyX-Code
-$ svn update
-\end_layout
-
-\begin_layout Standard
-This will preserve any local changes you have made to your working copy.
-\end_layout
-
-\begin_layout Subsection
-Using the GNU Build System
-\end_layout
-
-\begin_layout Standard
-Once you have obtained a working copy of the Cigma source, you will need
- to use the GNU Autotools to generate the appropriate build files.
- This can be accomplished by running the command 
-\family typewriter
-autoreconf -fi
-\family default
-:
-\end_layout
-
-\begin_layout LyX-Code
-$ cd cigma
-\end_layout
-
-\begin_layout LyX-Code
-$ autoreconf -fi
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure <
-\emph on
-necessary-flags-here
-\emph default
->
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-autoreconf
-\family default
- tool generates the 
-\family typewriter
-configure
-\family default
- script from the 
-\family typewriter
-configure.ac
-\family default
- file.
- It also runs Automake to generate 
-\family typewriter
-Makefile.in
-\family default
- from 
-\family typewriter
-Makefile.am
-\family default
- in each source directory.
- After running 
-\family typewriter
-autoreconf
-\family default
-, you may install Cigma as described in Section 2.2 earlier in this Chapter.
-\end_layout
-
 \begin_layout Chapter
 Running Cigma
 \end_layout
@@ -1747,9 +1755,8 @@ How to Select Your Input and Output Datasets
 The basic objects used to store data in Cigma are simple two dimensional
  array of values, or datasets.
  As scientific file formats are capable of storing multiple datasets, you
- will typically need a way to select a specific array on a given data file.
- Therefore, regardless of the context, the option arguments to Cigma are
- parsed consistently by following the 
+ will need a consistent way to select specific arrays on a given data file.
+ Therefore, the option arguments to Cigma are parsed by following the 
 \family typewriter
 \series bold
 Filename:Location
@@ -2663,127 +2670,7 @@ The full list of options can be obtained by running the following command:
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare --help
-\end_layout
-
-\begin_layout LyX-Code
-Usage: cigma compare <FIRST-FIELD> <SECOND-FIELD> -o <RESIDUAL-FILE>
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Compare Options:    
-\end_layout
-
-\begin_layout LyX-Code
-  -a [ --first ] arg    Path to first field
-\end_layout
-
-\begin_layout LyX-Code
-  -b [ --second ] arg   Path to second field
-\end_layout
-
-\begin_layout LyX-Code
-  -o [ --output ] arg   Output file (for residuals)
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Detailed Options:
-\end_layout
-
-\begin_layout LyX-Code
-  --first-mesh arg             Mesh for first field
-\end_layout
-
-\begin_layout LyX-Code
-  --first-mesh-cell arg        ...cell type for first mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --first-mesh-coords arg      ...node coordinates for first mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --first-mesh-connect arg     ...connectivity for first mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --second-mesh arg            Mesh for second field
-\end_layout
-
-\begin_layout LyX-Code
-  --second-mesh-cell arg       ...cell type for second mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --second-mesh-coords arg     ...node coordinates for second mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --second-mesh-connect arg    ...connectivity for second mesh
-\end_layout
-
-\begin_layout LyX-Code
-  -m [ --mesh ] arg            Path to integration mesh
-\end_layout
-
-\begin_layout LyX-Code
-  -c [ --mesh-cell ] arg       ...cell type of integration mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --mesh-coords arg            ...node coordinates of integration mesh
-\end_layout
-
-\begin_layout LyX-Code
-  --mesh-connect arg           ...connectivity of integration mesh
-\end_layout
-
-\begin_layout LyX-Code
-  -r [ --rule ] arg            Integration rule (points and weights)
-\end_layout
-
-\begin_layout LyX-Code
-  --rule-weights arg           ...integration weights on reference cell
-\end_layout
-
-\begin_layout LyX-Code
-  --rule-points arg            ...integration points on reference cell
-\end_layout
-
-\begin_layout LyX-Code
-  --do-not-overwrite           Do NOT overwrite existing data
-\end_layout
-
-\begin_layout LyX-Code
-  -f [ --timer-frequency ] arg Output frequency of timer
-\end_layout
-
-\begin_layout LyX-Code
-  --global-threshold arg       Threshold value for global residual
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Other Options:
-\end_layout
-
-\begin_layout LyX-Code
-  -h [ --help ]         produce help message
-\end_layout
-
-\begin_layout LyX-Code
-  -v [ --verbose ]      produce verbose output 
+ 
 \end_layout
 
 \begin_layout Chapter
@@ -2804,10 +2691,6 @@ Mantle Convection
 
 \begin_layout Chapter
 Troubleshooting
-\end_layout
-
-\begin_layout Standard
-It is possible that.
 \end_layout
 
 \begin_layout Section
@@ -2883,9 +2766,7 @@ quad4 Four-node quadrangle.
 \end_layout
 
 \begin_layout Description
-quad8 Eight-node second order quadrangle.
- Four nodes associated with the vertices, four with the edges, and one with
- the face.
+pixel4 Four-node quadrangle with a different node ordering.
 \end_layout
 
 \begin_layout Description
@@ -2902,14 +2783,7 @@ hex8 Eight-node hexahedron.
 \end_layout
 
 \begin_layout Description
-hex20 A 20-node second order hexahedron.
- Eight nodes associated with the vertices and twelve with the edges.
-\end_layout
-
-\begin_layout Description
-hex27 A 27-node second order hexahedron.
- Eight nodes associated with the vertices, twelve with the edges, six with
- the faces, and one with the volume.
+voxel8 Eight-node hexahedron with different node ordering.
 \end_layout
 
 \end_deeper
@@ -2921,19 +2795,6 @@ Node Ordering
 The ordering of the columns in the connectivity array corresponds to the
  node ordering.
  The reference elements are defined as follows
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-XXX: Convert the svg files and insert them here.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
