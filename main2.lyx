@@ -4110,6 +4110,108 @@ $ cigma compare
     -o circ_inc.h5:/pressure_256_064
 \end_layout
 
+\begin_layout LyX-Code
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_circular_inclusion_256_064.png
+	lyxscale 40
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_circular_inclusion_256_128.png
+	lyxscale 40
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 The analytic solution is registered under the somewhat verbose name 
 \family typewriter
@@ -4147,12 +4249,9 @@ This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite strike-slip earthquake in 3D without gravity.
  In order to obtain several data points, we use the CUBIT mesh generator
  to create a sequence of meshes with a 1.2 refinement ratio on which to solve.
- In this case, we also obtain a 
+ In this case, we also calculate the displacement field over 100 timesteps,
+ saving every 10th field.
 \end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status collapsed
 
 \begin_layout LyX-Code
 $ export a=hex8_0500m
@@ -4163,12 +4262,13 @@ $ export b=hex8_1000m
 \end_layout
 
 \begin_layout LyX-Code
-$ export var=displacements
+$ export d=displacements
 \end_layout
 
 \begin_layout LyX-Code
-$ export steps=`seq -f '%04g' 0 10 100`  # generates list 0 10 20 ...
- 100
+$ export steps=`seq -f '%04g' 0 10 100`  # generates list 0000 0010 0020
+ ...
+ 0100
 \end_layout
 
 \begin_layout LyX-Code
@@ -4176,7 +4276,19 @@ $ for n in ${steps}; do
 \end_layout
 
 \begin_layout LyX-Code
-    echo 
+    for b in 
+\begin_inset Quotes eld
+\end_inset
+
+hex8_1000m hex8_0833m hex8_0694m hex8_0578m
+\begin_inset Quotes erd
+\end_inset
+
+; do
+\end_layout
+
+\begin_layout LyX-Code
+      echo 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4188,29 +4300,29 @@ Calculating ${a}-${b}-${n}
 \end_layout
 
 \begin_layout LyX-Code
-    cigma compare 
+      cigma compare 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      strikeslip_${a}_t${n}.vtk:${var} 
+        -a strikeslip_${a}_t${n}.vtk:${d} 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      strikeslip_${b}_t${n}.vtk:${var} 
+        -b strikeslip_${b}_t${n}.vtk:${d} 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -o 
+        -o 
 \begin_inset Quotes eld
 \end_inset
 
-strikeslipnog.h5:/${var}-${a}-${b}-${n}
+strikeslipnog.h5:/${d}-${a}-${b}-${n}
 \begin_inset Quotes erd
 \end_inset
 
@@ -4220,29 +4332,15 @@ strikeslipnog.h5:/${var}-${a}-${b}-${n}
 \end_layout
 
 \begin_layout LyX-Code
-      --verbose
+        --verbose
+\end_layout
+
+\begin_layout LyX-Code
+    done
 \end_layout
 
 \begin_layout LyX-Code
   done
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -4252,7 +4350,6 @@ Laplace Problem
 \begin_layout Standard
 Here we obtain a sequence of solutions by solving a Laplace problem inside
  a cubic domain.
- The 
 \end_layout
 
 \begin_layout Standard
@@ -4260,7 +4357,7 @@ Here we obtain a sequence of solutions by solving a Laplace problem inside
 status open
 
 \begin_layout Plain Layout
-Discussion of higher order elements begins here.
+Discuss higher order elements here.
  For now, just show how power-plot works
 \end_layout
 
