@@ -352,7 +352,8 @@ The Hierarchical Data Format is a library and multi-object file format for
  the transfer of numerical data between computers.
  Cigma depends on the C++ API of the HDF5 library, so it is important to
  enable it when running the configure script below.
- You can obtain the latest source from The HDF Group 
+ We recommend you install version 1.8 or higher.
+ The latest source can be obtained from The HDF Group 
 \begin_inset Flex URL
 status collapsed
 
@@ -446,69 +447,6 @@ hdfgroup.org/HDF5/release/obtain5.html
 \end_layout
 
 \begin_layout Subsection
-NetCDF library
-\end_layout
-
-\begin_layout Standard
-NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
-ependent data formats that support the creation, access, and sharing of
- array-oriented scientific data.
- The source for NetCDF can be obtained from Unidata 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-www.unidata.ucar.edu/software/netcdf/
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout LyX-Code
-$ tar xvfz netcdf-4.0
-\end_layout
-
-\begin_layout LyX-Code
-$ cd netcdf-4.0
-\end_layout
-
-\begin_layout LyX-Code
-$ ./configure --prefix=$HOME/opt/netcdf-4.0    
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --with-hdf5=$HOME/opt/hdf5-1.8.2 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-              --enable-netcdf-4
-\end_layout
-
-\begin_layout LyX-Code
-              
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
-\begin_layout LyX-Code
-$ make install
-\end_layout
-
-\begin_layout Standard
-This library is optional, and recommended if you plan to use meshes created
- by the CUBIT mesh generator.
-\end_layout
-
-\begin_layout Subsection
 VTK library
 \end_layout
 
@@ -590,6 +528,71 @@ $HOME/opt/vtk-5.2
 \family default
  in case you would like to manage multiple versions of the VTK library in
  the same system.
+\end_layout
+
+\begin_layout Subsection
+NetCDF library (optional)
+\end_layout
+
+\begin_layout Standard
+NetCDF (Network Common Data Form) is a set of software libraries and machine-ind
+ependent data formats that support the creation, access, and sharing of
+ array-oriented scientific data.
+ The source for NetCDF can be obtained from Unidata 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+www.unidata.ucar.edu/software/netcdf/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ cd netcdf-4.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/netcdf-4.0    
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --with-hdf5=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+              --enable-netcdf-4
+\end_layout
+
+\begin_layout LyX-Code
+              
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+Using this library is optional, so it is not automatically detected at configure
+ time.
+ Enabling NetCDF support in Cigma will allow you to read ExodusII files
+ created by the CUBIT mesh generator.
 \end_layout
 
 \begin_layout Subsection
@@ -764,18 +767,6 @@ $ cd cigma
 $ autoreconf -fi
 \end_layout
 
-\begin_layout LyX-Code
-$ ./configure <
-\emph on
-necessary-flags-here
-\emph default
->
-\end_layout
-
-\begin_layout LyX-Code
-$ make
-\end_layout
-
 \begin_layout Standard
 The 
 \family typewriter
@@ -803,7 +794,7 @@ Makefile.am
 \family typewriter
 autoreconf
 \family default
-, you may install Cigma as described in Section 2.2 earlier in this Chapter.
+, you may configure, build, and install Cigma as described in Section 2.2.
 \end_layout
 
 \begin_layout Chapter
@@ -916,7 +907,7 @@ Functions
 
 \begin_layout Standard
 The functions that we discuss in this manual are assumed to be defined in
- a common region of space denoted by 
+ a common region of space which we denote by 
 \begin_inset Formula $\Omega$
 \end_inset
 
@@ -952,8 +943,7 @@ scalar functions
 \emph on
 vector functions
 \emph default
- would have a rank of either 2 or 3 depending on whether we wish to restrict
- our function to a plane or not.
+ would usually have a rank of either 2 or 3.
 \end_layout
 
 \begin_layout Section
@@ -1623,9 +1613,9 @@ status open
 \end_inset
 
 
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout Standard
 We use this final form to calculate the global and localized errors on arbitrary
  discretizations.
 \end_layout
@@ -1949,11 +1939,18 @@ Available subcommands:
 
 \begin_layout LyX-Code
 Cigma is a tool for querying & analyzing numerical models.
- For additional information, visit http://geodynamics.org/ 
+\end_layout
+
+\begin_layout LyX-Code
+For additional information, visit http://geodynamics.org/ 
 \end_layout
 
 \begin_layout Standard
-The rest of this chapter deals.
+For the remainder of this chapter, we will focus on the 
+\family typewriter
+compare 
+\family default
+command, and the information
 \end_layout
 
 \begin_layout Section
@@ -2289,6 +2286,10 @@ MC
 </row>
 </lyxtabular>
 
+\end_inset
+
+
+\begin_inset Formula $ $
 \end_inset
 
 
@@ -2814,42 +2815,60 @@ filename
 \emph on
  
 \emph default
- Group
-\emph on
  
+\emph on
+Group 
 \bar under
 location
 \end_layout
 
 \begin_layout LyX-Code
-  |-- Group 
+  |-- 
+\emph on
+Group
+\emph default
+ 
 \series bold
 temperature
 \end_layout
 
 \begin_layout LyX-Code
-  |   |-- Array 
+  |   |-- 
+\emph on
+Array
+\emph default
+ 
 \series bold
 step000
 \end_layout
 
 \begin_layout LyX-Code
-  |   |   `-- Attribute 
-\series bold
+  |   |   `-- 
 \emph on
+Attribute
+\emph default
+ 
+\series bold
 MeshLocation
 \end_layout
 
 \begin_layout LyX-Code
-  |   |-- Array 
+  |   |-- 
+\emph on
+Array
+\emph default
+ 
 \series bold
 step001
 \end_layout
 
 \begin_layout LyX-Code
-  |   |   `-- Attribute 
-\series bold
+  |   |   `-- 
 \emph on
+Attribute
+\emph default
+ 
+\series bold
 MeshLocation
 \end_layout
 
@@ -2858,7 +2877,11 @@ MeshLocation
 \end_layout
 
 \begin_layout LyX-Code
-  `-- Group displacements
+  `-- 
+\emph on
+Group
+\emph default
+ displacements
 \end_layout
 
 \begin_layout LyX-Code
@@ -2890,7 +2913,121 @@ Other Options
 \end_layout
 
 \begin_layout Standard
-In 
+There are a few other notable options that enable us to monitor various
+ things, such as timing statistics on the progress of the calculation, as
+ well as debugging information that may prove useful when encountering an
+ unexpected exception.
+\end_layout
+
+\begin_layout Standard
+In order to monitor the progress of the integration, simply add the 
+\family typewriter
+--verbose
+\family default
+ (or 
+\family typewriter
+-v
+\family default
+) flag to the command options,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+A
+\series default
+ 
+\series bold
+B
+\series default
+ --verbose
+\end_layout
+
+\begin_layout Standard
+By default, the timer will report its progress every 100 integration cells,
+ but you can change that default by using the option 
+\family typewriter
+--timer-frequency
+\family default
+ (or 
+\family typewriter
+-t
+\family default
+),
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+A
+\series default
+ 
+\series bold
+B
+\series default
+ --verbose --timer-frequency=1000
+\end_layout
+
+\begin_layout Standard
+Debugging information can be displayed using the 
+\family typewriter
+--debug
+\family default
+ (or 
+\family typewriter
+-D
+\family default
+) flag, which will output an internal trace of which functions have been
+ called and with what arguments.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+A
+\series default
+ 
+\series bold
+B
+\series default
+ --debug
+\end_layout
+
+\begin_layout Standard
+On the other hand, suppressing all output can be accomplished with the 
+\family typewriter
+--quiet
+\family default
+ flag.
+ This flag is probably most useful when used together with the option 
+\family typewriter
+--global-threshold
+\family default
+ (or 
+\family typewriter
+-g
+\family default
+),
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\series bold
+A
+\series default
+ 
+\series bold
+B
+\series default
+ --quiet --global-threshold=0.001
+\end_layout
+
+\begin_layout Standard
+In this case, the exit code will indicate failure (return a non-zero value),
+ whenever the specified threshold condition is not met.
+ This allows you to set up automated regression scripts that can constantly
+ compare output from your numerical codes against a series of known benchmark
+ solutions.
 \end_layout
 
 \begin_layout Section
@@ -2927,8 +3064,9 @@ raw
 , so that errors accumulated over smaller cells have more visual influence
  than errors of the same magnitude accumulated over larger cells.
  It may be also be useful visually, to output the logarithm of the residual
- values, which will accentuate the contrast betwen the orders of magnitude
- in the local residuals.
+ values.
+ Using a logarithmic scale will accentuate the contrast betwen the orders
+ of magnitude in the local residuals.
  For these reasons, we include in Cigma a post-processing utility called
  
 \family typewriter
@@ -2945,15 +3083,33 @@ vtk-residuals
 \end_layout
 
 \begin_layout LyX-Code
-$ vtk-residuals [...] -m 
+$ vtk-residuals [...]            
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -m 
 \bar under
 MeshFile
 \bar default
- -i 
+                
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -i 
 \bar under
 InputResiduals.h5:/path
 \bar default
- -o 
+ 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -o 
 \bar under
 OutputResiduals.vtk
 \end_layout
@@ -2981,9 +3137,10 @@ Troubleshooting
 \end_layout
 
 \begin_layout Standard
-The rest of the Cigma commands are there to help you query your model, so
- you can tell whether the input files are properly specified, or whether
- the function information is being interpreted correctly before evaluations.
+The rest of the Cigma commands are there to help you query your model, allowing
+ you to determine whether the input files have been properly specified and
+ are being correctly specified by Cigma.
+ A few common problems you might encounter, include negative volumes.
 \end_layout
 
 \begin_layout Subsection
@@ -3009,7 +3166,7 @@ MESH
 \begin_layout Standard
 You can also extract connectivity information for a specific cell in your
  mesh, which will help you find out whether the elements that your finite
- element model uses have the same node ordering as the elements in Cigma,
+ element model use have the same node ordering as the elements in Cigma,
 \end_layout
 
 \begin_layout LyX-Code
@@ -3354,40 +3511,24 @@ which serves as a quick check that
 Examples
 \end_layout
 
-\begin_layout Section
-Calculating Order of Convergence
-\end_layout
-
-\begin_layout Subsection
-Circular Inclusion Benchmark
-\end_layout
-
 \begin_layout Standard
-We begin by analyzing a two-dimensional example.
- 
+Here we will show in concrete terms how to use cigma for running specific
+ comparisons, estimating the order of convergence of the solutions presented,
+ as well as 
 \end_layout
 
-\begin_layout LyX-Code
-$ export var=PressureField
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p128.vts:${var} -o circ_inc.h5:/pressure_256_128
- -v
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p64.vts:${var}  -o circ_inc.h5:/pressure_256_064
- -v
-\end_layout
-
-\begin_layout Subsection
+\begin_layout Section
 Mantle Convection
 \end_layout
 
 \begin_layout Standard
-For this example, we use a mantle convection numerical code called CitcomCU.
- Here, we have solved the three levels of refinement, in the files 
+For this example, we use CitcomCU to solve a thermal convection problem
+ in a three-dimensional domain.
+ The initial temperature field is a linear gradient from the top to the
+ bottom, fixed at 1 at the bottom of the cube, and fixed at 0 at the top
+ of the cube.
+ In this case, we have solved for the velocity field for three different
+ resolutions and stored it in three rectilinear vtk files called 
 \family typewriter
 citcomcu.case8.vtr
 \family default
@@ -3399,40 +3540,379 @@ citcomcu.case16.vtr
 \family typewriter
 citcomcu.case32.vtr
 \family default
-, and we would like to estimate how fast we are converging.
- First we perform the comparison using the commands
+.
+\end_layout
+
+\begin_layout Standard
+First of all, to avoid long command line arguments we will give our field
+ a shorter name,
 \end_layout
 
 \begin_layout LyX-Code
 $ export v=velocity
 \end_layout
 
-\begin_layout LyX-Code
-$ cigma compare citcomcu.case32.vtr:$v citcomcu.case8.vtr:$v  -o citcomcu.h5:/case_32
-_08
+\begin_layout Standard
+Now, we run the first comparison, comparing the highest resolution, 
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare citcomcu.case32.vtr:$v citcomcu.case16.vtr:$v -o citcomcu.h5:/case_32
-_16
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    citcomcu.case32.vtr:$v 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    citcomcu.case8.vtr:$v  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o citcomcu.h5:/case_32_08
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Summary of comparison:
+\end_layout
+
+\begin_layout LyX-Code
+  L2 = 0.0500057391169
+\end_layout
+
+\begin_layout LyX-Code
+  Linf = 0.146940986884
+\end_layout
+
+\begin_layout LyX-Code
+  volume = 1
+\end_layout
+
+\begin_layout LyX-Code
+  L2/volume = 0.0500057391169
+\end_layout
+
+\begin_layout LyX-Code
+  L2/sqrt(volume) = 0.0500057391169
+\end_layout
+
+\begin_layout LyX-Code
+  h1 = 0.0541265877365
+\end_layout
+
+\begin_layout LyX-Code
+  h2 = 0.216506350946 
 \end_layout
 
 \begin_layout Standard
 Since we did not specify an integration mesh, the mesh from the first field
- is used.
+ is used for the integration of the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm.
+ Additionally, the above command creates the HDF5 file 
+\family typewriter
+citcomcu.h5
+\family default
+, and stores the results of the comparison into an array called 
+\family typewriter
+case32_08
+\family default
+.
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    citcomcu.case32.vtr:$v 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    citcomcu.case16.vtr:$v 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o citcomcu.h5:/case_32_16
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Summary of comparison:
+\end_layout
+
+\begin_layout LyX-Code
+  L2 = 0.0100758230674
+\end_layout
+
+\begin_layout LyX-Code
+  Linf = 0.0322452153235
+\end_layout
+
+\begin_layout LyX-Code
+  volume = 1
+\end_layout
+
+\begin_layout LyX-Code
+  L2/volume = 0.0100758230674
+\end_layout
+
+\begin_layout LyX-Code
+  L2/sqrt(volume) = 0.0100758230674
+\end_layout
+
+\begin_layout LyX-Code
+  h1 = 0.0541265877365
+\end_layout
+
+\begin_layout LyX-Code
+  h2 = 0.108253175473 
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+From these two results, we can estimate how fast we are converging to a
+ common answer between levels 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $b$
+\end_inset
+
+ by using
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\alpha & \sim & \frac{\log(\varepsilon_{b}/\varepsilon_{a})}{\log(h_{b}/h_{a})}\\
+ & \sim & \frac{\log(0.01/0.05)}{\log(0.108/0.217)}\\
+ & \sim & 2.3\end{eqnarray*}
+
+\end_inset
+
+where we have assumed that the highest resolution field is equivalent to
+ the exact solution in our approximation for 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Using a logarithmic scale to view the residual field for these two comparisons,
+ we generate two vtk files using the comands
+\end_layout
+
+\begin_layout LyX-Code
+$ vtk-residuals 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --output-log-values 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -m case32.vtr:$v 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -i citcomcu.h5:/case_32_08 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o res-vel-32-08.vtk
+\end_layout
+
+\begin_layout LyX-Code
+$ vtk-residuals 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    --output-log-values 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -m case32.vtr:$v 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -i citcomcu.h5:/case_32_16 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o res-vel-32-16.vtk
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/luis/p/cig/doc/cigma/figures2/log_res_citcomcu_velocity_32_08.png
+	lyxscale 40
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/luis/p/cig/doc/cigma/figures2/log_res_citcomcu_velocity_32_16.png
+	lyxscale 40
+	width 40page%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the figures above, we show three cross sections of the errors in the
+ velocity field.
+ The convergence behavior of these two comparisons can almost be confirmed
+ visually by observing the overall color shift between the two figures,
+ which use the same absolute color scale.
+\end_layout
+
+\begin_layout Section
+Circular Inclusion Benchmark
+\end_layout
+
+\begin_layout Standard
+We begin by analyzing a two-dimensional example benchmark problem for which
+ we know an exact analytical solution.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=PressureField
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p128.vts:${var} -o circ_inc.h5:/pressure_256_128
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare p256.vts:${var} p64.vts:${var}  -o circ_inc.h5:/pressure_256_064
+\end_layout
+
+\begin_layout Standard
+The analytic solution is registered under the somewhat verbose name 
+\family typewriter
+bm.gale.circular_inclusion.pressure
+\family default
+.
+ It can be used in place of a field,
+\end_layout
+
+\begin_layout LyX-Code
+$ export var=PressureField
+\end_layout
+
+\begin_layout LyX-Code
+$ export bm=bm.gale.circular_inclusion
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p256.vts:${var} -o circ_inc.h5:/pressure_256
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p128.vts:${var} -o circ_inc.h5:/pressure_128
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare ${bm}.pressure p64.vts:${var}  -o circ_inc.h5:/pressure_064
+\end_layout
+
+\begin_layout Section
 Strikeslip Benchmark Convergence
 \end_layout
 
 \begin_layout Standard
 This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite strike-slip earthquake in 3D without gravity.
+ In order to obtain several data points, we use the CUBIT mesh generator
+ to create a sequence of meshes with a 1.2 refinement ratio.
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Note Note
 status collapsed
 
@@ -3514,50 +3994,41 @@ strikeslipnog.h5:/${var}-${a}-${b}-${n}
 
 \end_layout
 
-\begin_layout Subsection
-Laplace Problem
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
-Comparison Involving an Analytic Benchmark
+Laplace Problem
 \end_layout
 
 \begin_layout Standard
-In the current version of Cigma, two analytic benchmark functions have been
- pre-defined, available under the somewhat verbose names 
-\family typewriter
-bm.ssnog.displacement
-\family default
- and 
-\family typewriter
-bm.gale.circular_inclusion.pressure
-\family default
-.
- You can use these as templates for defining your own analytic functions.
+Here we obtain a sequence of solutions by solving a Laplace problem inside
+ a cubic domain.
+ The 
 \end_layout
 
 \begin_layout Standard
-The benchmark functions can be used just as in Section 5.1.3
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Discussion of higher order elements begins here.
+ For now, just show how power-plot works
 \end_layout
 
-\begin_layout LyX-Code
-$ export var=PressureField
-\end_layout
+\end_inset
 
-\begin_layout LyX-Code
-$ export bm=bm.gale.circular_inclusion
-\end_layout
 
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p256.vts:${var} -o ci.h5:/pressure_256 -v
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p128.vts:${var} -o ci.h5:/pressure_128 -v 
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p64.vts:${var}  -o ci.h5:/pressure_064 -v
 \end_layout
 
 \begin_layout LyX-Code
