@@ -57,12 +57,13 @@ The CIG Model Analyzer (Cigma) consists of a general suite of tools for
 \begin_inset Formula $L_{2}$
 \end_inset
 
- residuals for finite element models.
+ residuals for finite element models and published benchmark datasets.
+ 
 \end_layout
 
 \begin_layout Standard
 CIG has developed Cigma in response to demand from the short-term tectonics
- community for an automated tool that can perform rigorous error analysos
+ community for an automated tool that can perform rigorous error analysis
  on their finite element codes.
  In the long term, Cigma aims to be general enough for use in other geodynamics
  modeling codes.
@@ -269,9 +270,17 @@ $ make install
 \end_layout
 
 \begin_layout Standard
-The Boost and HDF5 libraries are the only required components for this step.
- The installation prefixes should be used if you have installed the correspondin
-g library in a custom location.
+Only the Boost and HDF5 libraries are required components for this step.
+ The additional configure flag 
+\family typewriter
+--with-vtk-version
+\family default
+ is required if you wish to enable VTK support.
+\end_layout
+
+\begin_layout Standard
+In general, the installation prefixes specified above should be used if
+ you have installed the corresponding library in a custom location.
  In the instructions below, we use a subdirectory of 
 \family typewriter
 $HOME/opt
@@ -294,8 +303,9 @@ The Boost C++ libraries are a collection of peer-reviewed and open source
  Cigma uses Boost for its smart pointer facilities, lexical conversions,
  as well as for parsing command-line options, and for providing cross-platform
  filesystem operations.
- In order to build Boost with the necessary components used in Cigma, you
- can use the following commands
+ If Boost is not available for your platform as a binary package, you may
+ choose to avoid long compilation times by building Boost with only the
+ necessary components that Cigma needs,
 \end_layout
 
 \begin_layout LyX-Code
@@ -339,8 +349,7 @@ and modifying the comma-delimited list passed to the
 --with-libraries
 \family default
  option when repeating the build procedure above.
- The next version of Cigma will include a Python extension module that will
- need the python component of Boost, but is currently not necessary.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -351,8 +360,9 @@ HDF5 library
 The Hierarchical Data Format is a library and multi-object file format for
  the transfer of numerical data between computers.
  Cigma depends on the C++ API of the HDF5 library, so it is important to
- enable it when running the configure script below.
- We recommend you install version 1.8 or higher.
+ enable C++ support when running the configure script below.
+ We recommend you install the library version 1.8, or higher, due to the
+ improved metadata API in those versions.
  The latest source can be obtained from The HDF Group 
 \begin_inset Flex URL
 status collapsed
@@ -591,8 +601,9 @@ $ make install
 \begin_layout Standard
 Using this library is optional, so it is not automatically detected at configure
  time.
- Enabling NetCDF support in Cigma will allow you to read ExodusII files
- created by the CUBIT mesh generator.
+ Enabling NetCDF support in Cigma will currently only allow you to read
+ the first element block from any ExodusII file created by the CUBIT mesh
+ generator.
 \end_layout
 
 \begin_layout Subsection
@@ -1709,7 +1720,7 @@ Once we have calculated a family of solutions
 \begin_inset Formula $C$
 \end_inset
 
- is independent of both 
+ is a constant independent of both 
 \begin_inset Formula $h$
 \end_inset
 
@@ -1838,6 +1849,8 @@ Cigma is primarily designed for calculating error estimates between arbitrary
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma compare 
 \series bold
 \bar under
@@ -1882,18 +1895,26 @@ cigma help
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma help
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Usage: cigma <subcommand> [options] [args]
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Type 'cigma help <subcommand>' for help on a specific subcommand.
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Type 'cigma --version' to see the program version
 \end_layout
 
@@ -1902,34 +1923,50 @@ Type 'cigma --version' to see the program version
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Available subcommands:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    compare        Calculate local and global residuals over two fields
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    eval           Evaluate function at specified quadrature points
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    extract        Extract quadrature points from a mesh
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    list           List file contents (fields, dimensions, ...)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    mesh-info      Show information about specified mesh
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    function-info  Show list of pre-defined functions
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    element-info   Show information about available element types
 \end_layout
 
@@ -1938,10 +1975,14 @@ Available subcommands:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Cigma is a tool for querying & analyzing numerical models.
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 For additional information, visit http://geodynamics.org/ 
 \end_layout
 
@@ -2005,6 +2046,19 @@ A mesh block is associated with three items of information: (1) geometrical
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="5">
 <features>
@@ -2295,6 +2349,11 @@ MC
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 There are a number of rules determining which of these options are required.
  For any of the 
@@ -2456,7 +2515,7 @@ POINTS
 \family typewriter
 CELLS
 \family default
- datasets, which are required by the VTK file format.
+ , which are required by the VTK file format.
  The value of the option (MC) is determined from the first entry in the
  
 \family typewriter
@@ -2570,13 +2629,14 @@ Deciding if a given mesh is adequate for accurately capturing the error
  This strategy could be implemented on top of Cigma as a series of post-processi
 ng steps by writing a suitable program or script that repeats this refinement
  process until the variations in the global error metric are small enough.
- Both of the TetGen and CUBIT mesh generators are capable of refining.
+ Both of the TetGen and CUBIT mesh generators can be used for this purpose.
 \end_layout
 
 \begin_layout Standard
 A second strategy would be to increase the order of the quadrature rule
  that we associate with the cells in the integration mesh.
- This has the advantage that we can increase the accuracy of the 
+ This approach has the advantage that we can increase the accuracy of the
+ 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -2585,6 +2645,19 @@ A second strategy would be to increase the order of the quadrature rule
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
 <features>
@@ -2620,7 +2693,7 @@ R
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2683,6 +2756,11 @@ R2
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Various quadrature rules for different cell types are available in the top
  level file 
@@ -2715,22 +2793,14 @@ Function Options
 \end_layout
 
 \begin_layout Standard
-The requirements on the kind of functions that Cigma will accept are relatively
- quite stringent.
- Recall from Chapter 3 that computing the local error metric involves approximat
-ing a local error integral by a finite weighed sum over specific quadrature
- points.
- If we allow arbitrary meshes for the integration procedure, that means
- that we must be able to evaluate our functions wherever those quadrature
- points may lie.
- This implies that our functions must be capable of evaluating on arbitrary
- points, which may not always be possible due to missing information, or
- it may be too inefficient without first building an appropriate spatial-index
- database.
+Cigma will accept two kinds of function arguments: (1) an analytic function
+ chosen from a pre-defined list, or (2) an array of coefficients describing
+ a finite element field.
+ Both of these
 \end_layout
 
 \begin_layout Subsection
-By an Explicit Function
+By an Analytic Function
 \end_layout
 
 \begin_layout Standard
@@ -2819,7 +2889,7 @@ filename
 \emph on
 Group 
 \bar under
-location
+variables
 \end_layout
 
 \begin_layout LyX-Code
@@ -2881,7 +2951,9 @@ MeshLocation
 \emph on
 Group
 \emph default
- displacements
+ 
+\series bold
+displacements
 \end_layout
 
 \begin_layout LyX-Code
@@ -2906,6 +2978,72 @@ If the dataset is stored in a VTK file, the only restrictions are that you
  not mix more than one element in the same file.
  Otherwise, you may use any of the formats supported by the VTK library
  (structured, rectilinear, etc.) to define your field.
+\end_layout
+
+\begin_layout Subsection
+Spatial Database Options
+\end_layout
+
+\begin_layout Standard
+Recall from Chapter 3 that computing the local error metric involves approximati
+ng a local error integral by a finite weighed sum over a set of quadrature
+ points.
+ Because we allow arbitrary meshes for the integration procedure, that means
+ that in general we must be able to evaluate our functions wherever those
+ quadrature points may lie.
+ This implies that we must be able to evaluate the given functions at arbitrary
+ points.
+ This step is typically inefficient even for a moderate-size finite element
+ mesh, since a sequential scan over a mesh with 
+\begin_inset Formula $n$
+\end_inset
+
+ elements would take 
+\begin_inset Formula $O(n)$
+\end_inset
+
+ time per quadrature point evaluation.
+ To make this process efficient in general, we can build a spatial-index
+ database of the geometric locations of every element in the mesh.
+ Using a tree-based partitioning of the element locations, we can ideally
+ reduce the search time to 
+\begin_inset Formula $O(\log n)$
+\end_inset
+
+ per quadrature point evaluation.
+\end_layout
+
+\begin_layout Standard
+Cigma uses a nearest-neighbor search on a kd-tree structure to find the
+ appropriate cell that contains a given quadrature point.
+ This means that for a given point, a fixed number of nearest neighbors
+ are checked before proceding with a sequential scan over all elements.
+ If you find a particular comparison is taking too long, it may help to
+ increase the number of nearest elements that are checked, which can be
+ done by passing a positive integer to any of the command line options 
+\family typewriter
+--first-mesh-nnk
+\family default
+ and 
+\family typewriter
+--second-mesh-nnk
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+For meshes with more structure, it would be possible to define an appropriate
+ 
+\family typewriter
+cigma::Locator
+\family default
+ subclass to provide a search time of 
+\begin_inset Formula $O(1)$
+\end_inset
+
+ per quadrature point evaluation, but this is not currently implemented
+ in Cigma.
+ 
 \end_layout
 
 \begin_layout Section
@@ -3031,11 +3169,7 @@ In this case, the exit code will indicate failure (return a non-zero value),
 \end_layout
 
 \begin_layout Section
-Visualizing the Local 
-\begin_inset Formula $L^{2}$
-\end_inset
-
- Residuals
+Visualizing the Local Errors
 \end_layout
 
 \begin_layout Standard
@@ -3133,14 +3267,22 @@ By default, this command will only copy the residual values from the input
 \end_layout
 
 \begin_layout Section
-Troubleshooting
+Verifying the Results
 \end_layout
 
 \begin_layout Standard
 The rest of the Cigma commands are there to help you query your model, allowing
- you to determine whether the input files have been properly specified and
- are being correctly specified by Cigma.
- A few common problems you might encounter, include negative volumes.
+ you to determine whether the input files are being interpreted properly.
+ A common problem in specifying a finite element mesh would be using the
+ wrong node numbering for a particular Cigma element, in which case you
+ might encounter cells with negative or zero volumes, incorrect results
+ for the inverse reference map 
+\begin_inset Formula $\chi_{e}^{-1}$
+\end_inset
+
+.
+ Also, if the degrees of freedom are specified using a different node ordering
+ than the mesh, the interpolation will yield different results than expected.
 \end_layout
 
 \begin_layout Subsection
@@ -3200,18 +3342,6 @@ MESH
 \begin_layout Standard
 which you can use to verify that the underlying spatial index that maps
  points to cells is working properly.
-\end_layout
-
-\begin_layout Standard
-In general, the 
-\family typewriter
-cigma mesh-info
-\family default
- command will help you detect when you have specified the connectivity informati
-on incorrectly.
- For example, you may find that some of the cell volumes are negative, or
- that you are unable to query a point which should be found somewhere within
- the mesh inside a specific cell.
 \end_layout
 
 \begin_layout Subsection
@@ -3308,26 +3438,38 @@ cigma element-info
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma element-info
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 List of elements available for use in a Field:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    tet4, tet10
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    hex8
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    tri3, tri6
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    quad4
 \end_layout
 
@@ -3337,10 +3479,14 @@ For example, querying the hex8 element would result in the following information
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma element-info hex8
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Information on cell 'hex8'
 \end_layout
 
@@ -3349,38 +3495,56 @@ Information on cell 'hex8'
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Reference-Cell Nodes:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      0  -1.000000 -1.000000 -1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      1  +1.000000 -1.000000 -1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      2  +1.000000 +1.000000 -1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      3  -1.000000 +1.000000 -1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      4  -1.000000 -1.000000 +1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      5  +1.000000 -1.000000 +1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      6  +1.000000 +1.000000 +1.000000
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
      7  -1.000000 +1.000000 +1.000000
 \end_layout
 
@@ -3389,38 +3553,56 @@ Reference-Cell Nodes:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Shape functions:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[0] = 0.125 * (1.0 - u) * (1.0 - v) * (1.0 - w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[1] = 0.125 * (1.0 + u) * (1.0 - v) * (1.0 - w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[2] = 0.125 * (1.0 + u) * (1.0 + v) * (1.0 - w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[3] = 0.125 * (1.0 - u) * (1.0 + v) * (1.0 - w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[4] = 0.125 * (1.0 - u) * (1.0 - v) * (1.0 + w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[5] = 0.125 * (1.0 + u) * (1.0 - v) * (1.0 + w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[6] = 0.125 * (1.0 + u) * (1.0 + v) * (1.0 + w)
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
    N[7] = 0.125 * (1.0 - u) * (1.0 + v) * (1.0 + w)
 \end_layout
 
@@ -3429,39 +3611,59 @@ Shape functions:
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 Default integration rule (weights & points):
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   -0.577350 -0.577350 -0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   +0.577350 -0.577350 -0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   +0.577350 +0.577350 -0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   -0.577350 +0.577350 -0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   -0.577350 -0.577350 +0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   +0.577350 -0.577350 +0.577350
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
     1.000000   +0.577350 +0.577350 +0.577350
 \end_layout
 
 \begin_layout LyX-Code
-    1.000000   -0.577350 +0.577350 +0.577350 
+
+\size footnotesize
+    1.000000   -0.577350 +0.577350 +0.577350
+\size default
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3484,18 +3686,26 @@ reference-cells.h5
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,0,0
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 1,0,0
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,1,0
 \end_layout
 
 \begin_layout LyX-Code
+
+\size footnotesize
 $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,0,1
 \end_layout
 
@@ -3504,7 +3714,7 @@ which serves as a quick check that
 \begin_inset Formula $N_{0}$
 \end_inset
 
- is 1 one vertex, and 0 at the other vertices.
+ evaluates to 1 at one vertex, and to 0 at the other vertices.
 \end_layout
 
 \begin_layout Chapter
@@ -3512,9 +3722,9 @@ Examples
 \end_layout
 
 \begin_layout Standard
-Here we will show in concrete terms how to use cigma for running specific
- comparisons, estimating the order of convergence of the solutions presented,
- as well as 
+In this chapter, we show how to use Cigma to run specific comparisons on
+ included datasets, estimate the order of convergence of the solutions presented
+, and discuss a number of visualization techniques.
 \end_layout
 
 \begin_layout Section
@@ -3524,9 +3734,10 @@ Mantle Convection
 \begin_layout Standard
 For this example, we use CitcomCU to solve a thermal convection problem
  in a three-dimensional domain.
- The initial temperature field is a linear gradient from the top to the
- bottom, fixed at 1 at the bottom of the cube, and fixed at 0 at the top
- of the cube.
+ The initial temperature field is a linear gradient from the top surface
+ to the bottom surface.
+ The temperature is fixed at 1 at the bottom of the cube, and fixed at 0
+ at the top of the cube.
  In this case, we have solved for the velocity field for three different
  resolutions and stored it in three rectilinear vtk files called 
 \family typewriter
@@ -3544,15 +3755,6 @@ citcomcu.case32.vtr
 \end_layout
 
 \begin_layout Standard
-First of all, to avoid long command line arguments we will give our field
- a shorter name,
-\end_layout
-
-\begin_layout LyX-Code
-$ export v=velocity
-\end_layout
-
-\begin_layout Standard
 Now, we run the first comparison, comparing the highest resolution, 
 \end_layout
 
@@ -3563,13 +3765,13 @@ $ cigma compare
 \end_layout
 
 \begin_layout LyX-Code
-    citcomcu.case32.vtr:$v 
+    -a citcomcu.case32.vtr:velocity 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    citcomcu.case8.vtr:$v  
+    -b citcomcu.case8.vtr:velocity  
 \backslash
 
 \end_layout
@@ -3640,13 +3842,13 @@ $ cigma compare
 \end_layout
 
 \begin_layout LyX-Code
-    citcomcu.case32.vtr:$v 
+    -a citcomcu.case32.vtr:velocity 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    citcomcu.case16.vtr:$v 
+    -b citcomcu.case16.vtr:velocity 
 \backslash
 
 \end_layout
@@ -3742,7 +3944,7 @@ $ vtk-residuals
 \end_layout
 
 \begin_layout LyX-Code
-    -m case32.vtr:$v 
+    -m citcomcu.case32.vtr:velocity 
 \backslash
 
 \end_layout
@@ -3754,7 +3956,7 @@ $ vtk-residuals
 \end_layout
 
 \begin_layout LyX-Code
-    -o res-vel-32-08.vtk
+    -o log-res-vel-32-08.vtk
 \end_layout
 
 \begin_layout LyX-Code
@@ -3770,7 +3972,7 @@ $ vtk-residuals
 \end_layout
 
 \begin_layout LyX-Code
-    -m case32.vtr:$v 
+    -m citcomcucase32.vtr:velocity 
 \backslash
 
 \end_layout
@@ -3782,7 +3984,7 @@ $ vtk-residuals
 \end_layout
 
 \begin_layout LyX-Code
-    -o res-vel-32-16.vtk
+    -o log-res-vel-32-16.vtk
 \end_layout
 
 \begin_layout Standard
@@ -3843,8 +4045,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-In the figures above, we show three cross sections of the errors in the
- velocity field.
+In the figures above, we show three cross sections of the error in the velocity
+ field.
  The convergence behavior of these two comparisons can almost be confirmed
  visually by observing the overall color shift between the two figures,
  which use the same absolute color scale.
@@ -3861,15 +4063,51 @@ We begin by analyzing a two-dimensional example benchmark problem for which
 \end_layout
 
 \begin_layout LyX-Code
-$ export var=PressureField
+
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p128.vts:${var} -o circ_inc.h5:/pressure_256_128
+$ cigma compare 
+\backslash
+
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare p256.vts:${var} p64.vts:${var}  -o circ_inc.h5:/pressure_256_064
+    -a p256.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b p128.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o circ_inc.h5:/pressure_256_128
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a p256.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b p64.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o circ_inc.h5:/pressure_256_064
 \end_layout
 
 \begin_layout Standard
@@ -3877,12 +4115,11 @@ The analytic solution is registered under the somewhat verbose name
 \family typewriter
 bm.gale.circular_inclusion.pressure
 \family default
-.
- It can be used in place of a field,
+, which we shorten by storing it in a shell variable, 
 \end_layout
 
 \begin_layout LyX-Code
-$ export var=PressureField
+$ export p=PressureField
 \end_layout
 
 \begin_layout LyX-Code
@@ -3890,15 +4127,15 @@ $ export bm=bm.gale.circular_inclusion
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p256.vts:${var} -o circ_inc.h5:/pressure_256
+$ cigma compare ${bm}.pressure p256.vts:${p} -o circ_inc.h5:/pressure_256
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p128.vts:${var} -o circ_inc.h5:/pressure_128
+$ cigma compare ${bm}.pressure p128.vts:${p} -o circ_inc.h5:/pressure_128
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p64.vts:${var}  -o circ_inc.h5:/pressure_064
+$ cigma compare ${bm}.pressure p64.vts:${p}  -o circ_inc.h5:/pressure_064
 \end_layout
 
 \begin_layout Section
@@ -3909,7 +4146,8 @@ Strikeslip Benchmark Convergence
 This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite strike-slip earthquake in 3D without gravity.
  In order to obtain several data points, we use the CUBIT mesh generator
- to create a sequence of meshes with a 1.2 refinement ratio.
+ to create a sequence of meshes with a 1.2 refinement ratio on which to solve.
+ In this case, we also obtain a 
 \end_layout
 
 \begin_layout Standard
@@ -4056,19 +4294,27 @@ Cigma can understand a number of file formats, depending on how it is configured
 \end_layout
 
 \begin_layout Standard
-The simplest format you can use is a simple text file (with extension 
-\family typewriter
-.dat
-\family default
-) containing a single array.
- The most flexible way to store your arrays will be to use an HDF5 file
- (with extension 
+The most flexible way to store your arrays will be to use an HDF5 file (with
+ extension 
 \family typewriter
 .h5
 \family default
 ), which will allow you to organize your arrays in a hierarchy.
- You will also have the ability to attach metadata attributes.
+ The 
+\family typewriter
+h5attr
+\family default
+ allows to add or modify any scalar metadata attributes to any HDF5 group
+ or array.
  
+\end_layout
+
+\begin_layout Standard
+You can also use a simple text file (with extension 
+\family typewriter
+.dat
+\family default
+) containing a single array in row-column format.
 \end_layout
 
 \begin_layout Standard
@@ -4471,7 +4717,7 @@ On a mesh with
 \end_inset
 
  node coordinates, which are specified on a global coordinate system, we
- have.
+ have,
 \begin_inset Newline newline
 \end_inset
 
@@ -6807,9 +7053,13 @@ For the most part, there are three different kinds of output files you can
  use, as already summarized in Section A.1.
  Switching output formats is as simple as changing the extension of the
  output file name.
- Now, the result of all comparisons always consists of a one dimensional
- list of scalars, one for each element in the underlying discretization
- used to approximate the 
+ 
+\end_layout
+
+\begin_layout Standard
+The result of all comparisons always consists of a one dimensional list
+ of scalars, one for each element in the underlying discretization used
+ to approximate the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -6824,7 +7074,8 @@ vtk-residuals
  HDF5 files to store the result of your comparisons.
  Note that HDF5 files will not be overwritten when used for output, which
  allows you to store multiple datasets inside the same HDF5 file without
- redundant mesh information.
+ keeping redundant mesh information as is typically the case when using
+ VTK files.
 \end_layout
 
 \begin_layout Standard
