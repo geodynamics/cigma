@@ -43,6 +43,18 @@
 \begin_body
 
 \begin_layout Chapter
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+raggedbottom
+\end_layout
+
+\end_inset
+
 Introduction
 \end_layout
 
@@ -77,7 +89,7 @@ Citation
 Computational Infrastructure for Geodynamics (CIG) is making this source
  code available to you in the hope that the software will enhance your research
  in geophysics.
- This is a brand-new code and at present no papers are published or press.
+ This is a brand-new code and at present no papers are published or in press.
  Please cite this manual as follows:
 \end_layout
 
@@ -184,8 +196,8 @@ Installing from Source
 \begin_layout Standard
 In this section we discuss how to install each of the software libraries
  necessary for building Cigma.
- We recommend that you obtain binaries for these dpendencies from your package
- manager of choice, or from the corresponding website.
+ We recommend that you obtain binaries for these dependencies from your
+ package manager of choice, or from the corresponding website.
  When using a package manager, make sure to install the associated development
  headers along with the library, as these tend to be distributed separately
  from the library package itself.
@@ -344,7 +356,16 @@ $ ./configure --show-libraries
 \end_layout
 
 \begin_layout Standard
-and modifying the comma-delimited list passed to the 
+[TODO something wrong with second half of this sentence.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+and by modifying
+\begin_inset Quotes erd
+\end_inset
+
+?] and modifying the comma-delimited list passed to the 
 \family typewriter
 --with-libraries
 \family default
@@ -361,8 +382,8 @@ The Hierarchical Data Format is a library and multi-object file format for
  the transfer of numerical data between computers.
  Cigma depends on the C++ API of the HDF5 library, so it is important to
  enable C++ support when running the configure script below.
- We recommend you install the library version 1.8, or higher, due to the
- improved metadata API in those versions.
+ We recommend you install the library version 1.8 or higher, due to the improved
+ metadata API in those versions.
  The latest source can be obtained from The HDF Group 
 \begin_inset Flex URL
 status collapsed
@@ -374,7 +395,7 @@ hdfgroup.org/HDF5
 
 \end_inset
 
-, and use the following sequence of commands to build the library.
+, and it uses the following sequence of commands to build the library.
  
 \end_layout
 
@@ -615,8 +636,8 @@ CppUnit is a C++ unit testing framework used by Cigma for automatically
  running various internal consistency checks during every build.
  You will need this library if you want to modify the Cigma source and want
  to make certain guarantees about your additions to the code.
- After obtaining the obtaining the latest source release, you may build
- CppUnit by using the following sequence of steps.
+ After obtaining the latest source release, you may build CppUnit by using
+ the following sequence of steps:
 \end_layout
 
 \begin_layout LyX-Code
@@ -672,7 +693,7 @@ geodynamics.org/cig/software/Repository
 \end_inset
 
 .
- For this section, you will need an Subversion client, as well as the GNU
+ For this section, you will need a Subversion client, as well as the GNU
  tools Autoconf, Automake, and Libtool.
  To check if you have a Subversion client installed, type 
 \family typewriter
@@ -690,7 +711,7 @@ Type 'svn help' for usage.
 \end_layout
 
 \begin_layout Standard
-To check for the presence of the GNU Autotools, use the following commands
+To check for the presence of the GNU Autotools, use the following commands:
 \end_layout
 
 \begin_layout LyX-Code
@@ -707,7 +728,7 @@ $ libtoolize --version
 
 \begin_layout Standard
 Using the source repository directly is recommended for users who want to
- extend Cigma 
+ extend Cigma.
 \end_layout
 
 \begin_layout Subsection
@@ -989,7 +1010,7 @@ integration rule
 
  can then be replaced by a weighed sum evaluated at a finite set of points.
  This integral will be valid up to a certain accuracy.
- In later chapters, we will discuss in more detail how choose the location
+ In later chapters, we will discuss in more detail how to choose the location
  and values for the integration points and weights which give optimal accuracy.
 \end_layout
 
@@ -1991,7 +2012,7 @@ For the remainder of this chapter, we will focus on the
 \family typewriter
 compare 
 \family default
-command, and the information
+command, and the information [TODO this sentence does not end]/
 \end_layout
 
 \begin_layout Section
@@ -2494,8 +2515,10 @@ connectivity
 \end_layout
 
 \begin_layout Standard
-may specify options (M1) and (M2) separately by pointing directly to the
- arrays corresponding to the coordinates and connectivity information.
+[TODO i know you mean the data above to lead in your sentence but how can
+ we refer to it, to make this a real sentence beginning? ] may specify options
+ (M1) and (M2) separately by pointing directly to the arrays corresponding
+ to the coordinates and connectivity information.
  The node ordering on the connectivity dataset is described in Appendix
  A.
 \end_layout
@@ -2796,7 +2819,7 @@ Function Options
 Cigma will accept two kinds of function arguments: (1) an analytic function
  chosen from a pre-defined list, or (2) an array of coefficients describing
  a finite element field.
- Both of these
+ Both of these [TODO this sentence does not end]
 \end_layout
 
 \begin_layout Subsection
@@ -4362,7 +4385,7 @@ Cigma can understand a number of file formats, depending on how it is configured
  By default it will read and write all information in binary form as HDF5
  files, which is format optimal for archiving data with minimal redundancy.
  VTK files are also sometimes used by finite element software, due to the
- ease with which the solution fields can be visualize.
+ ease with which the solution fields can be visualized.
  Lastly, ExodusII mesh files generated by the CUBIT mesh generation package
  can also be used directly as integration meshes.
 \end_layout
@@ -4378,8 +4401,8 @@ The most flexible way to store your arrays will be to use an HDF5 file (with
 \family typewriter
 h5attr
 \family default
- allows to add or modify any scalar metadata attributes to any HDF5 group
- or array.
+ allows you to add or modify any scalar metadata attributes to any HDF5
+ group or array.
  
 \end_layout
 
@@ -4393,9 +4416,10 @@ You can also use a simple text file (with extension
 
 \begin_layout Standard
 \begin_inset Float table
+placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -5902,7 +5926,8 @@ Integration Rule
 \begin_layout Standard
 As described in Chapter 4, an integration rule is specified by a list of
  points and associated weights.
- The points are given on natural coordinate system of the reference element.
+ The points are given on [TODO - the?] natural coordinate system of the
+ reference element.
  
 \begin_inset Newline newline
 \end_inset
@@ -7077,12 +7102,12 @@ www.vtk.org/pdf/file-formats.pdf
 \end_inset
 
  document.
- Here will only note that using VTK files is convenient due to the fact
+ Here we will only note that using VTK files is convenient due to the fact
  that the mesh is always required by the file format.
  You typically only need to provide the file name, and the name of the dataset
  inside the file that you wish to use in the comparison operation, although
- if you may safely omit the dataset name if your VTK file contains only
- a single point dataset.
+ you may safely omit the dataset name if your VTK file contains only a single
+ point dataset.
  Perhaps one of the most important things to keep in mind, when using VTK
  files with the current version of Cigma, is that unstructured datasets
  will need to consist of cells of a single type.
@@ -7102,8 +7127,8 @@ The text files we use in Cigma consist of a simple list of numbers in ASCII
  numbers as the product of the two dimensions given in the first line, all
  separated by whitespace.
  These numbers should be formatted as integer or floating point, depending
- on whether you are describing coordinates or coefficients, or whether are
- referring to a connectivity array.
+ on whether you are describing coordinates or coefficients, or whether you
+ are referring to a connectivity array.
 \end_layout
 
 \begin_layout Standard
