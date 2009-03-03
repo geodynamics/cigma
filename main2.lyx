@@ -3989,22 +3989,24 @@ $ vtk-residuals
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Caption
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/luis/p/cig/doc/cigma/figures2/log_res_citcomcu_velocity_32_08.png
+	filename /Users/sue/cigma/figures2/log_res_citcomcu_velocity_32_08.png
 	lyxscale 40
 	scale 40
 
 \end_inset
 
 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.1 here
 \end_layout
 
 \end_inset
@@ -4012,26 +4014,32 @@ status open
 
 \end_layout
 
+\end_inset
+
+
+\begin_inset space ~
 \end_inset
 
 
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Caption
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/luis/p/cig/doc/cigma/figures2/log_res_citcomcu_velocity_32_16.png
+	filename /Users/sue/cigma/figures2/log_res_citcomcu_velocity_32_16.png
 	lyxscale 40
-	width 40page%
+	scale 40
 
 \end_inset
 
 
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.2 here
 \end_layout
 
 \end_inset
@@ -4110,96 +4118,59 @@ $ cigma compare
     -o circ_inc.h5:/pressure_256_064
 \end_layout
 
-\begin_layout LyX-Code
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Caption
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename figures2/log_res_circular_inclusion_256_064.png
+	filename /Users/sue/cigma/figures2/log_res_circular_inclusion_256_064.png
 	lyxscale 40
+	scale 18
 
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/log_res_circular_inclusion_256_128.png
-	lyxscale 40
-
-\end_inset
-
-
+Caption for 5.3 here
 \end_layout
 
 \end_inset
 
 
 \end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/sue/cigma/figures2/log_res_circular_inclusion_256_128.png
+	lyxscale 40
+	scale 18
 
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
 \end_layout
 
 \end_inset
@@ -4214,10 +4185,16 @@ status open
 
 \begin_layout Standard
 The analytic solution is registered under the somewhat verbose name 
+\end_layout
+
+\begin_layout LyX-Code
+
 \family typewriter
 bm.gale.circular_inclusion.pressure
-\family default
-, which we shorten by storing it in a shell variable, 
+\end_layout
+
+\begin_layout Standard
+which we shorten by storing it in a shell variable, 
 \end_layout
 
 \begin_layout LyX-Code
@@ -7059,9 +7036,13 @@ Likewise, the following command would associate the mesh
 \family typewriter
 /model/mesh
 \family default
- with the field coefficients 
+ with the field coefficients
 \family typewriter
-/model/variables/temperature/step00000
+/model/
+\begin_inset Newline newline
+\end_inset
+
+variables/temperature/step00000
 \end_layout
 
 \begin_layout LyX-Code
