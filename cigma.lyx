@@ -268,14 +268,52 @@ key "Cools 2003"
 
 \end_inset
 
-R.
- Cools, 
+Cools, R., 
 \emph on
 An Encyclopaedia of Cubature Formulas
 \emph default
 , J.
  Complexity, 19: 445-453, 2003; Katholieke Universiteit Leuven, Dept.
  Computerwetenschappen, www.cs.kuleuven.be/~nines/research/ecf/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "Schmid Podladchikov 2003"
+
+\end_inset
+
+Schmid, D.W., and Y.Y.
+ Podladchikov (2003), Analytical solutions for deformable elliptical inclusions
+ in general shear, 
+\emph on
+Geophys.
+ J.
+ Int.
+ 155
+\emph default
+(1), 269-288, doi: 10.1046/j.1365-246X.2003.02042.x.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "Travis et al 1990"
+
+\end_inset
+
+Travis, J., et al (1990), A benchmark comparison of numerical methods for
+ infinite Prandtl number thermal convection in two-dimensional Cartesian
+ geometry, 
+\emph on
+Geophys.
+ Astro.
+ Fluid 55
+\emph default
+(3), 137-160, doi: 10.1080/03091929008204111.
 \end_layout
 
 \begin_layout Bibliography
