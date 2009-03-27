@@ -3762,6 +3762,459 @@ In this chapter, we show how to use Cigma to run specific comparisons on
 \end_layout
 
 \begin_layout Section
+Laplace Problem
+\end_layout
+
+\begin_layout Standard
+Here we obtain a sequence of solutions over five refinement levels by solving
+ the Laplace problem 
+\begin_inset Formula $\nabla^{2}\phi(x,y)=4x^{4}+4y^{4}$
+\end_inset
+
+ inside 
+\begin_inset Formula $\Omega=[-1,1]^{2}$
+\end_inset
+
+, subject to 
+\begin_inset Formula $\phi(x_{0},y_{0})=x_{0}^{2}+y_{0}^{2}$
+\end_inset
+
+ for points 
+\begin_inset Formula $(x_{0},y_{0})$
+\end_inset
+
+ in the boundary 
+\begin_inset Formula $\partial\Omega$
+\end_inset
+
+.
+ This problem can easily be solved using the Deal.II library, and is available
+ under Step 4 in the documentation.
+\end_layout
+
+\begin_layout LyX-Code
+$ levels=
+\begin_inset Quotes erd
+\end_inset
+
+2 3 4 5
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ for i in ${levels}; do
+\end_layout
+
+\begin_layout LyX-Code
+    cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      square6.vtk square${i}.vtk 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -o square.h5:/error_6_${i}
+\end_layout
+
+\begin_layout LyX-Code
+    vtk-residuals --output-log-values 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -m square6.vtk 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -i square.h5:/error_6_${i} 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -o log_error_square_6_${i}.vtk:log_error
+\end_layout
+
+\begin_layout LyX-Code
+  done
+\end_layout
+
+\begin_layout Standard
+From output of the above commands we can collect the following table
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Case
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+err_6_2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.70717
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.08280
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+err_6_3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.35355
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02462
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+err_6_4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.17677
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.00631
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+err_6_5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.08838
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.00137
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/laplace_square6.png
+	lyxscale 80
+	scale 25
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_square_6_2.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_square_6_3.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_square_6_4.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/log_res_square_6_5.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures2/alpha_square.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Mantle Convection
 \end_layout
 
@@ -4250,11 +4703,15 @@ $ cigma compare ${bm}.pressure p128.vts:${p} -o circ_inc.h5:/pressure_128
 $ cigma compare ${bm}.pressure p64.vts:${p}  -o circ_inc.h5:/pressure_064
 \end_layout
 
+\begin_layout Plain Layout
+\begin_inset Note Note
+status open
+
 \begin_layout Section
 Strikeslip Benchmark Convergence
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 This benchmark problem computes the viscoelastic (Maxwell) relaxation of
  stresses from a single, finite strike-slip earthquake in 3D without gravity.
  In order to obtain several data points, we use the CUBIT mesh generator
@@ -4351,455 +4808,6 @@ strikeslipnog.h5:/${d}-${a}-${b}-${n}
 
 \begin_layout LyX-Code
   done
-\end_layout
-
-\begin_layout Section
-Laplace Problem
-\end_layout
-
-\begin_layout Standard
-Here we obtain a sequence of solutions over five refinement levels by solving
- the Laplace problem 
-\begin_inset Formula $\nabla^{2}\phi(x,y)=4x^{4}+4y^{4}$
-\end_inset
-
- inside 
-\begin_inset Formula $\Omega=[-1,1]^{2}$
-\end_inset
-
-, subject to 
-\begin_inset Formula $\phi(x_{0},y_{0})=x_{0}^{2}+y_{0}^{2}$
-\end_inset
-
- for points 
-\begin_inset Formula $(x_{0},y_{0})$
-\end_inset
-
- in the boundary 
-\begin_inset Formula $\partial\Omega$
-\end_inset
-
-.
- This problem can easily be solved using the Deal.II library, and is available
- under Step 4 in the documentation.
-\end_layout
-
-\begin_layout LyX-Code
-$ levels=
-\begin_inset Quotes erd
-\end_inset
-
-2 3 4 5
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout LyX-Code
-$ for i in ${levels}; do
-\end_layout
-
-\begin_layout LyX-Code
-    cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      square6.vtk square${i}.vtk 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -o square.h5:/error_6_${i}
-\end_layout
-
-\begin_layout LyX-Code
-    vtk-residuals --output-log-values 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -m square6.vtk 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -i square.h5:/error_6_${i} 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -o log_error_square_6_${i}.vtk:log_error
-\end_layout
-
-\begin_layout LyX-Code
-  done
-\end_layout
-
-\begin_layout Standard
-From output of the above commands we can collect the following table
-\end_layout
-
-\begin_layout Standard
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="3">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Case
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $h$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\begin_inset Formula $L_{2}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-err_6_2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.70717
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.08280
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-err_6_3
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.35355
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.02462
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-err_6_4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.17677
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.00631
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-err_6_5
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.08838
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.00137
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/laplace_square6.png
-	lyxscale 80
-	scale 25
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/log_res_square_6_2.png
-	lyxscale 40
-	scale 18
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/log_res_square_6_3.png
-	lyxscale 40
-	scale 18
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/log_res_square_6_4.png
-	lyxscale 40
-	scale 18
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/log_res_square_6_5.png
-	lyxscale 40
-	scale 18
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures2/alpha_square.png
-	scale 30
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Caption for 5.4 here
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
