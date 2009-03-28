@@ -1,4 +1,4 @@
-#LyX 1.6.1 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -1679,8 +1679,8 @@ Since the absolute magnitude of the
 Alternatively, we can normalize the global error using the total volume
  of the domain
 \begin_inset Formula \begin{eqnarray*}
-\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{V}\\
- & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}d\vec{x}}\end{eqnarray*}
+\varepsilon_{abs} & = & \frac{||u-u_{h}||_{L_{2}}}{\sqrt{V}}\\
+ & = & \frac{\sqrt{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}}{\sqrt{\int_{\Omega}d\vec{x}}}\end{eqnarray*}
 
 \end_inset
 
@@ -1690,7 +1690,7 @@ which is the normalization that Cigma uses by default.
 \begin_layout Standard
 This normalized error can be interpreted as the average error in the physical
  quantity being evaluated, so that a value of 0.01 corresponds to a 1% averaged
- error.
+ error, in absolute units.
  Even if the exact solution is not currently known, this normalized error
  may be used to test the accuracy between two or more numerical solutions,
  defined on successively refined meshes.
@@ -1995,7 +1995,9 @@ For the remainder of this chapter, we will focus on the
 \family typewriter
 compare 
 \family default
-command, and the information [TODO this sentence does not end]/
+command, as well as on a few other convenience commands that you can use
+ for querying the fields themselves.
+ 
 \end_layout
 
 \begin_layout Section
@@ -2003,10 +2005,10 @@ Selecting a Dataset
 \end_layout
 
 \begin_layout Standard
-All datasets in Cigma are assumed to be simple two dimensional array of
- values.
- As most scientific formats are capable of storing multiple datasets in
- the same file, you will need a consistent way to select a specific array
+In general, you will provide data to Cigma as a simple two dimensional array
+ of values.
+ Now, because most scientific formats are capable of storing multiple datasets
+ in the same file, you will need a consistent way to select a specific array
  on a given data file.
  Therefore, all option arguments to Cigma that expect a dataset can be specified
  in the form 
@@ -2044,8 +2046,11 @@ A mesh block is associated with three items of information: (1) geometrical
  (2) topological information describing how those nodes are connected to
  each other to form elements, and (3) an element type associated with the
  cell.
- In Cigma, these items are determined by the following command line options,
- arranged in tabular format for easy reference.
+ There are up to three such meshes that might need to be passed as arguments
+ in Cigma, depending on whether the input fields are associated with a particula
+r discretization.
+ These items are determined by the following command line options, arranged
+ in tabular format for easy reference.
  
 \begin_inset Note Note
 status open
@@ -2423,12 +2428,13 @@ Option (MC) is required if options (M1) and (M2) are given.
 \end_layout
 
 \begin_layout Standard
-It is important to note that Cigma assumes every element in the mesh uses
- the same basis functions.
+It is important to note that currently Cigma assumes that every element
+ in the mesh is defined over the same basis functions.
+ 
 \end_layout
 
 \begin_layout Subsection
-Mesh Files
+Data Layout in a Mesh File
 \end_layout
 
 \begin_layout Standard
@@ -2474,6 +2480,7 @@ CellType
 \series default
 \emph default
  with the appropriate value.
+ A typical hierarchy that specifies a mesh would look like this:
 \end_layout
 
 \begin_layout LyX-Code
@@ -2489,7 +2496,7 @@ filename
 \emph on
  
 \emph default
- Group
+`Group
 \emph on
  
 \bar under
@@ -2830,11 +2837,11 @@ Function Options
 Cigma will accept two kinds of function arguments: (1) an analytic function
  chosen from a pre-defined list, or (2) an array of coefficients describing
  a finite element field.
- Both of these [TODO this sentence does not end]
+ Of these two, only the second is associated with a specific discretization.
 \end_layout
 
 \begin_layout Subsection
-By an Analytic Function
+Analytic Functions
 \end_layout
 
 \begin_layout Standard
@@ -2855,11 +2862,11 @@ FunctionB
  Two such examples can be found in the Cigma source code.
  A simple analytic benchmark is available in the 
 \family typewriter
-fn_gale2.h
+fn_inclusion.h
 \family default
  and 
 \family typewriter
-fn_gale2.cpp
+fn_inclusion.cpp
 \family default
  source files, while a more complex benchmark which calls external procedures
  is available in 
@@ -2871,12 +2878,12 @@ fn_disloc3d.h
 fn_disloc3d.cpp
 \family default
 .
- For detailed help on the exact steps involved in registering your own functions
-, you may refer to Appendix B.
+ If you wish to define your own analytic functions, it might be instructive
+ to use either of these two examples as a template.
 \end_layout
 
 \begin_layout Subsection
-By a Finite Element Field
+Finite Element Fields
 \end_layout
 
 \begin_layout Standard
@@ -3045,6 +3052,7 @@ ng a local error integral by a finite weighed sum over a set of quadrature
 \end_inset
 
  per quadrature point evaluation.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3308,15 +3316,17 @@ Verifying the Results
 The rest of the Cigma commands are there to help you query your model, allowing
  you to determine whether the input files are being interpreted properly.
  A common problem in specifying a finite element mesh is using the wrong
- node numbering for a particular Cigma element, in which case you might
+ node numbering for a particular Cigma element, in which case you will probably
  encounter cells with negative or zero volumes, and incorrect results for
  the inverse reference map 
-\begin_inset Formula $\chi_{e}^{-1}$
+\begin_inset Formula $\vec{x}_{e}^{-1}(\vec{x})$
 \end_inset
 
 .
  Also, if the degrees of freedom are specified using a different node ordering
  than the mesh, the interpolation will yield different results than expected.
+ Querying your model at a number of pre-selected points will probably curtail
+ most of these mistakes when preparing your input files.
 \end_layout
 
 \begin_layout Subsection
@@ -3712,7 +3722,10 @@ cigma function-info
 reference-cells.h5
 \family default
 .
- For example, querying 
+\end_layout
+
+\begin_layout Standard
+For example, querying 
 \begin_inset Formula $N_{0}$
 \end_inset
 
@@ -4019,12 +4032,16 @@ err_6_5
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -4051,7 +4068,7 @@ Caption for 5.4 here
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
@@ -4083,7 +4100,7 @@ Caption for 5.4 here
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
@@ -4115,7 +4132,7 @@ Caption for 5.4 here
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
@@ -4147,7 +4164,7 @@ Caption for 5.4 here
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
@@ -4167,6 +4184,11 @@ status collapsed
 
 \begin_layout Plain Layout
 Caption for 5.4 here
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4201,7 +4223,11 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Caption for 5.4 here
+Convergence of 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ Global Error for Laplace Problem.
 \end_layout
 
 \end_inset
@@ -4398,13 +4424,15 @@ From these two results, we can estimate how fast we are converging to a
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\alpha & \sim & \frac{\log(\varepsilon_{b}/\varepsilon_{a})}{\log(h_{b}/h_{a})}\\
- & \sim & \frac{\log(0.01/0.05)}{\log(0.108/0.217)}\\
- & \sim & 2.3\end{eqnarray*}
+\begin_inset Formula \[
+\alpha\sim\frac{\log(\varepsilon_{b}/\varepsilon_{a})}{\log(h_{b}/h_{a})}\sim\frac{\log(0.01/0.05)}{\log(0.108/0.217)}\sim2.3\]
 
 \end_inset
 
+ 
+\end_layout
+
+\begin_layout Standard
 where we have assumed that the highest resolution field is equivalent to
  the exact solution in our approximation for 
 \begin_inset Formula $\alpha$
@@ -4475,6 +4503,10 @@ $ vtk-residuals
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset Float figure
 placement H
 wide false
@@ -4539,6 +4571,11 @@ Caption for 5.2 here
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 In the figures above, we show three cross sections of the error in the velocity
  field.
@@ -4552,56 +4589,10 @@ Circular Inclusion Benchmark
 \end_layout
 
 \begin_layout Standard
-We begin by analyzing a two-dimensional example benchmark problem for which
- we know an exact analytical solution.
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -a p256.vts:PressureField 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -b p128.vts:PressureField 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o circ_inc.h5:/pressure_256_128
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -a p256.vts:PressureField 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -b p64.vts:PressureField 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o circ_inc.h5:/pressure_256_064
+Here, we analyze a two-dimensional problem for which we know an exact analytical
+ solution.
+ Using the Gale code, we obtain an approximate solution to a circular inclusion
+ under simple shear.
 \end_layout
 
 \begin_layout Standard
@@ -4609,7 +4600,122 @@ $ cigma compare
 placement H
 wide false
 sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures3/bm3/fields_512.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Pressure and Velocity fields for Circular Inclusion Problem.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To compare against the analytical solution, we can run the command,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a 512_8/fields.00000.pvts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b 
+\bar under
+bm.circular_inclusion.pressure
+\bar default
+ 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o inclusion.h5:/errror_pressure_512
+\end_layout
+
+\begin_layout Standard
+You can also compare how well the Gale solutions approach each other by
+ comparing the fields against the highest resolution field.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a 512_8/fields.00000.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b 128_8/fields.00000.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o inclusion.h5:/error_pressure_512_128
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a 512_8/fields.00000.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b 256_8/fields.00000.vts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o circ_inc.h5:/error_pressure_512_256
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
 status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -4669,6 +4775,11 @@ Caption for 5.4 here
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 The analytic solution is registered under the somewhat verbose name 
 \end_layout
@@ -4703,7 +4814,7 @@ $ cigma compare ${bm}.pressure p128.vts:${p} -o circ_inc.h5:/pressure_128
 $ cigma compare ${bm}.pressure p64.vts:${p}  -o circ_inc.h5:/pressure_064
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
