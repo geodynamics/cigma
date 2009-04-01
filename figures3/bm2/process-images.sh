@@ -44,6 +44,22 @@ img-caption '(b) Velocity                     ' \
     velocity_64_20000_y099.png \
     velocity_64_20000_y099.png
 
+img-caption '(a) log (temperature error for 16 x 16 x 16 case)             ' \
+    log_error_temperature_64_16_20000_4700_y099.png \
+    log_error_temperature_64_16_20000_4700_y099.png
+
+img-caption '(b) log (temperature error for 32 x 32 x 32 case)         ' \
+    log_error_temperature_64_32_20000_9900_y099.png \
+    log_error_temperature_64_32_20000_9900_y099.png
+
+img-caption '(a) log (velocity error for 16 x 16 x 16 case)                ' \
+    log_error_velocity_64_16_20000_4700_y099.png \
+    log_error_velocity_64_16_20000_4700_y099.png
+
+img-caption '(b) log (velocity error for 32 x 32 x 32 case)            ' \
+    log_error_velocity_64_32_20000_9900_y099.png \
+    log_error_velocity_64_32_20000_9900_y099.png
+
 cat-pair \
     temperature_64_20000_y099.png \
     velocity_64_20000_y099.png \
