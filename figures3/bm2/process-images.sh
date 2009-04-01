@@ -1,12 +1,14 @@
 #!/bin/bash
-#
-# See ../bm3/process-images.sh for comments
-#
 
+# Include some common image processing functions
 source ../common.sh
 
+# Enable bash debugging
 set -x
 
+#
+# List of the original images
+#
 imglist="
     temperature_64_20000_y099.png
     velocity_64_20000_y099.png
@@ -18,6 +20,9 @@ imglist="
     log_error_velocity_64_32_20000_9900_y099.png
 "
 
+#
+# Operate on copies of the original images
+#
 orig=${PWD}
 tmp=/tmp/bm2
 mkdir -p $tmp
@@ -75,11 +80,14 @@ cat-pair \
     log_error_velocity_64_32_20000_9900_y099.png \
     fig_log_error_velocity_64_16_64_32_y099.png
 
-
+# finally, resize the images that will be included in the manual
 for img in fig_*; do
     img-resize ${img}
 done
 
+#
+# Copy the images back
+#
 cd ${orig}
 cp -f -v ${tmp}/fig_* ${orig}/out
 

@@ -1,9 +1,11 @@
 #!/bin/bash
 #
-# Some useful links:
-#   http://www.imagemagick.org/Usage/crop/index.html
-#   http://personal.cscs.ch/~mvalle/postprocessing/ImageTools.html
-#
+
+# Include some common image processing functions
+source ../common.sh
+
+# Enable bash debugging
+set -x
 
 #
 # List of the original image names
@@ -11,6 +13,16 @@
 imglist="
     pressure_512.png
     velocity_512.png
+    error_pressure_128.png
+    error_pressure_256.png
+    error_pressure_512.png
+    error_velocity_128.png
+    error_velocity_256.png
+    error_velocity_512.png
+    error_pressure_512_128.png
+    error_pressure_512_256.png
+    error_velocity_512_128.png
+    error_velocity_512_256.png
     log_error_pressure_128.png
     log_error_pressure_256.png
     log_error_pressure_512.png
@@ -36,65 +48,91 @@ cd ${tmp}
 
 
 #
-# Some useful functions
-#
-function concatenate-images
-{
-    local tile=$1
-    shift
-    montage -tile ${tile} -mode Concatenate $*
-}
-
-function trim-image
-{
-    echo $1 ...trimming
-    convert -trim $1 $1
-}
-
-function add-border
-{
-    echo $1 ...adding border
-    convert -border $2 -bordercolor white $1 $1
-}
-
-function resize-image
-{
-    echo $1 ...resizing
-    convert -resize '80%' $1 $1
-}
-
-function concatenate-pair
-{
-    echo Concatenating $1 $2
-    concatenate-images 2x1 $1 $2 $3
-}
-
-#
 # Start processing the images
 #
 
 for img in ${imglist}; do
-    trim-image ${img}
-    add-border ${img} 100
+    img-trim ${img}
+    img-add-border ${img} 100
 done
 
-concatenate-pair pressure_512.png velocity_512.png fig_fields_512.png
-concatenate-pair log_error_pressure_128.png log_error_velocity_128.png fig_log_error_fields_128.png
-concatenate-pair log_error_pressure_256.png log_error_velocity_256.png fig_log_error_fields_256.png
-concatenate-pair log_error_pressure_512.png log_error_velocity_512.png fig_log_error_fields_512.png
 
-concatenate-images 3x1 log_error_pressure_128.png log_error_pressure_256.png log_error_pressure_512.png fig_log_error_pressure.png
-concatenate-images 3x1 log_error_velocity_128.png log_error_velocity_256.png log_error_velocity_512.png fig_log_error_velocity.png
-
-concatenate-images 2x1 log_error_pressure_256.png log_error_pressure_512.png fig_log_error_pressure_256_512.png
-concatenate-images 2x1 log_error_velocity_256.png log_error_velocity_512.png fig_log_error_velocity_256_512.png
-
-concatenate-images 2x1 log_error_pressure_512_128.png log_error_pressure_512_256.png fig_log_error_pressure_512_128_512_256.png
-concatenate-images 2x1 log_error_velocity_512_128.png log_error_velocity_512_256.png fig_log_error_velocity_512_128_512_256.png
+cat-pair \
+    pressure_512.png \
+    velocity_512.png \
+    fig_fields_512.png
 
 
-#
-# finally, resize
+cat-pair \
+    error_pressure_128.png \
+    error_velocity_128.png \
+    fig_error_fields_128.png
+cat-pair \
+    error_pressure_256.png \
+    error_velocity_256.png \
+    fig_error_fields_256.png
+cat-pair \
+    error_pressure_512.png \
+    error_velocity_512.png \
+    fig_error_fields_512.png
+
+
+cat-pair \
+    log_error_pressure_128.png \
+    log_error_velocity_128.png \
+    fig_log_error_fields_128.png
+cat-pair \
+    log_error_pressure_256.png \
+    log_error_velocity_256.png \
+    fig_log_error_fields_256.png
+cat-pair \
+    log_error_pressure_512.png \
+    log_error_velocity_512.png \
+    fig_log_error_fields_512.png
+
+
+img-cat 3x1 \
+    error_pressure_128.png \
+    error_pressure_256.png \
+    error_pressure_512.png \
+    fig_error_pressure.png
+img-cat 3x1 \
+    log_error_pressure_128.png \
+    log_error_pressure_256.png \
+    log_error_pressure_512.png \
+    fig_log_error_pressure.png
+
+img-cat 2x1 \
+    error_pressure_256.png \
+    error_pressure_512.png \
+    fig_error_pressure_256_512.png
+img-cat 2x1 \
+    log_error_pressure_256.png \
+    log_error_pressure_512.png \
+    fig_log_error_pressure_256_512.png
+
+
+img-cat 2x1 \
+    error_pressure_512_128.png \
+    error_pressure_512_256.png \
+    fig_error_pressure_512_128_512_256.png
+img-cat 2x1 \
+    log_error_pressure_512_128.png \
+    log_error_pressure_512_256.png \
+    fig_log_error_pressure_512_128_512_256.png
+
+
+img-cat 2x1 \
+    error_velocity_512_128.png \
+    error_velocity_512_256.png \
+    fig_error_velocity_512_128_512_256.png
+img-cat 2x1 \
+    log_error_velocity_512_128.png \
+    log_error_velocity_512_256.png \
+    fig_log_error_velocity_512_128_512_256.png
+
+
+# finally, resize the images that will be included in the manual
 for img in fig_*; do
     resize-image ${img}
 done

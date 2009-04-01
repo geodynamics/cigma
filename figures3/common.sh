@@ -1,5 +1,17 @@
 #!/bin/bash
+
 #
+# In this file we define a few useful functions for
+# processing multiple images, based on the ImageMagick
+# manipulation programs
+#
+# Some useful links:
+#
+#   http://www.imagemagick.org/Usage/crop/
+#   http://www.imagemagick.org/Usage/annotating/
+#   http://personal.cscs.ch/~mvalle/postprocessing/ImageTools.html
+#
+
 function img-caption0
 {
     #echo $1 ...adding caption
@@ -32,6 +44,13 @@ function img-cat
     montage -tile ${tile} -mode Concatenate $*
 }
 
+function cat-pair
+{
+    #echo Concatenating $1 $2
+    img-cat 2x1 $1 $2 $3
+}
+
+
 function img-trim
 {
     #echo $1 ...trimming
@@ -48,11 +67,5 @@ function img-resize
 {
     #echo $1 ...resizing
     convert -resize '80%' $1 $1
-}
-
-function cat-pair
-{
-    #echo Concatenating $1 $2
-    img-cat 2x1 $1 $2 $3
 }
 
