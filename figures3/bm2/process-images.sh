@@ -3,6 +3,10 @@
 # See ../bm3/process-images.sh for comments
 #
 
+source ../common.sh
+
+set -x
+
 imglist="
     temperature_64_20000_y099.png
     velocity_64_20000_y099.png
@@ -22,37 +26,6 @@ for img in ${imglist}; do
 done
 cd ${tmp}
 
-function img-cat
-{
-    local tile=$1
-    shift
-    montage -tile ${tile} -mode Concatenate $*
-}
-
-function img-trim
-{
-    echo $1 ...trimming
-    convert -trim $1 $1
-}
-
-function img-add-border
-{
-    echo $1 ...adding border
-    convert -border $2 -bordercolor white $1 $1
-}
-
-function img-resize
-{
-    echo $1 ...resizing
-    convert -resize '80%' $1 $1
-}
-
-function cat-pair
-{
-    echo Concatenating $1 $2
-    img-cat 2x1 $1 $2 $3
-}
-
 
 # 
 # Start processing the images
@@ -62,6 +35,14 @@ for img in ${imglist}; do
     img-trim ${img}
     img-add-border ${img} 100
 done
+
+img-caption '(a) Temperature                           ' \
+    temperature_64_20000_y099.png \
+    temperature_64_20000_y099.png
+
+img-caption '(b) Velocity                     ' \
+    velocity_64_20000_y099.png \
+    velocity_64_20000_y099.png
 
 cat-pair \
     temperature_64_20000_y099.png \
