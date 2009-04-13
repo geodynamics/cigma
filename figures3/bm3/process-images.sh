@@ -11,28 +11,28 @@ set -x
 # List of the original image names
 #
 imglist="
-    pressure_512.png
-    velocity_512.png
-    error_pressure_128.png
-    error_pressure_256.png
-    error_pressure_512.png
-    error_velocity_128.png
-    error_velocity_256.png
-    error_velocity_512.png
-    error_pressure_512_128.png
-    error_pressure_512_256.png
-    error_velocity_512_128.png
-    error_velocity_512_256.png
-    log_error_pressure_128.png
-    log_error_pressure_256.png
-    log_error_pressure_512.png
-    log_error_velocity_128.png
-    log_error_velocity_256.png
-    log_error_velocity_512.png
-    log_error_pressure_512_128.png
-    log_error_pressure_512_256.png
-    log_error_velocity_512_128.png
-    log_error_velocity_512_256.png
+    full_pressure_512.png
+    full_velocity_512.png
+    full_log_error_pressure_128.png
+    full_log_error_pressure_256.png
+    full_log_error_pressure_512.png
+    full_log_error_pressure_512_128.png
+    full_log_error_pressure_512_256.png
+    full_log_error_velocity_128.png
+    full_log_error_velocity_256.png
+    full_log_error_velocity_512.png
+    full_log_error_velocity_512_128.png
+    full_log_error_velocity_512_256.png
+    inc_pressure_512.png
+    inc_velocity_512.png
+    inc_log_error_pressure_128.png
+    inc_log_error_pressure_256.png
+    inc_log_error_pressure_512.png
+    inc_log_error_pressure_512_128.png
+    inc_log_error_pressure_512_256.png
+    inc_log_error_velocity_512.png
+    inc_log_error_velocity_512_128.png
+    inc_log_error_velocity_512_256.png
 "
 
 # 
@@ -57,79 +57,66 @@ for img in ${imglist}; do
 done
 
 
-cat-pair \
-    pressure_512.png \
-    velocity_512.png \
-    fig_fields_512.png
+img-caption '(a) Pressure' \
+    full_pressure_512.png \
+    full_pressure_512.png
+img-caption '(b) Pressure near inclusion' \
+    inc_pressure_512.png \
+    inc_pressure_512.png
+
+img-caption '(a) log (pressure error for 256 x 256 case)' \
+    full_log_error_pressure_256.png \
+    full_log_error_pressure_256.png
+img-caption '(b) log (pressure error for 512 x 512 case)' \
+    full_log_error_pressure_512.png \
+    full_log_error_pressure_512.png
+
+img-caption '(a) log (pressure error for 128 x 128 case)' \
+    full_log_error_pressure_512_128.png \
+    full_log_error_pressure_512_128.png
+img-caption '(a) log (pressure error for 256 x 256 case)' \
+    full_log_error_pressure_512_256.png \
+    full_log_error_pressure_512_256.png
+
+img-caption '(a) log (pressure error for 256 x 256 case)' \
+    inc_log_error_pressure_256.png \
+    inc_log_error_pressure_256.png
+img-caption '(b) log (pressure error for 512 x 512 case)' \
+    inc_log_error_pressure_512.png \
+    inc_log_error_pressure_512.png
+
+img-caption '(a) log (pressure error for 128 x 128 case)' \
+    inc_log_error_pressure_512_128.png \
+    inc_log_error_pressure_512_128.png
+img-caption '(a) log (pressure error for 256 x 256 case)' \
+    inc_log_error_pressure_512_256.png \
+    inc_log_error_pressure_512_256.png
 
 
 cat-pair \
-    error_pressure_128.png \
-    error_velocity_128.png \
-    fig_error_fields_128.png
-cat-pair \
-    error_pressure_256.png \
-    error_velocity_256.png \
-    fig_error_fields_256.png
-cat-pair \
-    error_pressure_512.png \
-    error_velocity_512.png \
-    fig_error_fields_512.png
-
+    full_pressure_512.png \
+    inc_pressure_512.png \
+    fig_pressure_512.png
 
 cat-pair \
-    log_error_pressure_128.png \
-    log_error_velocity_128.png \
-    fig_log_error_fields_128.png
+    full_log_error_pressure_256.png \
+    full_log_error_pressure_512.png \
+    fig_full_log_error_pressure_256_512.png
+
 cat-pair \
-    log_error_pressure_256.png \
-    log_error_velocity_256.png \
-    fig_log_error_fields_256.png
+    full_log_error_pressure_512_128.png \
+    full_log_error_pressure_512_256.png \
+    fig_full_log_error_pressure_512_128_512_256.png
+
 cat-pair \
-    log_error_pressure_512.png \
-    log_error_velocity_512.png \
-    fig_log_error_fields_512.png
+    inc_log_error_pressure_256.png \
+    inc_log_error_pressure_512.png \
+    fig_inc_log_error_pressure_256_512.png \
 
-
-img-cat 3x1 \
-    error_pressure_128.png \
-    error_pressure_256.png \
-    error_pressure_512.png \
-    fig_error_pressure.png
-img-cat 3x1 \
-    log_error_pressure_128.png \
-    log_error_pressure_256.png \
-    log_error_pressure_512.png \
-    fig_log_error_pressure.png
-
-img-cat 2x1 \
-    error_pressure_256.png \
-    error_pressure_512.png \
-    fig_error_pressure_256_512.png
-img-cat 2x1 \
-    log_error_pressure_256.png \
-    log_error_pressure_512.png \
-    fig_log_error_pressure_256_512.png
-
-
-img-cat 2x1 \
-    error_pressure_512_128.png \
-    error_pressure_512_256.png \
-    fig_error_pressure_512_128_512_256.png
-img-cat 2x1 \
-    log_error_pressure_512_128.png \
-    log_error_pressure_512_256.png \
-    fig_log_error_pressure_512_128_512_256.png
-
-
-img-cat 2x1 \
-    error_velocity_512_128.png \
-    error_velocity_512_256.png \
-    fig_error_velocity_512_128_512_256.png
-img-cat 2x1 \
-    log_error_velocity_512_128.png \
-    log_error_velocity_512_256.png \
-    fig_log_error_velocity_512_128_512_256.png
+cat-pair \
+    inc_log_error_pressure_512_128.png \
+    inc_log_error_pressure_512_256.png \
+    fig_inc_log_error_pressure_512_128_512_256.png
 
 
 # finally, resize the images that will be included in the manual
