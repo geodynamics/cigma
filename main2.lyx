@@ -2050,19 +2050,8 @@ A mesh block is associated with three items of information: (1) geometrical
  in Cigma, depending on whether the input fields are associated with a particula
 r discretization.
  These items are determined by the following command line options, arranged
- in tabular format for easy reference.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: How in the world do we insert newlines here.
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
+ in a tabular format for easier reference.
+\begin_inset Newline linebreak
 \end_inset
 
 
@@ -2082,6 +2071,8 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
+
+\size scriptsize
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="5">
 <features>
@@ -2095,6 +2086,8 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 Option
 \end_layout
 
@@ -2107,6 +2100,7 @@ Option
 
 \family typewriter
 \series bold
+\size scriptsize
 \bar under
 MeshA
 \end_layout
@@ -2120,6 +2114,7 @@ MeshA
 
 \family typewriter
 \series bold
+\size scriptsize
 \bar under
 MeshB
 \end_layout
@@ -2133,6 +2128,7 @@ MeshB
 
 \family typewriter
 \series bold
+\size scriptsize
 \bar under
 IntegrationMesh
 \end_layout
@@ -2143,6 +2139,8 @@ IntegrationMesh
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 Items Read
 \end_layout
 
@@ -2154,6 +2152,8 @@ Items Read
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 M
 \end_layout
 
@@ -2165,7 +2165,7 @@ M
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --first-mesh
 \end_layout
 
@@ -2177,7 +2177,7 @@ M
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --second-mesh
 \end_layout
 
@@ -2189,7 +2189,7 @@ M
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --mesh
 \end_layout
 
@@ -2199,6 +2199,8 @@ M
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 (1,2,3)
 \end_layout
 
@@ -2210,6 +2212,8 @@ M
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 M1
 \end_layout
 
@@ -2221,7 +2225,7 @@ M1
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --first-mesh-coords
 \end_layout
 
@@ -2233,7 +2237,7 @@ M1
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --second-mesh-coords
 \end_layout
 
@@ -2245,7 +2249,7 @@ M1
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --mesh-coords
 \end_layout
 
@@ -2255,6 +2259,8 @@ M1
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 (1)
 \end_layout
 
@@ -2266,6 +2272,8 @@ M1
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 M2
 \end_layout
 
@@ -2277,7 +2285,7 @@ M2
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --first-mesh-connect
 \end_layout
 
@@ -2289,7 +2297,7 @@ M2
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --second-mesh-connect
 \end_layout
 
@@ -2301,7 +2309,7 @@ M2
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --mesh-connect
 \end_layout
 
@@ -2311,6 +2319,8 @@ M2
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 (2)
 \end_layout
 
@@ -2322,6 +2332,8 @@ M2
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 MC
 \end_layout
 
@@ -2333,7 +2345,7 @@ MC
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --first-cell
 \end_layout
 
@@ -2345,7 +2357,7 @@ MC
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --second-cell
 \end_layout
 
@@ -2357,7 +2369,7 @@ MC
 \begin_layout Plain Layout
 
 \family typewriter
-\size small
+\size scriptsize
 --mesh-cell
 \end_layout
 
@@ -2367,6 +2379,8 @@ MC
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size scriptsize
 (3)
 \end_layout
 
@@ -2387,7 +2401,7 @@ MC
 \end_inset
 
 
-\begin_inset Newline newline
+\begin_inset Newline linebreak
 \end_inset
 
 
@@ -3419,14 +3433,6 @@ zero
 \end_layout
 
 \begin_layout LyX-Code
-test.square
-\end_layout
-
-\begin_layout LyX-Code
-test.cube
-\end_layout
-
-\begin_layout LyX-Code
 ...
 \end_layout
 
@@ -3725,11 +3731,15 @@ reference-cells.h5
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 For example, querying 
 \begin_inset Formula $N_{0}$
 \end_inset
 
- for a tet4 reference cell would be accomplished with
+ for tet4 reference cell would be accomplished with
 \end_layout
 
 \begin_layout LyX-Code
@@ -3756,12 +3766,17 @@ $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,1,0
 $ cigma function-info reference-cells.h5:/tet4/dofs/N0 --query-point 0,0,1
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 which serves as a quick check that 
 \begin_inset Formula $N_{0}$
 \end_inset
 
  evaluates to 1 at one vertex, and to 0 at the other vertices.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chapter
@@ -3770,17 +3785,24 @@ Examples
 
 \begin_layout Standard
 In this chapter, we show how to use Cigma to run specific comparisons on
- included datasets, estimate the order of convergence of the solutions presented
-, and discuss a number of visualization techniques.
+ included datasets, estimate the order of convergence of the numerical methods
+ used in obtaining those solutions, and visualize the resulting.
 \end_layout
 
 \begin_layout Section
-Laplace Problem
+Poisson Problem
 \end_layout
 
 \begin_layout Standard
-Here we obtain a sequence of solutions over five refinement levels by solving
- the Laplace problem 
+Cigma can compare two functions and return a global error metric representing
+ the total distance between those two functions.
+ If you gather enough results over a range of resolutions, you can use this
+ global measure to quantify the rate of convergence of your numerical method.
+ To demonstrate how this works, we will use the two Poisson problems: 
+\end_layout
+
+\begin_layout Standard
+(1) 
 \begin_inset Formula $\nabla^{2}\phi(x,y)=4x^{4}+4y^{4}$
 \end_inset
 
@@ -3788,89 +3810,113 @@ Here we obtain a sequence of solutions over five refinement levels by solving
 \begin_inset Formula $\Omega=[-1,1]^{2}$
 \end_inset
 
-, subject to 
+, subject to the Dirichlet boundary condition 
 \begin_inset Formula $\phi(x_{0},y_{0})=x_{0}^{2}+y_{0}^{2}$
 \end_inset
 
- for points 
-\begin_inset Formula $(x_{0},y_{0})$
+ on the boundary 
+\begin_inset Formula $\partial\Omega$
 \end_inset
 
- in the boundary 
+, and 
+\end_layout
+
+\begin_layout Standard
+(2) 
+\begin_inset Formula $\nabla^{2}\phi(x,y,z)=4x^{4}+4y^{4}+4z^{4}$
+\end_inset
+
+ on 
+\begin_inset Formula $\Omega=[-1,1]^{3}$
+\end_inset
+
+ subject to 
+\begin_inset Formula $\phi(x_{0},y_{0},z_{0})=x_{0}^{2}+y_{0}^{2}+z_{0}^{2}$
+\end_inset
+
+ on the boundary 
 \begin_inset Formula $\partial\Omega$
 \end_inset
 
 .
- This problem can easily be solved using the Deal.II library, and is available
- under Step 4 in the documentation.
+ 
+\end_layout
+
+\begin_layout Standard
+These differential equations can be easily solved numerically by using a
+ finite element software library called Deal.II, which supports Lagrange
+ finite elements of any order on both 2 and 3 dimensions.
+ In fact, the two equations we have described are already solved in Step
+ 4 in the list of the Deal.II tutorial programs.
+ 
+\end_layout
+
+\begin_layout Standard
+In the examples subdirectory, we include a version of the Step 4 tutorial
+ program that has been slightly modified to suit our purposes in this section.
+ First, we change the output format to use VTK files, in order to make it
+ very convient for us to provide our input datasets to Cigma.
+ Next, we solve the 2D problem over meshes of resolution 64x64, 32x32, 16x16,
+ and 8x8 by using linear quadrilateral elements.
+ In a similar fashion, we solve our 3D Poisson problem on meshes of resolution
+ 64x64x64, 32x32x32, 16x16x16, and 8x8x8, that use linear hexahedral elements.
+ Note that in either case, we don't really know the exact solution to either
+ problem, so we use the highest resolution available as the reference point
+ for our comparisons.
+ The following bash shell command can take care of all the comparisons
 \end_layout
 
 \begin_layout LyX-Code
-$ levels=
-\begin_inset Quotes erd
-\end_inset
-
-2 3 4 5
-\begin_inset Quotes erd
-\end_inset
-
-
+$ for i in 32 16 8; do
 \end_layout
 
 \begin_layout LyX-Code
-$ for i in ${levels}; do
+    cigma compare phi_64x64.vtk     phi_${r}x${r}.vtk
 \end_layout
 
 \begin_layout LyX-Code
-    cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      square6.vtk square${i}.vtk 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -o square.h5:/error_6_${i}
-\end_layout
-
-\begin_layout LyX-Code
-    vtk-residuals --output-log-values 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -m square6.vtk 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -i square.h5:/error_6_${i} 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      -o log_error_square_6_${i}.vtk:log_error
+    cigma compare phi_64x64x64.vtk  phi_${r}x${r}x${r}.vtk
 \end_layout
 
 \begin_layout LyX-Code
   done
 \end_layout
 
+\begin_layout LyX-Code
+
+\end_layout
+
 \begin_layout Standard
-From output of the above commands we can collect the following table
+When we run the above code on the bash command line, or script, Cigma will
+ generate a summary of each comparison, including the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm of the difference between the two functions, and other basic mesh
+ information such as its volume 
+\begin_inset Formula $V$
+\end_inset
+
+ and maximum cell diagonal 
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula $h$
+\end_inset
+
+.
+ We summarize that information in the following tables,
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="3">
+<lyxtabular version="3" rows="4" columns="7">
 <features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -3879,7 +3925,7 @@ From output of the above commands we can collect the following table
 \begin_inset Text
 
 \begin_layout Plain Layout
-Case
+2D Case
 \end_layout
 
 \end_inset
@@ -3900,7 +3946,49 @@ Case
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $L_{2}$
+\begin_inset Formula $L_{2}/\sqrt{V}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3D Case
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{2}/\sqrt{V}$
 \end_inset
 
 
@@ -3914,36 +4002,7 @@ Case
 \begin_inset Text
 
 \begin_layout Plain Layout
-err_6_2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.70717
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.08280
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-err_6_3
+8x8
 \end_layout
 
 \end_inset
@@ -3961,7 +4020,43 @@ err_6_3
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.02462
+0.012312
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8x8x8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.43301
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.019205
 \end_layout
 
 \end_inset
@@ -3972,7 +4067,7 @@ err_6_3
 \begin_inset Text
 
 \begin_layout Plain Layout
-err_6_4
+16x16
 \end_layout
 
 \end_inset
@@ -3990,7 +4085,43 @@ err_6_4
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.00631
+0.003157
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16x16x16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.21650
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.004889
 \end_layout
 
 \end_inset
@@ -4001,7 +4132,7 @@ err_6_4
 \begin_inset Text
 
 \begin_layout Plain Layout
-err_6_5
+32x32
 \end_layout
 
 \end_inset
@@ -4019,7 +4150,43 @@ err_6_5
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.00137
+0.000689
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+32x32x32
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.10825
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.001075
 \end_layout
 
 \end_inset
@@ -4033,10 +4200,24 @@ err_6_5
 \end_layout
 
 \begin_layout Standard
+It should become apparent from these results that the global error metric
+ 
+\begin_inset Formula $\varepsilon$
+\end_inset
+
+ does indeed decrease with increasing resolution at the expected rate.
+ To verify the exact order of convergence, you can use regression analysis
+ to fit a power law through the above points, and obtain the following plots:
+\end_layout
+
+\begin_layout Standard
 \begin_inset space ~
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -4045,9 +4226,9 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename figures2/alpha_square.png
-	lyxscale 80
-	scale 40
+	filename figures3/bm1/alpha.png
+	lyxscale 60
+	scale 22
 
 \end_inset
 
@@ -4059,7 +4240,7 @@ Convergence of
 \begin_inset Formula $L_{2}$
 \end_inset
 
- Global Error for Laplace Problem.
+ Global Error for two Poisson problems in 2D and 3D.
 \end_layout
 
 \end_inset
@@ -4070,6 +4251,16 @@ Convergence of
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Based on the slope of the lines in the above log-log plots, we have indeed
+ verified that the global errors behave as 
+\begin_inset Formula $\varepsilon=Ch^{2}$
+\end_inset
+
+, as expected from a method that uses linear elements.
+ 
 \end_layout
 
 \begin_layout Section
@@ -4077,261 +4268,54 @@ Mantle Convection
 \end_layout
 
 \begin_layout Standard
-For this example, we use CitcomCU to solve a thermal convection problem
- in a three-dimensional domain.
- The initial temperature field is a linear gradient from the top surface
- to the bottom surface.
- The temperature is fixed at 1 at the bottom of the cube, and fixed at 0
- at the top of the cube.
- In this case, we have solved for the velocity field for three different
- resolutions and stored it in three rectilinear vtk files called 
-\family typewriter
-citcomcu.case8.vtr
-\family default
-, 
-\family typewriter
-citcomcu.case16.vtr
-\family default
-, and 
-\family typewriter
-citcomcu.case32.vtr
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-Now, we run the first comparison, comparing the highest resolution, 
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -a citcomcu.case32.vtr:velocity 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -b citcomcu.case8.vtr:velocity  
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o citcomcu.h5:/case_32_08
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Summary of comparison:
-\end_layout
-
-\begin_layout LyX-Code
-  L2 = 0.0500057391169
-\end_layout
-
-\begin_layout LyX-Code
-  Linf = 0.146940986884
-\end_layout
-
-\begin_layout LyX-Code
-  volume = 1
-\end_layout
-
-\begin_layout LyX-Code
-  L2/volume = 0.0500057391169
-\end_layout
-
-\begin_layout LyX-Code
-  L2/sqrt(volume) = 0.0500057391169
-\end_layout
-
-\begin_layout LyX-Code
-  h1 = 0.0541265877365
-\end_layout
-
-\begin_layout LyX-Code
-  h2 = 0.216506350946 
-\end_layout
-
-\begin_layout Standard
-Since we did not specify an integration mesh, the mesh from the first field
- is used for the integration of the 
+In addition to reporting a global error metric, Cigma can also output local
+ errors between two fields, averaged over each of the integration cells
+ used in the calculation of the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
- norm.
- Additionally, the above command creates the HDF5 file 
-\family typewriter
-citcomcu.h5
-\family default
-, and stores the results of the comparison into an array called 
-\family typewriter
-case32_08
-\family default
+ error.
+ You can use this scalar error field to ascertain a number of physical insights
+ by correlating the spatial regions that contribute the most to the global
+ error.
+\end_layout
+
+\begin_layout Standard
+For our next example, we use CitcomCU to solve a thermal convection problem
+ inside a three-dimensional domain under base heating and stress-free boundary
+ conditions, using a Rayleigh number of 
+\begin_inset Formula $10^{5}$
+\end_inset
+
+.
+ Under these conditions, we expect the solution to this problem to eventually
+ converge to a steady state consisting of a single convection cell.
+ We then use Cigma to compare those steady state solutions in order to recover
+ the order of convergence of the CitcomCU numerical code and to examine
+ how the error behaves on a representative slice of the original domain
+ 
+\begin_inset Formula $\Omega=[0,1]^{3}$
+\end_inset
+
 .
  
 \end_layout
 
-\begin_layout LyX-Code
-$ cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -a citcomcu.case32.vtr:velocity 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -b citcomcu.case16.vtr:velocity 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o citcomcu.h5:/case_32_16
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-Summary of comparison:
-\end_layout
-
-\begin_layout LyX-Code
-  L2 = 0.0100758230674
-\end_layout
-
-\begin_layout LyX-Code
-  Linf = 0.0322452153235
-\end_layout
-
-\begin_layout LyX-Code
-  volume = 1
-\end_layout
-
-\begin_layout LyX-Code
-  L2/volume = 0.0100758230674
-\end_layout
-
-\begin_layout LyX-Code
-  L2/sqrt(volume) = 0.0100758230674
-\end_layout
-
-\begin_layout LyX-Code
-  h1 = 0.0541265877365
-\end_layout
-
-\begin_layout LyX-Code
-  h2 = 0.108253175473 
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
 \begin_layout Standard
-From these two results, we can estimate how fast we are converging to a
- common answer between levels 
-\begin_inset Formula $a$
+Again, as in the previous section, we solve the same problem over four different
+ resolutions, and then use the highest resolution dataset as the reference
+ point for all the subsequent comparisons.
+ The four cases we will use for this example use 64x64x64, 32x32x32, 16x16x16,
+ and 8x8x8 elements.
+ In the following figure, we display the temperature and velocity fields
+ on the 
+\begin_inset Formula $y=0.99$
 \end_inset
 
- and 
-\begin_inset Formula $b$
-\end_inset
-
- by using
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \[
-\alpha\sim\frac{\log(\varepsilon_{b}/\varepsilon_{a})}{\log(h_{b}/h_{a})}\sim\frac{\log(0.01/0.05)}{\log(0.108/0.217)}\sim2.3\]
-
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Standard
-where we have assumed that the highest resolution field is equivalent to
- the exact solution in our approximation for 
-\begin_inset Formula $\alpha$
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Using a logarithmic scale to view the residual field for these two comparisons,
- we generate two vtk files using the comands
-\end_layout
-
-\begin_layout LyX-Code
-$ vtk-residuals 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --output-log-values 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -m citcomcu.case32.vtr:velocity 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -i citcomcu.h5:/case_32_08 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o log-res-vel-32-08.vtk
-\end_layout
-
-\begin_layout LyX-Code
-$ vtk-residuals 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    --output-log-values 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -m citcomcucase32.vtr:velocity 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -i citcomcu.h5:/case_32_16 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o log-res-vel-32-16.vtk
+ plane, near one of the faces of the domain.
+ We can distinctly identify an upwelling and downwelling cycle, as well
+ as sharp gradients in the temperature field.
+ The variations in the velocity field are smoother throughout the slice.
 \end_layout
 
 \begin_layout Standard
@@ -4353,7 +4337,20 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Slice of temperature and velocity fields on y=0.99 plane.
+Slice of the steady state temperature and velocity fields for our thermal
+ convection problem, on the 
+\begin_inset Formula $y=0.99$
+\end_inset
+
+ plane.
+ In the temperature plot (a), we show ten equally spaced contour values.
+ In the velocity plot (b), the vectors represent the 
+\begin_inset Formula $xz$
+\end_inset
+
+-plane components of the velocity, while the colors represent the velocity
+ magnitude.
+ 
 \end_layout
 
 \end_inset
@@ -4368,6 +4365,370 @@ Slice of temperature and velocity fields on y=0.99 plane.
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Once we obtain the solutions for our four resolutions over 20000 solution
+ steps, we process the ASCII output data from CitcomCU into a number of
+ rectilinear grids in VTK format (*.vtr files), and a subsequent *.pvtr file
+ for each solution step.
+\end_layout
+
+\begin_layout Standard
+As a preliminary step, we also need to ensure that each of our cases do
+ indeed reach a steady state.
+ We can verify this fact numerically by using Cigma to compare the same
+ field at two different times, and checking that the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ error is exactly zero.
+ However, for this problem, we can also physically verify that the solution
+ has reached steady state by checking that the oscillations in the values
+ of the average heat flux on the top surface have dampened out, as shown
+ by Figure 5.3,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures3/bm2/heatflux.png
+	lyxscale 80
+	scale 45
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Time varation of average heat flux over top surface.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our first comparison of two steady states is simple enough.
+ Although it's not critical for this example since we have already converged,
+ in general time dependent problems you must not forget to make sure you
+ are comparing solutions at the same absolute time.
+ Thus, even though it appears that the following command is comparing two
+ different solution steps, they actually correspond to roughly the same
+ physical time.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a case64.20000.pvtr:temperature 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b case32.9900.pvtr:temperature  
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o steady-state.h5:/error_temperature_64_32
+\end_layout
+
+\begin_layout Standard
+Since we did not specify an integration mesh through the 
+\family typewriter
+-m
+\family default
+ option, Cigma will take the mesh from the first field and use it for the
+ integration of the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ error.
+ We have, however, used the 
+\family typewriter
+-o
+\family default
+ option to specify an output file.
+ This will create the HDF5 file 
+\family typewriter
+steady-state.h5
+\family default
+ after the comparison is complete, and store the results of that comparison
+ into an array called 
+\family typewriter
+error_temperature_64_32
+\family default
+ under the HDF5 
+\family typewriter
+/
+\family default
+ root group.
+ You may also refer to the same HDF5 file in subsequent runs of Cigma.
+ The target dataset will be appended to the file if it doesn't already exist,
+ and overwritten if it already does.
+ The other two comparisons are just,
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a case64.20000.pvtr:temperature 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b case16.4700.pvtr:temperature 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o steady-state.h5:/error_temperature_64_16
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -a case64.20000.pvtr:temperature 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -b case8.2100.pvtr:temperature 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -o steady-state.h5:/error_temperature_64_8
+\end_layout
+
+\begin_layout Standard
+Comparisons involving the velocity can be obtained in a similar manner.
+ Note that even though we are comparing vectors here, the resulting errors
+ will be scalars, since Cigma is integrating the scalar function 
+\begin_inset Formula $||\vec{v}_{a}(\vec{x})-\vec{v}_{b}(\vec{x})||^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -a case64.20000.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -b case32.9900.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -o steady-state.h5:/error_velocity_64_32
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -a case64.20000.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -b case16.4700.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -o steady-state.h5:/error_velocity_64_16
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+$ cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -a case64.20000.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -b case8.2100.pvtr:velocity 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+     -o steady-state.h5:/error_velocity_64_8
+\end_layout
+
+\begin_layout Standard
+At this point, you have obtained the local 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ errors each of the above comparisons, and stored them in arrays inside
+ the file 
+\family typewriter
+steady-state.h5
+\family default
+.
+ In order to visualize these errors, you will need to reattach the original
+ mesh information by using a post-processing utility program called 
+\family typewriter
+vtk-residuals
+\family default
+.
+ We can accomplish this for our six comparisons, by using the following
+ bash comand line,
+\end_layout
+
+\begin_layout LyX-Code
+$ for variable in temperature velocity; do
+\end_layout
+
+\begin_layout LyX-Code
+    for b in 32 16 8; do
+\end_layout
+
+\begin_layout LyX-Code
+      vtk-residuals 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        --divide-by-sqrt-cell-volumes 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        --output-log-values 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        -m case64.20000.vtr 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        -i steady-state.h5:/error_${variable}_64_${b} 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+        -o log_error_temperature_64_${b}.vtk:log_error_${variable}
+\end_layout
+
+\begin_layout LyX-Code
+    done
+\end_layout
+
+\begin_layout LyX-Code
+  done
+\end_layout
+
+\begin_layout Standard
+The first two options we give our post-processing program are important.
+ The first option eliminates the volume scale factor in the definition of
+ the local 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ error (larger cells contribute more than smaller cells, which would be
+ more obvious if the error were constant).
+ The second option tells the post-processing program to use a logarithmic
+ scale for writing those locally averaged errors.
+ Using a log10-scale makes it much easier to spot the spatial range of variation
+ in our error fields.
+\end_layout
+
+\begin_layout Standard
+In Figure 5.4, we show two plots representing the errors in the temperature
+ field on the 
+\begin_inset Formula $y=0.99$
+\end_inset
+
+ plane for the two 16x16x16 and 32x32x32 resolutions, relative to the 64x64x64
+ temperature solution.
+ Examining this plot and Figure 5.2a reveals that the largest errors are
+ concentrated in areas where the temperature gradient is also large, near
+ the boundary layers created by activity from the upwelling and downelling.
+ Similarly, the region where the errors are smallest corresponds to a region
+ where both the temperature gradients and velocty magnitude are at their
+ lowest.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -4386,40 +4747,11 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Temperature differences on y=0.99 slice
-\end_layout
-
+Temperature differences on 
+\begin_inset Formula $y=0.99$
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename figures3/bm2/out/fig_log_error_velocity_64_16_64_32_y099.png
-	lyxscale 40
-	scale 22
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Velocity differences on y=0.99 slice
+ plane, as compared against case with 64 x 64 x 64 elements.
 \end_layout
 
 \end_inset
@@ -4433,11 +4765,45 @@ Velocity differences on y=0.99 slice
 \end_layout
 
 \begin_layout Standard
-In the figures above, we show three cross sections of the error in the velocity
- field.
- The convergence behavior of these two comparisons can almost be confirmed
- visually by observing the overall color shift between the two figures,
- which use the same absolute color scale.
+Likewise, in Figure 5.5 we show two plots representing the magnitude of the
+ velocity field on the same plane.
+ This time, the distribution of the largest errors are spread out more evenly
+ over the domain.
+ In this case, the largest errors in the velocity field also correspond
+ to regions where the magnitude of the velocity field is the largest.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename igures3/bm2/out/fig_log_error_velocity_64_16_64_32_y099.png
+	lyxscale 40
+	scale 22
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Velocity differences on y=0.99 plane, as compared against case with 64 x
+ 64 x 64 elements.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -4445,10 +4811,15 @@ Circular Inclusion Benchmark
 \end_layout
 
 \begin_layout Standard
-Here, we analyze a two-dimensional problem for which we know an exact analytical
- solution.
- Using the Gale code, we obtain an approximate solution to a circular inclusion
- under simple shear.
+In some cases, you will be able to obtain an exact solution to your differential
+ equations.
+ In these cases, you can extend Cigma by implementing your function directly
+ in C++, and registering a convenient name under which to call it.
+ In this section, we'll show you exactly how to accomplish this by considering
+ a two-dimensional problem for which an exact analytical solution is known.
+ In a 2003 paper [REF], Schmid and Podladchikov derived an analytic solution
+ for the pressure and velocity fields of a circular inclusion under simple
+ shear, depicted in Figure 5.6.
 \end_layout
 
 \begin_layout Standard
@@ -4460,17 +4831,16 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename figures3/bm3/out/fig_fields_512.png
-	lyxscale 40
-	scale 22
-
+	filename figures2/inclusion_setup.eps
+	scale 40
+	rotateOrigin center
 \end_inset
 
 
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Pressure and Velocity fields for Circular Inclusion Problem.
+Schematic for the circular inclusion benchmark.
 \end_layout
 
 \end_inset
@@ -4484,7 +4854,118 @@ Pressure and Velocity fields for Circular Inclusion Problem.
 \end_layout
 
 \begin_layout Standard
-To compare against the analytical solution, we can run the command,
+In particular, we place the inclusion of radius 
+\begin_inset Formula $r_{i}=0.1$
+\end_inset
+
+ at the origin, and exploit the symmetry in this problem by only solving
+ the field on the top right quarter of the domain
+\end_layout
+
+\begin_layout Standard
+From [REF], we end up with the following analytic formula for the pressure
+ field under the case of simple shear, 
+\begin_inset Formula \[
+p=\begin{cases}
+4\dot{\epsilon}\frac{\mu_{m}(\mu_{i}-\mu_{m})}{\mu_{i}+\mu_{m}}\left(\frac{r_{i}^{2}}{r^{2}}\right)\cos(2\theta) & r>r_{i}\\
+0 & r<r_{i}\end{cases}\]
+
+\end_inset
+
+ where we use 
+\begin_inset Formula $\mu_{i}=2$
+\end_inset
+
+ for the viscosity of the inclusion, 
+\begin_inset Formula $\mu_{m}=1$
+\end_inset
+
+ for the viscosity of the background media, and 
+\begin_inset Formula $\dot{\epsilon}=1$
+\end_inset
+
+ for the magnitude of the shear.
+ In Cigma, you can refer to this specific analytic solution by the somewhat
+ verbose name 
+\family typewriter
+bm.circular_inclusion.pressure
+\family default
+.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Include source code listing?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can use Gale, a CIG code for long-term crustal dynamics, to obtain an
+ approximate solution to this circular inclusion problem.
+ Because the formula for the velocity field is more complicated than the
+ analytic formula for the pressure, we use the far-field approximation of
+ the velocity field to impose the boundary conditions in Gale,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+v_{x} & = & +\dot{\epsilon}x\\
+v_{y} & = & -\dot{\epsilon}y\end{eqnarray*}
+
+\end_inset
+
+In order to make these boundary conditions more accurate, we enlarge the
+ domain under consideration to about 80 times of the radius of the inclusion,
+ or 
+\begin_inset Formula $\Omega=[0,8]^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures3/bm3/out/fig_pressure_512.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Pressure field for circular inclusion problem, with resolution of 512x512
+ elements.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, we'd like to see how well the Gale solutions converge to a common
+ answer by comparing each other against the highest resolution field available.
+ Since we only have three solutions, that leaves us with only run two meaningful
+ comparisons,
 \end_layout
 
 \begin_layout LyX-Code
@@ -4500,38 +4981,7 @@ $ cigma compare
 \end_layout
 
 \begin_layout LyX-Code
-    -b 
-\bar under
-bm.circular_inclusion.pressure
-\bar default
- 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -o inclusion.h5:/errror_pressure_512
-\end_layout
-
-\begin_layout Standard
-You can also compare how well the Gale solutions approach each other by
- comparing the fields against the highest resolution field.
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -a 512_8/fields.00000.vts:PressureField 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-    -b 128_8/fields.00000.vts:PressureField 
+    -b 128_8/fields.00000.pvts:PressureField 
 \backslash
 
 \end_layout
@@ -4547,13 +4997,13 @@ $ cigma compare
 \end_layout
 
 \begin_layout LyX-Code
-    -a 512_8/fields.00000.vts:PressureField 
+    -a 512_8/fields.00000.pvts:PressureField 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    -b 256_8/fields.00000.vts:PressureField 
+    -b 256_8/fields.00000.pvts:PressureField 
 \backslash
 
 \end_layout
@@ -4563,15 +5013,19 @@ $ cigma compare
 \end_layout
 
 \begin_layout Standard
+Processing this data, gives us the following plots,
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/luis/p/cig/doc/cigma/figures3/bm3/out/fig_log_error_pressure_256_512.png
+	filename figures3/bm3/out/fig_full_log_error_pressure_512_128_512_256.png
 	lyxscale 40
 	scale 18
 
@@ -4581,7 +5035,126 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Errors in pressure field for 256 and 512 resolutions.
+Errors in pressure field for 128x128, and 256x256 cases, relative to the
+ 512x512 case, shown over the entire domain.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures3/bm3/out/fig_inc_log_error_pressure_512_128_512_256.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Errors in pressure field for 128x128, and 256x256 cases, relative to the
+ 512x512 case, shown near the inclusion.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Next, we compare each of the three pressure fields obtained with Gale against
+ the analytical formula for the pressure given earlier.
+ We accomplish that by invoking the following bash command line,
+\end_layout
+
+\begin_layout LyX-Code
+$ for r in 512 256 128; do
+\end_layout
+
+\begin_layout LyX-Code
+    cigma compare 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -a ${r}_8/fields.00000.pvts:PressureField 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -b 
+\bar under
+bm.circular_inclusion.pressure
+\bar default
+ 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      -o inclusion.h5:/errror_pressure_${r}
+\end_layout
+
+\begin_layout LyX-Code
+  done
+\end_layout
+
+\begin_layout Standard
+After processing the errors in 
+\family typewriter
+inclusion.h5
+\family default
+ with the utility program 
+\family typewriter
+vtk-residuals
+\family default
+, we obtain the following plots of the pressure field errors, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figures3/bm3/out/fig_full_log_error_pressure_256_512.png
+	lyxscale 40
+	scale 18
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Errors in pressure field for 256x256 and 512x512 element resolutions, relative
+ to the analytic formula, shown over the entire domain.
  
 \end_layout
 
@@ -4593,19 +5166,18 @@ Errors in pressure field for 256 and 512 resolutions.
 \end_inset
 
 
-\begin_inset space ~
-\end_inset
+\end_layout
 
-
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/luis/p/cig/doc/cigma/figures3/bm3/out/fig_log_error_velocity_256_512.png
+	filename figures3/bm3/out/fig_inc_log_error_pressure_256_512.png
 	lyxscale 40
 	scale 18
 
@@ -4615,7 +5187,9 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Velocity field differences
+Errors in pressure field for 256x256 and 512x512 element resolutions, relative
+ to the analytic formula, shown near the inclusion.
+ 
 \end_layout
 
 \end_inset
@@ -4629,37 +5203,32 @@ Velocity field differences
 \end_layout
 
 \begin_layout Standard
-The analytic solution is registered under the somewhat verbose name 
-\end_layout
+In contrast to the previous two sections, we do not detect much of a color
+ shift between two plots, even though the 
+\begin_inset Formula $L_{2}$
+\end_inset
 
-\begin_layout LyX-Code
-
-\family typewriter
-bm.gale.circular_inclusion.pressure
+ global error is indeed decreasing.
+ This is due to the fact that maximum error remains large near the inclusion,
+ due to the pressure discontinuity at the surface of the inclusion.
+ Note that many numerical codes that solve Stokes flow, Gale included, assume
+ that the pressure, velocity, and viscosity fields are continuous, an assumption
+ that is violated for this particular problem.
 \end_layout
 
 \begin_layout Standard
-which we shorten by storing it in a shell variable, 
+Also, observe that although the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ global error decreases, it does not do so at the optimal rate, indicating
+ that the numerical scheme used to obtain these solutions is not completely
+ accurate.
+ [TODO: Add table with global errors here].
 \end_layout
 
 \begin_layout LyX-Code
-$ export p=PressureField
-\end_layout
 
-\begin_layout LyX-Code
-$ export bm=bm.gale.circular_inclusion
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p256.vts:${p} -o circ_inc.h5:/pressure_256
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p128.vts:${p} -o circ_inc.h5:/pressure_128
-\end_layout
-
-\begin_layout LyX-Code
-$ cigma compare ${bm}.pressure p64.vts:${p}  -o circ_inc.h5:/pressure_064
 \end_layout
 
 \begin_layout Standard
