@@ -20,12 +20,16 @@
 \spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_amsmath 1
 \use_esint 1
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -41,6 +45,22 @@
 \end_header
 
 \begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+raggedbottom
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Chapter
 Introduction
@@ -1658,7 +1678,7 @@ Since the absolute magnitude of the
 \begin_inset Formula $u_{h}(\vec{x})$
 \end_inset
 
-, parametrized by the the maximum element size 
+, parametrized by the maximum element size 
 \begin_inset Formula $h$
 \end_inset
 
@@ -1754,8 +1774,8 @@ Once we have calculated a family of solutions
 \begin_inset Formula $h$
 \end_inset
 
- you should use would correspond to the lower-accuracy solution you are
- comparing against.
+ you should use would correspond to the lower-accuracy solution against
+ which you are comparing.
 \end_layout
 
 \begin_layout Standard
@@ -2051,7 +2071,10 @@ A mesh block is associated with three items of information: (1) geometrical
 r discretization.
  These items are determined by the following command line options, arranged
  in a tabular format for easier reference.
-\begin_inset Newline linebreak
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -2071,6 +2094,7 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
+\align center
 
 \size scriptsize
 \begin_inset Tabular
@@ -2401,7 +2425,10 @@ MC
 \end_inset
 
 
-\begin_inset Newline linebreak
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -2417,7 +2444,7 @@ MeshA
 \bar under
 MeshB
 \bar default
-, 
+, and 
 \bar under
 IntegrationMesh
 \bar default
@@ -2481,7 +2508,7 @@ filename
 \emph default
  is specified, then the HDF5 group is assumed to be the root group 
 \family typewriter
-/
+(/)
 \family default
  of the hierarchy.
  Lastly, the option (MC) can be omitted if the HDF5 group has an attribute
@@ -2700,6 +2727,14 @@ A second strategy would be to increase the order of the quadrature rule
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -2713,6 +2748,7 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="2">
 <features>
@@ -2811,6 +2847,13 @@ R2
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -3255,7 +3298,7 @@ raw
  than errors of the same magnitude accumulated over larger cells.
  It may also be useful visually, to output the logarithm of the residual
  values.
- Using a logarithmic scale will accentuate the contrast betwen the orders
+ Using a logarithmic scale will accentuate the contrast between the orders
  of magnitude in the local residuals.
  For these reasons, we include in Cigma a post-processing utility called
  
@@ -4225,10 +4268,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm1/alpha.png
 	lyxscale 60
-	scale 22
+	scale 30
 
 \end_inset
 
@@ -4326,10 +4370,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm2/out/fig_fields_64_20000_y099.png
 	lyxscale 40
-	scale 22
+	scale 29
 
 \end_inset
 
@@ -4397,10 +4442,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm2/heatflux.png
 	lyxscale 80
-	scale 45
+	scale 40
 
 \end_inset
 
@@ -4736,10 +4782,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm2/out/fig_log_error_temperature_64_16_64_32_y099.png
 	lyxscale 40
-	scale 22
+	scale 28
 
 \end_inset
 
@@ -4781,10 +4828,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm2/out/fig_log_error_velocity_64_16_64_32_y099.png
 	lyxscale 40
-	scale 22
+	scale 28
 
 \end_inset
 
@@ -4817,9 +4865,16 @@ In some cases, you will be able to obtain an exact solution to your differential
  in C++, and registering a convenient name under which to call it.
  In this section, we'll show you exactly how to accomplish this by considering
  a two-dimensional problem for which an exact analytical solution is known.
- In a 2003 paper [REF], Schmid and Podladchikov derived an analytic solution
- for the pressure and velocity fields of a circular inclusion under simple
- shear, depicted in Figure 5.6.
+ In a 2003 paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schmid Podladchikov 2003"
+
+\end_inset
+
+, Schmid and Podladchikov derived an analytic solution for the pressure
+ and velocity fields of a circular inclusion under simple shear, depicted
+ in Figure 5.6.
 \end_layout
 
 \begin_layout Standard
@@ -4830,9 +4885,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures2/inclusion_setup.eps
-	scale 40
+	scale 60
 	rotateOrigin center
 
 \end_inset
@@ -4864,8 +4920,8 @@ In particular, we place the inclusion of radius
 \end_layout
 
 \begin_layout Standard
-From [REF], we end up with the following analytic formula for the pressure
- field under the case of simple shear, 
+From [TODO: REF], we end up with the following analytic formula for the
+ pressure field under the case of simple shear, 
 \begin_inset Formula \[
 p=\begin{cases}
 4\dot{\epsilon}\frac{\mu_{m}(\mu_{i}-\mu_{m})}{\mu_{i}+\mu_{m}}\left(\frac{r_{i}^{2}}{r^{2}}\right)\cos(2\theta) & r>r_{i}\\
@@ -4937,10 +4993,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm3/out/fig_pressure_512.png
 	lyxscale 40
-	scale 18
+	scale 22
 
 \end_inset
 
@@ -5025,10 +5082,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm3/out/fig_full_log_error_pressure_512_128_512_256.png
 	lyxscale 40
-	scale 18
+	scale 25
 
 \end_inset
 
@@ -5058,10 +5116,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm3/out/fig_inc_log_error_pressure_512_128_512_256.png
 	lyxscale 40
-	scale 18
+	scale 25
 
 \end_inset
 
@@ -5143,10 +5202,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm3/out/fig_full_log_error_pressure_256_512.png
 	lyxscale 40
-	scale 18
+	scale 25
 
 \end_inset
 
@@ -5177,10 +5237,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename figures3/bm3/out/fig_inc_log_error_pressure_256_512.png
 	lyxscale 40
-	scale 18
+	scale 25
 
 \end_inset
 
@@ -5393,9 +5454,10 @@ You can also use a simple text file (with extension
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="3">
 <features>
@@ -5643,6 +5705,7 @@ The basic data structure is a two-dimensional array of values, stored in
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
 <features>
@@ -5772,9 +5835,9 @@ Array Data
 \end_inset
 
 
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout Standard
 The second index in this array varies the fastest, so that data often referenced
  together remains together in memory as well.
 \end_layout
@@ -5797,6 +5860,7 @@ On a mesh with
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -5807,7 +5871,7 @@ width "100col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Box Frameless
@@ -5823,6 +5887,7 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
 <features>
@@ -5966,6 +6031,7 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
 <features>
@@ -6133,6 +6199,7 @@ In general, if our block contains
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="2">
 <features>
@@ -6279,6 +6346,7 @@ For the element types defined in Cigma, the values for
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="4">
 <features>
@@ -6526,7 +6594,7 @@ hex27
 \end_layout
 
 \begin_layout Standard
-Similarly for the 2-D elements, we have
+Similarly for the 2D elements, we have
 \begin_inset Newline newline
 \end_inset
 
@@ -6534,6 +6602,7 @@ Similarly for the 2-D elements, we have
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="4">
 <features>
@@ -6688,11 +6757,11 @@ In certain circumstances you may be able to provide your custom reference
  shape function values to be used at the expected integration points.
  This is most useful when you are using the same mesh for both the integration
  mesh and the array.
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
-
-\begin_inset Newline newline
+\begin_layout Standard
+\align center
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -6910,6 +6979,7 @@ As described in Chapter 4, an integration rule is specified by a list of
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="5">
 <features>
@@ -6958,7 +7028,7 @@ Points:
 \begin_inset Text
 
 \begin_layout Plain Layout
-2-D Points: 
+2D Points: 
 \begin_inset Formula $(Q,2)$
 \end_inset
 
@@ -6971,7 +7041,7 @@ Points:
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Points: 
+3D Points: 
 \begin_inset Formula $(Q,3)$
 \end_inset
 
@@ -7226,7 +7296,7 @@ Rule Definition
 \end_inset
 
 
-\begin_inset Newline newline
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -7246,6 +7316,7 @@ Given a mesh and an integration rule, we can map the integration points
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="4">
 <features>
@@ -7280,7 +7351,7 @@ Points:
 \begin_inset Text
 
 \begin_layout Plain Layout
-2-D Points: 
+2D Points: 
 \begin_inset Formula $(n_{pts},2)$
 \end_inset
 
@@ -7293,7 +7364,7 @@ Points:
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Points: 
+3D Points: 
 \begin_inset Formula $(n_{pts},3)$
 \end_inset
 
@@ -7496,22 +7567,25 @@ Coordinates
 \end_inset
 
 
-\begin_inset Newline newline
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout Standard
 The result of an evaluation will depend on the rank of the function being
  evaluated, as indicated in the table below.
  Note that the fastest varying dimension of the array contains the components
  of the function value at each point.
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
-
-\begin_inset Newline newline
+\begin_layout Standard
+\align center
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -7568,7 +7642,7 @@ Scalar
 \begin_inset Text
 
 \begin_layout Plain Layout
-2-D Vector
+2D Vector
 \end_layout
 
 \end_inset
@@ -7591,7 +7665,7 @@ Scalar
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Vector
+3D Vector
 \end_layout
 
 \end_inset
@@ -7614,7 +7688,7 @@ Scalar
 \begin_inset Text
 
 \begin_layout Plain Layout
-2-D Tensor
+2D Tensor
 \end_layout
 
 \end_inset
@@ -7637,7 +7711,7 @@ Scalar
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Tensor
+3D Tensor
 \end_layout
 
 \end_inset
@@ -7675,6 +7749,7 @@ Since our norm reduces integrals over cells to a single scalar value, the
 \end_layout
 
 \begin_layout Standard
+\align center
 Thus, for each element block containing 
 \begin_inset Formula $k$
 \end_inset
@@ -7684,7 +7759,7 @@ Thus, for each element block containing
 \end_inset
 
 
-\begin_inset Newline newline
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -7817,9 +7892,13 @@ Residual Value
 \end_inset
 
 
-\begin_inset Newline newline
+\begin_inset VSpace defskip
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 These residual values may be combined in the following form: 
 \begin_inset Formula \[
 \varepsilon_{block}=\sqrt{\varepsilon_{1}^{2}+\varepsilon_{2}^{2}+\cdots+\varepsilon_{k}^{2}}\]
@@ -7858,6 +7937,7 @@ HDF5
 \begin_layout Standard
 HDF5 files are binary files encoded in a data format designed to store large
  amounts of scientific data in a portable and self-describing way.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -7883,6 +7963,7 @@ datasets
 attribute
 \emph default
 s.
+ [TODO: citation for all this HDF5 explanation?]
 \end_layout
 
 \begin_layout Standard
@@ -8007,8 +8088,9 @@ MeshLocation points to the HDF5 group which contains the appropriate coordinates
 \end_layout
 
 \begin_layout Description
-CellType string identifier to determine which shape functions to use for
- interpolating values inside the element (e.g., tet4, hex8, quad4, tri3, ...).
+CellType is a string identifier to determine which shape functions to use
+ for interpolating values inside the element (e.g., tet4, hex8, quad4, tri3,
+ ...).
  This attribute should be attached to the mesh dataset.
 \end_layout
 
@@ -8066,7 +8148,7 @@ VTK
 For detailed information on this format, you may want to refer to Visualization
  ToolKit's File Formats 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -8094,7 +8176,7 @@ Text
 \begin_layout Standard
 The text files we use in Cigma consist of a simple list of numbers in ASCII
  format whose layout corresponds exactly to the simple array layout discussed
- earlier in Section A.2.
+ earlier in Appendix A.2.
  The first line of the file contains the dimensions of the array, just two
  integers separated by whitespace.
  The rest of the file specifies the array data, and must contain as many
@@ -8110,7 +8192,7 @@ Some restrictions apply when providing data in text format, mostly because
  you can only specify a single element block in a text file containing connectiv
 ity information.
  Operations involving a larger number of blocks must use data in the format
- described in Section A.3.1.
+ described in Appendix A.3.1.
 \end_layout
 
 \begin_layout Standard
@@ -8127,7 +8209,7 @@ Output Files
 
 \begin_layout Standard
 For the most part, there are three different kinds of output files you can
- use, as already summarized in Section A.1.
+ use, as already summarized in Appendix A.1.
  Switching output formats is as simple as changing the extension of the
  output file name.
  
