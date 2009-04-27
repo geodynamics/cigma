@@ -364,21 +364,12 @@ $ ./configure --show-libraries
 \end_layout
 
 \begin_layout Standard
-[TODO something wrong with second half of this sentence.
- 
-\begin_inset Quotes eld
-\end_inset
-
-and by modifying
-\begin_inset Quotes erd
-\end_inset
-
-?] and modifying the comma-delimited list passed to the 
+These additional components can be passed as a comma-delimited list to the
+ option 
 \family typewriter
 --with-libraries
 \family default
- option when repeating the build procedure above.
- 
+ as in the build procedure specified in
 \end_layout
 
 \begin_layout Subsection
@@ -2025,9 +2016,8 @@ Selecting a Dataset
 \end_layout
 
 \begin_layout Standard
-In general, you will provide data to Cigma as a simple two dimensional array
- of values.
- Now, because most scientific formats are capable of storing multiple datasets
+In general, you will provide data to Cigma as a simple array of values.
+ Because most scientific formats are capable of storing multiple datasets
  in the same file, you will need a consistent way to select a specific array
  on a given data file.
  Therefore, all option arguments to Cigma that expect a dataset can be specified
@@ -2047,13 +2037,55 @@ filename
 location
 \emph default
  part of the option argument may be omitted.
- There are a number of different file formats available for specifying and
- storing your data, according to how Cigma was configured at build time.
- The file format will be derived directly from the 
-\emph on
-filename
-\emph default
- extension.
+ For example, consider two HDF5 files, 
+\begin_inset Quotes eld
+\end_inset
+
+low_res.h5
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+high_res.h5
+\begin_inset Quotes erd
+\end_inset
+
+ which each have fields 
+\begin_inset Quotes eld
+\end_inset
+
+density
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+pressure
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Then the command
+\end_layout
+
+\begin_layout Standard
+cigma compare low_res.h5:density high_res.h5:density -o low_high.h5
+\end_layout
+
+\begin_layout Standard
+will compare the density fields between the two files on the mesh defined
+ in low_res.h5.
+\end_layout
+
+\begin_layout Standard
+Depending on how it was configured, Cigma understands a number of different
+ file formats.
+ The file format is determined by the filename extension.
 \end_layout
 
 \begin_layout Section
@@ -2125,7 +2157,6 @@ Option
 \family typewriter
 \series bold
 \size scriptsize
-\bar under
 MeshA
 \end_layout
 
@@ -2139,7 +2170,6 @@ MeshA
 \family typewriter
 \series bold
 \size scriptsize
-\bar under
 MeshB
 \end_layout
 
@@ -2153,7 +2183,6 @@ MeshB
 \family typewriter
 \series bold
 \size scriptsize
-\bar under
 IntegrationMesh
 \end_layout
 
@@ -2165,7 +2194,7 @@ IntegrationMesh
 \begin_layout Plain Layout
 
 \size scriptsize
-Items Read
+Item
 \end_layout
 
 \end_inset
@@ -2437,17 +2466,17 @@ MC
 \begin_layout Standard
 There are a number of rules determining which of these options are required.
  For any of the 
-\bar under
+\series bold
 MeshA
-\bar default
+\series default
 , 
-\bar under
+\series bold
 MeshB
-\bar default
+\series default
 , and 
-\bar under
+\series bold
 IntegrationMesh
-\bar default
+\series default
  columns in the table above, the relationship between these options is as
  follows:
 \end_layout
@@ -2525,11 +2554,7 @@ CellType
 \end_layout
 
 \begin_layout LyX-Code
-File
-\emph on
- 
-\bar under
-filename
+File mesh.h5
 \end_layout
 
 \begin_layout LyX-Code
@@ -2540,37 +2565,24 @@ filename
 `Group
 \emph on
  
-\bar under
-location
+\emph default
+/mesh
 \end_layout
 
 \begin_layout LyX-Code
-  |-- 
-\emph on
-Attribute
-\emph default
- 
+  |-- Attribute 
 \series bold
-\emph on
 CellType
 \end_layout
 
 \begin_layout LyX-Code
-  |-- 
-\emph on
-Array
-\emph default
- 
+  |-- Array 
 \series bold
 coordinates
 \end_layout
 
 \begin_layout LyX-Code
-  `-- 
-\emph on
-Array
-\emph default
- 
+  `-- Array 
 \series bold
 connectivity
 \end_layout
@@ -2650,55 +2662,19 @@ An integration mesh can be specified by the command line options in Section
 \end_layout
 
 \begin_layout Enumerate
-At least one of 
-\bar under
-MeshA
-\bar default
-, 
-\bar under
-MeshB
-\bar default
-, or 
-\bar under
-IntegrationMesh
-\bar default
- must be given.
+At least one of MeshA, MeshB, or IntegrationMesh must be given.
 \end_layout
 
 \begin_layout Enumerate
-If 
-\bar under
-IntegrationMesh
-\bar default
- is specified, then it is always used.
+If IntegrationMesh is specified, then it is always used.
 \end_layout
 
 \begin_layout Enumerate
-If 
-\bar under
-IntegrationMesh
-\bar default
- is missing, then 
-\bar under
-MeshA
-\bar default
- is copied to 
-\bar under
-IntegrationMesh
-\bar default
-.
+If IntegrationMesh is missing, then MeshA is copied to IntegrationMesh.
 \end_layout
 
 \begin_layout Enumerate
-If only 
-\bar under
-MeshB
-\bar default
- is given, then it is copied to 
-\bar under
-IntegrationMesh
-\bar default
-.
+If only MeshB is given, then it is copied to IntegrationMesh.
 \end_layout
 
 \begin_layout Standard
@@ -2974,8 +2950,16 @@ If the dataset is stored in an HDF5 file, item (3) would be typically specified
 File
 \emph on
  
-\bar under
-filename
+\emph default
+
+\begin_inset Quotes eld
+\end_inset
+
+model.h5
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -2983,59 +2967,40 @@ filename
 \emph on
  
 \emph default
- 
+ Group
 \emph on
-Group 
-\bar under
+ 
+\series bold
+\emph default
 variables
 \end_layout
 
 \begin_layout LyX-Code
-  |-- 
-\emph on
-Group
-\emph default
- 
+  |-- Group 
 \series bold
 temperature
 \end_layout
 
 \begin_layout LyX-Code
-  |   |-- 
-\emph on
-Array
-\emph default
- 
+  |   |-- Array 
 \series bold
 step000
 \end_layout
 
 \begin_layout LyX-Code
-  |   |   `-- 
-\emph on
-Attribute
-\emph default
- 
+  |   |   `-- Attribute 
 \series bold
 MeshLocation
 \end_layout
 
 \begin_layout LyX-Code
-  |   |-- 
-\emph on
-Array
-\emph default
- 
+  |   |-- Array 
 \series bold
 step001
 \end_layout
 
 \begin_layout LyX-Code
-  |   |   `-- 
-\emph on
-Attribute
-\emph default
- 
+  |   |   `-- Attribute 
 \series bold
 MeshLocation
 \end_layout
@@ -3045,11 +3010,7 @@ MeshLocation
 \end_layout
 
 \begin_layout LyX-Code
-  `-- 
-\emph on
-Group
-\emph default
- 
+  `-- Group 
 \series bold
 displacements
 \end_layout
@@ -3169,15 +3130,15 @@ In order to monitor the progress of the integration, simply add the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare 
+$ cigma compare A
 \series bold
-A
-\series default
  
-\series bold
-B
 \series default
- --verbose
+B
+\series bold
+ 
+\series default
+--verbose
 \end_layout
 
 \begin_layout Standard
@@ -3194,15 +3155,15 @@ By default, the timer will report its progress every 100 integration cells,
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare 
+$ cigma compare A
 \series bold
-A
-\series default
  
-\series bold
-B
 \series default
- --verbose --timer-frequency=1000
+B
+\series bold
+ 
+\series default
+--verbose --timer-frequency=1000
 \end_layout
 
 \begin_layout Standard
@@ -3219,15 +3180,11 @@ Debugging information can be displayed using the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare 
+$ cigma compare A
 \series bold
-A
-\series default
  
-\series bold
-B
 \series default
- --debug
+B --debug
 \end_layout
 
 \begin_layout Standard
@@ -3248,15 +3205,11 @@ On the other hand, suppressing all output can be accomplished with the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare 
+$ cigma compare A
 \series bold
-A
-\series default
  
-\series bold
-B
 \series default
- --quiet --global-threshold=0.001
+B --quiet --global-threshold=0.001
 \end_layout
 
 \begin_layout Standard
@@ -3322,29 +3275,19 @@ $ vtk-residuals [...]
 \end_layout
 
 \begin_layout LyX-Code
-      -m 
-\bar under
-MeshFile
-\bar default
-                
+      -m MeshFile.h5             
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -i 
-\bar under
-InputResiduals.h5:/path
-\bar default
- 
+      -i InputResiduals.h5:/path 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -o 
-\bar under
-OutputResiduals.vtk
+      -o OutputResiduals.vtk
 \end_layout
 
 \begin_layout Standard
@@ -3401,9 +3344,7 @@ cigma mesh-info
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma mesh-info 
-\series bold
-MESH
+$ cigma mesh-info MESH
 \end_layout
 
 \begin_layout Standard
@@ -3413,11 +3354,7 @@ You can also extract connectivity information for a specific cell in your
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma mesh-info 
-\series bold
-MESH
-\series default
- --cell-id=N
+$ cigma mesh-info MESH --cell-id=N
 \end_layout
 
 \begin_layout Standard
@@ -3425,11 +3362,7 @@ Lastly, you can also query an arbitrary point within the mesh,
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma mesh-info 
-\series bold
-MESH
-\series default
- --query-point=
+$ cigma mesh-info MESH --query-point=
 \begin_inset Quotes erd
 \end_inset
 
@@ -3489,11 +3422,7 @@ cigma compare
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma function-info 
-\series bold
-FUNCTION
-\series default
- --query-point=
+$ cigma function-info FUNCTION --query-point=
 \begin_inset Quotes erd
 \end_inset
 
@@ -3775,7 +3704,7 @@ reference-cells.h5
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For example, querying 
@@ -3950,9 +3879,14 @@ When we run the above code on the bash command line, or script, Cigma will
 
 .
  We summarize that information in the following tables,
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="7">
 <features>
@@ -4237,6 +4171,13 @@ When we run the above code on the bash command line, or script, Cigma will
 </row>
 </lyxtabular>
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -4949,16 +4890,6 @@ bm.circular_inclusion.pressure
 \family default
 .
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Include source code listing?
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -5418,7 +5349,7 @@ Supported File Formats
 Cigma can understand a number of file formats, depending on how it is configured
  (see Chapter 2).
  By default it will read and write all information in binary form as HDF5
- files, which is format optimal for archiving data with minimal redundancy.
+ files, which is a format optimal for archiving data with minimal redundancy.
  VTK files are also sometimes used by finite element software, due to the
  ease with which the solution fields can be visualized.
  Lastly, ExodusII mesh files generated by the CUBIT mesh generation package
