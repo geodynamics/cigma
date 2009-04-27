@@ -3980,10 +3980,14 @@ Poisson Problem
 \end_layout
 
 \begin_layout Standard
-Cigma can compare two functions and return a global error metric representing
- the total distance between those two functions.
- If you gather enough results over a range of resolutions, you can use this
- global measure to quantify the rate of convergence of your numerical method.
+Cigma can compare two functions and return 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ norm the difference between those two functions.
+ For a given numerical problem, if you compute the solutions over a range
+ of resolutions, you can use this global measure to quantify the rate of
+ convergence of your numerical method.
  To demonstrate how this works, we will use the two Poisson problems: 
 \end_layout
 
@@ -4033,17 +4037,26 @@ These differential equations can be easily solved numerically by using a
  finite element software library called Deal.II, which supports Lagrange
  finite elements of any order on both 2 and 3 dimensions.
  In fact, the two equations we have described are already solved in Step
- 4 in the list of the Deal.II tutorial programs.
+ 4 in the list of the Deal.II tutorial programs (TODO: url).
  
 \end_layout
 
 \begin_layout Standard
-In the examples subdirectory, we include a version of the Step 4 tutorial
- program that has been slightly modified to suit our purposes in this section.
+In the 
+\family typewriter
+examples/
+\family default
+ subdirectory, we include a version of the Step 4 tutorial program that
+ has been slightly modified to suit our purposes in this section.
  First, we change the output format to use VTK files, in order to make it
  very convient for us to provide our input datasets to Cigma.
  Next, we solve the 2D problem over meshes of resolution 64x64, 32x32, 16x16,
  and 8x8 by using linear quadrilateral elements.
+ The solution is saved in file 
+\family typewriter
+phi_64x64x64.vtk
+\family default
+ for the highest resolution, for example.
  In a similar fashion, we solve our 3D Poisson problem on meshes of resolution
  64x64x64, 32x32x32, 16x16x16, and 8x8x8, that use linear hexahedral elements.
  Note that in either case, we don't really know the exact solution to either
@@ -4053,7 +4066,7 @@ In the examples subdirectory, we include a version of the Step 4 tutorial
 \end_layout
 
 \begin_layout LyX-Code
-$ for i in 32 16 8; do
+$ for r in 32 16 8; do
 \end_layout
 
 \begin_layout LyX-Code
@@ -4068,13 +4081,9 @@ $ for i in 32 16 8; do
   done
 \end_layout
 
-\begin_layout LyX-Code
-
-\end_layout
-
 \begin_layout Standard
-When we run the above code on the bash command line, or script, Cigma will
- generate a summary of each comparison, including the 
+When we run the above code on the command line, or script, Cigma will generate
+ a summary of each comparison, including the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
@@ -4084,10 +4093,6 @@ When we run the above code on the bash command line, or script, Cigma will
 \end_inset
 
  and maximum cell diagonal 
-\begin_inset Formula $ $
-\end_inset
-
-
 \begin_inset Formula $h$
 \end_inset
 
@@ -4473,16 +4478,17 @@ In addition to reporting a global error metric, Cigma can also output local
 \begin_inset Formula $L_{2}$
 \end_inset
 
- error.
+ norm (or error).
  You can use this scalar error field to ascertain a number of physical insights
  by correlating the spatial regions that contribute the most to the global
  error.
 \end_layout
 
 \begin_layout Standard
-For our next example, we use CitcomCU to solve a thermal convection problem
- inside a three-dimensional domain under base heating, stress-free boundary
- conditions, constant viscosity, and using a Rayleigh number of 
+For our next example, we use CitcomCU, a CIG code for mantle convection,
+ to solve a thermal convection problem inside a three-dimensional domain
+ under base heating, stress-free boundary conditions, constant viscosity,
+ and using a Rayleigh number of 
 \begin_inset Formula $10^{5}$
 \end_inset
 
@@ -5036,6 +5042,8 @@ key "Schmid Podladchikov 2003"
 , Schmid and Podladchikov derived an analytic solution for the pressure
  and velocity fields of a circular inclusion under simple shear, depicted
  in Figure 5.6.
+ (TODO: describe the problem more.
+ what's viscosity, what's prescribed velocity?)
 \end_layout
 
 \begin_layout Standard
@@ -5083,14 +5091,14 @@ In particular, we place the inclusion of radius
 \begin_layout Standard
 From [TODO: REF], we end up with the following analytic formula for the
  pressure field under the case of simple shear, 
-\begin_inset Formula \[
+\begin_inset Formula \begin{equation}
 p=\begin{cases}
 4\dot{\epsilon}\frac{\mu_{m}(\mu_{i}-\mu_{m})}{\mu_{i}+\mu_{m}}\left(\frac{r_{i}^{2}}{r^{2}}\right)\cos(2\theta) & r>r_{i}\\
-0 & r<r_{i}\end{cases}\]
+0 & r<r_{i}\end{cases}\label{eq:circular-inclusion}\end{equation}
 
 \end_inset
 
- where we use 
+where we use 
 \begin_inset Formula $\mu_{i}=2$
 \end_inset
 
@@ -5848,7 +5856,8 @@ Data Formats
 
 \begin_layout Standard
 The basic data structure is a two-dimensional array of values, stored in
- a contiguous format as shown below: 
+ a contiguous format as shown below: (TODO: why only 2D arrays, how about
+ 3D arrays?)
 \begin_inset Newline newline
 \end_inset
 
@@ -6490,6 +6499,7 @@ For the element types defined in Cigma, the values for
  are as follows.
  Note that the total number of degrees of freedom depends on the rank of
  the specific function being represented.
+ (TODO: update table)
 \begin_inset Newline newline
 \end_inset
 
@@ -6893,6 +6903,7 @@ A field variable represents one of the functions that we can evaluate, and
  are stored as separate arrays.
  A value for each degree of freedom is provided on the global list of nodes
  in the mesh.
+ The ordering must be the same as the ordering of the node coordinates.
 \end_layout
 
 \begin_layout Subsection
@@ -7118,8 +7129,8 @@ Integration Rule
 \end_layout
 
 \begin_layout Standard
-As described in Chapter 4, an integration rule is specified by a list of
- points and associated weights.
+As described in Chapter 4 (TODO: x-ref, do you really mean ch4?), an integration
+ rule is specified by a list of points and associated weights.
  The points should be specified on the natural coordinate system used by
  the corresponding reference element.
  
@@ -8076,9 +8087,9 @@ Input Files
 \end_layout
 
 \begin_layout Standard
-In Section 1.1, we examined what kinds of objects we will be accessing, so
- now let's discuss the actual layout in the files in which these objects
- will be stored.
+In Section 1.1 (TODO: x-ref), we examined what kinds of objects we will be
+ accessing, so now let's discuss the actual layout in the files in which
+ these objects will be stored.
 \end_layout
 
 \begin_layout Subsection
