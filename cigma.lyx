@@ -280,21 +280,21 @@ An Encyclopaedia of Cubature Formulas
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "8"
-key "Schmid Podladchikov 2003"
+label "6"
+key "Uesu 2005"
 
 \end_inset
 
-Schmid, D.W., and Y.Y.
- Podladchikov (2003), Analytical solutions for deformable elliptical inclusions
- in general shear, 
+Uesu, D., L.
+ Bavoil, S.
+ Fleishman, J.
+ Shepherd, and C.
+ Silva (2005), Simplification of Unstructured Tetrahedral Meshes by Point-Sampli
+ng, 
 \emph on
-Geophys.
- J.
- Int.
- 155
+Proceedings of the 2005 International Workshop on Volume Graphics,
 \emph default
-(1), 269-288, doi: 10.1046/j.1365-246X.2003.02042.x.
+ 157-165, doi: 10.2312/VG/VG05/157-165.
 \end_layout
 
 \begin_layout Bibliography
@@ -319,21 +319,21 @@ Geophys.
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-label "6"
-key "Uesu 2005"
+label "8"
+key "Schmid Podladchikov 2003"
 
 \end_inset
 
-Uesu, D., L.
- Bavoil, S.
- Fleishman, J.
- Shepherd, and C.
- Silva (2005), Simplification of Unstructured Tetrahedral Meshes by Point-Sampli
-ng, 
+Schmid, D.W., and Y.Y.
+ Podladchikov (2003), Analytical solutions for deformable elliptical inclusions
+ in general shear, 
 \emph on
-Proceedings of the 2005 International Workshop on Volume Graphics,
+Geophys.
+ J.
+ Int.
+ 155
 \emph default
- 157-165, doi: 10.2312/VG/VG05/157-165.
+(1), 269-288, doi: 10.1046/j.1365-246X.2003.02042.x.
 \end_layout
 
 \end_body
