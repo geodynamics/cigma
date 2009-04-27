@@ -1,4 +1,4 @@
-#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -72,12 +72,13 @@ About Cigma
 
 \begin_layout Standard
 The CIG Model Analyzer (Cigma) consists of a general suite of tools for
- comparing numerical models.
+ comparing numerical models (TODO: too vague).
  In particular, this program is intended for the calculation of 
 \begin_inset Formula $L_{2}$
 \end_inset
 
- residuals for finite element models and published benchmark datasets.
+ residuals (TODO: better term) for finite element models and published benchmark
+ datasets.
  
 \end_layout
 
@@ -313,7 +314,8 @@ $ make install
 
 \begin_layout Standard
 In general, the installation prefixes given to the configure options should
- be used if you have installed the corresponding library in a custom location.
+ be used if you have installed the corresponding library in a custom location
+ (TODO: what about the libraries installed in the system directory?).
  For demonstration purposes, the instructions in the next few sections use
  a subdirectory of 
 \family typewriter
@@ -343,7 +345,7 @@ The only required options in this step are the ones for the Boost and HDF5
 \end_inset
 
 .
- The NetCDF option is disabled by default, but if you wish to use a ExodusII
+ The NetCDF option is disabled by default, but if you wish to use ExodusII
  mesh files, you can provide an installation prefix to the corresponding
  configure option.
  Lastly, the CppUnit configure option will allow you to use 
@@ -359,7 +361,7 @@ After all these steps are complete, you should be able to run the
 \family typewriter
 cigma
 \family default
- binary and proceed to compare.
+ binary and proceed to compare your data files.
 \end_layout
 
 \begin_layout Subsection
@@ -523,7 +525,7 @@ hdfgroup.org/HDF5/release/obtain5.html
 \end_layout
 
 \begin_layout Subsection
-VTK library
+VTK library (optional)
 \end_layout
 
 \begin_layout Standard
@@ -673,7 +675,7 @@ Using this library is optional, so it is not automatically detected at configure
 \end_layout
 
 \begin_layout Subsection
-CppUnit library
+CppUnit library (optional)
 \end_layout
 
 \begin_layout Standard
@@ -1148,9 +1150,9 @@ The advantage of this approach is readily apparent when one realizes that
  the reference cell, and then reused for the other cells through the application
  of the corresponding reference map.
  In other words,
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \vec{X}_{q} & = & \chi_{i}(\vec{\xi}_{q})\\
-W_{q} & = & w_{q}J_{i}(\vec{\xi}_{q})\end{eqnarray*}
+W_{q} & = & w_{q}J_{i}(\vec{\xi}_{q})\end{eqnarray}
 
 \end_inset
 
@@ -1445,8 +1447,8 @@ Suppose the domain
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}||u(\vec{x})-v(\vec{x})||^{2}d\vec{x}\end{eqnarray}
 
 \end_inset
 
@@ -1510,8 +1512,8 @@ To obtain an approximation to the integral of a function
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+\begin_inset Formula \begin{equation}
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\label{eq:}\end{equation}
 
 \end_inset
 
@@ -1524,8 +1526,8 @@ Applying this quadrature rule directly over the entire physical domain
 \end_inset
 
  gives us 
-\begin_inset Formula \[
-\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\]
+\begin_inset Formula \begin{equation}
+\int_{\Omega}\ F(\vec{x})\ d\vec{x}=\sum_{e=1}^{n_{el}}\sum_{q=1}^{n_{Q}}w_{e,q}F(\vec{x}_{e,q})\label{eq:-1}\end{equation}
 
 \end_inset
 
@@ -1556,8 +1558,8 @@ To compute integrals of
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\]
+\begin_inset Formula \begin{equation}
+\int_{\Omega_{e}}\ F(\vec{x})\ d\vec{x}=\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}\label{eq:-2}\end{equation}
 
 \end_inset
 
@@ -1626,8 +1628,8 @@ At this point, we can assume without loss of generality that every physical
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\]
+\begin_inset Formula \begin{equation}
+\int_{\hat{\Omega}}\ F(\vec{x}_{e}(\vec{\xi}))J_{e}(\vec{\xi})\ d\vec{\xi}=\sum_{q=1}^{n_{Q}}w_{q}F(\vec{x}_{e}(\vec{\xi}_{q}))J_{e}(\vec{\xi}_{q})\label{eq:-3}\end{equation}
 
 \end_inset
 
@@ -1648,10 +1650,10 @@ If we let
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\\
- & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\\
- & = & \sum_{q=1}^{\mathrm{n_{Q}}}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}w_{q}J_{e}(\vec{\xi}_{q})\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\varepsilon_{e}^{2} & = & \int_{\Omega_{e}}\ ||u(\vec{x})-v(\vec{x})||^{2}\ d\vec{x}\nonumber \\
+ & = & \int_{\hat{\Omega}}\ ||u(\vec{x}_{e}(\vec{\xi}))-v(\vec{x}_{e}(\vec{\xi}))||^{2}J_{e}(\vec{\xi})\ d\vec{\xi}\nonumber \\
+ & = & \sum_{q=1}^{\mathrm{n_{Q}}}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}w_{q}J_{e}(\vec{\xi}_{q})\label{eq:cell-residual}\end{eqnarray}
 
 \end_inset
 
@@ -1680,8 +1682,8 @@ height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}w_{q}J_{e}(\vec{\xi}_{q})}\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\varepsilon & = & \sqrt{\sum_{e=1}^{\mathrm{n_{el}}}\sum_{q=1}^{\mathrm{n_{Q}}}||u(\vec{x}_{e}(\vec{\xi}_{q}))-v(\vec{x}_{e}(\vec{\xi}_{q}))||^{2}w_{q}J_{e}(\vec{\xi}_{q})}\end{eqnarray}
 
 \end_inset
 
@@ -1734,17 +1736,17 @@ Since the absolute magnitude of the
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{||u||_{L_{2}}}\\
- & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\varepsilon_{rel} & = & \frac{||u-u_{h}||_{L_{2}}}{||u||_{L_{2}}}\nonumber \\
+ & = & \frac{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}{\int_{\Omega}||u(\vec{x})||^{2}d\vec{x}}\end{eqnarray}
 
 \end_inset
 
 Alternatively, we can normalize the global error using the total volume
  of the domain
-\begin_inset Formula \begin{eqnarray*}
-\varepsilon_{abs} & = & \frac{||u-u_{h}||_{L_{2}}}{\sqrt{V}}\\
- & = & \frac{\sqrt{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}}{\sqrt{\int_{\Omega}d\vec{x}}}\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\varepsilon_{abs} & = & \frac{||u-u_{h}||_{L_{2}}}{\sqrt{V}}\nonumber \\
+ & = & \frac{\sqrt{\int_{\Omega}||u(\vec{x})-u_{h}(\vec{x})||^{2}d\vec{x}}}{\sqrt{\int_{\Omega}d\vec{x}}}\end{eqnarray}
 
 \end_inset
 
@@ -1842,9 +1844,9 @@ For a single refinement level we have two discretizations
 .
  The convergence rate can then be estimated from the two approximate bounds
  
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \varepsilon_{1} & \sim & Ch_{1}^{\alpha}\\
-\varepsilon_{2} & \sim & Ch_{2}^{\alpha}\end{eqnarray*}
+\varepsilon_{2} & \sim & Ch_{2}^{\alpha}\end{eqnarray}
 
 \end_inset
 
@@ -1853,8 +1855,8 @@ by taking their ratio and solving for
 \end_inset
 
 , giving us the equation 
-\begin_inset Formula \[
-\alpha\sim\frac{\log(\varepsilon_{2}/\varepsilon_{1})}{\log(h_{2}/h_{1})}\]
+\begin_inset Formula \begin{equation}
+\alpha\sim\frac{\log(\varepsilon_{2}/\varepsilon_{1})}{\log(h_{2}/h_{1})}\label{eq:ratio-alpha}\end{equation}
 
 \end_inset
 
@@ -1871,8 +1873,8 @@ If solutions are available for several refinement levels
 \end_inset
 
  by performing linear regression analysis on the equation
-\begin_inset Formula \[
-\log\varepsilon_{i}=\log C+\alpha\log h_{i}\]
+\begin_inset Formula \begin{equation}
+\log\varepsilon_{i}=\log C+\alpha\log h_{i}\label{eq:scaling}\end{equation}
 
 \end_inset
 
@@ -1916,7 +1918,10 @@ Running Cigma
 
 \begin_layout Standard
 Cigma is primarily designed for calculating error estimates between arbitrary
- functions, where the primary operation has the form
+ functions.
+ These functions can be defined as mathematical functions or as fields over
+ finite element meshes.
+ The primary operation of Cigma has the basic form
 \end_layout
 
 \begin_layout LyX-Code
@@ -1930,26 +1935,63 @@ FunctionA
 \emph on
 FunctionB
 \emph default
- -m 
+ 
+\begin_inset Newline newline
+\end_inset
+
+        -m 
 \emph on
 IntegrationMesh
 \emph default
- -o
+ 
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+        -o
 \emph on
- L2_Error_on_IntegrationCells
+ L2_Diff_on_IntegrationCells
 \end_layout
 
 \begin_layout Standard
-This command will compute local and global error metrics for the difference
- between two functions specified on the command line.
- Typically, you will also want to specify a particular discretization to
- use as the integration mesh.
- The output file will be used to store the results of the comparison, which
- consists of the 
+This command will evaluate 
+\family typewriter
+\series bold
+FunctionA
+\family default
+\series default
+ and 
+\family typewriter
+\series bold
+FunctionB
+\family default
+\series default
+ on the quadrature points of 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+, and compute the norm of the difference between these two functions.
+ The output file will be used to store the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
--error over each of the cells in the integration mesh.
+-norm of the difference over each of the cells in the integration mesh.
+\end_layout
+
+\begin_layout Standard
+(TODO: syntax for analytical function, and for fields.
+ --first is optional, ditto for --second and --second-mesh)
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+$ cigma compare 
+\emph on
+--first=FileA:dataA --first-mesh=FileA:meshA ...
 \end_layout
 
 \begin_layout Standard
@@ -1997,7 +2039,8 @@ Available subcommands:
 \begin_layout LyX-Code
 
 \size footnotesize
-   compare        Calculate local and global residuals over two fields
+   compare        Calculate local and global residuals (TODO: better term)
+ over two fields
 \end_layout
 
 \begin_layout LyX-Code
@@ -2037,7 +2080,7 @@ Available subcommands:
 \begin_layout LyX-Code
 
 \size footnotesize
-Cigma is a tool for querying & analyzing numerical models.
+Cigma is a tool for querying & analyzing numerical models (TODO: too vague).
 \end_layout
 
 \begin_layout LyX-Code
@@ -2128,34 +2171,67 @@ pressure
  Then the command
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 cigma compare low_res.h5:density high_res.h5:density -o low_high.h5
 \end_layout
 
 \begin_layout Standard
 will compare the density fields between the two files on the mesh defined
  in low_res.h5.
+ (TODO: clarify how to find mesh.)
 \end_layout
 
 \begin_layout Standard
 Depending on how it was configured, Cigma understands a number of different
- file formats.
+ file formats, including HDF5 and VTK formats.
  The file format is determined by the filename extension.
 \end_layout
 
 \begin_layout Section
 Mesh Options
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Mesh-Options"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-A mesh block is associated with three items of information: (1) geometrical
- information for a number of nodes defined on a global coordinate system,
- (2) topological information describing how those nodes are connected to
- each other to form elements, and (3) an element type associated with the
- cell.
- There are up to three such meshes that might need to be passed as arguments
- in Cigma, depending on whether the input fields are associated with a particula
-r discretization.
+A mesh in Cigma is defined by three items: (1) the nodal Cartesian coordinates,
+ (2) the connectivity (topological information describing how those nodes
+ are connected to each other to form elements), and (3) an element type
+ associated with the cell.
+ e.g.
+ triangles, quardrilaterals, tetrahedra, and hexahedra.
+ Up to three such meshes, 
+\series bold
+MeshA
+\series default
+ (the mesh for 
+\family typewriter
+\series bold
+FunctionA
+\family default
+\series default
+), 
+\series bold
+MeshB
+\series default
+ (for 
+\family typewriter
+\series bold
+FunctionB
+\family default
+\series default
+) and the 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+, can be passed as arguments in Cigma.
  These items are determined by the following command line options, arranged
  in a tabular format for easier reference.
 \end_layout
@@ -2554,7 +2630,7 @@ Option (MC) is required if options (M1) and (M2) are given.
 
 \begin_layout Standard
 It is important to note that currently Cigma assumes that every element
- in the mesh is defined over the same basis functions.
+ in the mesh is defined over the same cell type.
  
 \end_layout
 
@@ -2567,8 +2643,8 @@ When using an HDF5 file to store the mesh information, the
 \emph on
 location
 \emph default
- associated with option (M) must point to an HDF5 group that contains two
- arrays with the relevant mesh information.
+ (TODO: clarify) associated with option (M) must point to an HDF5 group
+ that contains two arrays with the relevant mesh information.
  Those two arrays must be named 
 \family typewriter
 \series bold
@@ -2650,21 +2726,18 @@ One may specify options (M1) and (M2) separately by pointing directly to
 \end_layout
 
 \begin_layout Standard
+(TODO: an example when coordinates/connectivity/celltype are in different
+ datagroup.)
+\end_layout
+
+\begin_layout Standard
 Alternatively, using a VTK file is very convenient.
  In this case, no 
 \emph on
 location
 \emph default
- needs to be specified since all the appropriate information can be read
- implicitly from the 
-\family typewriter
-POINTS
-\family default
-, and 
-\family typewriter
-CELLS
-\family default
-, which are required by the VTK file format.
+ needs to be specified since all the appropriate information are always
+ in the VTK file.
  The value of the option (MC) is determined from the first entry in the
  
 \family typewriter
@@ -2712,37 +2785,84 @@ Integration Mesh
 \end_layout
 
 \begin_layout Standard
-An integration mesh can be specified by the command line options in Section
- 3.2, subject to the following rules
+An integration mesh can be specified by the command line options, subject
+ to the following rules
 \end_layout
 
 \begin_layout Enumerate
-At least one of MeshA, MeshB, or IntegrationMesh must be given.
+If 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+ is specified, then it is used.
 \end_layout
 
 \begin_layout Enumerate
-If IntegrationMesh is specified, then it is always used.
+If 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+ is missing, then 
+\family typewriter
+\series bold
+MeshA
+\family default
+\series default
+ is used as 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+.
 \end_layout
 
 \begin_layout Enumerate
-If IntegrationMesh is missing, then MeshA is copied to IntegrationMesh.
-\end_layout
-
-\begin_layout Enumerate
-If only MeshB is given, then it is copied to IntegrationMesh.
+If only 
+\family typewriter
+\series bold
+MeshB
+\family default
+\series default
+ is given, then it is used as 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+.
 \end_layout
 
 \begin_layout Standard
-Deciding if a given mesh is adequate for accurately capturing the error
- in the comparison will clearly depend on the functions being compared.
- One strategy to ensure an adequate mesh would be to take the discretization
+(TODO: need enough resolution for integrationmesh) Deciding if a given mesh
+ is adequate for accurately capturing the error in the comparison will clearly
+ depend on the functions being compared.
+ 
+\end_layout
+
+\begin_layout Standard
+One strategy to ensure an adequate mesh would be to take the discretization
  cells on which the error metric exceeds a certain threshold, mark those
  cells for refinement, and recalculate the residuals over the new discretization
 , repeating the process if necessary.
  This strategy could be implemented on top of Cigma as a series of post-processi
 ng steps by writing a suitable program or script that repeats this refinement
  process until the variations in the global error metric are small enough.
- Both of the TetGen and CUBIT mesh generators can be used for this purpose.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Both of the TetGen and CUBIT mesh generators can be used for this purpose.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2891,8 +3011,9 @@ R2
 \end_layout
 
 \begin_layout Standard
-Various quadrature rules for different cell types are available in the top
- level file 
+A number of common quadrature rules, including high-order quadratures, for
+ different cell types are available by default.
+ They are stored in file 
 \family typewriter
 integration-rules.h5
 \family default
@@ -2903,9 +3024,7 @@ integration-rules.h5
 \begin_inset Formula $L_{2}$
 \end_inset
 
--norm integral without having to adaptively refine the integration meshes,
- although this will come at a cost of an increasing number of function evaluatio
-ns due to the higher number of quadrature points for the high-order rules.
+-norm integral without having to adaptively refine the integration meshes.
 \end_layout
 
 \begin_layout Standard
@@ -2914,7 +3033,14 @@ The default integration rule used on each cell type can be obtained by running
 \family typewriter
 cigma element-info
 \family default
- command, as shown in Section 4.5.3.
+ command, as shown in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Working-with-Elements"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -2923,9 +3049,8 @@ Function Options
 
 \begin_layout Standard
 Cigma will accept two kinds of function arguments: (1) an analytic function
- chosen from a pre-defined list, or (2) an array of coefficients describing
- a finite element field.
- Of these two, only the second is associated with a specific discretization.
+ chosen from a pre-defined list, or (2) a finite element field.
+ Of these two, only the second is associated with a specific mesh.
 \end_layout
 
 \begin_layout Subsection
@@ -2936,19 +3061,26 @@ Analytic Functions
 Sometimes you will be able to express a function in terms of a general formula
  or algorithm, in which case you would like to be able to refer to such
  a function by using a simple name when specifying either of the 
-\bar under
+\family typewriter
+\series bold
 FunctionA
-\bar default
+\family default
+\series default
  or 
-\bar under
+\family typewriter
+\series bold
 FunctionB
-\bar default
+\family default
+\series default
  arguments.
  Extending Cigma by defining your own functions is ideal for analytic functions
- that other people who have downloaded Cigma can use to benchmark their
- own codes.
- Two such examples can be found in the Cigma source code.
- A simple analytic benchmark is available in the 
+ for benchmarking your own code.
+ 
+\end_layout
+
+\begin_layout Standard
+Two such examples can be found in the Cigma source code.
+ A simple analytic function is available in the 
 \family typewriter
 fn_inclusion.h
 \family default
@@ -2956,8 +3088,15 @@ fn_inclusion.h
 \family typewriter
 fn_inclusion.cpp
 \family default
- source files, while a more complex benchmark which calls external procedures
- is available in 
+ source files (used in Example 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Circular-Inclusion-Benchmark"
+
+\end_inset
+
+), while a more complex function which calls external procedures is available
+ in 
 \family typewriter
 fn_disloc3d.h
 \family default
@@ -2976,15 +3115,21 @@ Finite Element Fields
 
 \begin_layout Standard
 A finite element description of a function is associated with three items
- of information: (1) a finite set of local basis functions, (2) a discretization
- over which the function is locally approximated by those basis functions,
- and finally (3) a global list of shape function coefficients that yield
- the closest approximation to the function.
+ of information: (1) a discretization (nodes and connectivity), (2) a finite
+ set of local basis functions (cell type) defined on the discretization,
+ and finally (3) a global list of coefficients defined on the nodes that
+ yield the closest approximation to the function.
  How these items are specified depends on the underlying file format used
  to store the finite element description to our function.
  Items (1) and (2) are typically deduced from the appropriate mesh options
- discussed in Section 4.2, while item (3) is determined from the dataset
- given to either of the 
+ discussed in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Mesh-Options"
+
+\end_inset
+
+, while item (3) is determined from the dataset given to either of the 
 \family typewriter
 --first
 \family default
@@ -2998,7 +3143,13 @@ A finite element description of a function is associated with three items
 \begin_layout Standard
 If the dataset is stored in an HDF5 file, item (3) would be typically specified
  as a single array containing the shape function coefficients.
- You can optionally attach an attribute called MeshLocation to that dataset.
+ You can optionally attach an attribute called 
+\family typewriter
+\series bold
+MeshLocation
+\family default
+\series default
+ to that dataset, whic points to the mesh datagroup.
 \end_layout
 
 \begin_layout LyX-Code
@@ -3027,7 +3178,7 @@ model.h5
  
 \series bold
 \emph default
-variables
+fields
 \end_layout
 
 \begin_layout LyX-Code
@@ -3080,16 +3231,16 @@ displacements
 
 \begin_layout Standard
 Note that in this example, we have grouped all fields by variable name first
- and then by time step, but we could have easily grouped everything by time
- step first and then by variable name.
+ (e.g.
+ temperature and displacements) and then by time step, but we could have
+ easily grouped everything by time step first and then by variable name.
  Cigma will only operate on the full path to a dataset , leaving you the
  freedom to organize your data as you see fit.
 \end_layout
 
 \begin_layout Standard
 If the dataset is stored in a VTK file, the only restrictions are that you
- can only compare against Point Data arrays, and unstructured datasets must
- not mix more than one element in the same file.
+ can only compare against Point Data arrays, and one cell type per file.
  Otherwise, you may use any of the formats supported by the VTK library
  (structured, rectilinear, etc.) to define your field.
 \end_layout
@@ -3166,10 +3317,9 @@ Other Options
 \end_layout
 
 \begin_layout Standard
-There are a few other notable options that enable us to monitor various
- things, such as timing statistics on the progress of the calculation, as
- well as debugging information that may prove useful when encountering an
- unexpected exception.
+There are a few other notable options that enable us to monitor the timing
+ statistics on the progress of the calculation, as well as debugging information
+ that may prove useful when encountering an unexpected exception.
 \end_layout
 
 \begin_layout Standard
@@ -3269,7 +3419,11 @@ B --quiet --global-threshold=0.001
 
 \begin_layout Standard
 In this case, the exit code will indicate failure (i.e., return a non-zero
- value) whenever the specified threshold condition is not met.
+ value) whenever the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm is grearter than the specified threshold condition.
  This allows you to set up automated regression scripts that can constantly
  compare output from your numerical codes against a series of known benchmark
  solutions.
@@ -3292,7 +3446,14 @@ raw
 \begin_inset Quotes erd
 \end_inset
 
- form described in Section 3.5.
+ form described in Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cell-residual"
+
+\end_inset
+
+.
  However, for visualization purposes, you may wish to renormalize the integrated
  errors 
 \begin_inset Formula $\varepsilon_{e}$
@@ -3314,8 +3475,8 @@ raw
 vtk-residuals
 \family default
  that can take residuals stored in HDF5 format and create a simple legacy
- VTK file, which can then be conveniently visualized using any number of
- visualization packages.
+ VTK file, which can then be conveniently visualized using many visualization
+ packages.
  The utility 
 \family typewriter
 vtk-residuals
@@ -3353,14 +3514,14 @@ By default, this command will only copy the residual values from the input
 \family typewriter
 --divide-by-cell-volumes
 \family default
- will normalize each local residual by its corresponding cell volume in
- the MeshFile.
+ (TODO: rename) will normalize each local residual by its corresponding
+ cell volume in the MeshFile.
  The other option is 
 \family typewriter
 --output-log-values
 \family default
-, which will take the logarithms (base 10) of each residual before writing
- the VTK file.
+, (TODO: rename to --logarithm) which will take the logarithms (base 10)
+ of each residual before writing the VTK file.
 \end_layout
 
 \begin_layout Section
@@ -3368,8 +3529,9 @@ Verifying the Results
 \end_layout
 
 \begin_layout Standard
-The rest of the Cigma commands are there to help you query your model, allowing
- you to determine whether the input files are being interpreted properly.
+The rest of the Cigma commands are there to help you query your model data
+ files, allowing you to determine whether the input files are being interpreted
+ properly.
  A common problem in specifying a finite element mesh is using the wrong
  node numbering for a particular Cigma element, in which case you will probably
  encounter cells with negative or zero volumes, and incorrect results for
@@ -3429,12 +3591,13 @@ $ cigma mesh-info MESH --query-point=
 \end_layout
 
 \begin_layout Standard
-which you can use to verify that the underlying spatial index that maps
- points to cells is working properly.
+This will return the information of the cell that contains the query point,
+ which is useful to verify that the underlying spatial index that maps points
+ to cells is working properly.
 \end_layout
 
 \begin_layout Subsection
-Working with Functions
+Working with Analytic Functions
 \end_layout
 
 \begin_layout Standard
@@ -3443,8 +3606,8 @@ Finding information on given function can be done with the
 cigma function-info
 \family default
  command.
- Using it without arguments will return the list of functions that have
- been compiled into Cigma.
+ Using it without arguments will return the list of analytic functions that
+ have been compiled into Cigma.
 \end_layout
 
 \begin_layout LyX-Code
@@ -3472,8 +3635,8 @@ You can also query any function accepted by the
 \family typewriter
 cigma compare
 \family default
- command, not just built-in ones, at any arbitrary point in its function
- domain,
+ command, not just built-in ones analytic functions, at any arbitrary point
+ in its function domain,
 \end_layout
 
 \begin_layout LyX-Code
@@ -3498,6 +3661,13 @@ This will allow you to verify whether the function is reporting the correct
 
 \begin_layout Subsection
 Working with Elements
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Working-with-Elements"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3511,7 +3681,14 @@ cigma element-info
  command without arguments will generate the list of registered elements.
  Note that the names of the element types listed here correspond to the
  acceptable values that you can give to the (MC) argument discussed in Section
- 4.2.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Mesh-Options"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout LyX-Code
@@ -3529,25 +3706,7 @@ List of elements available for use in a Field:
 \begin_layout LyX-Code
 
 \size footnotesize
-   tet4, tet10
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-   hex8
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-   tri3, tri6
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-   quad4
+   tet4, hex8, tri3, quad4 (TODO: change code output)
 \end_layout
 
 \begin_layout Standard
@@ -4851,6 +5010,13 @@ Velocity differences on y=0.99 plane, as compared against case with 64 x
 
 \begin_layout Section
 Circular Inclusion Benchmark
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Circular-Inclusion-Benchmark"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4955,9 +5121,9 @@ We can use Gale, a CIG code for long-term crustal dynamics, to obtain an
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 v_{x} & = & +\dot{\epsilon}x\\
-v_{y} & = & -\dot{\epsilon}y\end{eqnarray*}
+v_{y} & = & -\dot{\epsilon}y\end{eqnarray}
 
 \end_inset
 
