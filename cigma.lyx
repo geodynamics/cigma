@@ -168,7 +168,7 @@ raggedbottom
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "main2.lyx"
+filename "main.lyx"
 
 \end_inset
 
