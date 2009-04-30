@@ -80,39 +80,81 @@ The CIG Model Analyzer (Cigma) is a program designed to compare general
 -norm of the difference between finite element models, resulting in approximate
  global and local error metrics that may be used for both code verification
  and benchmarking purposes.
- The basic aim of these methods is to increase confidence in the output
- of numerical codes through periodic software tests.
  
 \end_layout
 
 \begin_layout Standard
-CIG has developed Cigma in response to demand from the short-term tectonics
+CIG developed Cigma in response to demand from the short-term tectonics
  community for an automated tool that can perform rigorous error analysis
  on their finite element codes.
- 
-\begin_inset Note Greyedout
+ For example, on the cover of this manual is a 3D comparison for two resolutions
+ of PyLith's reverse-slip benchmark problem 
+\begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
-[Description of cover image here].
+
+geodynamics.org/cig/workinggroups/short/workarea/benchmarks/benchmark-rs-nog/desc
+ription-rs-nog
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+By facilitating the process of data comparisons, independent of discretization,
+ Cigma will better assist the Geodynamics community in their benchmarking
+ activities.
+ We also seek to increase confidence in the output of the CIG software by
+ providing a standardized testing process.
+ Such a process is vital to detecting critical errors during code development.
+ For this purpose, Cigma is designed to be easily extensible.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+http://geodynamics.org/cig/workinggroups/short/workarea/benchmarks/benchmark-rs-n
+og/description-rs-nog
+\end_layout
+
+\begin_layout Plain Layout
+http://geodynamics.org/cig/software/packages/short/pylith/
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Note Note
-status collapsed
+status open
 
 \begin_layout Plain Layout
-It is designed to be easily extensible to other evaluation methods.
+PyLith itself is a finite element code for the solution of dynamic and quasi-sta
+tic tectonic deformation problems.
 \end_layout
 
 \begin_layout Plain Layout
-In the long term, Cigma aims to be general enough for use in other geodynamics
- modeling codes.
+The benchmark problem being solved is a viscoelastic (Maxwell) relaxation
+ of stresses from a single, finite, reverse-slip earthquake in 3D without
+ gravity, with imposed displacement boundary conditions on a cube with sides
+ of length 24 km.
+ The displacements imposed are obtained via the analytic elastic solutions.
+ Additionally, symmetry boundary conditions are imposed at 
+\begin_inset Formula $y=0$
+\end_inset
+
+, so the solution is equivalent to that for a domain with a 48 km length
+ in the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction.
+ On the cover, we are visualizing the error in the displacement field between
+ the 500m linear hexahedral, and 250m tetrahedral solution.
 \end_layout
 
 \end_inset
@@ -708,9 +750,10 @@ $ make install
 \begin_layout Standard
 Using this library is optional, so it is not automatically detected at configure
  time.
- Enabling NetCDF support in Cigma is still option.
- Currently, Cigma will only read the first element block from the ExodusII
- mesh files created by the CUBIT mesh generator.
+ NetCDF support in Cigma is still experimental, and is currently only intended
+ for reading ExodusII mesh files created through the CUBIT mesh generator.
+ Only the first element block will be used, so that the corresponding Cigma
+ mesh object will consist of a single element type.
 \end_layout
 
 \begin_layout Subsection
@@ -837,8 +880,8 @@ LD_LIBRARY_PATH
 \family default
  environment variables.
  Preferably you should update these environment variables in your shell
- login file, but you can also be update them on the command line itself.
- Here we show the appropriate set commands for a bash shell session.
+ login file, but you can also update them on the command line itself.
+ Here we show the appropriate set of commands for a bash shell session.
 \end_layout
 
 \begin_layout LyX-Code
@@ -1048,7 +1091,7 @@ cigma
 working copy
 \emph default
 .
- To merge the latest changes on your working copy, use the 
+ To merge the latest changes into your working copy, use the 
 \family typewriter
 svn update
 \family default
@@ -1266,7 +1309,7 @@ scalar functions
 \emph on
 vector functions
 \emph default
- would usually have a rank of either 2 or 3.
+ usually have a rank of either 2 or 3.
 \end_layout
 
 \begin_layout Section
@@ -1723,7 +1766,7 @@ In general, we won't be able to integrate each cell error
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Encyclopaedia of Cubature Formulas 2005"
+key "Cools 2003"
 
 \end_inset
 
@@ -2134,8 +2177,8 @@ over the transformed variables
 \begin_inset Formula $\alpha.$
 \end_inset
 
- This process can be expedited using the the SciPy and Matplotlib Python
- modules.
+ You can use the SciPy and Matplotlib Python modules to write two functions
+ that can give you precisely that estimate.
 \end_layout
 
 \begin_layout Standard
@@ -2375,16 +2418,26 @@ varepsilon
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 A similar script called 
 \family typewriter
 power-plot.py
 \family default
  is provided in the Cigma source code.
- It expects a file containing the points 
+ It expects a single command line argument: a file name which contains the
+ points 
 \begin_inset Formula $(h_{i},\varepsilon_{i})$
 \end_inset
 
-, and plots the regression line associated with the points 
+.
+ Running that script will plot the regression line associated with the points
+ 
 \begin_inset Formula $(\log h_{i},\log\varepsilon_{i})$
 \end_inset
 
@@ -2640,7 +2693,7 @@ name "sec:Compare-Options"
 
 \begin_layout Standard
 We can exercise more control over the region of integration, and obtain
- a corresponding local error field by using the command.
+ a corresponding local error field by using the command
 \end_layout
 
 \begin_layout LyX-Code
@@ -2759,9 +2812,8 @@ name "sec:Mesh-Options"
 A mesh in Cigma is defined by three items: (1) the nodal Cartesian coordinates,
  (2) the connectivity (topological information describing how those nodes
  are connected to each other to form elements), and (3) an element type
- associated with the cell.
- e.g.
- triangles, quardrilaterals, tetrahedra, and hexahedra.
+ associated with the cell, e.g., triangles, quadrilaterals, tetrahedra, and
+ hexahedra.
  Up to three such meshes, 
 \series bold
 MeshA
@@ -3178,7 +3230,7 @@ If option (M) is missing, then both options (M1) and (M2) must be specified.
 \end_layout
 
 \begin_layout Enumerate
-Option (MC) can be deduced from option (M)
+Option (MC) can be deduced from option (M).
 \end_layout
 
 \begin_layout Enumerate
@@ -3362,7 +3414,7 @@ Integration Mesh
 
 \begin_layout Standard
 An integration mesh can be specified by the command line options, subject
- to the following rules
+ to the following rules:
 \end_layout
 
 \begin_layout Enumerate
@@ -3637,7 +3689,7 @@ Cigma will accept two kinds of function arguments: (1) an analytic function
  chosen from a pre-defined list, or (2) a finite element field.
  Of these two, only the second kind is associated with a specific mesh.
  Therefore, when comparing two analytic functions, an integration mesh must
- 
+ (XXX).
 \end_layout
 
 \begin_layout Subsection
@@ -3660,8 +3712,8 @@ FunctionB
 \family default
 \series default
  arguments.
- Extending Cigma by defining your own functions is ideal for analytic functions
- for benchmarking your own code.
+ Extending Cigma by defining your own functions is ideal (XXX) for analytic
+ functions for benchmarking your own code.
  
 \end_layout
 
@@ -3736,7 +3788,7 @@ If the dataset is stored in an HDF5 file, item (3) would be typically specified
 MeshLocation
 \family default
 \series default
- to that dataset, whic points to the mesh datagroup.
+ to that dataset, which points to the mesh datagroup.
 \end_layout
 
 \begin_layout LyX-Code
@@ -3818,10 +3870,10 @@ displacements
 
 \begin_layout Standard
 Note that in this example, we have grouped all fields by variable name first
- (e.g.
- temperature and displacements) and then by time step, but we could have
- easily grouped everything by time step first and then by variable name.
- Cigma will only operate on the full path to a dataset , leaving you the
+ (e.g., temperature and displacements) and then by time step, but we could
+ have easily grouped everything by time step first and then by variable
+ name.
+ Cigma will only operate on the full path to a dataset, leaving you the
  freedom to organize your data as you see fit.
 \end_layout
 
@@ -3870,7 +3922,7 @@ ng a local error integral by a finite weighed sum over a set of quadrature
 Cigma uses a nearest-neighbor search on a kd-tree structure to find the
  appropriate cell that contains a given quadrature point.
  This means that for a given point, a fixed number of nearest neighbors
- are checked before proceding with a sequential scan over all elements.
+ are checked before proceeding with a sequential scan over all elements.
  If you find a particular comparison is taking too long, it may help to
  increase the number of nearest elements that are checked, which can be
  done by passing a positive integer to any of the command line options 
@@ -4071,7 +4123,7 @@ For these reasons, we include in Cigma a post-processing utility called
 visualize-errors
 \family default
  that can take our error fields stored in HDF5 format and create a simple
- legacy VTK file, which can then be conveniently visualized using many ther
+ legacy VTK file, which can then be conveniently visualized using many other
  visualization packages.
  The utility 
 \family typewriter
@@ -4228,25 +4280,22 @@ cigma function-info
  command.
  Using it without arguments will return the list of analytic functions that
  have been compiled into Cigma.
+ Two special scalar functions, 
 \end_layout
 
 \begin_layout LyX-Code
 $ cigma function-info
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-...
-\end_layout
-
-\begin_layout LyX-Code
 one
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 zero
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 ...
 \end_layout
 
@@ -4255,8 +4304,8 @@ You can also query any function accepted by the
 \family typewriter
 cigma compare
 \family default
- command, not just built-in ones analytic functions, at any arbitrary point
- in its function domain,
+ command, not just built-in analytic functions, at any arbitrary point in
+ its function domain,
 \end_layout
 
 \begin_layout LyX-Code
@@ -4291,9 +4340,9 @@ name "sub:Working-with-Elements"
 \end_layout
 
 \begin_layout Standard
-On a more basic level, you can also verify that the elements basis functions
- work as expected, especially if you decide to extend Cigma by adding your
- own element types.
+On a more basic level, you can also verify that the basis functions for
+ your reference element work as expected, especially if you decide to extend
+ Cigma by adding your own element types.
  Calling the 
 \family typewriter
 cigma element-info
@@ -4590,7 +4639,7 @@ Examples
 \begin_layout Standard
 In this chapter, we show how to use Cigma to run specific comparisons on
  included datasets, estimate the order of convergence of the numerical methods
- used in obtaining those solutions, and visualize the resulting.
+ used in obtaining those solutions, and visualize the resulting error fields.
 \end_layout
 
 \begin_layout Section
@@ -4598,11 +4647,11 @@ Poisson Problem
 \end_layout
 
 \begin_layout Standard
-Cigma can compare two functions and return 
+Cigma can compare two functions and return the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
- norm the difference between those two functions.
+-norm difference between those two functions.
  For a given numerical problem, if you compute the solutions over a range
  of resolutions, you can use this global measure to quantify the rate of
  convergence of your numerical method.
@@ -4653,15 +4702,15 @@ Cigma can compare two functions and return
 \begin_layout Standard
 These differential equations can be easily solved numerically by using a
  finite element software library called Deal.II, which supports Lagrange
- finite elements of any order on both 2 and 3 dimensions.
+ finite elements of any order in either 2 or 3 dimensions.
  In fact, the two equations we have described are already solved in Step
  4 in the list of the Deal.II tutorial programs in 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-dealii.org/developer/doxygen/tutorial/index.html
+dealii.org/developer/doxygen/tutorial/
 \end_layout
 
 \end_inset
@@ -4677,7 +4726,7 @@ examples/
  subdirectory, we include a version of the Step 4 tutorial program that
  has been slightly modified to suit our purposes in this section.
  First, we change the output format to use VTK files, in order to make it
- very convient for us to provide our input datasets to Cigma.
+ very convenient for us to provide our input datasets to Cigma.
  Next, we solve the 2D problem over meshes of resolution 
 \begin_inset Formula $64\times64$
 \end_inset
@@ -4756,7 +4805,7 @@ When we run the above code on the command line, or script, Cigma will generate
 \end_inset
 
 .
- We summarize that information in the following tables,
+ We summarize that information in the following tables:
 \begin_inset VSpace defskip
 \end_inset
 
@@ -4863,7 +4912,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-8x8
+\begin_inset Formula $8\times8$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4899,7 +4951,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-8x8x8
+\begin_inset Formula $8\times8\times8$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4928,7 +4983,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-16x16
+\begin_inset Formula $16\times16$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4964,7 +5022,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-16x16x16
+\begin_inset Formula $16\times16\times16$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4993,7 +5054,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-32x32
+\begin_inset Formula $32\times32$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -5029,7 +5093,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-32x32x32
+\begin_inset Formula $32\times32\times32$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -5109,7 +5176,7 @@ Convergence of
 \begin_inset Formula $L_{2}$
 \end_inset
 
- Global Error for two Poisson problems in 2D and 3D.
+ Global Error for Poisson problems in 2D and 3D.
 \end_layout
 
 \end_inset
@@ -5267,7 +5334,7 @@ As a preliminary step, we also need to ensure that each of our cases do
 \begin_inset Formula $L_{2}$
 \end_inset
 
- error is negligible.
+-error is negligible.
  However, for this problem, we can also visually verify that the solution
  has reached steady state by checking that the oscillations in the values
  of the average heat flux on the top surface have dampened out, as shown
@@ -5294,7 +5361,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Time varation of average heat flux over top surface.
+Time variation of average heat flux over top surface.
 \end_layout
 
 \end_inset
@@ -5313,9 +5380,9 @@ Time varation of average heat flux over top surface.
 
 \begin_layout Standard
 Our first comparison of two steady states is simple enough.
- Although it's not critical for this example since we have already converged,
- in general time dependent problems you must not forget to make sure you
- are comparing solutions at the same absolute time.
+ Although it is not critical for this example since we have already converged,
+ in general time-dependent problems you must ensure you are comparing solutions
+ at the same absolute time.
  Thus, even though it appears that the following command is comparing two
  different solution steps, they actually correspond to roughly the same
  physical time.
@@ -5374,9 +5441,9 @@ error_temperature_64_32
 \family default
  root group.
  You may also refer to the same HDF5 file in subsequent runs of Cigma.
- The target dataset will be appended to the file if it doesn't already exist,
- and overwritten if it already does.
- The other two comparisons are just,
+ The target dataset will be appended to the file if it doesn't exist, and
+ overwritten if it does.
+ The commands for other two comparisons are,
 \end_layout
 
 \begin_layout LyX-Code
@@ -5516,8 +5583,8 @@ At this point, you have obtained the local
 \begin_inset Formula $L_{2}$
 \end_inset
 
- errors each of the above comparisons, and stored them in arrays inside
- the file 
+-errors for each of the above comparisons, and have stored them in arrays
+ inside the file 
 \family typewriter
 steady-state.h5
 \family default
@@ -5612,9 +5679,9 @@ In Figure 5.4, we show two plots representing the errors in the temperature
  temperature solution.
  Examining this plot and Figure 5.2a reveals that the largest errors are
  concentrated in areas where the temperature gradient is also large, near
- the boundary layers created by activity from the upwelling and downelling.
+ the boundary layers created by activity from the upwelling and downwelling.
  Similarly, the region where the errors are smallest corresponds to a region
- where both the temperature gradients and velocty magnitude are at their
+ where both the temperature gradients and velocity magnitude are at their
  lowest.
  
 \end_layout
@@ -5643,7 +5710,11 @@ Temperature differences on
 \begin_inset Formula $y=0.99$
 \end_inset
 
- plane, as compared against case with 64 x 64 x 64 elements.
+ plane, as compared against case with 
+\begin_inset Formula $64\times64\times64$
+\end_inset
+
+ elements.
 \end_layout
 
 \end_inset
@@ -5685,8 +5756,15 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Velocity differences on y=0.99 plane, as compared against case with 64 x
- 64 x 64 elements.
+Velocity differences on 
+\begin_inset Formula $y=0.99$
+\end_inset
+
+ plane, as compared against case with 
+\begin_inset Formula $64\times64\times64$
+\end_inset
+
+ elements.
 \end_layout
 
 \end_inset
@@ -5736,7 +5814,7 @@ key "Schmid Podladchikov 2003"
 \end_inset
 
  for the viscosity of the inclusion.
- The kinematic boundary conditions are given generally in terms the simple
+ The kinematic boundary conditions are given generally in terms of the simple
  shear strain rate 
 \begin_inset Formula $\dot{\epsilon}$
 \end_inset
@@ -5783,7 +5861,7 @@ In particular, we place the inclusion of radius
 \end_inset
 
  at the origin, and exploit the symmetry in this problem by only solving
- the field on the top right quarter of the domain
+ the field on the top right quarter of the domain.
 \end_layout
 
 \begin_layout Standard
@@ -6065,6 +6143,13 @@ public:
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 One additional step must be taken before we can use the name 
 \family typewriter
 bm.circular_inclusion.pressure
@@ -6166,6 +6251,13 @@ bm.circular_inclusion.pressure
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Now that we have an analytic expression for the pressure, we would like
  to obtain an approximate numerical solution to this circular inclusion
  problem.
@@ -6191,9 +6283,9 @@ Since we expect our solution to vary as
 \begin_inset Formula $0.01\%$
 \end_inset
 
- by enlarging the domain under consideration to about 80 times of the radius
+ by enlarging the domain under consideration to about 80 times the radius
  of the inclusion.
- or 
+ This results in the final domain 
 \begin_inset Formula $\Omega=[0,8]^{2}$
 \end_inset
 
@@ -6220,7 +6312,10 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Pressure field for circular inclusion problem, with resolution of 512x512
+Pressure field for circular inclusion problem, with resolution of 
+\begin_inset Formula $512\times512$
+\end_inset
+
  elements.
 \end_layout
 
@@ -6237,7 +6332,7 @@ Pressure field for circular inclusion problem, with resolution of 512x512
 \begin_layout Standard
 First, we'd like to see how well the Gale solutions converge to a common
  answer by comparing each other against the highest resolution field available.
- Since we only have three solutions, that leaves us with only run two meaningful
+ Since we only have three solutions, that leaves us with only two meaningful
  comparisons,
 \end_layout
 
@@ -6415,6 +6510,13 @@ from which we can estimate the order of convergence
 \begin_inset Formula $\alpha=\log(0.00158/0.00407)/\log(0.0442/0.0884)=1.36$
 \end_inset
 
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
 
 \end_layout
 
@@ -6423,7 +6525,7 @@ Processing the local error fields stored in
 \family typewriter
 circ_inc.h5
 \family default
-, we obtain the the following plots,
+, we obtain the following plots,
 \end_layout
 
 \begin_layout Standard
@@ -6446,8 +6548,19 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Errors in pressure field for 128x128, and 256x256 cases, relative to the
- 512x512 case, shown over the entire domain.
+Errors in pressure field for 
+\begin_inset Formula $128\times128$
+\end_inset
+
+, and 
+\begin_inset Formula $256\times256$
+\end_inset
+
+ cases, relative to the 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ case, shown over the entire domain.
 \end_layout
 
 \end_inset
@@ -6480,8 +6593,19 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Errors in pressure field for 128x128, and 256x256 cases, relative to the
- 512x512 case, shown near the inclusion.
+Errors in pressure field for 
+\begin_inset Formula $128\times128$
+\end_inset
+
+, and 
+\begin_inset Formula $256\times256$
+\end_inset
+
+ cases, relative to the 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ case, shown near the inclusion.
 \end_layout
 
 \end_inset
@@ -6734,8 +6858,16 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Errors in pressure field for 256x256 and 512x512 element resolutions, relative
- to the analytic formula, shown over the entire domain.
+Errors in pressure field for 
+\begin_inset Formula $256\times256$
+\end_inset
+
+ and 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ element resolutions, relative to the analytic formula, shown over the entire
+ domain.
  
 \end_layout
 
@@ -6769,8 +6901,15 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Errors in pressure field for 256x256 and 512x512 element resolutions, relative
- to the analytic formula, shown near the inclusion.
+Errors in pressure field for 
+\begin_inset Formula $256\times256$
+\end_inset
+
+ and 
+\begin_inset Formula $512\times512$
+\end_inset
+
+ element resolutions, relative to the analytic formula, shown near the inclusion.
  
 \end_layout
 
@@ -6793,25 +6932,37 @@ The only appreciable change between these two plots happens in the region
 \end_inset
 
  global error is indeed decreasing.
- This visual artifact is due to the fact that maximum error remains large
- near the inclusion.
- This error is large near that region because the continuous elements used
- by Gale cannot properly resolve the pressure discontinuity at the surface
- of the inclusion.
- Note that many numerical codes that solve Stokes flow, Gale included, assume
- that the pressure, velocity, and viscosity fields are continuous, an assumption
- that is violated for this particular problem.
+ This is due to the fact that the error remains large near the inclusion
+ with approximately the same maximum value, making it harder to see any
+ variation in the local error field.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+In summary, we have observed that the error is large near that region because
+ the continuous elements used by Gale cannot properly resolve the pressure
+ discontinuity at the surface of the inclusion.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Also, observe that although the 
+In summary, we have observed that for this problem the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
- global error decreases, it does not do so at the optimal rate, indicating
- that the numerical scheme used to obtain these solutions is not completely
- accurate.
- [TODO: relocate this discussion above].
+ global error does indeed decrease as we increase the mesh resolution, but
+ it does not do so at the optimal rate.
+ This indicates that the numerical scheme used to obtain these solutions
+ is not completely accurate.
+ Note that many numerical codes that solve Stokes flow, Gale included, assume
+ that the pressure, velocity, and viscosity fields are continuous, an assumption
+ that is violated for this particular problem.
 \end_layout
 
 \begin_layout LyX-Code
@@ -7373,8 +7524,9 @@ Array Data
 \end_layout
 
 \begin_layout Standard
-The second index in this array varies the fastest, so that data often referenced
- together remains together in memory as well.
+This layout is sufficient for describing both 2- and 3-dimensional data.
+ Note the second index in this array varies the fastest, so that data often
+ referenced together remains together in memory as well.
 \end_layout
 
 \begin_layout Subsection
@@ -7419,7 +7571,7 @@ width "50col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -7456,7 +7608,7 @@ Array Shape
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Coordinates
+3D Coordinates
 \end_layout
 
 \end_inset
@@ -7563,7 +7715,7 @@ width "50col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -7904,7 +8056,7 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-3-D Element
+3D Element
 \end_layout
 
 \end_inset
@@ -8160,7 +8312,7 @@ Similarly for the 2D elements, we have
 \begin_inset Text
 
 \begin_layout Plain Layout
-2-D Element
+2D Element
 \end_layout
 
 \end_inset
@@ -8509,11 +8661,11 @@ Integration Point
 \end_layout
 
 \begin_layout Subsection
-Integration Rule
+Integration Rules
 \end_layout
 
 \begin_layout Standard
-As alluded in Section 4.3.2
+As mentioned in Section 4.3.2
 \begin_inset Note Note
 status collapsed
 
@@ -9308,16 +9460,15 @@ Since our norm reduces integrals over cells to a single scalar value, the
 \end_layout
 
 \begin_layout Standard
-\align center
 Thus, for each element block containing 
 \begin_inset Formula $k$
 \end_inset
 
  cells, we have the output array
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
-
+\begin_layout Standard
+\align center
 \begin_inset VSpace defskip
 \end_inset
 
@@ -9522,7 +9673,7 @@ datasets
 , are stored in this structure.
  A group contains instances of zero or more groups or datasets, while a
  dataset stores a multi-dimensional array of data elements.
- In a sense, datasets are analogous to files in a traditional filesystem,
+ In a sense, datasets are analogous to files in a traditional file system,
  and groups are analagous to folders.
  One important difference, however, is that you can attach supporting metadata
  to both kinds of objects.
