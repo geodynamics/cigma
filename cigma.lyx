@@ -1,4 +1,4 @@
-#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -139,10 +139,10 @@ About the cover:
 \end_layout
 
 \begin_layout Standard
-The cover image depicts a 3D comparison between two different PyLith solutions
- to the reverse-slip benchmark problem.
- PyLith itself is a finite element code for the solution of dynamic and
- quasi-static tectonic deformation problems.
+The cover image depicts Cigma's 3D comparison between two different PyLith
+ solutions to the reverse-slip benchmark problem.
+ PyLith is a finite element code for the solution of dynamic and quasi-static
+ tectonic deformation problems.
 \end_layout
 
 \begin_layout Standard
