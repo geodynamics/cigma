@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.0 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -71,14 +71,17 @@ About Cigma
 \end_layout
 
 \begin_layout Standard
-The CIG Model Analyzer (Cigma) consists of a general suite of tools for
- comparing numerical models (TODO: too vague).
- In particular, this program is intended for the calculation of 
+The CIG Model Analyzer (Cigma) is a program designed to compare general
+ numerical models.
+ In particular, Cigma will calculate the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
- residuals (TODO: better term) for finite element models and published benchmark
- datasets.
+-norm of the difference between finite element models, resulting in approximate
+ global and local error metrics that may be used for both code verification
+ and benchmarking purposes.
+ The basic aim of these methods is to increase confidence in the output
+ of numerical codes through periodic software tests.
  
 \end_layout
 
@@ -86,8 +89,35 @@ The CIG Model Analyzer (Cigma) consists of a general suite of tools for
 CIG has developed Cigma in response to demand from the short-term tectonics
  community for an automated tool that can perform rigorous error analysis
  on their finite element codes.
- In the long term, Cigma aims to be general enough for use in other geodynamics
+ 
+\begin_inset Note Greyedout
+status collapsed
+
+\begin_layout Plain Layout
+[Description of cover image here].
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+It is designed to be easily extensible to other evaluation methods.
+\end_layout
+
+\begin_layout Plain Layout
+In the long term, Cigma aims to be general enough for use in other geodynamics
  modeling codes.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -206,10 +236,10 @@ Installing from Source
 In this section we discuss how to install each of the software libraries
  necessary for building Cigma.
  We recommend that you obtain binaries for these dependencies from your
- package manager of choice, or from the corresponding website.
- When using a package manager, make sure to install the associated development
- headers along with the library, as these tend to be distributed separately
- from the library package itself.
+ package manager of choice, or when available from the corresponding websites.
+ When using a package manager, you will have to make sure to install any
+ associated development packages, as these tend to be distributed separately
+ from the library packages themselves.
 \end_layout
 
 \begin_layout Subsection
@@ -314,14 +344,23 @@ $ make install
 
 \begin_layout Standard
 In general, the installation prefixes given to the configure options should
- be used if you have installed the corresponding library in a custom location
- (TODO: what about the libraries installed in the system directory?).
+ be used if you have installed the corresponding library in a custom location,
+ but may otherwise be omitted if the prefix is one of the default system
+ directories, such as 
+\family typewriter
+/usr
+\family default
+ or 
+\family typewriter
+/usr/local
+\family default
+.
  For demonstration purposes, the instructions in the next few sections use
  a subdirectory of 
 \family typewriter
 $HOME/opt
 \family default
- as the installation prefix for each of the libraries.
+ as the installation prefix for each of the dependencies.
 \end_layout
 
 \begin_layout Standard
@@ -669,9 +708,9 @@ $ make install
 \begin_layout Standard
 Using this library is optional, so it is not automatically detected at configure
  time.
- Enabling NetCDF support in Cigma will currently only allow you to read
- the first element block from any ExodusII file created by the CUBIT mesh
- generator.
+ Enabling NetCDF support in Cigma is still option.
+ Currently, Cigma will only read the first element block from the ExodusII
+ mesh files created by the CUBIT mesh generator.
 \end_layout
 
 \begin_layout Subsection
@@ -721,6 +760,210 @@ sourceforge.net/projects/cppunit/
 
 .
  
+\end_layout
+
+\begin_layout Subsection
+Compiling Cigma
+\end_layout
+
+\begin_layout Standard
+After carefully following the instructions above, we should be able to install
+ Cigma using this set of commands:
+\end_layout
+
+\begin_layout LyX-Code
+$ tar xvfz cigma-1.0.0.tar.gz
+\end_layout
+
+\begin_layout LyX-Code
+$ cd cigma-1.0.0
+\end_layout
+
+\begin_layout LyX-Code
+$ ./configure --prefix=$HOME/opt/cigma-1.0.0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --with-boost=$HOME/opt/boost 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --with-hdf5=$HOME/opt/hdf5-1.8.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --with-vtk=$HOME/opt/vtk-5.2.0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --with-vtk-version=5.2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      --with-cppunit-prefix=$HOME/opt/cppunit-1.21.1
+\end_layout
+
+\begin_layout LyX-Code
+$ make
+\end_layout
+
+\begin_layout LyX-Code
+$ make check
+\end_layout
+
+\begin_layout LyX-Code
+$ make install
+\end_layout
+
+\begin_layout Standard
+These instructions have used custom installation locations, so it is also
+ necessary to update the 
+\family typewriter
+PATH
+\family default
+ and 
+\family typewriter
+LD_LIBRARY_PATH
+\family default
+ environment variables.
+ Preferably you should update these environment variables in your shell
+ login file, but you can also be update them on the command line itself.
+ Here we show the appropriate set commands for a bash shell session.
+\end_layout
+
+\begin_layout LyX-Code
+$ PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$PATH:$HOME/opt/cigma-1.0.0/bin
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$PATH:$HOME/opt/hdf5-1.8.2/bin
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ export PATH
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ LD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/boost/lib:$LD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ LD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/hdf5-1.8.2/lib:$LD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ LD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/vtk-5.2.0/lib:$LD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ export LD_LIBRARY_PATH
+\end_layout
+
+\begin_layout Standard
+On Mac OS X, you will also need to update the 
+\family typewriter
+DYLD_LIBRARY_PATH
+\family default
+ environment variable,
+\end_layout
+
+\begin_layout LyX-Code
+$ DYLD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/boost/lib:$DYLD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ DYLD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/hdf5-1.8.2/lib:$DYLD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ DYLD_LIBRARY_PATH=
+\begin_inset Quotes erd
+\end_inset
+
+$HOME/opt/vtk-5.2.0/lib:$DYLD_LIBRARY_PATH
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+$ export DYLD_LIBRARY_PATH
+\end_layout
+
+\begin_layout Standard
+No environment variables need to be set if all installation prefixes use
+ a system directory.
 \end_layout
 
 \begin_layout Section
@@ -953,7 +1196,7 @@ where
  Alternatively, you may think of this as the size, or norm, of the 
 \series bold
 \emph on
-residual field
+error field
 \series default
 \emph default
  
@@ -976,8 +1219,9 @@ Another quantitative measure, which we won't discuss in this version of
 a posteriori
 \emph default
  error analysis and is problem dependent.
- In general, the residual field used under this norm is defined in terms
- of the linearized equation from which the solution was obtained.
+ In general, the error field used under this norm is defined in terms of
+ the linearized equation from which the solution was obtained, instead of
+ directly subtracting the corresponding function values.
 \end_layout
 
 \begin_layout Section
@@ -1051,7 +1295,7 @@ integration rule
 \end_inset
 
  of our partition.
- Each of these cell integrals of the continuous residual norm 
+ Each of these cell integrals of the continuous error norm 
 \begin_inset Formula $||\rho(\vec{x})||^{2}$
 \end_inset
 
@@ -1240,7 +1484,7 @@ global coordinate system
 \begin_inset Formula $L_{2}$
 \end_inset
 
- norm of the residual field 
+ norm of the error field 
 \begin_inset Formula $\rho=u-v$
 \end_inset
 
@@ -1414,7 +1658,7 @@ In this section we discuss the underlying formula used by Cigma to compute
 \begin_inset Formula $L_{2}$
 \end_inset
 
- norm of the residual field 
+ norm of the error field 
 \begin_inset Formula $\rho$
 \end_inset
 
@@ -1439,7 +1683,7 @@ Suppose the domain
 \begin_inset Formula $\varepsilon^{2}=\sum_{e}\varepsilon_{e}^{2}$
 \end_inset
 
-, where each cell residual 
+, where each cell error 
 \begin_inset Formula $\varepsilon_{e}^{2}$
 \end_inset
 
@@ -1456,7 +1700,7 @@ Suppose the domain
 \end_layout
 
 \begin_layout Standard
-In general, we won't be able to integrate each cell residual 
+In general, we won't be able to integrate each cell error 
 \begin_inset Formula $\varepsilon_{e}^{2}$
 \end_inset
 
@@ -1474,9 +1718,9 @@ In general, we won't be able to integrate each cell residual
 \end_inset
 
 .
- However, we can still calculate an approximation of each cell residual
- by applying an appropriate quadrature rule with a tolerable truncation
- error 
+ However, we can still calculate an approximation of each cell error by
+ applying an appropriate quadrature rule with a tolerable truncation error
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Encyclopaedia of Cubature Formulas 2005"
@@ -1624,7 +1868,7 @@ At this point, we can assume without loss of generality that every physical
 
 .
  After changing variables, we end up with the final form of the quadrature
- rule that we can use to integrate the global residual field:
+ rule that we can use to integrate the global error field:
 \end_layout
 
 \begin_layout Standard
@@ -1641,8 +1885,7 @@ If we let
 \begin_inset Formula $F(\vec{x})=||u(\vec{x})-v(\vec{x})||^{2}$
 \end_inset
 
- in the above expression, we can find the cell residual contribution over
- 
+ in the above expression, we can find the cell error contribution over 
 \begin_inset Formula $\Omega_{e}$
 \end_inset
 
@@ -1708,7 +1951,7 @@ We use this final form to calculate the global and localized errors on arbitrary
 \end_layout
 
 \begin_layout Section
-Comparing Global Residuals
+Comparing Global Error Quantities
 \end_layout
 
 \begin_layout Standard
@@ -1896,7 +2139,243 @@ over the transformed variables
 \end_layout
 
 \begin_layout Standard
-A short script called 
+\begin_inset listings
+lstparams "language=Python,showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Python functions for calculating and plotting the best least-squares power
+ law fit.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+import numpy
+\end_layout
+
+\begin_layout Plain Layout
+
+import matplotlib
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+from scipy.optimize import leastsq
+\end_layout
+
+\begin_layout Plain Layout
+
+from pylab import loglog, title, show
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def power_law_fit(X, Y):
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # verify input arrays have same length
+\end_layout
+
+\begin_layout Plain Layout
+
+    assert len(X) == len(Y)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # parametric function representing power-law
+\end_layout
+
+\begin_layout Plain Layout
+
+    power_law = lambda v,x: v[0] * x ** v[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # error function
+\end_layout
+
+\begin_layout Plain Layout
+
+    error_fn = lambda v,x,y: (power_law(v,x) - y)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # initial parameter value
+\end_layout
+
+\begin_layout Plain Layout
+
+    v0 = (1,1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # find optimal parameters v
+\end_layout
+
+\begin_layout Plain Layout
+
+    (v, success) = leastsq(error_fn, v0, args=(X,Y), maxfev=1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    print 'Best fit: err =', v[0], '* h ^', v[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    return (v, success)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+def plot_power_law(X,Y, **kw):
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    (v, success) = power_law_fit(X,Y)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    x = numpy.array(X)
+\end_layout
+
+\begin_layout Plain Layout
+
+    y = numpy.array(Y)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    # finally, plot points along with best-fit function.
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot_fn = kw.get('plot', loglog)
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot_fn(x, y, 'ro')
+\end_layout
+
+\begin_layout Plain Layout
+
+    plot_fn(x, power_law(v,x))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    title(r'$
+\backslash
+varepsilon
+\backslash
+ =
+\backslash
+ %f
+\backslash
+ h^{%f}$' % (v[0],v[1]))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    show()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A similar script called 
 \family typewriter
 power-plot.py
 \family default
@@ -1929,33 +2408,11 @@ Cigma is primarily designed for calculating error estimates between arbitrary
 \size footnotesize
 $ cigma compare 
 \emph on
-FunctionA
-\emph default
- 
-\emph on
-FunctionB
-\emph default
- 
-\begin_inset Newline newline
-\end_inset
-
-        -m 
-\emph on
-IntegrationMesh
-\emph default
- 
-\backslash
-
-\begin_inset Newline newline
-\end_inset
-
-        -o
-\emph on
- L2_Diff_on_IntegrationCells
+FunctionA FunctionB
 \end_layout
 
 \begin_layout Standard
-This command will evaluate 
+which executes a global comparison between two generic functions 
 \family typewriter
 \series bold
 FunctionA
@@ -1967,66 +2424,46 @@ FunctionA
 FunctionB
 \family default
 \series default
- on the quadrature points of 
-\family typewriter
-\series bold
-IntegrationMesh
-\family default
-\series default
-, and compute the norm of the difference between these two functions.
- The output file will be used to store the 
-\begin_inset Formula $L_{2}$
-\end_inset
-
--norm of the difference over each of the cells in the integration mesh.
+.
 \end_layout
 
 \begin_layout Standard
-(TODO: syntax for analytical function, and for fields.
- --first is optional, ditto for --second and --second-mesh)
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-$ cigma compare 
-\emph on
---first=FileA:dataA --first-mesh=FileA:meshA ...
-\end_layout
-
-\begin_layout Standard
-The full list of options can be obtain by running the 
+The full list of options for Cigma can be obtained by running the 
 \family typewriter
 cigma help
 \family default
  command.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+(XXX: sync output with code repo)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout LyX-Code
 
 \size footnotesize
 $ cigma help
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
 Usage: cigma <subcommand> [options] [args]
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
 Type 'cigma help <subcommand>' for help on a specific subcommand.
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
 Type 'cigma --version' to see the program version
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 
 \end_layout
 
@@ -2034,59 +2471,41 @@ Type 'cigma --version' to see the program version
 
 \size footnotesize
 Available subcommands:
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
+   compare        Calculate global L2 error, and local differences between
+ two functions
+\begin_inset Newline newline
+\end_inset
 
-\size footnotesize
-   compare        Calculate local and global residuals (TODO: better term)
- over two fields
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-   eval           Evaluate function at specified quadrature points
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
    list           List file contents (fields, dimensions, ...)
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
    mesh-info      Show information about specified mesh
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
    function-info  Show list of pre-defined functions
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
    element-info   Show information about available element types
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 
-\end_layout
-
-\begin_layout LyX-Code
-
-\size footnotesize
-Cigma is a tool for querying & analyzing numerical models (TODO: too vague).
 \end_layout
 
 \begin_layout LyX-Code
 
 \size footnotesize
-For additional information, visit http://geodynamics.org/ 
+Cigma is a tool for calculating L2-norm differences between numerical models.
+\begin_inset Newline newline
+\end_inset
+
+For additional information, visit http://geodynamics.org/
 \end_layout
 
 \begin_layout Standard
@@ -2094,13 +2513,14 @@ In this Chapter, we give a general overview of each of these subcommands,
  explain the meaning of each of their command line options, and give hypothetica
 l examples of typical usage patterns.
  We delay discussion of actual examples until the next Chapter, where we
- rely on publically available data files can be downloaded from the Cigma
- software page 
-\begin_inset Note Greyedout
-status open
+ rely on publically available data files that can be downloaded from the
+ Cigma software page at 
+\begin_inset Flex URL
+status collapsed
 
 \begin_layout Plain Layout
-URL here
+
+geodynamics.org/cig/software/packages/cs/cigma/cigma-data-1.0.0.tar.gz
 \end_layout
 
 \end_inset
@@ -2139,7 +2559,11 @@ location
 \begin_inset Quotes eld
 \end_inset
 
+
+\family typewriter
 low_res.h5
+\family default
+
 \begin_inset Quotes erd
 \end_inset
 
@@ -2147,7 +2571,11 @@ low_res.h5
 \begin_inset Quotes eld
 \end_inset
 
+
+\family typewriter
 high_res.h5
+\family default
+
 \begin_inset Quotes erd
 \end_inset
 
@@ -2155,7 +2583,11 @@ high_res.h5
 \begin_inset Quotes eld
 \end_inset
 
+
+\family typewriter
 density
+\family default
+
 \begin_inset Quotes erd
 \end_inset
 
@@ -2163,7 +2595,11 @@ density
 \begin_inset Quotes eld
 \end_inset
 
+
+\family typewriter
 pressure
+\family default
+
 \begin_inset Quotes erd
 \end_inset
 
@@ -2172,19 +2608,140 @@ pressure
 \end_layout
 
 \begin_layout LyX-Code
-cigma compare low_res.h5:density high_res.h5:density -o low_high.h5
+cigma compare high_res.h5:density low_res.h5:density -o low_high.h5
 \end_layout
 
 \begin_layout Standard
 will compare the density fields between the two files on the mesh defined
- in low_res.h5.
- (TODO: clarify how to find mesh.)
+ in 
+\family typewriter
+high_res.h5
+\family default
+.
+ 
 \end_layout
 
 \begin_layout Standard
 Depending on how it was configured, Cigma understands a number of different
  file formats, including HDF5 and VTK formats.
  The file format is determined by the filename extension.
+\end_layout
+
+\begin_layout Section
+Comparison Options
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Compare-Options"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can exercise more control over the region of integration, and obtain
+ a corresponding local error field by using the command.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+$ cigma compare 
+\emph on
+
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+         -a FunctionA
+\emph default
+ 
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+         -b FunctionB
+\emph default
+ 
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+         -m 
+\emph on
+IntegrationMesh
+\emph default
+ 
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+         -o
+\emph on
+ L2_Errors_on_IntegrationCells
+\end_layout
+
+\begin_layout Standard
+This command will evaluate 
+\family typewriter
+\series bold
+FunctionA
+\family default
+\series default
+ and 
+\family typewriter
+\series bold
+FunctionB
+\family default
+\series default
+ on the quadrature points of 
+\family typewriter
+\series bold
+IntegrationMesh
+\family default
+\series default
+, and compute the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-norm of the difference between these two functions.
+ The output file will be used to store each of the local 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-differences between the two functions over the cells in the integration
+ mesh.
+\end_layout
+
+\begin_layout Standard
+
+\size footnotesize
+\emph on
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+(TODO: syntax for analytical function, and for fields.
+ --first is optional, ditto for --second and --second-mesh)
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+$ cigma compare 
+\emph on
+--first=FileA:DataA --first-mesh=FileA:MeshA ...
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -2643,8 +3200,18 @@ When using an HDF5 file to store the mesh information, the
 \emph on
 location
 \emph default
- (TODO: clarify) associated with option (M) must point to an HDF5 group
- that contains two arrays with the relevant mesh information.
+, or internal path,
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+ (TODO: clarify)
+\end_layout
+
+\end_inset
+
+ associated with option (M) must point to an HDF5 group that contains two
+ arrays with the relevant mesh information.
  Those two arrays must be named 
 \family typewriter
 \series bold
@@ -2726,8 +3293,17 @@ One may specify options (M1) and (M2) separately by pointing directly to
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
 (TODO: an example when coordinates/connectivity/celltype are in different
  datagroup.)
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2838,17 +3414,26 @@ IntegrationMesh
 \end_layout
 
 \begin_layout Standard
-(TODO: need enough resolution for integrationmesh) Deciding if a given mesh
- is adequate for accurately capturing the error in the comparison will clearly
- depend on the functions being compared.
+Deciding if a given mesh is adequate for accurately capturing the error
+ in the comparison will clearly depend on the functions being compared.
  
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+(TODO: need enough resolution for integrationmesh) 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 One strategy to ensure an adequate mesh would be to take the discretization
  cells on which the error metric exceeds a certain threshold, mark those
- cells for refinement, and recalculate the residuals over the new discretization
-, repeating the process if necessary.
+ cells for refinement, and recalculate the errors over the new discretization,
+ repeating the process if necessary.
  This strategy could be implemented on top of Cigma as a series of post-processi
 ng steps by writing a suitable program or script that repeats this refinement
  process until the variations in the global error metric are small enough.
@@ -3050,7 +3635,9 @@ Function Options
 \begin_layout Standard
 Cigma will accept two kinds of function arguments: (1) an analytic function
  chosen from a pre-defined list, or (2) a finite element field.
- Of these two, only the second is associated with a specific mesh.
+ Of these two, only the second kind is associated with a specific mesh.
+ Therefore, when comparing two analytic functions, an integration mesh must
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -3335,15 +3922,13 @@ In order to monitor the progress of the integration, simply add the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare A
+$ cigma compare FunctionA
 \series bold
  
 \series default
-B
+FunctionB
 \series bold
- 
-\series default
---verbose
+ --verbose
 \end_layout
 
 \begin_layout Standard
@@ -3360,15 +3945,13 @@ By default, the timer will report its progress every 100 integration cells,
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare A
+$ cigma compare FunctionA
 \series bold
  
 \series default
-B
+FunctionB
 \series bold
- 
-\series default
---verbose --timer-frequency=1000
+ --verbose --timer-frequency=1000
 \end_layout
 
 \begin_layout Standard
@@ -3385,11 +3968,13 @@ Debugging information can be displayed using the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare A
+$ cigma compare FunctionA
 \series bold
  
 \series default
-B --debug
+FunctionB 
+\series bold
+--debug
 \end_layout
 
 \begin_layout Standard
@@ -3410,11 +3995,11 @@ On the other hand, suppressing all output can be accomplished with the
 \end_layout
 
 \begin_layout LyX-Code
-$ cigma compare A
+$ cigma compare FunctionA
 \series bold
  
 \series default
-B --quiet --global-threshold=0.001
+FunctionB --quiet --global-threshold=0.001
 \end_layout
 
 \begin_layout Standard
@@ -3438,7 +4023,11 @@ The command
 \family typewriter
 cigma compare
 \family default
- will always output the local residuals in the 
+ will always output the local 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-errors in the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3454,74 +4043,105 @@ reference "eq:cell-residual"
 \end_inset
 
 .
- However, for visualization purposes, you may wish to renormalize the integrated
- errors 
-\begin_inset Formula $\varepsilon_{e}$
+ However, for visualization purposes, it's more convenient to normalize
+ those integrated errors 
+\begin_inset Formula $\varepsilon_{i}$
 \end_inset
 
  by the corresponding integration-cell volumes 
-\begin_inset Formula $v_{e}$
+\begin_inset Formula $v_{i}$
 \end_inset
 
 , so that errors accumulated over smaller cells have more visual influence
  than errors of the same magnitude accumulated over larger cells.
- It may also be useful visually, to output the logarithm of the residual
- values.
+ Additionally, it may also be more useful to output the logarithm of the
+ normalized errors instead.
  Using a logarithmic scale will accentuate the contrast between the orders
- of magnitude in the local residuals.
- For these reasons, we include in Cigma a post-processing utility called
+ of magnitude when visualizing the normalized 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-error field.
+\end_layout
+
+\begin_layout Standard
+For these reasons, we include in Cigma a post-processing utility called
  
 \family typewriter
-vtk-residuals
+visualize-errors
 \family default
- that can take residuals stored in HDF5 format and create a simple legacy
- VTK file, which can then be conveniently visualized using many visualization
- packages.
+ that can take our error fields stored in HDF5 format and create a simple
+ legacy VTK file, which can then be conveniently visualized using many ther
+ visualization packages.
  The utility 
 \family typewriter
-vtk-residuals
+visualize-errors
 \family default
  can be used as follows,
 \end_layout
 
 \begin_layout LyX-Code
-$ vtk-residuals [...]            
+$ visualize-errors [--use-logarithmic-scale] 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -m MeshFile.h5             
+      -m MeshFile.h5:/meshpath               
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -i InputResiduals.h5:/path 
+      -i InputErrors.h5:/errorpath           
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      -o OutputResiduals.vtk
+      -o OutputErrors.vtk:NormalizedErrors
 \end_layout
 
 \begin_layout Standard
-By default, this command will only copy the residual values from the input
- HDF5 file into the output VTK file.
- Further processing can be performed by specifying two additional options.
- The option 
+Specifically, this command will take each of the local errors 
+\begin_inset Formula $\varepsilon_{i}$
+\end_inset
+
+ from the HDF5 file 
 \family typewriter
---divide-by-cell-volumes
+InputErrors.h5
 \family default
- (TODO: rename) will normalize each local residual by its corresponding
- cell volume in the MeshFile.
- The other option is 
+, normalize them by the factor 
+\begin_inset Formula $\sqrt{v_{i}}$
+\end_inset
+
+, where 
+\begin_inset Formula $v_{i}$
+\end_inset
+
+ is the corresponding volume of the 
+\begin_inset Formula $i$
+\end_inset
+
+-th cell taken from 
 \family typewriter
---output-log-values
+MeshFile.h5
 \family default
-, (TODO: rename to --logarithm) which will take the logarithms (base 10)
- of each residual before writing the VTK file.
+, and write the result to a VTK file called 
+\family typewriter
+OutputErrors.vtk
+\family default
+ under an array called 
+\family typewriter
+NormalizedErrors
+\family default
+.
+ One may also specify the flag 
+\family typewriter
+--use-logarithmic-scale
+\family default
+, in which case the above command will take the logarithm (in base 10) before
+ writing the final results to the VTK file.
 \end_layout
 
 \begin_layout Section
@@ -3695,18 +4315,18 @@ reference "sec:Mesh-Options"
 
 \size footnotesize
 $ cigma element-info
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
 List of elements available for use in a Field:
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
+   tet4, hex8
+\begin_inset Newline newline
+\end_inset
 
-\size footnotesize
-   tet4, hex8, tri3, quad4 (TODO: change code output)
+   tri3, quad4
 \end_layout
 
 \begin_layout Standard
@@ -3718,15 +4338,13 @@ For example, querying the hex8 element would result in the following information
 
 \size footnotesize
 $ cigma element-info hex8
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
-
-\size footnotesize
 Information on cell 'hex8'
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 
 \end_layout
 
@@ -3782,9 +4400,9 @@ Reference-Cell Nodes:
 
 \size footnotesize
      7  -1.000000 +1.000000 +1.000000
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 
 \end_layout
 
@@ -3840,9 +4458,9 @@ Shape functions:
 
 \size footnotesize
    N[7] = 0.125 * (1.0 - u) * (1.0 + v) * (1.0 + w)
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout LyX-Code
 
 \end_layout
 
@@ -3918,7 +4536,7 @@ reference-cells.h5
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 For example, querying 
@@ -4037,8 +4655,18 @@ These differential equations can be easily solved numerically by using a
  finite element software library called Deal.II, which supports Lagrange
  finite elements of any order on both 2 and 3 dimensions.
  In fact, the two equations we have described are already solved in Step
- 4 in the list of the Deal.II tutorial programs (TODO: url).
- 
+ 4 in the list of the Deal.II tutorial programs in 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+dealii.org/developer/doxygen/tutorial/index.html
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4050,15 +4678,46 @@ examples/
  has been slightly modified to suit our purposes in this section.
  First, we change the output format to use VTK files, in order to make it
  very convient for us to provide our input datasets to Cigma.
- Next, we solve the 2D problem over meshes of resolution 64x64, 32x32, 16x16,
- and 8x8 by using linear quadrilateral elements.
+ Next, we solve the 2D problem over meshes of resolution 
+\begin_inset Formula $64\times64$
+\end_inset
+
+, 
+\begin_inset Formula $32\times32$
+\end_inset
+
+, 
+\begin_inset Formula $16\times16$
+\end_inset
+
+, and 
+\begin_inset Formula $8\times8$
+\end_inset
+
+ by using linear quadrilateral elements.
  The solution is saved in file 
 \family typewriter
 phi_64x64x64.vtk
 \family default
  for the highest resolution, for example.
  In a similar fashion, we solve our 3D Poisson problem on meshes of resolution
- 64x64x64, 32x32x32, 16x16x16, and 8x8x8, that use linear hexahedral elements.
+ 
+\begin_inset Formula $64\times64\times64$
+\end_inset
+
+, 
+\begin_inset Formula $32\times32\times32$
+\end_inset
+
+, 
+\begin_inset Formula $16\times16\times16$
+\end_inset
+
+, and 
+\begin_inset Formula $8\times8\times8$
+\end_inset
+
+, that use linear hexahedral elements.
  Note that in either case, we don't really know the exact solution to either
  problem, so we use the highest resolution available as the reference point
  for our comparisons.
@@ -4121,7 +4780,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-2D Case
+\begin_inset Formula $n$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4130,7 +4792,7 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $h$
+\begin_inset Formula $h_{n}$
 \end_inset
 
 
@@ -4142,7 +4804,7 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $L_{2}/\sqrt{V}$
+\begin_inset Formula $||\phi_{n}-\phi_{64\times64}||_{L_{2}}/\sqrt{V}$
 \end_inset
 
 
@@ -4163,7 +4825,10 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-3D Case
+\begin_inset Formula $n$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -4172,7 +4837,7 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $h$
+\begin_inset Formula $h_{n}$
 \end_inset
 
 
@@ -4184,7 +4849,7 @@ When we run the above code on the command line, or script, Cigma will generate
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $L_{2}/\sqrt{V}$
+\begin_inset Formula $||\phi_{n}-\phi_{64\times64\times64}||_{L_{2}}/\sqrt{V}$
 \end_inset
 
 
@@ -4509,8 +5174,23 @@ For our next example, we use CitcomCU, a CIG code for mantle convection,
 Again, as in the previous section, we solve the same problem over four different
  resolutions, and then use the highest resolution dataset as the reference
  point for all the subsequent comparisons.
- The four cases we will use for this example use 64x64x64, 32x32x32, 16x16x16,
- and 8x8x8 elements.
+ The four cases we will use for this example use 
+\begin_inset Formula $64\times64\times64$
+\end_inset
+
+, 
+\begin_inset Formula $32\times32\times32$
+\end_inset
+
+, 
+\begin_inset Formula $16\times16\times16$
+\end_inset
+
+, and 
+\begin_inset Formula $8\times8\times8$
+\end_inset
+
+ elements.
  In the following figure, we display the temperature and velocity fields
  on the 
 \begin_inset Formula $y=0.99$
@@ -4845,7 +5525,7 @@ steady-state.h5
  In order to visualize these errors, you will need to reattach the original
  mesh information by using a post-processing utility program called 
 \family typewriter
-vtk-residuals
+visualize-errors
 \family default
 .
  We can accomplish this for our six comparisons, by using the following
@@ -4861,19 +5541,13 @@ $ for variable in temperature velocity; do
 \end_layout
 
 \begin_layout LyX-Code
-      vtk-residuals 
+      visualize-errors 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-        --divide-by-sqrt-cell-volumes 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-        --output-log-values 
+        --use-logarithmic-scale 
 \backslash
 
 \end_layout
@@ -4913,8 +5587,8 @@ The first two options we give our post-processing program are important.
  more obvious if the error were constant).
  The second option tells the post-processing program to use a logarithmic
  scale for writing those locally averaged errors.
- Using a log10-scale makes it much easier to spot the spatial range of variation
- in our error fields.
+ Using a log-10 scale makes it much easier to spot the spatial range of
+ variation in our error fields.
 \end_layout
 
 \begin_layout Standard
@@ -4923,7 +5597,18 @@ In Figure 5.4, we show two plots representing the errors in the temperature
 \begin_inset Formula $y=0.99$
 \end_inset
 
- plane for the two 16x16x16 and 32x32x32 resolutions, relative to the 64x64x64
+ plane for the two 
+\begin_inset Formula $16\times16\times16$
+\end_inset
+
+ and 
+\begin_inset Formula $32\times32\times32$
+\end_inset
+
+ resolutions, relative to the 
+\begin_inset Formula $64\times64\times64$
+\end_inset
+
  temperature solution.
  Examining this plot and Figure 5.2a reveals that the largest errors are
  concentrated in areas where the temperature gradient is also large, near
@@ -5042,8 +5727,21 @@ key "Schmid Podladchikov 2003"
 , Schmid and Podladchikov derived an analytic solution for the pressure
  and velocity fields of a circular inclusion under simple shear, depicted
  in Figure 5.6.
- (TODO: describe the problem more.
- what's viscosity, what's prescribed velocity?)
+ The viscosity parameters introduced are 
+\begin_inset Formula $\mu_{m}$
+\end_inset
+
+ for the viscosity of the matrix, and 
+\begin_inset Formula $\mu_{i}$
+\end_inset
+
+ for the viscosity of the inclusion.
+ The kinematic boundary conditions are given generally in terms the simple
+ shear strain rate 
+\begin_inset Formula $\dot{\epsilon}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -5089,8 +5787,15 @@ In particular, we place the inclusion of radius
 \end_layout
 
 \begin_layout Standard
-From [TODO: REF], we end up with the following analytic formula for the
- pressure field under the case of simple shear, 
+From 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schmid Podladchikov 2003"
+
+\end_inset
+
+, we end up with the following analytic formula for the pressure field under
+ the case of simple shear, 
 \begin_inset Formula \begin{equation}
 p=\begin{cases}
 4\dot{\epsilon}\frac{\mu_{m}(\mu_{i}-\mu_{m})}{\mu_{i}+\mu_{m}}\left(\frac{r_{i}^{2}}{r^{2}}\right)\cos(2\theta) & r>r_{i}\\
@@ -5116,16 +5821,359 @@ where we use
 \family typewriter
 bm.circular_inclusion.pressure
 \family default
-.
+, whose definition is summarized in Listing 5.1.
  
 \end_layout
 
 \begin_layout Standard
-We can use Gale, a CIG code for long-term crustal dynamics, to obtain an
- approximate solution to this circular inclusion problem.
- Because the formula for the velocity field is more complicated than the
- analytic formula for the pressure, we use the far-field approximation of
- the velocity field to impose the boundary conditions in Gale,
+\begin_inset listings
+lstparams "language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Definition of the 
+\family typewriter
+bm.circular_inclusion.pressure
+\family default
+ analytic function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+#include 
+\begin_inset Quotes eld
+\end_inset
+
+Function.h
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+namespace benchmark {
+\end_layout
+
+\begin_layout Plain Layout
+
+  namespace circular_inclusion {
+\end_layout
+
+\begin_layout Plain Layout
+
+    class Pressure;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+class benchmark::circular_inclusion::Pressure : public cigma::Function {
+\end_layout
+
+\begin_layout Plain Layout
+
+public:
+\end_layout
+
+\begin_layout Plain Layout
+
+    Pressure() {}
+\end_layout
+
+\begin_layout Plain Layout
+
+    ~Pressure() {}
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    virtual void init() { }
+\end_layout
+
+\begin_layout Plain Layout
+
+    virtual FunctionType getType() const { return Function::GeneralType;
+ }
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    virtual int n_dim() { return 2; }
+\end_layout
+
+\begin_layout Plain Layout
+
+    virtual int n_rank() { return 1; }
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    virtual bool eval(double *x, double *y) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double R = 0.1;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double mu_m = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double mu_i = 2;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double mag_shear = 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double C = 4*mag_shear*(mu_m*(mu_i-mu_m)/(mu_i+mu_m))*R*R;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double xc = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double yc = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double dx = x[0] - xc;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double dy = y[0] - yc;
+\end_layout
+
+\begin_layout Plain Layout
+
+        const double r2 = dx*dx + dy*dy;
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (r2 < R*R) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            value[0] = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+        } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+            double theta = atan2(dy, dx);
+\end_layout
+
+\begin_layout Plain Layout
+
+            value[0] = (C/r2) * cos(2*theta);
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return true;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One additional step must be taken before we can use the name 
+\family typewriter
+bm.circular_inclusion.pressure
+\family default
+ on the Cigma command line.
+ We must instantiate our new C++ class, and register it under an assigned
+ name in the constructor defined in the 
+\family typewriter
+FunctionRegistry.cpp
+\family default
+ source file.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Assigning the name 
+\family typewriter
+bm.circular_inclusion
+\family default
+ to our analytic function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+FunctionRegistry::FunctionRegistry()
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  //
+\end_layout
+
+\begin_layout Plain Layout
+
+  // ...
+ other definitions
+\end_layout
+
+\begin_layout Plain Layout
+
+  //
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  typedef benchmark::circular_inclusion::Pressure PressureFn1;
+\end_layout
+
+\begin_layout Plain Layout
+
+  shared_ptr<PressureFn1> pressure1(new PressureFn1());
+\end_layout
+
+\begin_layout Plain Layout
+
+  this->addFunction(
+\begin_inset Quotes eld
+\end_inset
+
+bm.circular_inclusion.pressure
+\begin_inset Quotes erd
+\end_inset
+
+, pressure1);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now that we have an analytic expression for the pressure, we would like
+ to obtain an approximate numerical solution to this circular inclusion
+ problem.
+ For this purpose we can use Gale, a CIG code for long-term crustal dynamics.
+ Since the analytic formula for the velocity field is more complicated than
+ the analytic formula for the pressure, we will simply expand the domain
+ and use the far-field approximation of the velocity field in order to impose
+ the kinematic boundary conditions in Gale,
 \end_layout
 
 \begin_layout Standard
@@ -5135,8 +6183,16 @@ v_{y} & = & -\dot{\epsilon}y\end{eqnarray}
 
 \end_inset
 
-In order to make these boundary conditions more accurate, we enlarge the
- domain under consideration to about 80 times of the radius of the inclusion,
+Since we expect our solution to vary as 
+\begin_inset Formula $p\sim1/r^{2}$
+\end_inset
+
+, we target an error of 
+\begin_inset Formula $0.01\%$
+\end_inset
+
+ by enlarging the domain under consideration to about 80 times of the radius
+ of the inclusion.
  or 
 \begin_inset Formula $\Omega=[0,8]^{2}$
 \end_inset
@@ -5230,7 +6286,144 @@ $ cigma compare
 \end_layout
 
 \begin_layout Standard
-Processing this data, gives us the following plots,
+whose results we summarize in the following Table.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h_{n}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $||p_{n}-p_{512}||_{L_{2}}/\sqrt{V}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+128
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.088388
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0040745
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+256
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.044194
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0015786
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+from which we can estimate the order of convergence 
+\begin_inset Formula $\alpha=\log(0.00158/0.00407)/\log(0.0442/0.0884)=1.36$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Processing the local error fields stored in 
+\family typewriter
+circ_inc.h5
+\family default
+, we obtain the the following plots,
 \end_layout
 
 \begin_layout Standard
@@ -5342,15 +6535,183 @@ bm.circular_inclusion.pressure
 \end_layout
 
 \begin_layout Standard
+whose output we summarize in the following table, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $n$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h_{n}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $||p_{n}-p||_{L_{2}}/\sqrt{V}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+128
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.088388
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0050388
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+256
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.044194
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0036636
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+512
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0022097
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0024535
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+from which we can obtain the order of convergence 
+\begin_inset Formula $\alpha=0.5$
+\end_inset
+
+, via a power-law regression analysis.
+ Such a low value of 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is expected since the pressure function we are solving has a discontinuity
+ across the inclusion boundary.
+\end_layout
+
+\begin_layout Standard
 After processing the errors in 
 \family typewriter
 inclusion.h5
 \family default
  with the utility program 
 \family typewriter
-vtk-residuals
+visualize-errors
 \family default
-, we obtain the following plots of the pressure field errors, 
+, we obtain the following plots of the pressure field differences, 
 \end_layout
 
 \begin_layout Standard
@@ -5424,14 +6785,19 @@ Errors in pressure field for 256x256 and 512x512 element resolutions, relative
 \end_layout
 
 \begin_layout Standard
-In contrast to the previous two sections, we do not detect much of a color
- shift between two plots, even though the 
+The only appreciable change between these two plots happens in the region
+ near the inclusion boundary, which becomes slightly more resolved spatially.
+ Also, in contrast to the previous two sections, we do not detect much of
+ a color shift between two plots, even though the 
 \begin_inset Formula $L_{2}$
 \end_inset
 
  global error is indeed decreasing.
- This is due to the fact that maximum error remains large near the inclusion,
- due to the pressure discontinuity at the surface of the inclusion.
+ This visual artifact is due to the fact that maximum error remains large
+ near the inclusion.
+ This error is large near that region because the continuous elements used
+ by Gale cannot properly resolve the pressure discontinuity at the surface
+ of the inclusion.
  Note that many numerical codes that solve Stokes flow, Gale included, assume
  that the pressure, velocity, and viscosity fields are continuous, an assumption
  that is violated for this particular problem.
@@ -5445,7 +6811,7 @@ Also, observe that although the
  global error decreases, it does not do so at the optimal rate, indicating
  that the numerical scheme used to obtain these solutions is not completely
  accurate.
- [TODO: Add table with global errors here].
+ [TODO: relocate this discussion above].
 \end_layout
 
 \begin_layout LyX-Code
@@ -5856,8 +7222,17 @@ Data Formats
 
 \begin_layout Standard
 The basic data structure is a two-dimensional array of values, stored in
- a contiguous format as shown below: (TODO: why only 2D arrays, how about
- 3D arrays?)
+ a contiguous format as shown below:
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+ (TODO: why only 2D arrays, how about 3D arrays?)
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -6499,7 +7874,16 @@ For the element types defined in Cigma, the values for
  are as follows.
  Note that the total number of degrees of freedom depends on the rank of
  the specific function being represented.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
  (TODO: update table)
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -7129,8 +8513,17 @@ Integration Rule
 \end_layout
 
 \begin_layout Standard
-As described in Chapter 4 (TODO: x-ref, do you really mean ch4?), an integration
- rule is specified by a list of points and associated weights.
+As alluded in Section 4.3.2
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+ (TODO: x-ref, do you really mean ch4?)
+\end_layout
+
+\end_inset
+
+, an integration rule is specified by a list of points and associated weights.
  The points should be specified on the natural coordinate system used by
  the corresponding reference element.
  
@@ -7899,7 +9292,11 @@ Scalar
 \end_layout
 
 \begin_layout Subsection
-Comparison Residuals
+Local 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+-errors
 \end_layout
 
 \begin_layout Standard
@@ -7958,7 +9355,7 @@ Array Shape
 \begin_inset Text
 
 \begin_layout Plain Layout
-Residual Value
+Error Value
 \end_layout
 
 \end_inset
@@ -8061,14 +9458,14 @@ Residual Value
 \end_layout
 
 \begin_layout Standard
-These residual values may be combined in the following form: 
+These error values may be combined in the following form: 
 \begin_inset Formula \[
 \varepsilon_{block}=\sqrt{\varepsilon_{1}^{2}+\varepsilon_{2}^{2}+\cdots+\varepsilon_{k}^{2}}\]
 
 \end_inset
 
-The final global residual norm maybe obtained by simply summing over all
- element blocks that partition the domain of interest:
+The final global error norm maybe obtained by simply summing over all element
+ blocks that partition the domain of interest:
 \end_layout
 
 \begin_layout Standard
@@ -8087,9 +9484,18 @@ Input Files
 \end_layout
 
 \begin_layout Standard
-In Section 1.1 (TODO: x-ref), we examined what kinds of objects we will be
- accessing, so now let's discuss the actual layout in the files in which
- these objects will be stored.
+In Section A.2
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+ (TODO: x-ref)
+\end_layout
+
+\end_inset
+
+, we examined what kinds of objects we will be accessing, so now let's discuss
+ the actual layout in the files in which these objects will be stored.
 \end_layout
 
 \begin_layout Subsection
@@ -8488,13 +9894,13 @@ The result of all comparisons always consists of a one dimensional list
 \end_inset
 
 -norm integral.
- You can output these residual values directly into a VTK file, in which
- case the array will be stored in the Cell Data section of the output file.
+ You can output these error values directly into a VTK file, in which case
+ the array will be stored in the Cell Data section of the output file.
  Since Cigma includes a post-processing utility called 
 \family typewriter
-vtk-residuals
+visualize-errors
 \family default
- that can convert HDF5 residuals into VTK files, we recommend that you use
+ that can convert HDF5 errors into VTK files, we recommend that you use
  HDF5 files to store the result of your comparisons.
  Note that HDF5 files will not be overwritten when used for output, which
  allows you to store multiple datasets inside the same HDF5 file without
