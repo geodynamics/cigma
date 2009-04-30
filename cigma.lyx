@@ -132,6 +132,38 @@ today
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph*
+About the cover:
+\end_layout
+
+\begin_layout Standard
+The cover image depicts a 3D comparison between two different PyLith solutions
+ to the reverse-slip benchmark problem.
+ PyLith itself is a finite element code for the solution of dynamic and
+ quasi-static tectonic deformation problems.
+\end_layout
+
+\begin_layout Standard
+This benchmark problem solves for the viscoelastic (Maxwell) relaxation
+ of stresses from a single, finite, reverse-slip earthquake in 3D without
+ gravity, with imposed displacement boundary conditions on a cube with sides
+ of 24 km in length.
+ On the boundary, we impose displacements obtained via the analytic elastic
+ solutions.
+ Additionally, symmetry boundary conditions are imposed on the 
+\begin_inset Formula $y=0$
+\end_inset
+
+ plane, so the solution is equivalent to that for a domain with a 48 km
+ length in the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction.
+ We are visualizing the error in the displacement field between the 500m
+ linear hexahedral and 250m tetrahedral solutions.
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
