@@ -1,0 +1,11 @@
+# Temporary patterns
+/backup
+/scripts
+/TODO
+todo.txt
+
+# Ignore patterns
+*~
+\#*\#
+.DS_Store
+.*.swp

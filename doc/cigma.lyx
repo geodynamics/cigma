@@ -1,0 +1,372 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\usepackage{hyperref}
+
+\let\myUrl\url
+\renewcommand{\url}[1]{(\myUrl{#1})}
+
+\newcommand{\mynote}[1]{}
+\end_preamble
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language swedish
+\papercolumns 1
+\papersides 2
+\paperpagestyle headings
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\noindent
+\align center
+
+\color none
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename cigma_cover.pdf
+	width 75page%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+Cigma
+\end_layout
+
+\begin_layout Author
+© California Institute of Technology
+\begin_inset Newline newline
+\end_inset
+
+Version 1.0.0
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+About the cover:
+\end_layout
+
+\begin_layout Standard
+The cover image depicts Cigma's 3D comparison between two different PyLith
+ solutions to the reverse-slip benchmark problem.
+ PyLith is a finite element code for the solution of dynamic and quasi-static
+ tectonic deformation problems.
+\end_layout
+
+\begin_layout Standard
+This benchmark problem solves for the viscoelastic (Maxwell) relaxation
+ of stresses from a single, finite, reverse-slip earthquake in 3D without
+ gravity, with imposed displacement boundary conditions on a cube with sides
+ of 24 km in length.
+ On the boundary, we impose displacements obtained via the analytic elastic
+ solutions.
+ Additionally, symmetry boundary conditions are imposed on the 
+\begin_inset Formula $y=0$
+\end_inset
+
+ plane, so the solution is equivalent to that for a domain with a 48 km
+ length in the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction.
+ We are visualizing the error in the displacement field between the 500m
+ linear hexahedral and 250m tetrahedral solutions.
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+raggedbottom
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "main.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\start_of_appendix
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+%dummy comment inserted to ensure this paragraph is not empty
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "Akin 2005"
+
+\end_inset
+
+Akin, J.E.
+ (2005), 
+\emph on
+Finite Element Analysis with Error Estimators,
+\emph default
+ Butterworth-Heinemann, Oxford, 447 pp.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "Knupp"
+
+\end_inset
+
+P.
+ Knupp, K.
+ Salari (2003), 
+\emph on
+Verification of Computer Codes in Computational Science and Engineering,
+\emph default
+ Chapman & Hall/CRC, 144 pp.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "Hughes 2000"
+
+\end_inset
+
+Hughes, Thomas J.R.
+ (2000), 
+\emph on
+The Finite Element Method: Linear Static and Dynamic Finite Element Analysis
+\emph default
+, Dover, 672 pp.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "Karniadakis 2005"
+
+\end_inset
+
+Karniadakis, George E.
+ and Spencer J.
+ Sherwin (2005), 
+\emph on
+Spectral/
+\emph default
+hp 
+\emph on
+Element Methods for Computational Fluid Dynamics, Second Edition
+\emph default
+, Numerical Mathematics and Scientific Computation, Oxford, 657 pp.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "Cools 2003"
+
+\end_inset
+
+Cools, R., 
+\emph on
+An Encyclopaedia of Cubature Formulas
+\emph default
+, J.
+ Complexity, 19: 445-453, 2003; Katholieke Universiteit Leuven, Dept.
+ Computerwetenschappen, www.cs.kuleuven.be/~nines/research/ecf/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "Uesu 2005"
+
+\end_inset
+
+Uesu, D., L.
+ Bavoil, S.
+ Fleishman, J.
+ Shepherd, and C.
+ Silva (2005), Simplification of Unstructured Tetrahedral Meshes by Point-Sampli
+ng, 
+\emph on
+Proceedings of the 2005 International Workshop on Volume Graphics,
+\emph default
+ 157-165, doi: 10.2312/VG/VG05/157-165.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "7"
+key "Travis et al 1990"
+
+\end_inset
+
+Travis, J., et al (1990), A benchmark comparison of numerical methods for
+ infinite Prandtl number thermal convection in two-dimensional Cartesian
+ geometry, 
+\emph on
+Geophys.
+ Astro.
+ Fluid 55
+\emph default
+(3), 137-160, doi: 10.1080/03091929008204111.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "8"
+key "Schmid Podladchikov 2003"
+
+\end_inset
+
+Schmid, D.W., and Y.Y.
+ Podladchikov (2003), Analytical solutions for deformable elliptical inclusions
+ in general shear, 
+\emph on
+Geophys.
+ J.
+ Int.
+ 155
+\emph default
+(1), 269-288, doi: 10.1046/j.1365-246X.2003.02042.x.
+\end_layout
+
+\end_body
+\end_document
